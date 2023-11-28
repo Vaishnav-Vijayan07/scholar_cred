@@ -12,9 +12,7 @@ const Login2 = React.lazy(() => import("../pages/auth2/Login2"));
 const Logout2 = React.lazy(() => import("../pages/auth2/Logout2"));
 const Register2 = React.lazy(() => import("../pages/auth2/Register2"));
 const Confirm2 = React.lazy(() => import("../pages/auth2/Confirm2"));
-const ForgetPassword2 = React.lazy(
-  () => import("../pages/auth2/ForgetPassword2")
-);
+const ForgetPassword2 = React.lazy(() => import("../pages/auth2/ForgetPassword2"));
 const LockScreen2 = React.lazy(() => import("../pages/auth2/LockScreen2"));
 const SignInSignUp2 = React.lazy(() => import("../pages/auth2/SignInSignUp2"));
 
@@ -22,35 +20,12 @@ const SignInSignUp2 = React.lazy(() => import("../pages/auth2/SignInSignUp2"));
 const Dashboard4 = React.lazy(() => import("../pages/dashboard/Dashboard4/"));
 
 // - crm pages
-
 const CRMLeads = React.lazy(() => import("../pages/apps/CRM/Leads/"));
 
-
-// uikit
-
-const NestableList = React.lazy(() => import("../pages/uikit/NestableList"));
-const DragDrop = React.lazy(() => import("../pages/uikit/DragDrop"));
-const RangeSliders = React.lazy(() => import("../pages/uikit/RangeSliders"));
-const Animation = React.lazy(() => import("../pages/uikit/Animation"));
-const TourPage = React.lazy(() => import("../pages/uikit/TourPage"));
-const SweetAlerts = React.lazy(() => import("../pages/uikit/SweetAlerts"));
-const LoadingButtons = React.lazy(
-  () => import("../pages/uikit/LoadingButtons")
-);
-
-
-
-// forms
-const BasicForms = React.lazy(() => import("../pages/forms/Basic"));
-const FormAdvanced = React.lazy(() => import("../pages/forms/Advanced"));
-const FormValidation = React.lazy(() => import("../pages/forms/Validation"));
-const FormWizard = React.lazy(() => import("../pages/forms/Wizard"));
-const FileUpload = React.lazy(() => import("../pages/forms/FileUpload"));
-const Editors = React.lazy(() => import("../pages/forms/Editors"));
-
-// tables
-const BasicTables = React.lazy(() => import("../pages/tables/Basic"));
-const AdvancedTables = React.lazy(() => import("../pages/tables/Advanced"));
+// user pages
+const Consultant = React.lazy(() => import("../pages/users/Consultant"));
+const ConsultantDetails = React.lazy(() => import("../pages/users/Profile"));
+const Staff = React.lazy(() => import("../pages/users/Staff"));
 
 export interface RoutesProps {
   path: RouteProps["path"];
@@ -85,7 +60,6 @@ const dashboardRoutes: RoutesProps = {
   ],
 };
 
-
 const crmAppRoutes = {
   path: "/apps/crm",
   name: "CRM",
@@ -102,131 +76,37 @@ const crmAppRoutes = {
   ],
 };
 
-const appRoutes = [
-  crmAppRoutes,
-];
-
-// pages
-
-
-// ui
-const uiRoutes = {
-  path: "/ui",
-  name: "Components",
-  icon: "pocket",
-  header: "UI Elements",
+const userRoutes = {
+  path: "/users",
+  name: "Users",
+  route: PrivateRoute,
+  roles: ["Admin"],
+  icon: "users",
   children: [
-   
     {
-      path: "/ui/extended",
-      name: "Extended UI",
-      children: [
-        {
-          path: "/extended-ui/nestable",
-          name: "Nestable List",
-          element: <NestableList />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/extended-ui/dragdrop",
-          name: "Drag and Drop",
-          element: <DragDrop />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/extended-ui/rangesliders",
-          name: "Range Sliders",
-          element: <RangeSliders />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/extended-ui/animation",
-          name: "Animation",
-          element: <Animation />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/extended-ui/sweet-alert",
-          name: "Sweet Alert",
-          element: <SweetAlerts />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/extended-ui/tour",
-          name: "Tour Page",
-          element: <TourPage />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/extended-ui/loading-buttons",
-          name: "Loading Buttons",
-          element: <LoadingButtons />,
-          route: PrivateRoute,
-        },
-      ],
+      path: "/users/consultant",
+      name: "Consultant",
+      element: <Consultant />,
+      route: PrivateRoute,
     },
     {
-      path: "/ui/forms",
-      name: "Forms",
-      children: [
-        {
-          path: "/ui/forms/basic",
-          name: "Basic Elements",
-          element: <BasicForms />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/ui/forms/advanced",
-          name: "Form Advanced",
-          element: <FormAdvanced />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/ui/forms/validation",
-          name: "Form Validation",
-          element: <FormValidation />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/ui/forms/wizard",
-          name: "Form Wizard",
-          element: <FormWizard />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/ui/forms/upload",
-          name: "File Upload",
-          element: <FileUpload />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/ui/forms/editors",
-          name: "Editors",
-          element: <Editors />,
-          route: PrivateRoute,
-        },
-      ],
+      path: "/users/staff",
+      name: "Staff",
+      element: <Staff />,
+      route: PrivateRoute,
     },
     {
-      path: "/ui/tables",
-      name: "Tables",
-      children: [
-        {
-          path: "/ui/tables/basic",
-          name: "Basic",
-          element: <BasicTables />,
-          route: PrivateRoute,
-        },
-        {
-          path: "/ui/tables/advanced",
-          name: "Advanced",
-          element: <AdvancedTables />,
-          route: PrivateRoute,
-        },
-      ],
+      path: "/users/consultant/:id",
+      name: "Consultant details",
+      element: <ConsultantDetails />,
+      route: PrivateRoute,
     },
   ],
 };
+
+const appRoutes = [crmAppRoutes];
+
+// pages
 
 // auth
 const authRoutes: RoutesProps[] = [
@@ -274,8 +154,6 @@ const authRoutes: RoutesProps[] = [
   },
 ];
 
-
-
 // flatten the list of all nested routes
 const flattenRoutes = (routes: RoutesProps[]) => {
   let flatRoutes: RoutesProps[] = [];
@@ -292,18 +170,9 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 };
 
 // All routes
-const authProtectedRoutes = [
-  dashboardRoutes,
-  ...appRoutes,
-  uiRoutes,
-];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes, userRoutes];
 const publicRoutes = [...authRoutes];
 
 const authProtectedFlattenRoutes = flattenRoutes([...authProtectedRoutes]);
 const publicProtectedFlattenRoutes = flattenRoutes([...publicRoutes]);
-export {
-  publicRoutes,
-  authProtectedRoutes,
-  authProtectedFlattenRoutes,
-  publicProtectedFlattenRoutes,
-};
+export { publicRoutes, authProtectedRoutes, authProtectedFlattenRoutes, publicProtectedFlattenRoutes };

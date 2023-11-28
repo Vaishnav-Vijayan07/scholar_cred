@@ -265,7 +265,7 @@ const Topbar = ({
                           : logoDark
                       }
                       alt=""
-                      height="20"
+                      height="30"
                     />
                   </span>
                 </Link>
@@ -277,11 +277,11 @@ const Topbar = ({
                     <img
                       src={
                         layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                          ? logoLight2
-                          : logoLight
+                          ? logoSm
+                          : logoSm
                       }
                       alt=""
-                      height="20"
+                      height="30"
                     />
                   </span>
                 </Link>
