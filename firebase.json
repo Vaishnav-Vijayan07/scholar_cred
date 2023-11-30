@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site":"scholar-cred",
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

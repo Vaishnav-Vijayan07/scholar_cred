@@ -53,13 +53,13 @@ const AuthLayout = ({
                     className="logo logo-dark text-center outline-none"
                   >
                     <span className="logo-lg">
-                      <img src={LogoDark} alt="" height="22" />
+                      <img src={LogoDark} alt="" height="40" />
                     </span>
                   </Link>
 
                   <Link to="/" className="logo logo-light text-center">
                     <span className="logo-lg">
-                      <img src={LogoLight} alt="" height="22" />
+                      <img src={LogoLight} alt="" height="40" />
                     </span>
                   </Link>
                 </div>
