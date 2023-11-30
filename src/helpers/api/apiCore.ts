@@ -5,7 +5,8 @@ import config from "../../config";
 
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
-axios.defaults.baseURL = config.API_URL;
+axios.defaults.baseURL = "http://localhost:3002/api";
+// axios.defaults.baseURL = config.API_URL;
 
 // intercepting to capture errors
 axios.interceptors.response.use(

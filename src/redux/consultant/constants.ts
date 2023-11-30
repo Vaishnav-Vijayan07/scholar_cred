@@ -1,0 +1,9 @@
+export enum ConsultantActionTypes {
+  API_RESPONSE_SUCCESS = "@@consultants/API_RESPONSE_SUCCESS",
+  API_RESPONSE_ERROR = "@@consultants/API_RESPONSE_ERROR",
+  CREATE_CONSULTANT = "@@consultants/CREATE_CONSULTANT",
+  EDIT_CONSULTANT = "@@consultants/EDIT_CONSULTANT",
+  DELETE_CONSULTANT = "@@consultants/DELETE_CONSULTANT",
+  GET_CONSULTANT = "@@consultants/GET_CONSULTANT",
+  GET_CONSULTANT_BY_ID = "@@consultants/GET_CONSULTANT_BY_ID",
+}
