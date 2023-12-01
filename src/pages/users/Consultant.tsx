@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -12,11 +12,12 @@ import PageTitle from "../../components/PageTitle";
 import { MyInitialState, TableRecords, initialState, initialValidationState, sizePerPageList } from "./data";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getConsultants } from "../../redux/actions";
+import { createConsultant, deleteConsultant, editConsultant, getConsultants } from "../../redux/actions";
 import { RootState } from "../../redux/store";
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state } = props;
+  const dispatch = useDispatch();
+  const { swal, loading, state, error, success } = props;
   const [modal, setModal] = useState<boolean>(false);
   const [className, setClassName] = useState<string>("");
 
@@ -43,8 +44,16 @@ const BasicInputElements = withSwal((props: any) => {
       .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
     gst: yup.string().required("GST is required"),
     location: yup.string().required("Location is required").min(8, "Location must be at least 8 characters long"),
-    pin_code: yup.string().nullable().required("Pin code is required"),
-    pan_no: yup.string().nullable().required("PAN number is required"),
+    pin_code: yup
+      .string()
+      .nullable()
+      .required("Pin code is required")
+      .matches(/^\d{6}$/, "Pin code must be a valid 6-digit number"),
+    pan_no: yup
+      .string()
+      .nullable()
+      .required("PAN number is required")
+      .matches(/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/, "Invalid PAN number format"),
   });
 
   const methods = useForm({
@@ -56,6 +65,7 @@ const BasicInputElements = withSwal((props: any) => {
   const handleUpdate = (item: any) => {
     setFormData((prev) => ({
       ...prev,
+      id: item?.id,
       company_name: item.company_name,
       business_address: item.business_address,
       email: item.email,
@@ -85,6 +95,7 @@ const BasicInputElements = withSwal((props: any) => {
       .then((result: any) => {
         if (result.isConfirmed) {
           // swal.fire("Deleted!", "Your item has been deleted.", "success");
+          dispatch(deleteConsultant(id));
         }
       });
   };
@@ -107,14 +118,45 @@ const BasicInputElements = withSwal((props: any) => {
       // Validation passed, handle form submission
       if (isUpdate) {
         // Handle update logic
+        await dispatch(
+          editConsultant(
+            formData.id,
+            formData.company_name,
+            formData.business_address,
+            formData.email,
+            formData.phone,
+            "https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
+            formData.alternative_phone,
+            formData.gst,
+            formData.location,
+            formData.pin_code,
+            formData.pan_no,
+            1
+          )
+        );
       } else {
         // Handle add logic
+        await dispatch(
+          createConsultant(
+            formData.company_name,
+            formData.business_address,
+            formData.email,
+            formData.phone,
+            "https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
+            formData.alternative_phone,
+            formData.gst,
+            formData.location,
+            formData.pin_code,
+            formData.pan_no,
+            1
+          )
+        );
       }
 
-      // Clear validation errors
-      setValidationErrors(initialValidationState);
-      // clear form data
-      setFormData(initialState);
+      // // // Clear validation errors
+      // setValidationErrors(initialValidationState);
+      // // clear form data
+      // setFormData(initialState);
     } catch (validationError) {
       // Handle validation errors
       if (validationError instanceof yup.ValidationError) {
@@ -128,6 +170,17 @@ const BasicInputElements = withSwal((props: any) => {
       }
     }
   };
+
+  useEffect(() => {
+    // Check for errors and clear the form
+    if (!loading && !error) {
+      setValidationErrors(initialValidationState);
+      handleCancelUpdate();
+      // toggle();
+    }
+  }, [loading, error]);
+
+  console.log("success------------->", success);
 
   const columns = [
     {
@@ -225,6 +278,24 @@ const BasicInputElements = withSwal((props: any) => {
     toggle();
   };
 
+  //set test data
+  const setTestData = () => {
+    setFormData((prev) => ({
+      ...prev,
+      company_name: "ABC Corporation",
+      business_address: "123 Main Street, Cityville",
+      email: "info@abccorp.com",
+      phone: "9098765467",
+      image_url: "https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
+      alternative_phone: "9890987654",
+      gst: "GST123456789",
+      location: "Business District",
+      pin_code: "123450",
+      pan_no: "ABCDE1234F",
+      created_by: 1,
+    }));
+  };
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -238,6 +309,11 @@ const BasicInputElements = withSwal((props: any) => {
             </div>
             <Row>
               <Col className="bg-white">
+                {error && (
+                  <Alert variant="danger" className="my-2">
+                    {error}
+                  </Alert>
+                )}
                 <Form onSubmit={onSubmit}>
                   <Row>
                     <Col md={6}>
@@ -302,7 +378,21 @@ const BasicInputElements = withSwal((props: any) => {
                     <Col md={6}>
                       <Form.Group className="mb-3" controlId="gst">
                         <Form.Label>GST</Form.Label>
-                        <Form.Control type="number" name="gst" placeholder="Enter GST" value={formData.gst} onChange={handleInputChange} />
+                        <Form.Control
+                          type="text"
+                          name="gst"
+                          placeholder="Enter GST"
+                          value={formData.gst}
+                          onChange={(e) => {
+                            // Allow only alphanumeric characters and limit the length
+                            const input = e.target.value
+                              .toUpperCase()
+                              .replace(/[^A-Za-z0-9]/g, "") // Remove non-alphanumeric characters
+                              .slice(0, 15); // Limit to a specific length, adjust as needed
+
+                            handleInputChange({ target: { name: "gst", value: input } });
+                          }}
+                        />
                         {validationErrors.gst && <Form.Text className="text-danger">{validationErrors.gst}</Form.Text>}
                       </Form.Group>
                     </Col>
@@ -326,7 +416,22 @@ const BasicInputElements = withSwal((props: any) => {
                     <Col md={6}>
                       <Form.Group className="mb-3" controlId="pan_no">
                         <Form.Label>PAN Number</Form.Label>
-                        <Form.Control type="number" name="pan_no" placeholder="Enter PAN number" value={formData.pan_no} onChange={handleInputChange} />
+                        {/* <Form.Control type="number" name="pan_no" placeholder="Enter PAN number" value={formData.pan_no} onChange={handleInputChange} /> */}
+                        <Form.Control
+                          type="text"
+                          name="pan_no"
+                          placeholder="Enter PAN number"
+                          value={formData.pan_no}
+                          onChange={(e) => {
+                            // Allow only alphanumeric characters and limit the length
+                            const input = e.target.value
+                              .replace(/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/, "")
+                              .toUpperCase()
+                              .slice(0, 10);
+                            handleInputChange({ target: { name: "pan_no", value: input } });
+                          }}
+                          maxLength={10} // Adjust the maxLength based on the actual PAN number length
+                        />
                         {validationErrors.pan_no && <Form.Text className="text-danger">{validationErrors.pan_no}</Form.Text>}
                       </Form.Group>
                     </Col>
@@ -350,8 +455,11 @@ const BasicInputElements = withSwal((props: any) => {
                       {!isUpdate ? "close" : "Cancel"}
                     </Button>
 
-                    <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading}>
+                    <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
                       {isUpdate ? "Update" : "Submit"}
+                    </Button>
+                    <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" onClick={setTestData} disabled={loading}>
+                      Add test data
                     </Button>
                   </div>
                   {/* )} */}
@@ -390,9 +498,11 @@ const BasicInputElements = withSwal((props: any) => {
 const Consultants = () => {
   const dispatch = useDispatch();
 
-  const { state, loading } = useSelector((state: RootState) => ({
+  const { state, loading, error, success } = useSelector((state: RootState) => ({
     state: state?.ConsultantReducer.consultant.data,
     loading: state?.ConsultantReducer.loading,
+    error: state?.ConsultantReducer.error,
+    success: state?.ConsultantReducer.success,
   }));
 
   useEffect(() => {
@@ -414,7 +524,7 @@ const Consultants = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} />
+          <BasicInputElements state={state} loading={loading} error={error} success={success} />
         </Col>
       </Row>
     </React.Fragment>

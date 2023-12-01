@@ -1,4 +1,5 @@
 // apicore
+import { showSuccessAlert } from "../../constants/alerts";
 import { APICore } from "../../helpers/api/apiCore";
 
 // constants
@@ -50,16 +51,20 @@ const ConsultantReducer = (state: State = INIT_STATE, action: ConsultantActionTy
     case ConsultantActionTypes.API_RESPONSE_SUCCESS:
       switch (action.payload.actionType) {
         case ConsultantActionTypes.CREATE_CONSULTANT: {
+          showSuccessAlert(action.payload.data);
           return {
             ...state,
             loading: false,
+            error: null,
           };
         }
 
         case ConsultantActionTypes.EDIT_CONSULTANT: {
+          showSuccessAlert(action.payload.data);
           return {
             ...state,
             loading: false,
+            error: null,
           };
         }
         case ConsultantActionTypes.GET_CONSULTANT_BY_ID: {
@@ -76,9 +81,11 @@ const ConsultantReducer = (state: State = INIT_STATE, action: ConsultantActionTy
           };
         }
         case ConsultantActionTypes.DELETE_CONSULTANT: {
+          showSuccessAlert(action.payload.data);
           return {
             ...state,
             loading: false,
+            error: null,
           };
         }
 

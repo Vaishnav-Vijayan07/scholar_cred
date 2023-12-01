@@ -16,7 +16,8 @@ function createConsultant(params: {
   pan_no: string;
   created_by: number;
 }) {
-  const baseUrl = "/create_consultant/";
+  const baseUrl = "/create_consultant";
+
   return api.create(`${baseUrl}`, params);
 }
 
@@ -37,8 +38,8 @@ function updateConsultant(
     created_by: number;
   }
 ) {
-  const baseUrl = "/edit_consultant_details/";
-  return api.create(`${baseUrl}/${id}`, params);
+  const baseUrl = "/edit_consultant_details";
+  return api.update(`${baseUrl}?id=${id}`, params);
 }
 
 function getConsultants() {
@@ -47,19 +48,13 @@ function getConsultants() {
 }
 
 function deleteConsultant(id: number) {
-  const baseUrl = "/delete_consultant/";
-  return api.create(`${baseUrl}/${id}`, {});
+  const baseUrl = "/delete_consultant";
+  return api.delete(`${baseUrl}?id=${id}`);
 }
 
 function getConsultantsById(id: number) {
-  const baseUrl = "/get_consultants_by_id/";
+  const baseUrl = "/get_consultants_by_id";
   return api.create(`${baseUrl}/${id}`, {});
 }
 
-export {
-  createConsultant,
-  updateConsultant,
-  getConsultants,
-  deleteConsultant,
-  getConsultantsById,
-};
+export { createConsultant, updateConsultant, getConsultants, deleteConsultant, getConsultantsById };

@@ -41,23 +41,73 @@ export const consultantApiResponseError = (actionType: string, error: string): C
 
 //create consultant;
 
-export const createConsultant = (data: ConsultantData | {}): ConsultantActionType => ({
+export const createConsultant = (
+  company_name: string,
+  business_address: string,
+  email: string,
+  phone: string,
+  image_url: string,
+  alternative_phone: string,
+  gst: string,
+  location: string,
+  pin_code: string,
+  pan_no: string,
+  created_by: number
+): ConsultantActionType => ({
   type: ConsultantActionTypes.CREATE_CONSULTANT,
-  payload: { data },
+  payload: {
+    company_name,
+    business_address,
+    email,
+    phone,
+    image_url,
+    alternative_phone,
+    gst,
+    location,
+    pin_code,
+    pan_no,
+    created_by,
+  },
 });
 
 //edit consultant
 
-export const editConsultant = (data: ConsultantData | {}): ConsultantActionType => ({
+export const editConsultant = (
+  id: string,
+  company_name: string,
+  business_address: string,
+  email: string,
+  phone: string,
+  image_url: string,
+  alternative_phone: string,
+  gst: string,
+  location: string,
+  pin_code: string,
+  pan_no: string,
+  created_by: number
+): ConsultantActionType => ({
   type: ConsultantActionTypes.EDIT_CONSULTANT,
-  payload: { data },
+  payload: {
+    id,
+    company_name,
+    business_address,
+    email,
+    phone,
+    image_url,
+    alternative_phone,
+    gst,
+    location,
+    pin_code,
+    pan_no,
+    created_by,
+  },
 });
 
 //delete consultant
 
-export const deleteConsultant = (data: ConsultantData | {}): ConsultantActionType => ({
+export const deleteConsultant = (id: string) => ({
   type: ConsultantActionTypes.DELETE_CONSULTANT,
-  payload: { data },
+  payload: { id },
 });
 
 export const getConsultants = (): ConsultantActionType => ({
