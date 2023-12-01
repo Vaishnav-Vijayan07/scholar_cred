@@ -29,7 +29,7 @@ const FileUpload = () => {
 
               <FileUploader
                 onFileUpload={(files) => {
-                  console.log("Uploaded files - ", files);
+                  // console.log("Uploaded files - ", files);
                 }}
               />
             </Card.Body>

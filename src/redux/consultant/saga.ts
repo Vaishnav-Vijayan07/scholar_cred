@@ -14,7 +14,7 @@ import {
 } from "../../helpers/";
 
 // actions
-import { authApiResponseSuccess, authApiResponseError } from "./actions";
+import { consultantApiResponseSuccess, consultantApiResponseError } from "./actions";
 
 // constants
 import { ConsultantActionTypes } from "./constants";
@@ -39,74 +39,8 @@ interface ConsultantData {
 
 const api = new APICore();
 
-/**
- * Login the user
- * @param {*} payload - username and password
- */
-function* updateConsultant({
-  payload: {
-    id,
-    company_name,
-    business_address,
-    email,
-    phone,
-    image_url,
-    alternative_phone,
-    gst,
-    location,
-    pin_code,
-    pan_no,
-    created_by,
-  },
-  type,
-}: ConsultantData): SagaIterator {
-  try {
-    const response = yield call(updateConsultantApi, id, {
-      company_name,
-      business_address,
-      email,
-      phone,
-      image_url,
-      alternative_phone,
-      gst,
-      location,
-      pin_code,
-      pan_no,
-      created_by,
-    });
-    const consultant_data = response.data;
-    // NOTE - You can change this according to response format from your api
-    api.setLoggedInUser(consultant_data);
-    setAuthorization(consultant_data["token"]);
-    yield put(
-      authApiResponseSuccess(
-        ConsultantActionTypes.EDIT_CONSULTANT,
-        consultant_data
-      )
-    );
-  } catch (error: any) {
-    yield put(
-      authApiResponseError(ConsultantActionTypes.EDIT_CONSULTANT, error)
-    );
-    api.setLoggedInUser(null);
-    setAuthorization(null);
-  }
-}
-
 function* createConsultant({
-  payload: {
-    company_name,
-    business_address,
-    email,
-    phone,
-    image_url,
-    alternative_phone,
-    gst,
-    location,
-    pin_code,
-    pan_no,
-    created_by,
-  },
+  payload: { company_name, business_address, email, phone, image_url, alternative_phone, gst, location, pin_code, pan_no, created_by },
   type,
 }: ConsultantData): SagaIterator {
   try {
@@ -127,31 +61,73 @@ function* createConsultant({
     // NOTE - You can change this according to response format from your api
     api.setLoggedInUser(consultant_data);
     setAuthorization(consultant_data["token"]);
-    yield put(
-      authApiResponseSuccess(
-        ConsultantActionTypes.CREATE_CONSULTANT,
-        consultant_data
-      )
-    );
+    yield put(consultantApiResponseSuccess(ConsultantActionTypes.CREATE_CONSULTANT, consultant_data));
   } catch (error: any) {
-    yield put(
-      authApiResponseError(ConsultantActionTypes.CREATE_CONSULTANT, error)
-    );
+    yield put(consultantApiResponseError(ConsultantActionTypes.CREATE_CONSULTANT, error));
     api.setLoggedInUser(null);
     setAuthorization(null);
   }
 }
 
-export function* watchEditConsultant() {
-  yield takeEvery(ConsultantActionTypes.EDIT_CONSULTANT, updateConsultant);
+function* getConsultant(): SagaIterator {
+  try {
+    const response = yield call(getConsultantsApi);
+    const data = response.data.data;
+
+    console.log("data", data);
+
+    // NOTE - You can change this according to response format from your api
+    yield put(consultantApiResponseSuccess(ConsultantActionTypes.GET_CONSULTANT, { data }));
+  } catch (error: any) {
+    yield put(consultantApiResponseError(ConsultantActionTypes.GET_CONSULTANT, error));
+    throw error;
+  }
+}
+
+function* updateConsultant({
+  payload: { id, company_name, business_address, email, phone, image_url, alternative_phone, gst, location, pin_code, pan_no, created_by },
+  type,
+}: ConsultantData): SagaIterator {
+  try {
+    const response = yield call(updateConsultantApi, id, {
+      company_name,
+      business_address,
+      email,
+      phone,
+      image_url,
+      alternative_phone,
+      gst,
+      location,
+      pin_code,
+      pan_no,
+      created_by,
+    });
+    const consultant_data = response.data;
+    // NOTE - You can change this according to response format from your api
+    api.setLoggedInUser(consultant_data);
+    setAuthorization(consultant_data["token"]);
+    yield put(consultantApiResponseSuccess(ConsultantActionTypes.EDIT_CONSULTANT, consultant_data));
+  } catch (error: any) {
+    yield put(consultantApiResponseError(ConsultantActionTypes.EDIT_CONSULTANT, error));
+    api.setLoggedInUser(null);
+    setAuthorization(null);
+  }
+}
+
+export function* watchGetAllConsultant() {
+  yield takeEvery(ConsultantActionTypes.GET_CONSULTANT, getConsultant);
 }
 
 export function* watchCreateConsultant() {
   yield takeEvery(ConsultantActionTypes.CREATE_CONSULTANT, createConsultant);
 }
 
+export function* watchEditConsultant() {
+  yield takeEvery(ConsultantActionTypes.EDIT_CONSULTANT, updateConsultant);
+}
+
 function* consultantSaga() {
-  yield all([fork(watchEditConsultant), fork(watchCreateConsultant)]);
+  yield all([fork(watchGetAllConsultant), fork(watchEditConsultant), fork(watchCreateConsultant), fork(watchGetAllConsultant)]);
 }
 
 export default consultantSaga;

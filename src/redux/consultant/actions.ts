@@ -28,59 +28,43 @@ interface ConsultantData {
 }
 
 // Common success
-export const authApiResponseSuccess = (
-  actionType: string,
-  data: ConsultantData | {}
-): ConsultantActionType => ({
+export const consultantApiResponseSuccess = (actionType: string, data: ConsultantData | {}): ConsultantActionType => ({
   type: ConsultantActionTypes.API_RESPONSE_SUCCESS,
   payload: { actionType, data },
 });
 
 // Common error
-export const authApiResponseError = (
-  actionType: string,
-  error: string
-): ConsultantActionType => ({
+export const consultantApiResponseError = (actionType: string, error: string): ConsultantActionType => ({
   type: ConsultantActionTypes.API_RESPONSE_ERROR,
   payload: { actionType, error },
 });
 
 //create consultant;
 
-export const createConsultant = (
-  data: ConsultantData | {}
-): ConsultantActionType => ({
+export const createConsultant = (data: ConsultantData | {}): ConsultantActionType => ({
   type: ConsultantActionTypes.CREATE_CONSULTANT,
   payload: { data },
 });
 
 //edit consultant
 
-export const editConsultant = (
-  data: ConsultantData | {}
-): ConsultantActionType => ({
+export const editConsultant = (data: ConsultantData | {}): ConsultantActionType => ({
   type: ConsultantActionTypes.EDIT_CONSULTANT,
   payload: { data },
 });
 
 //delete consultant
 
-export const deleteConsultant = (
-  data: ConsultantData | {}
-): ConsultantActionType => ({
+export const deleteConsultant = (data: ConsultantData | {}): ConsultantActionType => ({
   type: ConsultantActionTypes.DELETE_CONSULTANT,
   payload: { data },
 });
 
-export const getConsultants = (
-  data: ConsultantData | {}
-): ConsultantActionType => ({
+export const getConsultants = (): ConsultantActionType => ({
   type: ConsultantActionTypes.GET_CONSULTANT,
-  payload: { data },
+  payload: {},
 });
-export const getConsultantsById = (
-  data: ConsultantData | {}
-): ConsultantActionType => ({
+export const getConsultantsById = (data: ConsultantData | {}): ConsultantActionType => ({
   type: ConsultantActionTypes.GET_CONSULTANT_BY_ID,
   payload: { data },
 });

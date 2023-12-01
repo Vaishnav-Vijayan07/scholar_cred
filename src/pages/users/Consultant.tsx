@@ -9,16 +9,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 // components
 import PageTitle from "../../components/PageTitle";
-import { ConsultantData, MyInitialState, TableRecords, initialState, initialValidationState, sizePerPageList } from "./data";
+import { MyInitialState, TableRecords, initialState, initialValidationState, sizePerPageList } from "./data";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getConsultants } from "../../redux/actions";
+import { RootState } from "../../redux/store";
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading } = props;
+  const { swal, loading, state } = props;
   const [modal, setModal] = useState<boolean>(false);
   const [className, setClassName] = useState<string>("");
 
   //Table data
-  const records = ConsultantData;
+  const records = state;
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
   const [formData, setFormData] = useState<MyInitialState>(initialState);
@@ -240,7 +243,7 @@ const BasicInputElements = withSwal((props: any) => {
                     <Col md={6}>
                       <Form.Group className="mb-3" controlId="company_name">
                         <Form.Label>Company Name</Form.Label>
-                        <Form.Control type="text" name="company_name" placeholder="Enter Company name" value={formData.company_name} onChange={handleInputChange} />
+                        <Form.Control type="text" name="company_name" placeholder="Enter company name" value={formData.company_name} onChange={handleInputChange} />
                         {validationErrors.company_name && <Form.Text className="text-danger">{validationErrors.company_name}</Form.Text>}
                       </Form.Group>
                     </Col>
@@ -268,7 +271,7 @@ const BasicInputElements = withSwal((props: any) => {
                         <Form.Control
                           type="text"
                           name="alternative_phone"
-                          placeholder="Enter Alternative phone number"
+                          placeholder="Enter alternative phone number"
                           value={formData.alternative_phone}
                           onChange={handleInputChange}
                         />
@@ -284,7 +287,7 @@ const BasicInputElements = withSwal((props: any) => {
                       <Form.Control
                         as="textarea"
                         rows={5}
-                        placeholder="Enter adress"
+                        placeholder="Enter address"
                         className="py-2"
                         name="business_address"
                         value={formData.business_address}
@@ -307,7 +310,7 @@ const BasicInputElements = withSwal((props: any) => {
                     <Col md={6}>
                       <Form.Group className="mb-3" controlId="location">
                         <Form.Label>Location</Form.Label>
-                        <Form.Control type="text" name="location" placeholder="Enter Location" value={formData.location} onChange={handleInputChange} />
+                        <Form.Control type="text" name="location" placeholder="Enter location" value={formData.location} onChange={handleInputChange} />
                         {validationErrors.location && <Form.Text className="text-danger">{validationErrors.location}</Form.Text>}
                       </Form.Group>
                     </Col>
@@ -316,14 +319,14 @@ const BasicInputElements = withSwal((props: any) => {
                     <Col md={6}>
                       <Form.Group className="mb-3" controlId="pin_code">
                         <Form.Label>Pin code</Form.Label>
-                        <Form.Control type="number" name="pin_code" placeholder="Enter pin_code" value={formData.pin_code} onChange={handleInputChange} />
+                        <Form.Control type="number" name="pin_code" placeholder="Enter pin code" value={formData.pin_code} onChange={handleInputChange} />
                         {validationErrors.pin_code && <Form.Text className="text-danger">{validationErrors.pin_code}</Form.Text>}
                       </Form.Group>
                     </Col>
                     <Col md={6}>
                       <Form.Group className="mb-3" controlId="pan_no">
                         <Form.Label>PAN Number</Form.Label>
-                        <Form.Control type="number" name="pan_no" placeholder="Enter pan_no" value={formData.pan_no} onChange={handleInputChange} />
+                        <Form.Control type="number" name="pan_no" placeholder="Enter PAN number" value={formData.pan_no} onChange={handleInputChange} />
                         {validationErrors.pan_no && <Form.Text className="text-danger">{validationErrors.pan_no}</Form.Text>}
                       </Form.Group>
                     </Col>
@@ -365,7 +368,17 @@ const BasicInputElements = withSwal((props: any) => {
                 <i className="mdi mdi-plus-circle"></i> Add Consultant
               </Button>
               <h4 className="header-title mb-4">Manage Consultant</h4>
-              <Table columns={columns} data={records ? records : []} pageSize={5} sizePerPageList={sizePerPageList} isSortable={true} pagination={true} isSearchable={true} />
+              <Table
+                columns={columns}
+                data={records ? records : []}
+                pageSize={5}
+                sizePerPageList={sizePerPageList}
+                isSortable={true}
+                pagination={true}
+                isSearchable={true}
+                theadClass="table-light mt-2"
+                searchBoxClass="mt-2 mb-3"
+              />
             </Card.Body>
           </Card>
         </Col>
@@ -375,6 +388,17 @@ const BasicInputElements = withSwal((props: any) => {
 });
 
 const Consultants = () => {
+  const dispatch = useDispatch();
+
+  const { state, loading } = useSelector((state: RootState) => ({
+    state: state?.ConsultantReducer.consultant.data,
+    loading: state?.ConsultantReducer.loading,
+  }));
+
+  useEffect(() => {
+    dispatch(getConsultants());
+  }, []);
+
   return (
     <React.Fragment>
       <PageTitle
@@ -390,7 +414,7 @@ const Consultants = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements />
+          <BasicInputElements state={state} loading={loading} />
         </Col>
       </Row>
     </React.Fragment>

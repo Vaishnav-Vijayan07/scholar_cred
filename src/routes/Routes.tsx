@@ -15,10 +15,7 @@ import DetachedLayout from "../layouts/Detached";
 import HorizontalLayout from "../layouts/Horizontal/";
 import TwoColumnLayout from "../layouts/TwoColumn/";
 
-import {
-  authProtectedFlattenRoutes,
-  publicProtectedFlattenRoutes,
-} from "./index";
+import { authProtectedFlattenRoutes, publicProtectedFlattenRoutes } from "./index";
 import { APICore } from "../helpers/api/apiCore";
 
 interface IRoutesProps {}
@@ -27,7 +24,6 @@ const AllRoutes = (props: IRoutesProps) => {
   const { layout } = useSelector((state: RootState) => ({
     layout: state.Layout,
   }));
-  
 
   const getLayout = () => {
     let layoutCls = TwoColumnLayout;
@@ -51,9 +47,6 @@ const AllRoutes = (props: IRoutesProps) => {
 
   let Layout = getLayout();
   const api = new APICore();
-
-  console.log("layout", Layout);
-  
 
   return (
     <React.Fragment>
