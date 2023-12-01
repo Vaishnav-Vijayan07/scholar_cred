@@ -4,8 +4,6 @@ import { APICore } from "../../helpers/api/apiCore";
 // constants
 import { ConsultantActionTypes } from "./constants";
 
-const api = new APICore();
-
 const INIT_STATE = {
   consultant: [],
   loading: false,
@@ -47,18 +45,13 @@ interface State {
   value?: boolean;
 }
 
-const ConsultantReducer = (
-  state: State = INIT_STATE,
-  action: ConsultantActionType
-): any => {
+const ConsultantReducer = (state: State = INIT_STATE, action: ConsultantActionType): any => {
   switch (action.type) {
     case ConsultantActionTypes.API_RESPONSE_SUCCESS:
       switch (action.payload.actionType) {
         case ConsultantActionTypes.CREATE_CONSULTANT: {
           return {
             ...state,
-            user: action.payload.data,
-            userLoggedIn: true,
             loading: false,
           };
         }
@@ -66,33 +59,26 @@ const ConsultantReducer = (
         case ConsultantActionTypes.EDIT_CONSULTANT: {
           return {
             ...state,
-            user: null,
             loading: false,
-            userLogout: true,
           };
         }
         case ConsultantActionTypes.GET_CONSULTANT_BY_ID: {
           return {
             ...state,
-            user: null,
             loading: false,
-            userLogout: true,
-          };
-        }
-        case ConsultantActionTypes.DELETE_CONSULTANT: {
-          return {
-            ...state,
-            user: null,
-            loading: false,
-            userLogout: true,
           };
         }
         case ConsultantActionTypes.GET_CONSULTANT: {
           return {
             ...state,
-            user: null,
             loading: false,
-            userLogout: true,
+            consultant: action.payload.data,
+          };
+        }
+        case ConsultantActionTypes.DELETE_CONSULTANT: {
+          return {
+            ...state,
+            loading: false,
           };
         }
 
@@ -106,7 +92,6 @@ const ConsultantReducer = (
           return {
             ...state,
             error: action.payload.error,
-            userLoggedIn: false,
             loading: false,
           };
         }
@@ -115,7 +100,6 @@ const ConsultantReducer = (
           return {
             ...state,
             error: action.payload.error,
-            userLoggedIn: false,
             loading: false,
           };
         }
@@ -124,7 +108,6 @@ const ConsultantReducer = (
           return {
             ...state,
             error: action.payload.error,
-            userLoggedIn: false,
             loading: false,
           };
         }
@@ -133,7 +116,6 @@ const ConsultantReducer = (
           return {
             ...state,
             error: action.payload.error,
-            userLoggedIn: false,
             loading: false,
           };
         }
@@ -143,19 +125,19 @@ const ConsultantReducer = (
       }
 
     case ConsultantActionTypes.CREATE_CONSULTANT:
-      return { ...state, loading: true, userLoggedIn: false };
+      return { ...state, loading: true };
 
     case ConsultantActionTypes.EDIT_CONSULTANT:
-      return { ...state, loading: true, userLoggedIn: false };
+      return { ...state, loading: true };
 
     case ConsultantActionTypes.GET_CONSULTANT:
-      return { ...state, loading: true, userLoggedIn: false };
+      return { ...state, loading: true };
 
     case ConsultantActionTypes.GET_CONSULTANT_BY_ID:
-      return { ...state, loading: true, userLoggedIn: false };
+      return { ...state, loading: true };
 
     case ConsultantActionTypes.DELETE_CONSULTANT:
-      return { ...state, loading: true, userLoggedIn: false };
+      return { ...state, loading: true };
 
     default:
       return { ...state };
