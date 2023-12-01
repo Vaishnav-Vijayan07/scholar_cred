@@ -22,7 +22,7 @@ axios.interceptors.response.use(
     } else if (error && error.response && error.response.status === 403) {
       window.location.href = "/access-denied";
     } else {
-      switch (error.response.status) {
+      switch (error?.response?.status) {
         case 401:
           message = "Invalid credentials";
           break;
@@ -33,10 +33,7 @@ axios.interceptors.response.use(
           message = "Sorry! the data you are looking for could not be found";
           break;
         default: {
-          message =
-            error.response && error.response.data
-              ? error.response.data["message"]
-              : error.message || error;
+          message = error.response && error.response.data ? error.response.data["message"] : error.message || error;
         }
       }
       return Promise.reject(message);
@@ -193,8 +190,7 @@ class APICore {
   };
 
   setLoggedInUser = (session: any) => {
-    if (session)
-      sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
+    if (session) sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
     else {
       sessionStorage.removeItem(AUTH_SESSION_KEY);
     }
