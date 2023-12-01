@@ -11,6 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import PageTitle from "../../components/PageTitle";
 import { ConsultantData, MyInitialState, TableRecords, initialState, initialValidationState, sizePerPageList } from "./data";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading } = props;
@@ -365,7 +366,17 @@ const BasicInputElements = withSwal((props: any) => {
                 <i className="mdi mdi-plus-circle"></i> Add Consultant
               </Button>
               <h4 className="header-title mb-4">Manage Consultant</h4>
-              <Table columns={columns} data={records ? records : []} pageSize={5} sizePerPageList={sizePerPageList} isSortable={true} pagination={true} isSearchable={true} />
+              <Table
+                columns={columns}
+                data={records ? records : []}
+                pageSize={5}
+                sizePerPageList={sizePerPageList}
+                isSortable={true}
+                pagination={true}
+                isSearchable={true}
+                theadClass="table-light mt-2"
+                searchBoxClass="mt-2 mb-3"
+              />
             </Card.Body>
           </Card>
         </Col>
@@ -375,6 +386,12 @@ const BasicInputElements = withSwal((props: any) => {
 });
 
 const Consultants = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    // dispatch()
+  }, [])
+  
   return (
     <React.Fragment>
       <PageTitle

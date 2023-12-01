@@ -5,13 +5,10 @@ import { SagaIterator } from "@redux-saga/core";
 import { APICore, setAuthorization } from "../../helpers/api/apiCore";
 
 // helpers
-import {
-  createConsultant as createConsultantApi,
-  updateConsultant as updateConsultantApi,
-} from "../../helpers/";
+import { createConsultant as createConsultantApi, updateConsultant as updateConsultantApi } from "../../helpers/";
 
 // actions
-import { authApiResponseSuccess, authApiResponseError } from "./actions";
+import { consultantApiResponseSuccess, consultantApiResponseError } from "./actions";
 
 // constants
 import { ConsultantActionTypes } from "./constants";
@@ -36,25 +33,9 @@ interface ConsultantData {
 
 const api = new APICore();
 
-/**
- * Login the user
- * @param {*} payload - username and password
- */
+
 function* updateConsultant({
-  payload: {
-    id,
-    company_name,
-    business_address,
-    email,
-    phone,
-    image_url,
-    alternative_phone,
-    gst,
-    location,
-    pin_code,
-    pan_no,
-    created_by,
-  },
+  payload: { id, company_name, business_address, email, phone, image_url, alternative_phone, gst, location, pin_code, pan_no, created_by },
   type,
 }: ConsultantData): SagaIterator {
   try {
@@ -75,35 +56,16 @@ function* updateConsultant({
     // NOTE - You can change this according to response format from your api
     api.setLoggedInUser(consultant_data);
     setAuthorization(consultant_data["token"]);
-    yield put(
-      authApiResponseSuccess(
-        ConsultantActionTypes.EDIT_CONSULTANT,
-        consultant_data
-      )
-    );
+    yield put(consultantApiResponseSuccess(ConsultantActionTypes.EDIT_CONSULTANT, consultant_data));
   } catch (error: any) {
-    yield put(
-      authApiResponseError(ConsultantActionTypes.EDIT_CONSULTANT, error)
-    );
+    yield put(consultantApiResponseError(ConsultantActionTypes.EDIT_CONSULTANT, error));
     api.setLoggedInUser(null);
     setAuthorization(null);
   }
 }
 
 function* createConsultant({
-  payload: {
-    company_name,
-    business_address,
-    email,
-    phone,
-    image_url,
-    alternative_phone,
-    gst,
-    location,
-    pin_code,
-    pan_no,
-    created_by,
-  },
+  payload: { company_name, business_address, email, phone, image_url, alternative_phone, gst, location, pin_code, pan_no, created_by },
   type,
 }: ConsultantData): SagaIterator {
   try {
@@ -124,23 +86,16 @@ function* createConsultant({
     // NOTE - You can change this according to response format from your api
     api.setLoggedInUser(consultant_data);
     setAuthorization(consultant_data["token"]);
-    yield put(
-      authApiResponseSuccess(
-        ConsultantActionTypes.CREATE_CONSULTANT,
-        consultant_data
-      )
-    );
+    yield put(consultantApiResponseSuccess(ConsultantActionTypes.CREATE_CONSULTANT, consultant_data));
   } catch (error: any) {
-    yield put(
-      authApiResponseError(ConsultantActionTypes.CREATE_CONSULTANT, error)
-    );
+    yield put(consultantApiResponseError(ConsultantActionTypes.CREATE_CONSULTANT, error));
     api.setLoggedInUser(null);
     setAuthorization(null);
   }
 }
 
 export function* watchEditConsultant() {
-  yield takeEvery(ConsultantActionTypes.CREATE_CONSULTANT, createConsultant);
+  yield takeEvery(ConsultantActionTypes.EDIT_CONSULTANT, updateConsultant);
 }
 
 export function* watchCreateConsultant() {

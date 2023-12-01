@@ -29,7 +29,7 @@ interface ConsultantData {
 
 
 // Common success
-export const authApiResponseSuccess = (
+export const consultantApiResponseSuccess = (
   actionType: string,
   data: ConsultantData | {}
 ): ConsultantActionType => ({
@@ -38,7 +38,7 @@ export const authApiResponseSuccess = (
 });
 
 // Common error
-export const authApiResponseError = (
+export const consultantApiResponseError = (
   actionType: string,
   error: string
 ): ConsultantActionType => ({
