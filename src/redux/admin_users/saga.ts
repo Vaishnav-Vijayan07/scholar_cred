@@ -6,24 +6,30 @@ import { APICore, setAuthorization } from "../../helpers/api/apiCore";
 
 // helpers
 import {
-  login as loginApi,
-  logout as logoutApi,
-  signup as signupApi,
-  forgotPassword as forgotPasswordApi,
+  createAdminUsers as createAdminUsersApi,
+  editAdminUsers as editAdminUsersApi,
+  getAdminUsers as getAdminUsersApi,
+  getAdminUsersById as getAdminUsersByIdApi,
+  deleteAdminUsers as deleteAdminUsersApi,
 } from "../../helpers/";
 
 // actions
 import { authApiResponseSuccess, authApiResponseError } from "./actions";
 
 // constants
-import { AuthActionTypes } from "./constants";
+import { AdminActionTypes } from "./constants";
+import { get } from "sortablejs";
 
-interface UserData {
+interface AdminUserData {
   payload: {
+    id: number;
     username: string;
-    password: string;
-    fullname: string;
+    password_hash: string;
     email: string;
+    full_name: string;
+    user_type_id: number;
+    created_by: number;
+    consultant_id: number;
   };
   type: string;
 }
@@ -34,87 +40,137 @@ const api = new APICore();
  * Login the user
  * @param {*} payload - username and password
  */
-function* login({
-  payload: { username, password },
+function* createAdminUsers({
+  payload: {
+    username,
+    password_hash,
+    email,
+    full_name,
+    user_type_id,
+    created_by,
+    consultant_id,
+  },
   type,
-}: UserData): SagaIterator {
+}: AdminUserData): SagaIterator {
   try {
-    const response = yield call(loginApi, { username, password });
-    const user = response.data;
+    const response = yield call(createAdminUsersApi, {
+      username,
+      password_hash,
+      email,
+      full_name,
+      user_type_id,
+      created_by,
+      consultant_id,
+    });
+    const adminUserData = response.data;
     // NOTE - You can change this according to response format from your api
-    api.setLoggedInUser(user);
-    setAuthorization(user["token"]);
-    yield put(authApiResponseSuccess(AuthActionTypes.LOGIN_USER, user));
+
+    yield put(
+      authApiResponseSuccess(AdminActionTypes.CREATE_ADMIN_USER, adminUserData)
+    );
   } catch (error: any) {
-    yield put(authApiResponseError(AuthActionTypes.LOGIN_USER, error));
-    api.setLoggedInUser(null);
-    setAuthorization(null);
+    yield put(authApiResponseError(AdminActionTypes.CREATE_ADMIN_USER, error));
+  }
+}
+
+function* editAdminUsers({
+  payload: { id, full_name },
+  type,
+}: AdminUserData): SagaIterator {
+  try {
+    const response = yield call(editAdminUsersApi, id, {
+      full_name,
+    });
+    const adminUserData = response.data;
+    // NOTE - You can change this according to response format from your api
+
+    yield put(
+      authApiResponseSuccess(AdminActionTypes.EDIT_ADMIN_USER, adminUserData)
+    );
+  } catch (error: any) {
+    yield put(authApiResponseError(AdminActionTypes.EDIT_ADMIN_USER, error));
+  }
+}
+
+function* getAdminUsers({
+  payload: { id },
+  type,
+}: AdminUserData): SagaIterator {
+  try {
+    const response = yield call(getAdminUsersApi, {});
+    const adminUserData = response.data;
+    // NOTE - You can change this according to response format from your api
+
+    yield put(
+      authApiResponseSuccess(AdminActionTypes.GET_ADMIN_USERS, adminUserData)
+    );
+  } catch (error: any) {
+    yield put(authApiResponseError(AdminActionTypes.GET_ADMIN_USERS, error));
+  }
+}
+
+function* getAdminUsersById({
+  payload: { id },
+  type,
+}: AdminUserData): SagaIterator {
+  try {
+    const response = yield call(getAdminUsersByIdApi, id, {});
+    const adminUserData = response.data;
+    // NOTE - You can change this according to response format from your api
+
+    yield put(
+      authApiResponseSuccess(AdminActionTypes.GET_ADMIN_USERS, adminUserData)
+    );
+  } catch (error: any) {
+    yield put(authApiResponseError(AdminActionTypes.GET_ADMIN_USERS, error));
+  }
+}
+
+function* deleteAdminUsers({
+  payload: { id },
+  type,
+}: AdminUserData): SagaIterator {
+  try {
+    const response = yield call(deleteAdminUsersApi, id, {});
+    const adminUserData = response.data;
+    // NOTE - You can change this according to response format from your api
+
+    yield put(
+      authApiResponseSuccess(AdminActionTypes.DELETE_ADMIN_USERS, adminUserData)
+    );
+  } catch (error: any) {
+    yield put(authApiResponseError(AdminActionTypes.DELETE_ADMIN_USERS, error));
   }
 }
 
 /**
  * Logout the user
  */
-function* logout(): SagaIterator {
-  try {
-    yield call(logoutApi);
-    api.setLoggedInUser(null);
-    setAuthorization(null);
-    yield put(authApiResponseSuccess(AuthActionTypes.LOGOUT_USER, {}));
-  } catch (error: any) {
-    yield put(authApiResponseError(AuthActionTypes.LOGOUT_USER, error));
-  }
+
+export function* createAdminUser() {
+  yield takeEvery(AdminActionTypes.CREATE_ADMIN_USER, createAdminUsers);
+}
+export function* editAdminUser() {
+  yield takeEvery(AdminActionTypes.EDIT_ADMIN_USER, editAdminUsers);
+}
+export function* getAdminUser() {
+  yield takeEvery(AdminActionTypes.GET_ADMIN_USERS, getAdminUsers);
+}
+export function* getAdminUserbyId() {
+  yield takeEvery(AdminActionTypes.GET_ADMIN_USERS, getAdminUsersById);
 }
 
-function* signup({
-  payload: { fullname, email, password },
-}: UserData): SagaIterator {
-  try {
-    const response = yield call(signupApi, { fullname, email, password });
-    const user = response.data;
-    // api.setLoggedInUser(user);
-    // setAuthorization(user['token']);
-    yield put(authApiResponseSuccess(AuthActionTypes.SIGNUP_USER, user));
-  } catch (error: any) {
-    yield put(authApiResponseError(AuthActionTypes.SIGNUP_USER, error));
-    api.setLoggedInUser(null);
-    setAuthorization(null);
-  }
+export function* deleteAdminUser() {
+  yield takeEvery(AdminActionTypes.DELETE_ADMIN_USERS, deleteAdminUsers);
 }
-
-function* forgotPassword({ payload: { username } }: UserData): SagaIterator {
-  try {
-    const response = yield call(forgotPasswordApi, { username });
-    yield put(
-      authApiResponseSuccess(AuthActionTypes.FORGOT_PASSWORD, response.data)
-    );
-  } catch (error: any) {
-    yield put(authApiResponseError(AuthActionTypes.FORGOT_PASSWORD, error));
-  }
-}
-export function* watchLoginUser() {
-  yield takeEvery(AuthActionTypes.LOGIN_USER, login);
-}
-
-export function* watchLogout() {
-  yield takeEvery(AuthActionTypes.LOGOUT_USER, logout);
-}
-
-export function* watchSignup(): any {
-  yield takeEvery(AuthActionTypes.SIGNUP_USER, signup);
-}
-
-export function* watchForgotPassword(): any {
-  yield takeEvery(AuthActionTypes.FORGOT_PASSWORD, forgotPassword);
-}
-
-function* authSaga() {
+function* adminUsersSaga() {
   yield all([
-    fork(watchLoginUser),
-    fork(watchLogout),
-    fork(watchSignup),
-    fork(watchForgotPassword),
+    fork(createAdminUser),
+    fork(editAdminUser),
+    fork(deleteAdminUser),
+    fork(getAdminUser),
+    fork(getAdminUserbyId),
   ]);
 }
 
-export default authSaga;
+export default adminUsersSaga;

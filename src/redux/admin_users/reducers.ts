@@ -6,46 +6,49 @@ import { AdminActionTypes } from "./constants";
 
 const api = new APICore();
 
-const INIT_STATE = {
-  user: api.getLoggedInUser(),
-  loading: false,
-};
+const INIT_STATE = {};
 
-interface UserData {
+interface AdminUserData {
   id: number;
   username: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  token: string;
+  password_hash: string;
+  email: string;
+  full_name: string;
+  user_type_id: number;
+  created_by: number;
+  consultant_id: number;
 }
 
 interface AuthActionType {
   type:
     | AdminActionTypes.API_RESPONSE_SUCCESS
     | AdminActionTypes.API_RESPONSE_ERROR
-    | AdminActionTypes.LOGIN_USER
-    | AdminActionTypes.LOGOUT_USER
-    | AdminActionTypes.RESET;
+    | AdminActionTypes.CREATE_ADMIN_USER
+    | AdminActionTypes.EDIT_ADMIN_USER
+    | AdminActionTypes.GET_ADMIN_USERS
+    | AdminActionTypes.GET_ADMIN_USERS_BY_ID
+    | AdminActionTypes.DELETE_ADMIN_USERS;
   payload: {
     actionType?: string;
-    data?: UserData | {};
+    data?: AdminUserData | {};
     error?: string;
   };
 }
 
 interface State {
-  user?: UserData | {};
+  user?: AdminUserData | {};
   loading?: boolean;
   value?: boolean;
 }
 
-const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
+const AdminStates = (
+  state: State = INIT_STATE,
+  action: AuthActionType
+): any => {
   switch (action.type) {
     case AdminActionTypes.API_RESPONSE_SUCCESS:
       switch (action.payload.actionType) {
-        case AdminActionTypes.LOGIN_USER: {
+        case AdminActionTypes.CREATE_ADMIN_USER: {
           return {
             ...state,
             user: action.payload.data,
@@ -53,14 +56,14 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             loading: false,
           };
         }
-        case AdminActionTypes.SIGNUP_USER: {
+        case AdminActionTypes.GET_ADMIN_USERS: {
           return {
             ...state,
             loading: false,
             userSignUp: true,
           };
         }
-        case AdminActionTypes.LOGOUT_USER: {
+        case AdminActionTypes.EDIT_ADMIN_USER: {
           return {
             ...state,
             user: null,
@@ -68,7 +71,15 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             userLogout: true,
           };
         }
-        case AdminActionTypes.FORGOT_PASSWORD: {
+        case AdminActionTypes.GET_ADMIN_USERS_BY_ID: {
+          return {
+            ...state,
+            resetPasswordSuccess: action.payload.data,
+            loading: false,
+            passwordReset: true,
+          };
+        }
+        case AdminActionTypes.DELETE_ADMIN_USERS: {
           return {
             ...state,
             resetPasswordSuccess: action.payload.data,
@@ -82,7 +93,7 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
 
     case AdminActionTypes.API_RESPONSE_ERROR:
       switch (action.payload.actionType) {
-        case AdminActionTypes.LOGIN_USER: {
+        case AdminActionTypes.CREATE_ADMIN_USER: {
           return {
             ...state,
             error: action.payload.error,
@@ -90,7 +101,7 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             loading: false,
           };
         }
-        case AdminActionTypes.SIGNUP_USER: {
+        case AdminActionTypes.EDIT_ADMIN_USER: {
           return {
             ...state,
             registerError: action.payload.error,
@@ -98,7 +109,23 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             loading: false,
           };
         }
-        case AdminActionTypes.FORGOT_PASSWORD: {
+        case AdminActionTypes.GET_ADMIN_USERS: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            passwordReset: false,
+          };
+        }
+        case AdminActionTypes.GET_ADMIN_USERS_BY_ID: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            passwordReset: false,
+          };
+        }
+        case AdminActionTypes.DELETE_ADMIN_USERS: {
           return {
             ...state,
             error: action.payload.error,
@@ -110,24 +137,20 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
           return { ...state };
       }
 
-    case AdminActionTypes.LOGIN_USER:
+    case AdminActionTypes.CREATE_ADMIN_USER:
       return { ...state, loading: true, userLoggedIn: false };
-    case AdminActionTypes.LOGOUT_USER:
+    case AdminActionTypes.EDIT_ADMIN_USER:
       return { ...state, loading: true, userLogout: false };
-    case AdminActionTypes.RESET:
-      return {
-        ...state,
-        loading: false,
-        error: false,
-        userSignUp: false,
-        userLoggedIn: false,
-        passwordReset: false,
-        passwordChange: false,
-        resetPasswordSuccess: null,
-      };
+    case AdminActionTypes.GET_ADMIN_USERS:
+      return { ...state, loading: true, userLogout: false };
+
+    case AdminActionTypes.GET_ADMIN_USERS_BY_ID:
+      return { ...state, loading: true, userLogout: false };
+    case AdminActionTypes.DELETE_ADMIN_USERS:
+      return { ...state, loading: true, userLogout: false };
     default:
       return { ...state };
   }
 };
 
-export default Auth;
+export default AdminStates;

@@ -26,30 +26,15 @@ function editAdminUsers(
   const baseUrl = "/edit_admin_user/";
   return api.create(`${baseUrl}/${id}`, params);
 }
-function getAdminUsers(
-  id: number,
-  params: {
-    full_name: string;
-  }
-) {
+function getAdminUsers(params: {}) {
+  const baseUrl = "/edit_admin_user/";
+  return api.create(`${baseUrl}}`, params);
+}
+function getAdminUsersById(id: number, params: {}) {
   const baseUrl = "/edit_admin_user/";
   return api.create(`${baseUrl}/${id}`, params);
 }
-function getAdminUsersById(
-  id: number,
-  params: {
-    full_name: string;
-  }
-) {
-  const baseUrl = "/edit_admin_user/";
-  return api.create(`${baseUrl}/${id}`, params);
-}
-function deleteAdminUsers(
-  id: number,
-  params: {
-    full_name: string;
-  }
-) {
+function deleteAdminUsers(id: number, params: {}) {
   const baseUrl = "/edit_admin_user/";
   return api.create(`${baseUrl}/${id}`, params);
 }
