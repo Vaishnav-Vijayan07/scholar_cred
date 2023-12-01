@@ -87,54 +87,6 @@ export const StaffInitialValidationState = {
   last_name: "",
   email: "",
   phone: "",
-  image: "",
+  image: "https://picsum.photos/id/0/367/267",
   employee_id: "",
 };
-
-export const StaffData = [
-  {
-    id: "1",
-    first_name: "John",
-    last_name: "Doe",
-    email: "john@gmail.com",
-    phone: "3456789456",
-    image: "",
-    employee_id: "123",
-  },
-  {
-    id: "2",
-    first_name: "John",
-    last_name: "Doe",
-    email: "john@gmail.com",
-    phone: "3456789456",
-    image: "",
-    employee_id: "123",
-  },
-];
-
-export const ConsultantData = [
-  {
-    id: "123456",
-    company_name: "ABC Corporation",
-    business_address: "123 Main Street",
-    email: "abc@example.com",
-    phone: "1234567890",
-    alternative_phone: "9876543210",
-    gst: "GST123456789",
-    location: "Cityville",
-    pin_code: "456789",
-    pan_no: "ABCDE1234F",
-  },
-  {
-    id: "987654",
-    company_name: "XYZ Ltd",
-    business_address: "456 Oak Avenue",
-    email: "xyz@example.com",
-    phone: "9876543210",
-    alternative_phone: "1234567890",
-    gst: "GST987654321",
-    location: "Townsville",
-    pin_code: "567890",
-    pan_no: "ZYXWV5432P",
-  },
-];

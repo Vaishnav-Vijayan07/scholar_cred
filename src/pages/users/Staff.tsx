@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -9,14 +9,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 // components
 import PageTitle from "../../components/PageTitle";
-import { StaffData, StaffInitialState, StaffInitialValidationState, StaffTypes, initialState, sizePerPageList } from "./data";
+import { StaffInitialState, StaffInitialValidationState, StaffTypes, initialState, sizePerPageList } from "./data";
 import { InitialValidationState } from "./Profile/data";
+import { useDispatch, useSelector } from "react-redux";
+import { createadminStaff, deleteAdminStaff, editAdminStaff, getAdminStaff } from "../../redux/adminStaffs/actions";
+import { RootState } from "../../redux/store";
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading } = props;
+  const { swal, loading, state, error } = props;
+  const dispatch = useDispatch();
 
   //Table data
-  const records = StaffData;
+  const records = state;
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
   const [formData, setFormData] = useState<StaffTypes>(StaffInitialState);
@@ -71,6 +75,7 @@ const BasicInputElements = withSwal((props: any) => {
       .then((result: any) => {
         if (result.isConfirmed) {
           // swal.fire("Deleted!", "Your item has been deleted.", "success");
+          dispatch(deleteAdminStaff(id));
         }
       });
   };
@@ -93,14 +98,11 @@ const BasicInputElements = withSwal((props: any) => {
       // Validation passed, handle form submission
       if (isUpdate) {
         // Handle update logic
+        dispatch(editAdminStaff(formData.id, formData.first_name, formData.last_name, formData.email, formData.phone, formData.image, formData.employee_id, 1));
       } else {
         // Handle add logic
+        dispatch(createadminStaff(formData.first_name, formData.last_name, formData.email, formData.phone, formData.image, formData.employee_id, 1));
       }
-
-      // Clear validation errors
-      setValidationErrors(StaffInitialValidationState);
-      // clear form data
-      setFormData(StaffInitialState);
     } catch (validationError) {
       // Handle validation errors
       if (validationError instanceof yup.ValidationError) {
@@ -141,11 +143,16 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "phone",
       sort: false,
     },
-    {
-      Header: "Image",
-      accessor: "image",
-      sort: false,
-    },
+    // {
+    //   Header: "Image",
+    //   accessor: "image",
+    //   sort: false,
+    //   Cell: ({ row }: any) => (
+    //     <>
+    //       <img src={row.original.image} alt="user image" width={50} />
+    //     </>
+    //   ),
+    // },
     {
       Header: "Employee Id",
       accessor: "employee_id",
@@ -188,6 +195,31 @@ const BasicInputElements = withSwal((props: any) => {
       handleCancelUpdate();
     }
   };
+
+  console.log("formData===>", formData);
+
+  const setDemoData = () => {
+    setFormData((prev) => ({
+      ...prev,
+      first_name: "John",
+      last_name: "Doe",
+      email: "john.doe@example.com",
+      phone: "9876545678",
+      image: "https://example.com/john-doe.jpg",
+      employee_id: "EMP001",
+      created_by: 1,
+    }));
+  };
+
+  useEffect(() => {
+    // Check for errors and clear the form
+    if (!loading && !error) {
+      setValidationErrors(StaffInitialValidationState);
+      handleCancelUpdate();
+      // toggle();
+    }
+  }, [loading, error]);
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -196,7 +228,12 @@ const BasicInputElements = withSwal((props: any) => {
             <Modal.Header closeButton>
               <h4 className="modal-title">Staff Management</h4>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="px-4">
+              {error && (
+                <Alert variant="danger" className="my-2">
+                  {error}
+                </Alert>
+              )}
               <Form.Group className="mb-3" controlId="first_name">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
@@ -223,15 +260,15 @@ const BasicInputElements = withSwal((props: any) => {
 
               <Form.Group className="mb-3" controlId="employee_id">
                 <Form.Label>Employee Id</Form.Label>
-                <Form.Control type="number" name="employee_id" placeholder="Enter Employee Id" value={formData.employee_id} onChange={handleInputChange} />
+                <Form.Control type="text" name="employee_id" placeholder="Enter Employee Id" value={formData.employee_id} onChange={handleInputChange} />
                 {validationErrors.employee_id && <Form.Text className="text-danger">{validationErrors.employee_id}</Form.Text>}
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="image">
+              {/* <Form.Group className="mb-3" controlId="image">
                 <Form.Label>image</Form.Label>
                 <Form.Control type="file" name="image" value={formData.image} onChange={handleInputChange} />
                 {validationErrors.image && <Form.Text className="text-danger">{validationErrors.image}</Form.Text>}
-              </Form.Group>
+              </Form.Group> */}
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -251,8 +288,12 @@ const BasicInputElements = withSwal((props: any) => {
                 {!isUpdate ? "close" : "Cancel"}
               </Button>
 
-              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading}>
+              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
                 {isUpdate ? "Update" : "Submit"}
+              </Button>
+
+              <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
+                Add test data
               </Button>
             </Modal.Footer>
 
@@ -267,7 +308,17 @@ const BasicInputElements = withSwal((props: any) => {
                 <i className="mdi mdi-plus-circle"></i> Add Staff
               </Button>
               <h4 className="header-title mb-4">Manage Staff</h4>
-              <Table columns={columns} data={records ? records : []} pageSize={5} sizePerPageList={sizePerPageList} isSortable={true} pagination={true} isSearchable={true} />
+              <Table
+                columns={columns}
+                data={records ? records : []}
+                pageSize={5}
+                sizePerPageList={sizePerPageList}
+                isSortable={true}
+                pagination={true}
+                isSearchable={true}
+                theadClass="table-light mt-2"
+                searchBoxClass="mt-2 mb-3"
+              />
             </Card.Body>
           </Card>
         </Col>
@@ -277,6 +328,18 @@ const BasicInputElements = withSwal((props: any) => {
 });
 
 const Staff = () => {
+  const dispatch = useDispatch();
+
+  const { state, loading, error } = useSelector((state: RootState) => ({
+    state: state.AdminStaff.adminStaff.data,
+    loading: state?.AdminStaff.loading,
+    error: state?.AdminStaff.error,
+  }));
+
+  useEffect(() => {
+    dispatch(getAdminStaff());
+  }, []);
+
   return (
     <React.Fragment>
       <PageTitle
@@ -292,7 +355,7 @@ const Staff = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements />
+          <BasicInputElements state={state} loading={loading} error={error} />
         </Col>
       </Row>
     </React.Fragment>

@@ -180,8 +180,6 @@ const BasicInputElements = withSwal((props: any) => {
     }
   }, [loading, error]);
 
-  console.log("success------------->", success);
-
   const columns = [
     {
       Header: "ID",
