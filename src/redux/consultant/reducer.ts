@@ -25,7 +25,7 @@ interface ConsultantData {
   created_by: number;
 }
 
-interface AuthActionType {
+interface ConsultantActionType {
   type:
     | ConsultantActionTypes.API_RESPONSE_SUCCESS
     | ConsultantActionTypes.API_RESPONSE_ERROR
@@ -49,7 +49,7 @@ interface State {
 
 const ConsultantReducer = (
   state: State = INIT_STATE,
-  action: AuthActionType
+  action: ConsultantActionType
 ): any => {
   switch (action.type) {
     case ConsultantActionTypes.API_RESPONSE_SUCCESS:

@@ -8,6 +8,9 @@ import { APICore, setAuthorization } from "../../helpers/api/apiCore";
 import {
   createConsultant as createConsultantApi,
   updateConsultant as updateConsultantApi,
+  getConsultants as getConsultantsApi,
+  getConsultantsById as getConsultantsByIdApi,
+  deleteConsultant as deleteConsultantApi,
 } from "../../helpers/";
 
 // actions
@@ -140,7 +143,7 @@ function* createConsultant({
 }
 
 export function* watchEditConsultant() {
-  yield takeEvery(ConsultantActionTypes.CREATE_CONSULTANT, createConsultant);
+  yield takeEvery(ConsultantActionTypes.EDIT_CONSULTANT, updateConsultant);
 }
 
 export function* watchCreateConsultant() {

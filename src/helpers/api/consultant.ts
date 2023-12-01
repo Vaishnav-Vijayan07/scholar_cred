@@ -3,8 +3,8 @@ import { APICore } from "./apiCore";
 const api = new APICore();
 
 // account
-function createConsultant(params:  {
-   company_name: string;
+function createConsultant(params: {
+  company_name: string;
   business_address: string;
   email: string;
   phone: string;
@@ -15,39 +15,51 @@ function createConsultant(params:  {
   pin_code: string;
   pan_no: string;
   created_by: number;
-  }) {
+}) {
   const baseUrl = "/create_consultant/";
   return api.create(`${baseUrl}`, params);
 }
 
 // account
-function updateConsultant(id : number, params:  {
-   company_name: string;
-  business_address: string;
-  email: string;
-  phone: string;
-  image_url: string;
-  alternative_phone: string;
-  gst: string;
-  location: string;
-  pin_code: string;
-  pan_no: string;
-  created_by: number;
-  }) {
-  const baseUrl = "/create_consultant/";
+function updateConsultant(
+  id: number,
+  params: {
+    company_name: string;
+    business_address: string;
+    email: string;
+    phone: string;
+    image_url: string;
+    alternative_phone: string;
+    gst: string;
+    location: string;
+    pin_code: string;
+    pan_no: string;
+    created_by: number;
+  }
+) {
+  const baseUrl = "/edit_consultant_details/";
   return api.create(`${baseUrl}/${id}`, params);
 }
 
-function signup(params: { fullname: string; email: string; password: string }) {
-  const baseUrl = "/register/";
-  return api.create(`${baseUrl}`, params);
+function getConsultants() {
+  const baseUrl = "/get_consultants/";
+  return api.get(`${baseUrl}`, {});
 }
 
-function forgotPassword(params: { username: string }) {
-  const baseUrl = "/forget-password/";
-  return api.create(`${baseUrl}`, params);
+function deleteConsultant(id: number) {
+  const baseUrl = "/delete_consultant/";
+  return api.create(`${baseUrl}/${id}`, {});
 }
 
+function getConsultantsById(id: number) {
+  const baseUrl = "/get_consultants_by_id/";
+  return api.create(`${baseUrl}/${id}`, {});
+}
 
-
-export { createConsultant, updateConsultant };
+export {
+  createConsultant,
+  updateConsultant,
+  getConsultants,
+  deleteConsultant,
+  getConsultantsById,
+};
