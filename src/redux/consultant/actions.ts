@@ -10,7 +10,7 @@ export interface ConsultantActionType {
     | ConsultantActionTypes.EDIT_CONSULTANT
     | ConsultantActionTypes.CREATE_CONSULTANT
     | ConsultantActionTypes.GET_CONSULTANT
-    | ConsultantActionTypes.GET_CONSULTANT_BY_ID
+    | ConsultantActionTypes.GET_CONSULTANT_BY_ID;
   payload: {} | string;
 }
 interface ConsultantData {
@@ -26,7 +26,6 @@ interface ConsultantData {
   pan_no: string;
   created_by: number;
 }
-
 
 // Common success
 export const consultantApiResponseSuccess = (
@@ -46,7 +45,6 @@ export const consultantApiResponseError = (
   payload: { actionType, error },
 });
 
-
 //create consultant;
 
 export const createConsultant = (
@@ -65,12 +63,24 @@ export const editConsultant = (
   payload: { data },
 });
 
-
 //delete consultant
 
 export const deleteConsultant = (
   data: ConsultantData | {}
 ): ConsultantActionType => ({
   type: ConsultantActionTypes.DELETE_CONSULTANT,
+  payload: { data },
+});
+
+export const getConsultants = (
+  data: ConsultantData | {}
+): ConsultantActionType => ({
+  type: ConsultantActionTypes.GET_CONSULTANT,
+  payload: { data },
+});
+export const getConsultantsById = (
+  data: ConsultantData | {}
+): ConsultantActionType => ({
+  type: ConsultantActionTypes.GET_CONSULTANT_BY_ID,
   payload: { data },
 });

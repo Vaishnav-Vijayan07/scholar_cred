@@ -5,7 +5,10 @@ import { SagaIterator } from "@redux-saga/core";
 import { APICore, setAuthorization } from "../../helpers/api/apiCore";
 
 // helpers
-import { createConsultant as createConsultantApi, updateConsultant as updateConsultantApi } from "../../helpers/";
+import { createConsultant as createConsultantApi, updateConsultant as updateConsultantApi   getConsultants as getConsultantsApi,
+  getConsultantsById as getConsultantsByIdApi,
+  deleteConsultant as deleteConsultantApi,
+} from "../../helpers/";
 
 // actions
 import { consultantApiResponseSuccess, consultantApiResponseError } from "./actions";

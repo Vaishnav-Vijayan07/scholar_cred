@@ -1,4 +1,20 @@
 import { login, logout, signup, forgotPassword } from "./auth";
-import { createConsultant, updateConsultant } from "./consultant";
+import {
+  createConsultant,
+  updateConsultant,
+  getConsultants,
+  getConsultantsById,
+  deleteConsultant,
+} from "./consultant";
 
-export { login, logout, signup, forgotPassword, createConsultant, updateConsultant };
+export {
+  login,
+  logout,
+  signup,
+  forgotPassword,
+  createConsultant,
+  updateConsultant,
+  getConsultants,
+  getConsultantsById,
+  deleteConsultant,
+};
