@@ -9,6 +9,7 @@ import { findAllParent, findMenuItem } from "../helpers/menu";
 
 // constants
 import { MenuItemTypes } from "../constants/menu";
+import { APICore } from "../helpers/api/apiCore";
 
 interface SubMenus {
   item: MenuItemTypes;
@@ -19,16 +20,8 @@ interface SubMenus {
   className?: string;
 }
 
-const MenuItemWithChildren = ({
-  item,
-  linkClassName,
-  subMenuClassNames,
-  activeMenuItems,
-  toggleMenu,
-}: SubMenus) => {
-  const [open, setOpen] = useState<boolean>(
-    activeMenuItems!.includes(item.key)
-  );
+const MenuItemWithChildren = ({ item, linkClassName, subMenuClassNames, activeMenuItems, toggleMenu }: SubMenus) => {
+  const [open, setOpen] = useState<boolean>(activeMenuItems!.includes(item.key));
   // ;
 
   useEffect(() => {
@@ -50,26 +43,17 @@ const MenuItemWithChildren = ({
         data-menu-key={item.key}
         aria-expanded={open}
         className={classNames("menu-link", linkClassName, {
-          "menuitem-active": activeMenuItems!.includes(item.key)
-            ? "active"
-            : "",
+          "menuitem-active": activeMenuItems!.includes(item.key) ? "active" : "",
         })}
       >
         {item.icon && (
           <span className="menu-icon">
-            <FeatherIcon icon={item.icon} />{""}
+            <FeatherIcon icon={item.icon} />
+            {""}
           </span>
         )}
         <span className="menu-text"> {item.label} </span>
-        {!item.badge ? (
-          <span className="menu-arrow"></span>
-        ) : (
-          <span
-            className={`badge bg-${item.badge.variant} rounded-pill ms-auto`}
-          >
-            {item.badge.text}
-          </span>
-        )}
+        {!item.badge ? <span className="menu-arrow"></span> : <span className={`badge bg-${item.badge.variant} rounded-pill ms-auto`}>{item.badge.text}</span>}
       </Link>
       <Collapse in={open}>
         <div>
@@ -82,9 +66,7 @@ const MenuItemWithChildren = ({
                       {/* parent */}
                       <MenuItemWithChildren
                         item={child}
-                        linkClassName={
-                          activeMenuItems!.includes(child.key) ? "active" : ""
-                        }
+                        linkClassName={activeMenuItems!.includes(child.key) ? "active" : ""}
                         activeMenuItems={activeMenuItems}
                         subMenuClassNames="sub-menu"
                         toggleMenu={toggleMenu}
@@ -95,14 +77,8 @@ const MenuItemWithChildren = ({
                       {/* child */}
                       <MenuItem
                         item={child}
-                        className={
-                          activeMenuItems!.includes(child.key)
-                            ? "menuitem-active"
-                            : ""
-                        }
-                        linkClassName={
-                          activeMenuItems!.includes(child.key) ? "active" : ""
-                        }
+                        className={activeMenuItems!.includes(child.key) ? "menuitem-active" : ""}
+                        linkClassName={activeMenuItems!.includes(child.key) ? "active" : ""}
                       />
                     </>
                   )}
@@ -126,23 +102,14 @@ const MenuItem = ({ item, className, linkClassName }: SubMenus) => {
 
 const MenuItemLink = ({ item, className }: SubMenus) => {
   return (
-    <Link
-      to={item.url!}
-      target={item.target}
-      className={classNames("side-nav-link-ref menu-link", className)}
-      data-menu-key={item.key}
-    >
+    <Link to={item.url!} target={item.target} className={classNames("side-nav-link-ref menu-link", className)} data-menu-key={item.key}>
       {item.icon && (
         <span className="menu-icon">
           <FeatherIcon icon={item.icon} />{" "}
         </span>
       )}
       <span className="menu-text"> {item.label} </span>
-      {item.badge && (
-        <span className={`badge bg-${item.badge.variant} `}>
-          {item.badge.text}
-        </span>
-      )}
+      {item.badge && <span className={`badge bg-${item.badge.variant} `}>{item.badge.text}</span>}
     </Link>
   );
 };
@@ -156,6 +123,7 @@ interface AppMenuProps {
 
 const AppMenu = ({ menuItems }: AppMenuProps) => {
   let location = useLocation();
+  const api = new APICore();
 
   const menuRef: any = useRef(null);
 
@@ -165,11 +133,7 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
    * toggle the menus
    */
   const toggleMenu = (menuItem: MenuItemTypes, show: boolean) => {
-    if (show)
-      setActiveMenuItems([
-        menuItem["key"],
-        ...findAllParent(menuItems, menuItem),
-      ]);
+    if (show) setActiveMenuItems([menuItem["key"], ...findAllParent(menuItems, menuItem)]);
   };
 
   /**
@@ -195,10 +159,7 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
         const mid = matchingMenuItem.getAttribute("data-menu-key");
         const activeMt = findMenuItem(menuItems, mid);
         if (activeMt) {
-          setActiveMenuItems([
-            activeMt["key"],
-            ...findAllParent(menuItems, activeMt),
-          ]);
+          setActiveMenuItems([activeMt["key"], ...findAllParent(menuItems, activeMt)]);
         }
       }
     }
@@ -213,6 +174,12 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
     <>
       <ul className="menu" ref={menuRef} id="main-side-menu">
         {(menuItems || []).map((item, idx) => {
+          const loggedInUser = api.getLoggedInUser();
+
+          if (item.roles && !item?.roles?.includes(loggedInUser?.role_name)) {
+            // No matching role found, so redirect to the unauthorized page
+            return null;
+          }
           //
           return (
             <React.Fragment key={idx}>
@@ -227,23 +194,9 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
               ) : (
                 <>
                   {item.children ? (
-                    <MenuItemWithChildren
-                      item={item}
-                      toggleMenu={toggleMenu}
-                      subMenuClassNames="sub-menu"
-                      activeMenuItems={activeMenuItems}
-                      linkClassName="menu-link"
-                    />
+                    <MenuItemWithChildren item={item} toggleMenu={toggleMenu} subMenuClassNames="sub-menu" activeMenuItems={activeMenuItems} linkClassName="menu-link" />
                   ) : (
-                    <MenuItem
-                      item={item}
-                      linkClassName="menu-link"
-                      className={
-                        activeMenuItems!.includes(item.key)
-                          ? "menuitem-active"
-                          : ""
-                      }
-                    />
+                    <MenuItem item={item} linkClassName="menu-link" className={activeMenuItems!.includes(item.key) ? "menuitem-active" : ""} />
                   )}
                 </>
               )}

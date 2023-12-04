@@ -13,7 +13,6 @@ import "./assets/scss/Default.scss";
 import "./assets/scss/Landing.scss";
 import "./assets/scss/Icons.scss";
 
-
 const App = () => {
   return (
     <>

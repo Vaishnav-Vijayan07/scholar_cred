@@ -153,14 +153,13 @@ interface TopbarProps {
   topbarDark?: boolean;
 }
 
-const Topbar = ({
-  hideLogo,
-  navCssClasses,
-  openLeftMenuCallBack,
-  topbarDark,
-}: TopbarProps) => {
+const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: TopbarProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { width } = useViewport();
+
+  const { user } = useSelector((state: RootState) => ({
+    user: state.Auth.user,
+  }));
 
   const navbarCssClasses: string = navCssClasses || "";
   const containerCssClasses: string = !hideLogo ? "container-fluid" : "";
@@ -170,30 +169,27 @@ const Topbar = ({
     leftSideBarType: state.Layout.leftSideBarType,
   }));
 
-
   /**
    * Toggle the leftmenu when having mobile screen
    */
   const handleLeftMenuCallBack = () => {
     if (width < 1140) {
-      if (leftSideBarType === 'full') {
+      if (leftSideBarType === "full") {
         showLeftSideBarBackdrop();
         document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-      }
-      else {
+      } else {
         dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       }
     } else if (leftSideBarType === "condensed") {
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
-    } else if (leftSideBarType === 'full') {
+    } else if (leftSideBarType === "full") {
       showLeftSideBarBackdrop();
       document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-    } else if (leftSideBarType === 'fullscreen') {
+    } else if (leftSideBarType === "fullscreen") {
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
       // showLeftSideBarBackdrop();
       document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
-    }
-    else {
+    } else {
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED));
     }
   };
@@ -206,9 +202,7 @@ const Topbar = ({
     // backdrop.style.zIndex = '999'
     document.body.appendChild(backdrop);
 
-    if (
-      document.getElementsByTagName("html")[0]?.getAttribute("dir") !== "rtl"
-    ) {
+    if (document.getElementsByTagName("html")[0]?.getAttribute("dir") !== "rtl") {
       document.body.style.overflow = "hidden";
       if (width > 1140) {
         document.body.style.paddingRight = "15px";
@@ -258,15 +252,7 @@ const Topbar = ({
                     <img src={logoSm} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img
-                      src={
-                        layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                          ? logoDark2
-                          : logoDark
-                      }
-                      alt=""
-                      height="30"
-                    />
+                    <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoDark2 : logoDark} alt="" height="30" />
                   </span>
                 </Link>
                 <Link to="/" className="logo logo-light text-center">
@@ -274,24 +260,13 @@ const Topbar = ({
                     <img src={logoSm} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img
-                      src={
-                        layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                          ? logoSm
-                          : logoSm
-                      }
-                      alt=""
-                      height="30"
-                    />
+                    <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoSm : logoSm} alt="" height="30" />
                   </span>
                 </Link>
               </div>
             )}
 
-            <button
-              className="button-toggle-menu"
-              onClick={handleLeftMenuCallBack}
-            >
+            <button className="button-toggle-menu" onClick={handleLeftMenuCallBack}>
               <i className="mdi mdi-menu" />
             </button>
 
@@ -314,19 +289,11 @@ const Topbar = ({
             <li className="dropdown notification-list">
               <NotificationDropdown notifications={Notifications} />
             </li>
-            <li className="dropdown">
-              <ProfileDropdown
-                profilePic={profilePic}
-                menuItems={ProfileMenus}
-                username={"Geneva"}
-                userTitle={"Founder"}
-              />
+            <li className="dropdown d-flex flex-column">
+              <ProfileDropdown profilePic={profilePic} menuItems={ProfileMenus} username={user?.full_name?.split(" ")[0]} userTitle={user?.role_name?.split("_")?.join(" ")} />
             </li>
             <li>
-              <button
-                className="nav-link dropdown-toggle right-bar-toggle waves-effect waves-light btn btn-link shadow-none"
-                onClick={handleRightSideBar}
-              >
+              <button className="nav-link dropdown-toggle right-bar-toggle waves-effect waves-light btn btn-link shadow-none" onClick={handleRightSideBar}>
                 <i className="fe-settings noti-icon font-22"></i>
               </button>
             </li>

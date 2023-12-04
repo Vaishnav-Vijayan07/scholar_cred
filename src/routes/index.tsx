@@ -27,6 +27,8 @@ const Consultant = React.lazy(() => import("../pages/users/Consultant"));
 const ConsultantDetails = React.lazy(() => import("../pages/users/Profile"));
 const Staff = React.lazy(() => import("../pages/users/Staff"));
 
+const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
+
 export interface RoutesProps {
   path: RouteProps["path"];
   name?: string;
@@ -49,12 +51,13 @@ const dashboardRoutes: RoutesProps = {
       path: "/",
       name: "Root",
       element: <Navigate to="/dashboard-4" />,
+      roles: ["ADMIN", "CONSULTANT_ADMIN"],
       route: PrivateRoute,
     },
     {
       path: "/dashboard-4",
       name: "Dashboard 4",
-      element: <Dashboard4 />,
+      element: <PrivateRoute roles={["ADMIN", "CONSULTANT_ADMIN"]} component={Dashboard4} />,
       route: PrivateRoute,
     },
   ],
@@ -64,13 +67,13 @@ const crmAppRoutes = {
   path: "/apps/crm",
   name: "CRM",
   route: PrivateRoute,
-  roles: ["Admin"],
+  roles: ["ADMIN"],
   icon: "users",
   children: [
     {
       path: "/apps/crm/leads",
       name: "Leads",
-      element: <CRMLeads />,
+      element: <PrivateRoute roles={["ADMIN"]} component={CRMLeads} />,
       route: PrivateRoute,
     },
   ],
@@ -80,25 +83,42 @@ const userRoutes = {
   path: "/users",
   name: "Users",
   route: PrivateRoute,
-  roles: ["Admin"],
+  roles: ["ADMIN"],
   icon: "users",
   children: [
     {
       path: "/users/consultant",
       name: "Consultant",
-      element: <Consultant />,
+      element: <PrivateRoute roles={["ADMIN"]} component={Consultant} />,
       route: PrivateRoute,
     },
     {
       path: "/users/staff",
       name: "Staff",
-      element: <Staff />,
+      element: <PrivateRoute roles={["ADMIN"]} component={Staff} />,
       route: PrivateRoute,
     },
     {
       path: "/users/consultant/:id",
       name: "Consultant details",
-      element: <ConsultantDetails />,
+      element: <PrivateRoute roles={["ADMIN"]} component={ConsultantDetails} />,
+      route: PrivateRoute,
+    },
+  ],
+};
+
+const consultantRoutes = {
+  path: "/consultant-users",
+  name: "Consultant users",
+  route: PrivateRoute,
+  roles: ["ADMIN", "CONSULTANT_ADMIN"],
+
+  icon: "users",
+  children: [
+    {
+      path: "/consultant-users/staff",
+      name: "Staff",
+      element: <PrivateRoute roles={["CONSULTANT_ADMIN"]} component={Staff} />,
       route: PrivateRoute,
     },
   ],
@@ -154,6 +174,16 @@ const authRoutes: RoutesProps[] = [
   },
 ];
 
+// public routes
+const otherPublicRoutes = [
+  {
+    path: "/unauthorized",
+    name: "forbidden",
+    element: <ForbiddenPage />,
+    route: Route,
+  },
+];
+
 // flatten the list of all nested routes
 const flattenRoutes = (routes: RoutesProps[]) => {
   let flatRoutes: RoutesProps[] = [];
@@ -170,8 +200,8 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 };
 
 // All routes
-const authProtectedRoutes = [dashboardRoutes, ...appRoutes, userRoutes];
-const publicRoutes = [...authRoutes];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes, userRoutes, consultantRoutes];
+const publicRoutes = [...authRoutes, ...otherPublicRoutes];
 
 const authProtectedFlattenRoutes = flattenRoutes([...authProtectedRoutes]);
 const publicProtectedFlattenRoutes = flattenRoutes([...publicRoutes]);

@@ -3,6 +3,7 @@ export interface MenuItemTypes {
   label: string;
   isTitle?: boolean;
   icon?: string;
+  roles?: string[];
   url?: string;
   badge?: {
     variant: string;
@@ -23,7 +24,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/dashboard-4",
   },
 
-  { key: "user_management", label: "User Management", isTitle: true },
+  { key: "user_management", label: "User Management", isTitle: true, roles: ["ADMIN", "CONSULTANT_ADMIN"] },
 
   {
     key: "consultant",
@@ -31,6 +32,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "user-check",
     url: "/users/consultant",
+    roles: ["ADMIN"],
   },
   {
     key: "staff",
@@ -38,28 +40,16 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "users",
     url: "/users/staff",
+    roles: ["ADMIN"],
   },
-
-  // {
-  //   key: "users",
-  //   label: "Users",
-  //   isTitle: false,
-  //   icon: "users",
-  //   children: [
-  //     {
-  //       key: "consultant",
-  //       label: "Consultants",
-  //       url: "/users/consultant",
-  //       parentKey: "users",
-  //     },
-  //     {
-  //       key: "staff",
-  //       label: "Staff",
-  //       url: "/users/staff",
-  //       parentKey: "users",
-  //     },
-  //   ],
-  // },
+  {
+    key: "staff",
+    label: "Staff",
+    isTitle: false,
+    icon: "users",
+    url: "/consultant-users/staff",
+    roles: ["CONSULTANT_ADMIN"],
+  },
 ];
 
 const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
@@ -82,18 +72,29 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
     label: "Users",
     isTitle: false,
     icon: "users",
+    roles: ["ADMIN", "CONSULTANT_ADMIN"],
     children: [
       {
         key: "consultant",
         label: "Consultants",
         url: "/users/consultant",
         parentKey: "users",
+        roles: ["ADMIN"],
       },
       {
         key: "staff",
         label: "Staff",
         url: "/users/staff",
         parentKey: "users",
+        roles: ["ADMIN"],
+      },
+      {
+        key: "staff",
+        label: "Staff",
+        isTitle: false,
+        icon: "users",
+        url: "/consultant-users/staff",
+        roles: ["CONSULTANT_ADMIN"],
       },
     ],
   },
@@ -119,18 +120,29 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
     label: "Users",
     isTitle: false,
     icon: "users",
+    roles: ["ADMIN", "CONSULTANT_ADMIN"],
     children: [
       {
         key: "consultant",
         label: "Consultants",
         url: "/users/consultant",
         parentKey: "users",
+        roles: ["ADMIN"],
       },
       {
         key: "staff",
         label: "Staff",
         url: "/users/staff",
         parentKey: "users",
+        roles: ["ADMIN"],
+      },
+      {
+        key: "staff",
+        label: "Staff",
+        isTitle: false,
+        icon: "users",
+        url: "/consultant-users/staff",
+        roles: ["CONSULTANT_ADMIN"],
       },
     ],
   },
