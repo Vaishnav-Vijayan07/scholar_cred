@@ -28,6 +28,7 @@ const ConsultantDetails = React.lazy(() => import("../pages/users/Profile"));
 const Staff = React.lazy(() => import("../pages/users/Staff"));
 const Students = React.lazy(() => import("../pages/users/Students"));
 
+
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
 
 export interface RoutesProps {
