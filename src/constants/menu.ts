@@ -42,6 +42,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/users/staff",
     roles: ["ADMIN", "SUPER_USER"],
   },
+
   {
     key: "consultant_staff",
     label: "Consultant Staff",
@@ -49,6 +50,17 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "users",
     url: "/consultant-users/staff",
     roles: ["CONSULTANT_ADMIN", "SUPER_USER"],
+  },
+
+  { key: "student_management", label: "Student Management", isTitle: true, roles: ["ADMIN", "SUPER_USER", "CONSULTANT_ADMIN"] },
+
+  {
+    key: "students",
+    label: "Students",
+    isTitle: false,
+    icon: "users",
+    url: "/users/students",
+    roles: ["ADMIN", "SUPER_USER"],
   },
 ];
 
@@ -92,9 +104,23 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         key: "consultant_staff",
         label: "Consultant Staff",
         isTitle: false,
-        icon: "users",
         url: "/consultant-users/staff",
         roles: ["CONSULTANT_ADMIN", "SUPER_USER"],
+      },
+    ],
+  },
+  {
+    key: "student_management",
+    icon: "users",
+    label: "Student Management",
+    isTitle: true,
+    children: [
+      {
+        key: "students",
+        label: "Students",
+        isTitle: false,
+        url: "/users/students",
+        roles: ["ADMIN", "SUPER_USER"],
       },
     ],
   },
@@ -140,9 +166,23 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         key: "consultant_staff",
         label: "Consultant Staff",
         isTitle: false,
-        icon: "users",
         url: "/consultant-users/staff",
         roles: ["CONSULTANT_ADMIN", "SUPER_USER"],
+      },
+    ],
+  },
+  {
+    key: "student_management",
+    icon: "users",
+    label: "Student Management",
+    isTitle: true,
+    children: [
+      {
+        key: "students",
+        label: "Students",
+        isTitle: false,
+        url: "/users/students",
+        roles: ["ADMIN", "SUPER_USER"],
       },
     ],
   },
