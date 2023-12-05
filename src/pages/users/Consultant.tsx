@@ -329,7 +329,7 @@ const BasicInputElements = withSwal((props: any) => {
                     <Col md={6}>
                       <Form.Group className="mb-3" controlId="phone">
                         <Form.Label>Phone</Form.Label>
-                        <Form.Control type="text" name="phone" placeholder="Enter phone number" value={formData.phone} onChange={handleInputChange} />
+                        <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
                         {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
                       </Form.Group>
                     </Col>
@@ -341,6 +341,7 @@ const BasicInputElements = withSwal((props: any) => {
                           type="text"
                           name="alternative_phone"
                           placeholder="Enter alternative phone number"
+                          maxLength={10} 
                           value={formData.alternative_phone}
                           onChange={handleInputChange}
                         />
