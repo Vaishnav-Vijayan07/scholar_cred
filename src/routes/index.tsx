@@ -26,6 +26,7 @@ const CRMLeads = React.lazy(() => import("../pages/apps/CRM/Leads/"));
 const Consultant = React.lazy(() => import("../pages/users/Consultant"));
 const ConsultantDetails = React.lazy(() => import("../pages/users/Profile"));
 const Staff = React.lazy(() => import("../pages/users/Staff"));
+const Students = React.lazy(() => import("../pages/users/Students"));
 
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
 
@@ -102,6 +103,12 @@ const userRoutes = {
       path: "/users/consultant/:id",
       name: "Consultant details",
       element: <PrivateRoute roles={["ADMIN", "SUPER_USER"]} component={ConsultantDetails} />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/users/students",
+      name: "Students",
+      element: <PrivateRoute roles={["ADMIN", "SUPER_USER"]} component={Students} />,
       route: PrivateRoute,
     },
   ],
