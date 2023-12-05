@@ -1,1 +1,1 @@
-export const consultantstaff_usertype = "4";
+export const consultant_admin_usertype = "7";

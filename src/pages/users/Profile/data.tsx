@@ -1,4 +1,4 @@
-import { consultantstaff_usertype } from "../../../constants/constant_ids";
+import { consultant_admin_usertype } from "../../../constants/constant_ids";
 
 export interface OptionType {
   value: string;
@@ -42,7 +42,7 @@ export const InitialState = {
   password_hash: "",
   email: "",
   full_name: "",
-  user_type_id: consultantstaff_usertype,
+  user_type_id: consultant_admin_usertype,
   created_by: "",
   consultant_id: "",
 };

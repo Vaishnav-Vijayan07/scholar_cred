@@ -73,8 +73,6 @@ function* getConsultant(): SagaIterator {
     const response = yield call(getConsultantsApi);
     const data = response.data.data;
 
-    console.log("data", data);
-
     // NOTE - You can change this according to response format from your api
     yield put(consultantApiResponseSuccess(ConsultantActionTypes.GET_CONSULTANT, { data }));
   } catch (error: any) {
@@ -87,8 +85,6 @@ function* getConsultantById({ payload: { id } }: ConsultantData): SagaIterator {
   try {
     const response = yield call(getConsultantsByIdApi, id);
     const data = response.data.data;
-
-    console.log("data", data);
 
     // NOTE - You can change this according to response format from your api
     yield put(consultantApiResponseSuccess(ConsultantActionTypes.GET_CONSULTANT_BY_ID, { data }));
@@ -103,7 +99,6 @@ function* updateConsultant({
   type,
 }: ConsultantData): SagaIterator {
   try {
-    console.log("formDatas--------->", id, company_name, business_address, email, phone, image_url, alternative_phone, gst, location, pin_code, pan_no, created_by);
 
     const response = yield call(updateConsultantApi, id, {
       company_name,
@@ -120,7 +115,6 @@ function* updateConsultant({
     });
     const consultant_data = response.data.message;
 
-    console.log("uodate consultant_data", consultant_data);
 
     yield put(consultantApiResponseSuccess(ConsultantActionTypes.EDIT_CONSULTANT, consultant_data));
     yield put(getConsultants());

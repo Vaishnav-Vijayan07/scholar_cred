@@ -14,7 +14,7 @@ import { InitialState, InitialValidationState, UserTypes } from "./data";
 import { useDispatch, useSelector } from "react-redux";
 import { createConsultantStaff, deleteConsultantStaff, editConsultantStaff, getConsultantStaff, getConsultantsById } from "../../../redux/actions";
 import { RootState } from "../../../redux/store";
-import { consultantstaff_usertype } from "../../../constants/constant_ids";
+import { consultant_admin_usertype } from "../../../constants/constant_ids";
 import Swal from "sweetalert2";
 
 const Profile = () => {
@@ -132,7 +132,7 @@ const Profile = () => {
               formData?.password_hash,
               formData?.email,
               formData?.full_name,
-              consultantstaff_usertype, //usertype id
+              consultant_admin_usertype, //usertype id
               id //consultant_id
             )
           );
@@ -146,7 +146,7 @@ const Profile = () => {
               formData?.password_hash,
               formData?.email,
               formData?.full_name,
-              consultantstaff_usertype, //usertype id
+              consultant_admin_usertype, //usertype id
               id //consultant_id
             )
           );
@@ -213,7 +213,7 @@ const Profile = () => {
       dispatch(getConsultantsById(id));
 
       //user_type and consultant_id
-      dispatch(getConsultantStaff(consultantstaff_usertype, id));
+      dispatch(getConsultantStaff(consultant_admin_usertype, id));
     }
   }, [id]);
 
@@ -223,7 +223,7 @@ const Profile = () => {
       handleCancelUpdate();
       setResponsiveModal(false);
       if (id) {
-        dispatch(getConsultantStaff(consultantstaff_usertype, id));
+        dispatch(getConsultantStaff(consultant_admin_usertype, id));
       }
     }
   }, [staffLoading, error]);

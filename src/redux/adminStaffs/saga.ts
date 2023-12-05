@@ -60,8 +60,6 @@ function* getAdminStaffs(): SagaIterator {
     const response = yield call(getAdminStaffApi);
     const data = response.data.data;
 
-    console.log("data", data);
-
     // NOTE - You can change this according to response format from your api
     yield put(adminStaffApiResponseSuccess(AdminStaffActionTypes.GET_ADMIN_STAFF, { data }));
   } catch (error: any) {

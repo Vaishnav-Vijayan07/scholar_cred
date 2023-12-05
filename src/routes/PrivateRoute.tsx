@@ -35,9 +35,6 @@ const PrivateRoute = ({ component: Component, roles, ...rest }: PrivateRouteProp
 
   const loggedInUser = api.getLoggedInUser();
 
-  console.log("roles", roles);
-  console.log("user role", loggedInUser?.role_name);
-
   // check if route is restricted by role
   // if (roles && roles.indexOf(loggedInUser.role) === -1) {
   //   // role not authorised so redirect to login page
