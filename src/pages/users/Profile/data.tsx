@@ -1,3 +1,5 @@
+import { consultantstaff_usertype } from "../../../constants/constant_ids";
+
 export interface OptionType {
   value: string;
   label: string;
@@ -24,27 +26,35 @@ export const sizePerPageList = [
 ];
 
 export interface UserTypes {
-  id: string;
-  first_name: string;
-  last_name: string;
+  consultant_staff_id: string;
+  username: string;
+  password_hash: string;
   email: string;
-  password: string;
+  full_name: string;
+  user_type_id: string;
+  created_by: string;
+  consultant_id: string;
 }
 
 export const InitialState = {
-  id: "",
-  first_name: "",
-  last_name: "",
+  consultant_staff_id: "",
+  username: "",
+  password_hash: "",
   email: "",
-  password: "",
+  full_name: "",
+  user_type_id: consultantstaff_usertype,
+  created_by: "",
+  consultant_id: "",
 };
 
 export const InitialValidationState = {
-  id: "",
-  first_name: "",
-  last_name: "",
+  username: "",
+  password_hash: "",
   email: "",
-  password: "",
+  full_name: "",
+  user_type_id: "",
+  created_by: "",
+  consultant_id: "",
 };
 
 export const UserData = [

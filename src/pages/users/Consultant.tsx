@@ -152,11 +152,6 @@ const BasicInputElements = withSwal((props: any) => {
           )
         );
       }
-
-      // // // Clear validation errors
-      // setValidationErrors(initialValidationState);
-      // // clear form data
-      // setFormData(initialState);
     } catch (validationError) {
       // Handle validation errors
       if (validationError instanceof yup.ValidationError) {
@@ -176,7 +171,7 @@ const BasicInputElements = withSwal((props: any) => {
     if (!loading && !error) {
       setValidationErrors(initialValidationState);
       handleCancelUpdate();
-      // toggle();
+      setModal(false);
     }
   }, [loading, error]);
 

@@ -7,6 +7,7 @@ import { ConsultantActionTypes } from "./constants";
 
 const INIT_STATE = {
   consultant: [],
+  consultantById: {},
   loading: false,
 };
 
@@ -71,6 +72,7 @@ const ConsultantReducer = (state: State = INIT_STATE, action: ConsultantActionTy
           return {
             ...state,
             loading: false,
+            consultantById: action.payload.data,
           };
         }
         case ConsultantActionTypes.GET_CONSULTANT: {

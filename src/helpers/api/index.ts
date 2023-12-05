@@ -3,6 +3,7 @@ import { createConsultant, updateConsultant, getConsultants, getConsultantsById,
 
 import { createAdminUsers, editAdminUsers, getAdminUsers, getAdminUsersById, deleteAdminUsers } from "./admin_users";
 import { createAdminStaff, deleteAdminStaff, getAdminStaff, getAdminStaffById, updateAdminStaff } from "./admin_staffs";
+import { createConsultantStaff, deleteConsultantStaff, getConsultantStaff, getConsultantStaffById, updateConsultantStaff } from "./consultantStaff";
 
 import { getUserTypes } from "./user_types";
 
@@ -27,4 +28,9 @@ export {
   getAdminStaff,
   getAdminStaffById,
   updateAdminStaff,
+  createConsultantStaff,
+  deleteConsultantStaff,
+  getConsultantStaff,
+  getConsultantStaffById,
+  updateConsultantStaff,
 };

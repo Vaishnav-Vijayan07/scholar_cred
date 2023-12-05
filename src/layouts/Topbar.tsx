@@ -290,7 +290,12 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
               <NotificationDropdown notifications={Notifications} />
             </li>
             <li className="dropdown d-flex flex-column">
-              <ProfileDropdown profilePic={profilePic} menuItems={ProfileMenus} username={user?.full_name?.split(" ")[0]} userTitle={user?.role_name?.split("_")?.join(" ")} />
+              <ProfileDropdown
+                profilePic={profilePic}
+                menuItems={ProfileMenus}
+                username={user?.role_name == "ADMIN" ? user?.full_name : user?.full_name?.split(" ")[0]}
+                userTitle={user?.role_name?.split("_")?.join(" ")}
+              />
             </li>
             <li>
               <button className="nav-link dropdown-toggle right-bar-toggle waves-effect waves-light btn btn-link shadow-none" onClick={handleRightSideBar}>

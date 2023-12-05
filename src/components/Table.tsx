@@ -1,13 +1,5 @@
 import React, { useRef, useEffect, forwardRef, useState } from "react";
-import {
-  useTable,
-  useSortBy,
-  usePagination,
-  useRowSelect,
-  useGlobalFilter,
-  useAsyncDebounce,
-  useExpanded,
-} from "react-table";
+import { useTable, useSortBy, usePagination, useRowSelect, useGlobalFilter, useAsyncDebounce, useExpanded } from "react-table";
 import classNames from "classnames";
 
 // components
@@ -21,12 +13,7 @@ interface GlobalFilterProps {
 }
 
 // Define a default UI for filtering
-const GlobalFilter = ({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter,
-  searchBoxClass,
-}: GlobalFilterProps) => {
+const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter, searchBoxClass }: GlobalFilterProps) => {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = useState<any>(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -57,10 +44,7 @@ interface IndeterminateCheckboxProps {
   children?: React.ReactNode;
 }
 
-const IndeterminateCheckbox = forwardRef<
-  HTMLInputElement,
-  IndeterminateCheckboxProps
->(({ indeterminate, ...rest }, ref) => {
+const IndeterminateCheckbox = forwardRef<HTMLInputElement, IndeterminateCheckboxProps>(({ indeterminate, ...rest }, ref) => {
   const defaultRef = useRef();
   const resolvedRef: any = ref || defaultRef;
 
@@ -71,12 +55,7 @@ const IndeterminateCheckbox = forwardRef<
   return (
     <>
       <div className="form-check">
-        <input
-          type="checkbox"
-          className="form-check-input"
-          ref={resolvedRef}
-          {...rest}
-        />
+        <input type="checkbox" className="form-check-input" ref={resolvedRef} {...rest} />
         <label htmlFor="form-check-input" className="form-check-label"></label>
       </div>
     </>
@@ -139,8 +118,7 @@ const Table = (props: TableProps) => {
       data: props["data"],
       initialState: { pageSize: props["pageSize"] || 10 },
     },
-    otherProps.hasOwnProperty("useGlobalFilter") &&
-      otherProps["useGlobalFilter"],
+    otherProps.hasOwnProperty("useGlobalFilter") && otherProps["useGlobalFilter"],
     otherProps.hasOwnProperty("useSortBy") && otherProps["useSortBy"],
     otherProps.hasOwnProperty("useExpanded") && otherProps["useExpanded"],
     otherProps.hasOwnProperty("usePagination") && otherProps["usePagination"],
@@ -155,9 +133,7 @@ const Table = (props: TableProps) => {
             // to render a checkbox
             Header: ({ getToggleAllPageRowsSelectedProps }: any) => (
               <div>
-                <IndeterminateCheckbox
-                  {...getToggleAllPageRowsSelectedProps()}
-                />
+                <IndeterminateCheckbox {...getToggleAllPageRowsSelectedProps()} />
               </div>
             ),
             // The cell can use the individual row's getToggleRowSelectedProps method
@@ -177,14 +153,7 @@ const Table = (props: TableProps) => {
           {
             // Build our expander column
             id: "expander", // Make sure it has an ID
-            Header: ({
-              getToggleAllRowsExpandedProps,
-              isAllRowsExpanded,
-            }: any) => (
-              <span {...getToggleAllRowsExpandedProps()}>
-                {isAllRowsExpanded ? "-" : "+"}
-              </span>
-            ),
+            Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }: any) => <span {...getToggleAllRowsExpandedProps()}>{isAllRowsExpanded ? "-" : "+"}</span>,
             Cell: ({ row }) =>
               // Use the row.canExpand and row.getToggleRowExpandedProps prop getter
               // to build the toggle for expanding a row
@@ -222,21 +191,13 @@ const Table = (props: TableProps) => {
       )}
 
       <div className="table-responsive">
-        <table
-          {...dataTable.getTableProps()}
-          className={classNames(
-            "table table-centered react-table",
-            props["tableClass"]
-          )}
-        >
+        <table {...dataTable.getTableProps()} className={classNames("table table-centered react-table", props["tableClass"])}>
           <thead className={props["theadClass"]}>
             {(dataTable.headerGroups || []).map((headerGroup: any) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {(headerGroup.headers || []).map((column: any) => (
                   <th
-                    {...column.getHeaderProps(
-                      column.sort && column.getSortByToggleProps()
-                    )}
+                    {...column.getHeaderProps(column.sort && column.getSortByToggleProps())}
                     className={classNames({
                       sorting_desc: column.isSortedDesc === true,
                       sorting_asc: column.isSortedDesc === false,
@@ -273,9 +234,13 @@ const Table = (props: TableProps) => {
           </tbody>
         </table>
       </div>
-      {pagination && (
-        <Pagination tableProps={dataTable} sizePerPageList={sizePerPageList} />
+      {/* Display a custom "No Data" message */}
+      {rows.length === 0 && (
+        <div className="text-center">
+          <p>No data found...</p>
+        </div>
       )}
+      {pagination && <Pagination tableProps={dataTable} sizePerPageList={sizePerPageList} />}
     </>
   );
 };

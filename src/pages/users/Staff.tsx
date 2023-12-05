@@ -196,8 +196,6 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
-  console.log("formData===>", formData);
-
   const setDemoData = () => {
     setFormData((prev) => ({
       ...prev,
@@ -216,7 +214,7 @@ const BasicInputElements = withSwal((props: any) => {
     if (!loading && !error) {
       setValidationErrors(StaffInitialValidationState);
       handleCancelUpdate();
-      // toggle();
+      setResponsiveModal(false);
     }
   }, [loading, error]);
 

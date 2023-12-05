@@ -83,6 +83,21 @@ function* getConsultant(): SagaIterator {
   }
 }
 
+function* getConsultantById({ payload: { id } }: ConsultantData): SagaIterator {
+  try {
+    const response = yield call(getConsultantsByIdApi, id);
+    const data = response.data.data;
+
+    console.log("data", data);
+
+    // NOTE - You can change this according to response format from your api
+    yield put(consultantApiResponseSuccess(ConsultantActionTypes.GET_CONSULTANT_BY_ID, { data }));
+  } catch (error: any) {
+    yield put(consultantApiResponseError(ConsultantActionTypes.GET_CONSULTANT_BY_ID, error));
+    throw error;
+  }
+}
+
 function* updateConsultant({
   payload: { id, company_name, business_address, email, phone, image_url, alternative_phone, gst, location, pin_code, pan_no, created_by },
   type,
@@ -130,6 +145,9 @@ function* deleteConsultant({ payload: { id } }: ConsultantData): SagaIterator {
 export function* watchGetAllConsultant() {
   yield takeEvery(ConsultantActionTypes.GET_CONSULTANT, getConsultant);
 }
+export function* watchGetConsultantById() {
+  yield takeEvery(ConsultantActionTypes.GET_CONSULTANT_BY_ID, getConsultantById);
+}
 
 export function* watchCreateConsultant() {
   yield takeEvery(ConsultantActionTypes.CREATE_CONSULTANT, createConsultant);
@@ -144,7 +162,14 @@ export function* watchDeleteConsultant() {
 }
 
 function* consultantSaga() {
-  yield all([fork(watchGetAllConsultant), fork(watchEditConsultant), fork(watchCreateConsultant), fork(watchGetAllConsultant), fork(watchDeleteConsultant)]);
+  yield all([
+    fork(watchGetAllConsultant),
+    fork(watchEditConsultant),
+    fork(watchCreateConsultant),
+    fork(watchGetAllConsultant),
+    fork(watchDeleteConsultant),
+    fork(watchGetConsultantById),
+  ]);
 }
 
 export default consultantSaga;

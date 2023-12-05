@@ -4,10 +4,12 @@ import Auth from "./auth/reducers";
 import Layout from "./layout/reducers";
 import ConsultantReducer from "./consultant/reducer";
 import AdminStaff from "./adminStaffs/reducer";
+import ConsultantStaff from "./consultantStaffs/reducer";
 
 export default combineReducers({
   Auth,
   Layout,
   ConsultantReducer,
   AdminStaff,
+  ConsultantStaff,
 });

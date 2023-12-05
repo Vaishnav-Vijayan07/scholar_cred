@@ -54,7 +54,7 @@ function deleteConsultant(id: number) {
 
 function getConsultantsById(id: number) {
   const baseUrl = "/get_consultants_by_id";
-  return api.create(`${baseUrl}/${id}`, {});
+  return api.get(`${baseUrl}?id=${id}`, {});
 }
 
 export { createConsultant, updateConsultant, getConsultants, deleteConsultant, getConsultantsById };
