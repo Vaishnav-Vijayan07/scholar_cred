@@ -221,9 +221,9 @@ const Profile = () => {
     // Check for errors and clear the form
     if (!staffLoading && !error) {
       handleCancelUpdate();
-      setResponsiveModal(false);
       if (id) {
         dispatch(getConsultantStaff(consultant_admin_usertype, id));
+        setResponsiveModal(false);
       }
     }
   }, [staffLoading, error]);
