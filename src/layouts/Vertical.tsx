@@ -31,29 +31,19 @@ const VerticalLayout = ({ children }: VerticalLayoutProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { width } = useViewport();
 
-  const {
-    layoutMode,
-    layoutColor,
-    layoutWidth,
-    menuPosition,
-    leftSideBarTheme,
-    leftSideBarType,
-    showSidebarUserInfo,
-    showTwoToneIcons,
-    topbarTheme,
-    isOpenRightSideBar,
-  } = useSelector((state: RootState) => ({
-    layoutMode: state.Layout.layoutMode,
-    layoutColor: state.Layout.layoutColor,
-    layoutWidth: state.Layout.layoutWidth,
-    menuPosition: state.Layout.menuPosition,
-    leftSideBarTheme: state.Layout.leftSideBarTheme,
-    leftSideBarType: state.Layout.leftSideBarType,
-    showSidebarUserInfo: state.Layout.showSidebarUserInfo,
-    showTwoToneIcons: state.Layout.showTwoToneIcons,
-    topbarTheme: state.Layout.topbarTheme,
-    isOpenRightSideBar: state.Layout.isOpenRightSideBar,
-  }));
+  const { layoutMode, layoutColor, layoutWidth, menuPosition, leftSideBarTheme, leftSideBarType, showSidebarUserInfo, showTwoToneIcons, topbarTheme, isOpenRightSideBar } =
+    useSelector((state: RootState) => ({
+      layoutMode: state.Layout.layoutMode,
+      layoutColor: state.Layout.layoutColor,
+      layoutWidth: state.Layout.layoutWidth,
+      menuPosition: state.Layout.menuPosition,
+      leftSideBarTheme: state.Layout.leftSideBarTheme,
+      leftSideBarType: state.Layout.leftSideBarType,
+      showSidebarUserInfo: state.Layout.showSidebarUserInfo,
+      showTwoToneIcons: state.Layout.showTwoToneIcons,
+      topbarTheme: state.Layout.topbarTheme,
+      isOpenRightSideBar: state.Layout.isOpenRightSideBar,
+    }));
 
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 
@@ -67,9 +57,7 @@ const VerticalLayout = ({ children }: VerticalLayoutProps) => {
       // document.getElementsByTagName('html')[0].classList.add('sidebar-enable')
     } else if (width >= 1140) {
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
-      document
-        .getElementsByTagName("html")[0]
-        .classList.remove("sidebar-enable");
+      document.getElementsByTagName("html")[0].classList.remove("sidebar-enable");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width]);
@@ -129,11 +117,8 @@ const VerticalLayout = ({ children }: VerticalLayoutProps) => {
     }
   };
 
-  const isCondensed: boolean =
-    leftSideBarType === SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED;
+  const isCondensed: boolean = leftSideBarType === SideBarTypes.LEFT_SIDEBAR_TYPE_CONDENSED;
 
-    console.log("Iscondesnced", isCondensed);
-    
   return (
     <>
       <div id="wrapper">

@@ -5,12 +5,6 @@ const api = new APICore();
 
 // account
 function login(params: { username: string; password: string }) {
-  const baseUrl = "/login";
-  console.log("baseUrl", axios.defaults.baseURL);
-
-  // return api.create(`${baseUrl}`, params);
-  console.log("params", params);
-
   return axios.post(`/login`, params);
 }
 

@@ -61,6 +61,8 @@ export const initialValidationState = {
   pan_no: "",
 };
 
+// ----------------staff types ----------
+
 export interface StaffTypes {
   id: string;
   first_name: string;
@@ -89,4 +91,37 @@ export const StaffInitialValidationState = {
   phone: "",
   image: "https://picsum.photos/id/0/367/267",
   employee_id: "",
+};
+
+// ------------- Student -----------
+export interface StudentDataTypes {
+  student_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  date_of_birth?: string;
+  country_of_origin?: string;
+  application_status?: string;
+}
+
+export const StudentInitialState = {
+  student_id: "",
+  first_name: "",
+  last_name: "",
+  email: "",
+  phone: "",
+  date_of_birth: "",
+  country_of_origin: "",
+  application_status: "Pending",
+};
+
+export const StudentValidationState = {
+  first_name: "",
+  last_name: "",
+  email: "",
+  phone: "",
+  date_of_birth: "",
+  country_of_origin: "",
+  application_status: "",
 };

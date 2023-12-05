@@ -14,8 +14,6 @@ function getAdminStaffById(id: number) {
 
 // account
 function createAdminStaff(params: { first_name: string; last_name: string; email: string; phone: string; image: string; employee_id: string; created_by: number }) {
-  console.log("params====>", params);
-
   const baseUrl = "/create_admin_staff";
 
   return api.create(`${baseUrl}`, params);

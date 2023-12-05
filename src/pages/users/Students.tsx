@@ -9,7 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 // components
 import PageTitle from "../../components/PageTitle";
-import { StaffInitialState, StaffInitialValidationState, StaffTypes, initialState, sizePerPageList } from "./data";
+import { StaffInitialState, StaffInitialValidationState, StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "./data";
 import { useDispatch, useSelector } from "react-redux";
 import { createadminStaff, deleteAdminStaff, editAdminStaff, getAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
@@ -22,11 +22,11 @@ const BasicInputElements = withSwal((props: any) => {
   const records = state;
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
-  const [formData, setFormData] = useState<StaffTypes>(StaffInitialState);
+  const [formData, setFormData] = useState<StudentDataTypes>(StudentInitialState);
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   //validation errors
-  const [validationErrors, setValidationErrors] = useState(StaffInitialValidationState);
+  const [validationErrors, setValidationErrors] = useState(StudentValidationState);
 
   const validationSchema = yup.object().shape({
     first_name: yup.string().required("First name is required"),
@@ -36,6 +36,9 @@ const BasicInputElements = withSwal((props: any) => {
       .string()
       .required("Phone number is required")
       .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
+    date_of_birth: yup.string().required("DOB is required"),
+    country_of_origin: yup.string().nullable(),
+    application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
   });
 
   const methods = useForm({
@@ -52,8 +55,9 @@ const BasicInputElements = withSwal((props: any) => {
       last_name: item.last_name,
       email: item.email,
       phone: item.phone,
-      image: item.image,
-      employee_id: item.employee_id,
+      date_of_birth: item.date_of_birth,
+      country_of_origin: item.country_of_origin,
+      application_status: item.application_status,
     }));
 
     setIsUpdate(true);
@@ -97,10 +101,10 @@ const BasicInputElements = withSwal((props: any) => {
       // Validation passed, handle form submission
       if (isUpdate) {
         // Handle update logic
-        dispatch(editAdminStaff(formData.id, formData.first_name, formData.last_name, formData.email, formData.phone, formData.image, formData.employee_id, 1));
+        // dispatch(editAdminStaff(formData.student_id, formData.first_name, formData.last_name, formData.email, formData.phone, formData.date_of_birth, formData.country_of_origin, formData.application_status));
       } else {
         // Handle add logic
-        dispatch(createadminStaff(formData.first_name, formData.last_name, formData.email, formData.phone, formData.image, formData.employee_id, 1));
+        // dispatch(createadminStaff(formData.first_name, formData.last_name, formData.email, formData.phone, formData.image, formData.employee_id, 1));
       }
     } catch (validationError) {
       // Handle validation errors
@@ -142,19 +146,19 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "phone",
       sort: false,
     },
-    // {
-    //   Header: "Image",
-    //   accessor: "image",
-    //   sort: false,
-    //   Cell: ({ row }: any) => (
-    //     <>
-    //       <img src={row.original.image} alt="user image" width={50} />
-    //     </>
-    //   ),
-    // },
     {
-      Header: "Employee Id",
-      accessor: "employee_id",
+      Header: "DOB",
+      accessor: "date_of_birth",
+      sort: false,
+    },
+    {
+      Header: "Country",
+      accessor: "country_of_origin",
+      sort: false,
+    },
+    {
+      Header: "Application Status",
+      accessor: "application_status",
       sort: false,
     },
     {
@@ -184,7 +188,7 @@ const BasicInputElements = withSwal((props: any) => {
   //handle cancel update section
   const handleCancelUpdate = () => {
     setIsUpdate(false);
-    setFormData(StaffInitialState);
+    setFormData(StudentInitialState);
   };
 
   const toggleResponsiveModal = () => {
@@ -202,20 +206,22 @@ const BasicInputElements = withSwal((props: any) => {
       last_name: "Doe",
       email: "john.doe@example.com",
       phone: "9876545678",
-      image: "https://example.com/john-doe.jpg",
-      employee_id: "EMP001",
-      created_by: 1,
+      date_of_birth: "2023-12-05",
+      country_of_origin: "India",
+      application_status: "Pending",
     }));
   };
 
   useEffect(() => {
     // Check for errors and clear the form
     if (!loading && !error) {
-      setValidationErrors(StaffInitialValidationState);
+      setValidationErrors(StudentValidationState);
       handleCancelUpdate();
       setResponsiveModal(false);
     }
   }, [loading, error]);
+
+  console.log("formData", formData);
 
   return (
     <>
@@ -223,49 +229,65 @@ const BasicInputElements = withSwal((props: any) => {
         <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
           <Form onSubmit={onSubmit}>
             <Modal.Header closeButton>
-              <h4 className="modal-title">Staff Management</h4>
+              <h4 className="modal-title">Student Management</h4>
             </Modal.Header>
-            <Modal.Body className="px-4">
+            <Modal.Body className="px-3">
               {error && (
                 <Alert variant="danger" className="my-2">
                   {error}
                 </Alert>
               )}
-              <Form.Group className="mb-3" controlId="first_name">
-                <Form.Label>First Name</Form.Label>
-                <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
-                {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
-              </Form.Group>
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="first_name">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
+                    {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
+                  </Form.Group>
+                </Col>
 
-              <Form.Group className="mb-3" controlId="last_name">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter Second Name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
-                {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
-              </Form.Group>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="last_name">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="text" placeholder="Enter Second Name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
+                    {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-              <Form.Group className="mb-3" controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
-                {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
-              </Form.Group>
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
+                    {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="phone">
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control type="text" name="phone" placeholder="Enter phone number" value={formData.phone} onChange={handleInputChange} />
+                    {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-              <Form.Group className="mb-3" controlId="phone">
-                <Form.Label>Phone</Form.Label>
-                <Form.Control type="text" name="phone" placeholder="Enter phone number" value={formData.phone} onChange={handleInputChange} />
-                {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="employee_id">
-                <Form.Label>Employee Id</Form.Label>
-                <Form.Control type="text" name="employee_id" placeholder="Enter Employee Id" value={formData.employee_id} onChange={handleInputChange} />
-                {validationErrors.employee_id && <Form.Text className="text-danger">{validationErrors.employee_id}</Form.Text>}
-              </Form.Group>
-
-              {/* <Form.Group className="mb-3" controlId="image">
-                <Form.Label>image</Form.Label>
-                <Form.Control type="file" name="image" value={formData.image} onChange={handleInputChange} />
-                {validationErrors.image && <Form.Text className="text-danger">{validationErrors.image}</Form.Text>}
-              </Form.Group> */}
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="country_of_origin">
+                    <Form.Label>Country</Form.Label>
+                    <Form.Control type="text" name="country_of_origin" placeholder="Enter Employee Id" value={formData.country_of_origin} onChange={handleInputChange} />
+                    {validationErrors.country_of_origin && <Form.Text className="text-danger">{validationErrors.country_of_origin}</Form.Text>}
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="date_of_birth">
+                    <Form.Label>DOB</Form.Label>
+                    <Form.Control type="date" name="date_of_birth" placeholder="Enter DOB" value={formData.date_of_birth} onChange={handleInputChange} />
+                    {validationErrors.date_of_birth && <Form.Text className="text-danger">{validationErrors.date_of_birth}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -302,9 +324,9 @@ const BasicInputElements = withSwal((props: any) => {
           <Card className="bg-white">
             <Card.Body>
               <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
-                <i className="mdi mdi-plus-circle"></i> Add Staff
+                <i className="mdi mdi-plus-circle"></i> Add Student
               </Button>
-              <h4 className="header-title mb-4">Manage Staff</h4>
+              <h4 className="header-title mb-4">Manage Student</h4>
               <Table
                 columns={columns}
                 data={records ? records : []}
