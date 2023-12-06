@@ -14,7 +14,7 @@ import {
 } from "../../helpers/";
 
 // actions
-import { consultantStaffApiResponseSuccess, consultantStaffApiResponseError } from "./actions";
+import { consultantStaffApiResponseSuccess, consultantStaffApiResponseError, getConsultantStaff } from "./actions";
 
 // constants
 import { ConsultantStaffActionTypes } from "./constants";
@@ -51,12 +51,13 @@ function* createConsultantStaff({ payload: { username, password_hash, email, ful
     yield put(consultantStaffApiResponseSuccess(ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF, consultant_data));
     //calling get method after successfull api creation
     // yield put(getConsultants());
+    yield put(getConsultantStaff(user_type_id, consultant_id));
   } catch (error: any) {
     yield put(consultantStaffApiResponseError(ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF, error));
   }
 }
 
-function* getConsultantStaff({ payload: { user_type, consultant_id }, type }: ConsultantStaffData): SagaIterator {
+function* getConsultantStaffs({ payload: { user_type, consultant_id }, type }: ConsultantStaffData): SagaIterator {
   try {
     const response = yield call(getConsultantStaffApi, {
       user_type,
@@ -98,19 +99,20 @@ function* updateConsultantStaff({ payload: { id, username, password_hash, email,
     const consultant_data = response.data.message;
 
     yield put(consultantStaffApiResponseSuccess(ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF, consultant_data));
-    // yield put(getConsultants());
+    yield put(getConsultantStaff(user_type_id, consultant_id));
   } catch (error: any) {
     yield put(consultantStaffApiResponseError(ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF, error));
   }
 }
 
-function* deleteConsultantStaff({ payload: { id } }: ConsultantStaffData): SagaIterator {
+function* deleteConsultantStaff({ payload: { id, user_type, consultant_id } }: ConsultantStaffData): SagaIterator {
   try {
     const response = yield call(deleteConsultantStaffApi, id);
     const data = response.data.message;
 
     yield put(consultantStaffApiResponseSuccess(ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF, data));
     // yield put(getConsultants());
+    yield put(getConsultantStaff(user_type, consultant_id));
   } catch (error: any) {
     yield put(consultantStaffApiResponseSuccess(ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF, error));
     throw error;
@@ -118,7 +120,7 @@ function* deleteConsultantStaff({ payload: { id } }: ConsultantStaffData): SagaI
 }
 
 export function* watchGetAllConsultantStaff() {
-  yield takeEvery(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF, getConsultantStaff);
+  yield takeEvery(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF, getConsultantStaffs);
 }
 export function* watchGetConsultantStaffById() {
   yield takeEvery(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID, getConsultantStaffById);

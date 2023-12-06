@@ -1,18 +1,20 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Row, Col, Card, Form, Button, Modal, Alert } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import moment from "moment";
 
 // components
 import PageTitle from "../../components/PageTitle";
-import { StaffInitialState, StaffInitialValidationState, StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "./data";
+import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "./data";
 import { useDispatch, useSelector } from "react-redux";
-import { createadminStaff, deleteAdminStaff, editAdminStaff, getAdminStaff } from "../../redux/adminStaffs/actions";
+import { deleteAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
+import { createStudent, deleteStudent, editStudent, getStudent } from "../../redux/actions";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error } = props;
@@ -38,7 +40,7 @@ const BasicInputElements = withSwal((props: any) => {
       .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
     date_of_birth: yup.string().required("DOB is required"),
     country_of_origin: yup.string().nullable(),
-    application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
+    // application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
   });
 
   const methods = useForm({
@@ -50,12 +52,12 @@ const BasicInputElements = withSwal((props: any) => {
   const handleUpdate = (item: any) => {
     setFormData((prev) => ({
       ...prev,
-      id: item.id,
+      student_id: item.student_id,
       first_name: item.first_name,
       last_name: item.last_name,
       email: item.email,
       phone: item.phone,
-      date_of_birth: item.date_of_birth,
+      date_of_birth: moment(item.date_of_birth).format("YYYY-MM-DD"),
       country_of_origin: item.country_of_origin,
       application_status: item.application_status,
     }));
@@ -78,7 +80,7 @@ const BasicInputElements = withSwal((props: any) => {
       .then((result: any) => {
         if (result.isConfirmed) {
           // swal.fire("Deleted!", "Your item has been deleted.", "success");
-          dispatch(deleteAdminStaff(id));
+          dispatch(deleteStudent(id));
         }
       });
   };
@@ -86,10 +88,21 @@ const BasicInputElements = withSwal((props: any) => {
   //handle onchange function
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    // Limit the length to 10 characters
+    if (name == "phone") {
+      const numericValue = value.replace(/\D/g, "");
+      const truncatedValue = numericValue.slice(0, 10);
+      setFormData({
+        ...formData,
+        [name]: truncatedValue,
+      });
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   //handle form submission
@@ -100,11 +113,23 @@ const BasicInputElements = withSwal((props: any) => {
       await validationSchema.validate(formData, { abortEarly: false });
       // Validation passed, handle form submission
       if (isUpdate) {
-        // Handle update logic
-        // dispatch(editAdminStaff(formData.student_id, formData.first_name, formData.last_name, formData.email, formData.phone, formData.date_of_birth, formData.country_of_origin, formData.application_status));
+        dispatch(
+          editStudent(
+            formData.student_id,
+            formData.first_name,
+            formData.last_name,
+            formData.email,
+            formData.phone,
+            formData.date_of_birth,
+            formData.country_of_origin,
+            formData.application_status
+          )
+        );
       } else {
         // Handle add logic
-        // dispatch(createadminStaff(formData.first_name, formData.last_name, formData.email, formData.phone, formData.image, formData.employee_id, 1));
+        dispatch(
+          createStudent(formData.first_name, formData.last_name, formData.email, formData.phone, formData.date_of_birth, formData.country_of_origin, formData.application_status)
+        );
       }
     } catch (validationError) {
       // Handle validation errors
@@ -123,7 +148,7 @@ const BasicInputElements = withSwal((props: any) => {
   const columns = [
     {
       Header: "ID",
-      accessor: "id",
+      accessor: "student_id",
       sort: true,
     },
     {
@@ -150,6 +175,7 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "DOB",
       accessor: "date_of_birth",
       sort: false,
+      Cell: ({ row }: any) => <div>{moment(row.original.date_of_birth).format("DD/MM/YYYY")}</div>,
     },
     {
       Header: "Country",
@@ -179,7 +205,7 @@ const BasicInputElements = withSwal((props: any) => {
           />
 
           {/* Delete Icon */}
-          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.id)} />
+          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.student_id)} />
         </div>
       ),
     },
@@ -220,8 +246,6 @@ const BasicInputElements = withSwal((props: any) => {
       setResponsiveModal(false);
     }
   }, [loading, error]);
-
-  console.log("formData", formData);
 
   return (
     <>
@@ -266,7 +290,7 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="phone">
                     <Form.Label>Phone</Form.Label>
-                    <Form.Control type="text" name="phone" placeholder="Enter phone number" value={formData.phone} onChange={handleInputChange} />
+                    <Form.Control type="text" maxLength={10} name="phone" placeholder="Enter phone number" value={formData.phone} onChange={handleInputChange} />
                     {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
                   </Form.Group>
                 </Col>
@@ -350,13 +374,14 @@ const Students = () => {
   const dispatch = useDispatch();
 
   const { state, loading, error } = useSelector((state: RootState) => ({
-    state: state.AdminStaff.adminStaff.data,
-    loading: state?.AdminStaff.loading,
-    error: state?.AdminStaff.error,
+    state: state.Students.students,
+    loading: state?.Students.loading,
+    error: state?.Students.error,
   }));
 
   useEffect(() => {
-    dispatch(getAdminStaff());
+    // dispatch(getAdminStaff());
+    dispatch(getStudent());
   }, []);
 
   return (
