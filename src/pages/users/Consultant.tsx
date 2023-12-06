@@ -103,10 +103,20 @@ const BasicInputElements = withSwal((props: any) => {
   //handle onchange function
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    // Limit the length to 10 characters
+    if (name == "phone" || name == "alternative_phone") {
+      const numericValue = value.replace(/\D/g, "");
+      const truncatedValue = numericValue.slice(0, 10);
+      setFormData({
+        ...formData,
+        [name]: truncatedValue,
+      });
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   //handle form submission
@@ -292,7 +302,7 @@ const BasicInputElements = withSwal((props: any) => {
   return (
     <>
       <Row className="justify-content-between px-2">
-        <Modal show={modal} onHide={toggle} dialogClassName={className}>
+        <Modal show={modal} onHide={toggle} dialogClassName={className} className="custom-modal">
           <h6 className="fw-medium px-3 m-0 py-2 font-13 text-uppercase bg-light">
             <span className="d-block py-1">Consultant Management</span>
           </h6>
@@ -341,7 +351,7 @@ const BasicInputElements = withSwal((props: any) => {
                           type="text"
                           name="alternative_phone"
                           placeholder="Enter alternative phone number"
-                          maxLength={10} 
+                          maxLength={10}
                           value={formData.alternative_phone}
                           onChange={handleInputChange}
                         />

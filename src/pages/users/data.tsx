@@ -79,8 +79,9 @@ export const StaffInitialState = {
   last_name: "",
   email: "",
   phone: "",
-  image: "",
+  image: "https://example.com/john-doe.jpg",
   employee_id: "",
+  created_by: "1",
 };
 
 export const StaffInitialValidationState = {
@@ -100,7 +101,7 @@ export interface StudentDataTypes {
   last_name: string;
   email: string;
   phone: string;
-  date_of_birth?: string;
+  date_of_birth?: string | undefined;
   country_of_origin?: string;
   application_status?: string;
 }

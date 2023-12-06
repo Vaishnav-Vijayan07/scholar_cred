@@ -10,7 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import PageTitle from "../../components/PageTitle";
 import { StaffInitialState, StaffInitialValidationState, StaffTypes, initialState, sizePerPageList } from "./data";
-import { InitialValidationState } from "./Profile/data";
+import { InitialValidationState } from "./ConsultantDetails/data";
 import { useDispatch, useSelector } from "react-redux";
 import { createadminStaff, deleteAdminStaff, editAdminStaff, getAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
@@ -83,10 +83,20 @@ const BasicInputElements = withSwal((props: any) => {
   //handle onchange function
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    // Limit the length to 10 characters
+    if (name == "phone") {
+      const numericValue = value.replace(/\D/g, "");
+      const truncatedValue = numericValue.slice(0, 10);
+      setFormData({
+        ...formData,
+        [name]: truncatedValue,
+      });
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   //handle form submission
@@ -218,6 +228,8 @@ const BasicInputElements = withSwal((props: any) => {
     }
   }, [loading, error]);
 
+  console.log("FormData", formData);
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -252,7 +264,7 @@ const BasicInputElements = withSwal((props: any) => {
 
               <Form.Group className="mb-3" controlId="phone">
                 <Form.Label>Phone</Form.Label>
-                <Form.Control type="text" name="phone" placeholder="Enter phone number" value={formData.phone} onChange={handleInputChange} />
+                <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
                 {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
               </Form.Group>
 

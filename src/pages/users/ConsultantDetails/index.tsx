@@ -93,7 +93,7 @@ const Profile = () => {
     },
   ];
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (itemId: string) => {
     Swal.fire({
       title: "Are you sure?",
       text: "This action cannot be undone.",
@@ -105,7 +105,9 @@ const Profile = () => {
     }).then((result: any) => {
       if (result.isConfirmed) {
         // swal.fire("Deleted!", "Your item has been deleted.", "success");
-        dispatch(deleteConsultantStaff(id));
+        if (id) {
+          dispatch(deleteConsultantStaff(itemId, consultant_admin_usertype, id));
+        }
       }
     });
   };
@@ -222,7 +224,9 @@ const Profile = () => {
     if (!staffLoading && !error) {
       handleCancelUpdate();
       if (id) {
-        dispatch(getConsultantStaff(consultant_admin_usertype, id));
+        // dispatch(getConsultantStaff(consultant_admin_usertype, id));
+        console.log("Triggering");
+
         setResponsiveModal(false);
       }
     }

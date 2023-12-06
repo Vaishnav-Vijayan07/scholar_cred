@@ -80,9 +80,9 @@ export const editConsultantStaff = (
 
 //delete consultant
 
-export const deleteConsultantStaff = (id: string) => ({
+export const deleteConsultantStaff = (id: string, user_type: string, consultant_id: string) => ({
   type: ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF,
-  payload: { id },
+  payload: { id, user_type, consultant_id },
 });
 
 export const getConsultantStaff = (user_type: string, consultant_id: string): ConsultantStaffActionType => ({

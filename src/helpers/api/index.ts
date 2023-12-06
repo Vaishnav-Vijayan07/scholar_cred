@@ -6,6 +6,7 @@ import { createAdminStaff, deleteAdminStaff, getAdminStaff, getAdminStaffById, u
 import { createConsultantStaff, deleteConsultantStaff, getConsultantStaff, getConsultantStaffById, updateConsultantStaff } from "./consultantStaff";
 
 import { getUserTypes } from "./user_types";
+import { createStudent, deleteStudent, getStudent, getStudentById, updateStudent } from "./students";
 
 export {
   login,
@@ -33,4 +34,9 @@ export {
   getConsultantStaff,
   getConsultantStaffById,
   updateConsultantStaff,
+  createStudent,
+  deleteStudent,
+  getStudent,
+  getStudentById,
+  updateStudent,
 };
