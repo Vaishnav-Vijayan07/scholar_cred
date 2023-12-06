@@ -24,6 +24,8 @@ interface AdminStaffData {
   created_by: number;
 }
 
+
+
 // Common success
 export const adminStaffApiResponseSuccess = (actionType: string, data: AdminStaffData | {}): AdminStaffActionType => ({
   type: AdminStaffActionTypes.API_RESPONSE_SUCCESS,

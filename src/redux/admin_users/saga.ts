@@ -8,13 +8,13 @@ import { APICore, setAuthorization } from "../../helpers/api/apiCore";
 import {
   createAdminUsers as createAdminUsersApi,
   editAdminUsers as editAdminUsersApi,
-  getAdminUsers as getAdminUsersApi,
+  getCredAdminUsers as getAdminUsersApi,
   getAdminUsersById as getAdminUsersByIdApi,
   deleteAdminUsers as deleteAdminUsersApi,
 } from "../../helpers/";
 
 // actions
-import { authApiResponseSuccess, authApiResponseError } from "./actions";
+import { credAuthApiResponseSuccess, credAuthApiResponseError } from "./actions";
 
 // constants
 import { AdminActionTypes } from "./constants";
@@ -66,10 +66,10 @@ function* createAdminUsers({
     // NOTE - You can change this according to response format from your api
 
     yield put(
-      authApiResponseSuccess(AdminActionTypes.CREATE_ADMIN_USER, adminUserData)
+      credAuthApiResponseSuccess(AdminActionTypes.CREATE_CRED_ADMIN_USER, adminUserData)
     );
   } catch (error: any) {
-    yield put(authApiResponseError(AdminActionTypes.CREATE_ADMIN_USER, error));
+    yield put(credAuthApiResponseError(AdminActionTypes.CREATE_CRED_ADMIN_USER, error));
   }
 }
 
@@ -85,10 +85,10 @@ function* editAdminUsers({
     // NOTE - You can change this according to response format from your api
 
     yield put(
-      authApiResponseSuccess(AdminActionTypes.EDIT_ADMIN_USER, adminUserData)
+      credAuthApiResponseSuccess(AdminActionTypes.EDIT_CRED_ADMIN_USER, adminUserData)
     );
   } catch (error: any) {
-    yield put(authApiResponseError(AdminActionTypes.EDIT_ADMIN_USER, error));
+    yield put(credAuthApiResponseError(AdminActionTypes.EDIT_CRED_ADMIN_USER, error));
   }
 }
 
@@ -97,15 +97,13 @@ function* getAdminUsers({
   type,
 }: AdminUserData): SagaIterator {
   try {
-    const response = yield call(getAdminUsersApi, {});
+    const response = yield call(getAdminUsersApi);
     const adminUserData = response.data;
-    // NOTE - You can change this according to response format from your api
-
     yield put(
-      authApiResponseSuccess(AdminActionTypes.GET_ADMIN_USERS, adminUserData)
+      credAuthApiResponseSuccess(AdminActionTypes.GET_CRED_ADMIN_USERS, adminUserData)
     );
   } catch (error: any) {
-    yield put(authApiResponseError(AdminActionTypes.GET_ADMIN_USERS, error));
+    yield put(credAuthApiResponseError(AdminActionTypes.GET_CRED_ADMIN_USERS, error));
   }
 }
 
@@ -119,10 +117,10 @@ function* getAdminUsersById({
     // NOTE - You can change this according to response format from your api
 
     yield put(
-      authApiResponseSuccess(AdminActionTypes.GET_ADMIN_USERS, adminUserData)
+      credAuthApiResponseSuccess(AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID, adminUserData)
     );
   } catch (error: any) {
-    yield put(authApiResponseError(AdminActionTypes.GET_ADMIN_USERS, error));
+    yield put(credAuthApiResponseError(AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID, error));
   }
 }
 
@@ -136,10 +134,10 @@ function* deleteAdminUsers({
     // NOTE - You can change this according to response format from your api
 
     yield put(
-      authApiResponseSuccess(AdminActionTypes.DELETE_ADMIN_USERS, adminUserData)
+      credAuthApiResponseSuccess(AdminActionTypes.DELETE_CRED_ADMIN_USERS, adminUserData)
     );
   } catch (error: any) {
-    yield put(authApiResponseError(AdminActionTypes.DELETE_ADMIN_USERS, error));
+    yield put(credAuthApiResponseError(AdminActionTypes.DELETE_CRED_ADMIN_USERS, error));
   }
 }
 
@@ -148,22 +146,22 @@ function* deleteAdminUsers({
  */
 
 export function* createAdminUser() {
-  yield takeEvery(AdminActionTypes.CREATE_ADMIN_USER, createAdminUsers);
+  yield takeEvery(AdminActionTypes.CREATE_CRED_ADMIN_USER, createAdminUsers);
 }
 export function* editAdminUser() {
-  yield takeEvery(AdminActionTypes.EDIT_ADMIN_USER, editAdminUsers);
+  yield takeEvery(AdminActionTypes.EDIT_CRED_ADMIN_USER, editAdminUsers);
 }
 export function* getAdminUser() {
-  yield takeEvery(AdminActionTypes.GET_ADMIN_USERS, getAdminUsers);
+  yield takeEvery(AdminActionTypes.GET_CRED_ADMIN_USERS, getAdminUsers);
 }
 export function* getAdminUserbyId() {
-  yield takeEvery(AdminActionTypes.GET_ADMIN_USERS, getAdminUsersById);
+  yield takeEvery(AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID, getAdminUsersById);
 }
 
 export function* deleteAdminUser() {
-  yield takeEvery(AdminActionTypes.DELETE_ADMIN_USERS, deleteAdminUsers);
+  yield takeEvery(AdminActionTypes.DELETE_CRED_ADMIN_USERS, deleteAdminUsers);
 }
-function* adminUsersSaga() {
+function* credAdminUsersSaga() {
   yield all([
     fork(createAdminUser),
     fork(editAdminUser),
@@ -173,4 +171,4 @@ function* adminUsersSaga() {
   ]);
 }
 
-export default adminUsersSaga;
+export default credAdminUsersSaga;

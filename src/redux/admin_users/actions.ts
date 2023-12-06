@@ -5,11 +5,11 @@ export interface AdminActionType {
   type:
     | AdminActionTypes.API_RESPONSE_SUCCESS
     | AdminActionTypes.API_RESPONSE_ERROR
-    | AdminActionTypes.EDIT_ADMIN_USER
-    | AdminActionTypes.CREATE_ADMIN_USER
-    | AdminActionTypes.GET_ADMIN_USERS
-    | AdminActionTypes.GET_ADMIN_USERS_BY_ID
-    | AdminActionTypes.DELETE_ADMIN_USERS;
+    | AdminActionTypes.EDIT_CRED_ADMIN_USER
+    | AdminActionTypes.CREATE_CRED_ADMIN_USER
+    | AdminActionTypes.GET_CRED_ADMIN_USERS
+    | AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID
+    | AdminActionTypes.DELETE_CRED_ADMIN_USERS;
   payload: {} | string;
 }
 
@@ -24,7 +24,7 @@ interface AdminUserDetails {
 }
 
 // common success
-export const authApiResponseSuccess = (
+export const credAuthApiResponseSuccess = (
   actionType: string,
   data: AdminUserDetails | {}
 ): AdminActionType => ({
@@ -32,7 +32,7 @@ export const authApiResponseSuccess = (
   payload: { actionType, data },
 });
 // common error
-export const authApiResponseError = (
+export const credAuthApiResponseError = (
   actionType: string,
   error: string
 ): AdminActionType => ({
@@ -49,7 +49,7 @@ export const createAminUsers = (
   created_by: number,
   consultant_id: number
 ): AdminActionType => ({
-  type: AdminActionTypes.CREATE_ADMIN_USER,
+  type: AdminActionTypes.CREATE_CRED_ADMIN_USER,
   payload: {
     username,
     password_hash,
@@ -60,21 +60,30 @@ export const createAminUsers = (
     consultant_id,
   },
 });
-export const deleteAdminUsers = (id: number): AdminActionType => ({
-  type: AdminActionTypes.DELETE_ADMIN_USERS,
-  payload: { id },
-});
-export const editAdminUsers = (full_name: string): AdminActionType => ({
-  type: AdminActionTypes.EDIT_ADMIN_USER,
-  payload: { full_name },
-});
 
-export const getAdminUsers = (): AdminActionType => ({
-  type: AdminActionTypes.GET_ADMIN_USERS,
+
+export const getCredAdminUsers = (): AdminActionType => ({
+  type: AdminActionTypes.GET_CRED_ADMIN_USERS,
   payload: {},
 });
 
+
+
+
+
+
+export const deleteAdminUsers = (id: number): AdminActionType => ({
+  type: AdminActionTypes.DELETE_CRED_ADMIN_USERS,
+  payload: { id },
+});
+export const editAdminUsers = (full_name: string): AdminActionType => ({
+  type: AdminActionTypes.EDIT_CRED_ADMIN_USER,
+  payload: { full_name },
+});
+
+
+
 export const getAdminUsersById = (id: number): AdminActionType => ({
-  type: AdminActionTypes.GET_ADMIN_USERS_BY_ID,
+  type: AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID,
   payload: { id },
 });

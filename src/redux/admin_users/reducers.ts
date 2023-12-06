@@ -6,7 +6,9 @@ import { AdminActionTypes } from "./constants";
 
 const api = new APICore();
 
-const INIT_STATE = {};
+const INIT_STATE = {
+  credAdmin: []  
+};
 
 interface AdminUserData {
   id: number;
@@ -23,15 +25,16 @@ interface AuthActionType {
   type:
     | AdminActionTypes.API_RESPONSE_SUCCESS
     | AdminActionTypes.API_RESPONSE_ERROR
-    | AdminActionTypes.CREATE_ADMIN_USER
-    | AdminActionTypes.EDIT_ADMIN_USER
-    | AdminActionTypes.GET_ADMIN_USERS
-    | AdminActionTypes.GET_ADMIN_USERS_BY_ID
-    | AdminActionTypes.DELETE_ADMIN_USERS;
+    | AdminActionTypes.CREATE_CRED_ADMIN_USER
+    | AdminActionTypes.EDIT_CRED_ADMIN_USER
+    | AdminActionTypes.GET_CRED_ADMIN_USERS
+    | AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID
+    | AdminActionTypes.DELETE_CRED_ADMIN_USERS;
   payload: {
     actionType?: string;
     data?: AdminUserData | {};
     error?: string;
+    credAdmin?: []
   };
 }
 
@@ -41,14 +44,14 @@ interface State {
   value?: boolean;
 }
 
-const AdminStates = (
+const CredAdminStates = (
   state: State = INIT_STATE,
   action: AuthActionType
 ): any => {
   switch (action.type) {
     case AdminActionTypes.API_RESPONSE_SUCCESS:
       switch (action.payload.actionType) {
-        case AdminActionTypes.CREATE_ADMIN_USER: {
+        case AdminActionTypes.CREATE_CRED_ADMIN_USER: {
           return {
             ...state,
             user: action.payload.data,
@@ -56,14 +59,14 @@ const AdminStates = (
             loading: false,
           };
         }
-        case AdminActionTypes.GET_ADMIN_USERS: {
+        case AdminActionTypes.GET_CRED_ADMIN_USERS: {
           return {
             ...state,
             loading: false,
             userSignUp: true,
           };
         }
-        case AdminActionTypes.EDIT_ADMIN_USER: {
+        case AdminActionTypes.EDIT_CRED_ADMIN_USER: {
           return {
             ...state,
             user: null,
@@ -71,7 +74,7 @@ const AdminStates = (
             userLogout: true,
           };
         }
-        case AdminActionTypes.GET_ADMIN_USERS_BY_ID: {
+        case AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID: {
           return {
             ...state,
             resetPasswordSuccess: action.payload.data,
@@ -79,7 +82,7 @@ const AdminStates = (
             passwordReset: true,
           };
         }
-        case AdminActionTypes.DELETE_ADMIN_USERS: {
+        case AdminActionTypes.DELETE_CRED_ADMIN_USERS: {
           return {
             ...state,
             resetPasswordSuccess: action.payload.data,
@@ -93,7 +96,7 @@ const AdminStates = (
 
     case AdminActionTypes.API_RESPONSE_ERROR:
       switch (action.payload.actionType) {
-        case AdminActionTypes.CREATE_ADMIN_USER: {
+        case AdminActionTypes.CREATE_CRED_ADMIN_USER: {
           return {
             ...state,
             error: action.payload.error,
@@ -101,7 +104,7 @@ const AdminStates = (
             loading: false,
           };
         }
-        case AdminActionTypes.EDIT_ADMIN_USER: {
+        case AdminActionTypes.EDIT_CRED_ADMIN_USER: {
           return {
             ...state,
             registerError: action.payload.error,
@@ -109,7 +112,7 @@ const AdminStates = (
             loading: false,
           };
         }
-        case AdminActionTypes.GET_ADMIN_USERS: {
+        case AdminActionTypes.GET_CRED_ADMIN_USERS: {
           return {
             ...state,
             error: action.payload.error,
@@ -117,7 +120,7 @@ const AdminStates = (
             passwordReset: false,
           };
         }
-        case AdminActionTypes.GET_ADMIN_USERS_BY_ID: {
+        case AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID: {
           return {
             ...state,
             error: action.payload.error,
@@ -125,7 +128,7 @@ const AdminStates = (
             passwordReset: false,
           };
         }
-        case AdminActionTypes.DELETE_ADMIN_USERS: {
+        case AdminActionTypes.DELETE_CRED_ADMIN_USERS: {
           return {
             ...state,
             error: action.payload.error,
@@ -137,20 +140,20 @@ const AdminStates = (
           return { ...state };
       }
 
-    case AdminActionTypes.CREATE_ADMIN_USER:
+    case AdminActionTypes.CREATE_CRED_ADMIN_USER:
       return { ...state, loading: true, userLoggedIn: false };
-    case AdminActionTypes.EDIT_ADMIN_USER:
+    case AdminActionTypes.EDIT_CRED_ADMIN_USER:
       return { ...state, loading: true, userLogout: false };
-    case AdminActionTypes.GET_ADMIN_USERS:
+    case AdminActionTypes.GET_CRED_ADMIN_USERS:
       return { ...state, loading: true, userLogout: false };
 
-    case AdminActionTypes.GET_ADMIN_USERS_BY_ID:
+    case AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID:
       return { ...state, loading: true, userLogout: false };
-    case AdminActionTypes.DELETE_ADMIN_USERS:
+    case AdminActionTypes.DELETE_CRED_ADMIN_USERS:
       return { ...state, loading: true, userLogout: false };
     default:
       return { ...state };
   }
 };
 
-export default AdminStates;
+export default CredAdminStates;
