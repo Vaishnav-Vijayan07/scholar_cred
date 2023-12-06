@@ -62,6 +62,19 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/users/students",
     roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"],
   },
+
+  { key: "cred_admin_management", label: "Cred Admin Management", isTitle: true, roles: ["SUPER_USER"] },
+
+  {
+    key: "cred_admin_management",
+    label: "Cred Admin Users",
+    isTitle: false,
+    icon: "users",
+    url: "/cred_admin/cred_user_management",
+    roles: ["SUPER_USER"],
+  },
+
+  
 ];
 
 const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
@@ -124,6 +137,23 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
       },
     ],
   },
+  {
+    key: "cred_admin_management",
+    icon: "users",
+    label: "Cred Admin  Management",
+    isTitle: true,
+    children: [
+      {
+        key: "cred_admin_management",
+        label: "Cred Admin Management",
+        isTitle: false,
+        url: "/cred_admin/cred_user_management",
+        roles: ["SUPER_USER"],
+      },
+    ],
+  },
+ 
+
 ];
 
 const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [

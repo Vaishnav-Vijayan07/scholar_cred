@@ -1,7 +1,7 @@
 import { login, logout, signup, forgotPassword } from "./auth";
 import { createConsultant, updateConsultant, getConsultants, getConsultantsById, deleteConsultant } from "./consultant";
 
-import { createAdminUsers, editAdminUsers, getAdminUsers, getAdminUsersById, deleteAdminUsers } from "./admin_users";
+import { createAdminUsers, editAdminUsers, getCredAdminUsers, getAdminUsersById, deleteAdminUsers } from "./admin_users";
 import { createAdminStaff, deleteAdminStaff, getAdminStaff, getAdminStaffById, updateAdminStaff } from "./admin_staffs";
 import { createConsultantStaff, deleteConsultantStaff, getConsultantStaff, getConsultantStaffById, updateConsultantStaff } from "./consultantStaff";
 
@@ -20,7 +20,7 @@ export {
   deleteConsultant,
   createAdminUsers,
   editAdminUsers,
-  getAdminUsers,
+  getCredAdminUsers,
   getAdminUsersById,
   deleteAdminUsers,
   getUserTypes,

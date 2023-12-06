@@ -15,10 +15,8 @@ const Confirm2 = React.lazy(() => import("../pages/auth2/Confirm2"));
 const ForgetPassword2 = React.lazy(() => import("../pages/auth2/ForgetPassword2"));
 const LockScreen2 = React.lazy(() => import("../pages/auth2/LockScreen2"));
 const SignInSignUp2 = React.lazy(() => import("../pages/auth2/SignInSignUp2"));
-
 // dashboard
 const Dashboard4 = React.lazy(() => import("../pages/dashboard/Dashboard4/"));
-
 // - crm pages
 const CRMLeads = React.lazy(() => import("../pages/apps/CRM/Leads/"));
 
@@ -27,8 +25,7 @@ const Consultant = React.lazy(() => import("../pages/users/Consultant"));
 const ConsultantDetails = React.lazy(() => import("../pages/users/ConsultantDetails"));
 const Staff = React.lazy(() => import("../pages/users/Staff"));
 const Students = React.lazy(() => import("../pages/users/Students"));
-
-
+const AdminUsers = React.lazy(() => import("../pages/supper_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
 
 export interface RoutesProps {
@@ -112,8 +109,26 @@ const userRoutes = {
       element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"]} component={Students} />,
       route: PrivateRoute,
     },
+  
   ],
 };
+
+const credadminRoutes = {
+  path: "/cred-admin-users",
+  name: "Cred admin users",
+  route: PrivateRoute,
+  roles: ["SUPER_USER"],
+  icon: "users",
+  children: [
+    {
+      path: "/cred_admin/cred_user_management",
+      name: "Students",
+      element: <PrivateRoute roles={["SUPER_USER"]} component={AdminUsers} />,
+      route: PrivateRoute,
+    },
+  ],
+};
+
 
 const consultantRoutes = {
   path: "/consultant-users",
@@ -207,7 +222,7 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 };
 
 // All routes
-const authProtectedRoutes = [dashboardRoutes, ...appRoutes, userRoutes, consultantRoutes];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes, userRoutes, consultantRoutes,credadminRoutes];
 const publicRoutes = [...authRoutes, ...otherPublicRoutes];
 
 const authProtectedFlattenRoutes = flattenRoutes([...authProtectedRoutes]);

@@ -26,9 +26,9 @@ function editAdminUsers(
   const baseUrl = "/edit_admin_user/";
   return api.create(`${baseUrl}/${id}`, params);
 }
-function getAdminUsers(params: {}) {
-  const baseUrl = "/edit_admin_user/";
-  return api.create(`${baseUrl}}`, params);
+function getCredAdminUsers() {
+  const baseUrl = "/cred_admin_users/";
+  return api.get(`${baseUrl}`, {});
 }
 function getAdminUsersById(id: number, params: {}) {
   const baseUrl = "/edit_admin_user/";
@@ -42,7 +42,7 @@ function deleteAdminUsers(id: number, params: {}) {
 export {
   createAdminUsers,
   editAdminUsers,
-  getAdminUsers,
+  getCredAdminUsers,
   getAdminUsersById,
   deleteAdminUsers,
 };
