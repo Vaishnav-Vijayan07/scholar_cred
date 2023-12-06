@@ -6,7 +6,8 @@ import consultantSaga from "./consultant/saga";
 import AdminStaffSaga from "./adminStaffs/saga";
 import consultantStaffSaga from "./consultantStaffs/saga";
 import StudentSaga from "./students/saga";
+import credAdminUsersSaga from "./admin_users/saga";
 
 export default function* rootSaga() {
-  yield all([authSaga(), layoutSaga(), consultantSaga(), AdminStaffSaga(), consultantStaffSaga(), StudentSaga()]);
+  yield all([authSaga(), layoutSaga(), consultantSaga(), AdminStaffSaga(), consultantStaffSaga(), StudentSaga(), credAdminUsersSaga()]);
 }

@@ -25,7 +25,7 @@ const Consultant = React.lazy(() => import("../pages/users/Consultant"));
 const ConsultantDetails = React.lazy(() => import("../pages/users/ConsultantDetails"));
 const Staff = React.lazy(() => import("../pages/users/Staff"));
 const Students = React.lazy(() => import("../pages/users/Students"));
-const AdminUsers = React.lazy(() => import("../pages/supper_admin/AdminUsers"));
+const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
 
 export interface RoutesProps {
@@ -109,7 +109,6 @@ const userRoutes = {
       element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"]} component={Students} />,
       route: PrivateRoute,
     },
-  
   ],
 };
 
@@ -128,7 +127,6 @@ const credadminRoutes = {
     },
   ],
 };
-
 
 const consultantRoutes = {
   path: "/consultant-users",
@@ -222,7 +220,7 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 };
 
 // All routes
-const authProtectedRoutes = [dashboardRoutes, ...appRoutes, userRoutes, consultantRoutes,credadminRoutes];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes, userRoutes, consultantRoutes, credadminRoutes];
 const publicRoutes = [...authRoutes, ...otherPublicRoutes];
 
 const authProtectedFlattenRoutes = flattenRoutes([...authProtectedRoutes]);

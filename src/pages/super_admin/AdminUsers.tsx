@@ -9,9 +9,9 @@ import FeatherIcons from "feather-icons-react";
 import PageTitle from "../../components/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
 // import { createadminStaff, deleteAdminStaff, editAdminStaff, getAdminStaff } from "../../redux/adminStaffs/actions";
-import { getCredAdminUsers } from "../../redux/admin_users/actions";
+import { createAdminUsers, deleteAdminUsers, editAdminUsers, getCredAdminUsers } from "../../redux/admin_users/actions";
 import { RootState } from "../../redux/store";
-import { AdminUsersType ,AdminInitialState, AdminValidationState,sizePerPageList } from "./data";
+import { AdminUsersType, AdminInitialState, AdminValidationState, sizePerPageList } from "./data";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error } = props;
@@ -28,35 +28,26 @@ const BasicInputElements = withSwal((props: any) => {
   const [validationErrors, setValidationErrors] = useState(AdminValidationState);
 
   const validationSchema = yup.object().shape({
+    username: yup.string().required("Username is required"),
+    password_hash: yup.string().required("Password is required"),
+    email: yup.string().required("Email is required").email("Invalid email format"),
     first_name: yup.string().required("First name is required"),
     last_name: yup.string().required("Last name is required"),
-    email: yup.string().required("Email is required").email("Invalid email format"),
-    phone: yup
-      .string()
-      .required("Phone number is required")
-      .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
-    date_of_birth: yup.string().required("DOB is required"),
-    country_of_origin: yup.string().nullable(),
-    application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
   });
-
-  // const methods = useForm({
-  //   resolver: yupResolver(validationSchema), // Integrate yup with react-hook-form
-  //   defaultValues: initialState,
-  // });
 
   //handling update logic
   const handleUpdate = (item: any) => {
     setFormData((prev) => ({
       ...prev,
       id: item.id,
-      first_name: item.first_name,
-      last_name: item.last_name,
+      first_name: item.full_name.split(" ")[0],
+      last_name: item.full_name.split(" ")[1],
       email: item.email,
+      password_hash: item.password_hash,
       phone: item.phone,
-      date_of_birth: item.date_of_birth,
-      country_of_origin: item.country_of_origin,
-      application_status: item.application_status,
+      username: item.username,
+      user_type_id: item.user_type_id,
+      created_by: item.created_by,
     }));
 
     setIsUpdate(true);
@@ -76,8 +67,7 @@ const BasicInputElements = withSwal((props: any) => {
       })
       .then((result: any) => {
         if (result.isConfirmed) {
-          // swal.fire("Deleted!", "Your item has been deleted.", "success");
-          // dispatch(deleteAdminStaff(id));
+          dispatch(deleteAdminUsers(id));
         }
       });
   };
@@ -99,11 +89,21 @@ const BasicInputElements = withSwal((props: any) => {
       await validationSchema.validate(formData, { abortEarly: false });
       // Validation passed, handle form submission
       if (isUpdate) {
-        // Handle update logic
-        // dispatch(editAdminStaff(formData.student_id, formData.first_name, formData.last_name, formData.email, formData.phone, formData.date_of_birth, formData.country_of_origin, formData.application_status));
+        dispatch(
+          editAdminUsers(
+            formData.id,
+            formData.username,
+            formData.password_hash,
+            formData.email,
+            formData.first_name + " " + formData.last_name,
+            formData.user_type_id,
+            formData.created_by
+          )
+        );
       } else {
-        // Handle add logic
-        // dispatch(createadminStaff(formData.first_name, formData.last_name, formData.email, formData.phone, formData.image, formData.employee_id, 1));
+        dispatch(
+          createAdminUsers(formData.username, formData.password_hash, formData.email, formData.first_name + " " + formData.last_name, formData.user_type_id, formData.created_by)
+        );
       }
     } catch (validationError) {
       // Handle validation errors
@@ -126,14 +126,9 @@ const BasicInputElements = withSwal((props: any) => {
       sort: true,
     },
     {
-      Header: "First Name",
-      accessor: "first_name",
+      Header: "Name",
+      accessor: "full_name",
       sort: true,
-    },
-    {
-      Header: "Last Name",
-      accessor: "last_name",
-      sort: false,
     },
     {
       Header: "Email",
@@ -193,13 +188,11 @@ const BasicInputElements = withSwal((props: any) => {
       ...prev,
       first_name: "John",
       last_name: "doe ",
-      username:"sanufeliz",
+      username: "sanufeliz",
       email: "john.doe@example.com",
       password_hash: "qwe@123",
-      user_type_id : "1",
-      created_by :"1",
-
-  
+      user_type_id: "1",
+      created_by: "1",
     }));
   };
 
@@ -259,17 +252,16 @@ const BasicInputElements = withSwal((props: any) => {
                     {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
                   </Form.Group>
                 </Col>
-              </Row>     <Row>
+              </Row>{" "}
+              <Row>
                 <Col md={6}>
-                <Form.Group className="mb-3" controlId="password_hash">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control type="password_hash" name="password_hash" placeholder="Enter password" value={formData.password_hash} onChange={handleInputChange} />
-                  {validationErrors.password_hash && <Form.Text className="text-danger">{validationErrors.password_hash}</Form.Text>}
-                </Form.Group>
+                  <Form.Group className="mb-3" controlId="password_hash">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password_hash" name="password_hash" placeholder="Enter password" value={formData.password_hash} onChange={handleInputChange} />
+                    {validationErrors.password_hash && <Form.Text className="text-danger">{validationErrors.password_hash}</Form.Text>}
+                  </Form.Group>
                 </Col>
-               
               </Row>
-
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -332,9 +324,9 @@ const AdminUsers = () => {
   const dispatch = useDispatch();
 
   const { state, loading, error } = useSelector((state: RootState) => ({
-    state: state.AdminStaff.adminStaff.data,
-    loading: state?.AdminStaff.loading,
-    error: state?.AdminStaff.error,
+    state: state.CredAdminStates.credAdmin,
+    loading: state?.CredAdminStates.loading,
+    error: state?.CredAdminStates.error,
   }));
 
   useEffect(() => {

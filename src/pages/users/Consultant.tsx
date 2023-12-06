@@ -12,7 +12,7 @@ import PageTitle from "../../components/PageTitle";
 import { MyInitialState, TableRecords, initialState, initialValidationState, sizePerPageList } from "./data";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createConsultant, deleteConsultant, editConsultant, getConsultants } from "../../redux/actions";
+import { createConsultant, deleteConsultant, editConsultant, getConsultants, getCredAdminUsers } from "../../redux/actions";
 import { RootState } from "../../redux/store";
 
 const BasicInputElements = withSwal((props: any) => {
