@@ -317,7 +317,7 @@ const BasicInputElements = withSwal((props: any) => {
               <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
                 <i className="mdi mdi-plus-circle"></i> Add Staff
               </Button>
-              <h4 className="header-title mb-4">Manage Staff</h4>
+              {/* <h4 className="header-title mb-4">Manage Staff</h4> */}
               <Table
                 columns={columns}
                 data={records ? records : []}
