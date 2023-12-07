@@ -13,7 +13,16 @@ function getAdminStaffById(id: number) {
 }
 
 // account
-function createAdminStaff(params: { first_name: string; last_name: string; email: string; phone: string; image: string; employee_id: string; created_by: number }) {
+function createAdminStaff(params: {
+  first_name: string;
+  last_name: string;
+  username: string;
+  email: string;
+  phone: string;
+  image: string;
+  employee_id: string;
+  created_by: number;
+}) {
   const baseUrl = "/create_admin_staff";
 
   return api.create(`${baseUrl}`, params);
@@ -25,6 +34,7 @@ function updateAdminStaff(
   params: {
     first_name: string;
     last_name: string;
+    username: string;
     email: string;
     phone: string;
     image: string;

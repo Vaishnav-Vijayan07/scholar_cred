@@ -28,7 +28,6 @@ export const sizePerPageList = [
 export interface UserTypes {
   consultant_staff_id: string;
   username: string;
-  password_hash: string;
   email: string;
   full_name: string;
   user_type_id: string;
@@ -39,7 +38,6 @@ export interface UserTypes {
 export const InitialState = {
   consultant_staff_id: "",
   username: "",
-  password_hash: "",
   email: "",
   full_name: "",
   user_type_id: consultant_admin_usertype,
@@ -49,7 +47,6 @@ export const InitialState = {
 
 export const InitialValidationState = {
   username: "",
-  password_hash: "",
   email: "",
   full_name: "",
   user_type_id: "",

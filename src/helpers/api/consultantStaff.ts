@@ -3,7 +3,7 @@ import { APICore } from "./apiCore";
 const api = new APICore();
 
 // account
-function createConsultantStaff(params: { username: string; password_hash: string; email: string; full_name: string; user_type_id: string; consultant_id: string }) {
+function createConsultantStaff(params: { username: string; email: string; full_name: string; user_type_id: string; consultant_id: string }) {
   const baseUrl = "/create_admin_user";
 
   return api.create(`${baseUrl}`, params);
@@ -14,7 +14,6 @@ function updateConsultantStaff(
   id: number,
   params: {
     username: string;
-    password_hash: string;
     email: string;
     full_name: string;
     user_type_id: string;

@@ -7,7 +7,7 @@ const Root = () => {
   // const api = new APICore();
 
   const getRootUrl = () => {
-    let url: string = "/dashboard-4";
+    let url: string = "/dashboard";
 
     // // check if user logged in or not and return url accordingly
     // if (api.isUserAuthenticated() === false) {

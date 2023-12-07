@@ -41,7 +41,7 @@ export interface RoutesProps {
 }
 
 const dashboardRoutes: RoutesProps = {
-  path: "/dashboard",
+  path: "/dash",
   name: "Dashboards",
   icon: "airplay",
   header: "Navigation",
@@ -49,13 +49,13 @@ const dashboardRoutes: RoutesProps = {
     {
       path: "/",
       name: "Root",
-      element: <Navigate to="/dashboard-4" />,
+      element: <Navigate to="/dashboard" />,
       roles: ["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER"],
       route: PrivateRoute,
     },
     {
-      path: "/dashboard-4",
-      name: "Dashboard 4",
+      path: "/dashboard",
+      name: "Dashboard",
       element: <PrivateRoute roles={["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER"]} component={Dashboard4} />,
       route: PrivateRoute,
     },

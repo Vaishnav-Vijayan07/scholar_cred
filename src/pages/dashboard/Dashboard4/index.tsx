@@ -14,12 +14,14 @@ import ProjectsDetails from "./ProjectsDetails";
 import { projectsDetails } from "./data";
 
 const Dashboard4 = () => {
+  console.log("Dashboard 4");
+
   return (
     <>
       <PageTitle
         breadCrumbItems={[
-          { label: "Dashboards", path: "/dashboard-4" },
-          { label: "Dashboard", path: "/dashboard-4", active: true },
+          { label: "Dashboards", path: "/dashboard" },
+          { label: "Dashboard", path: "/dashboard", active: true },
         ]}
         title={"Dashboard"}
       />

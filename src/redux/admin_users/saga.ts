@@ -21,7 +21,6 @@ interface AdminUserData {
   payload: {
     id: number;
     username: string;
-    password_hash: string;
     email: string;
     full_name: string;
     user_type_id: number;
@@ -31,11 +30,10 @@ interface AdminUserData {
   type: string;
 }
 
-function* createAdminUsers({ payload: { username, password_hash, email, full_name, user_type_id, created_by }, type }: AdminUserData): SagaIterator {
+function* createAdminUsers({ payload: { username, email, full_name, user_type_id, created_by }, type }: AdminUserData): SagaIterator {
   try {
     const response = yield call(createAdminUsersApi, {
       username,
-      password_hash,
       email,
       full_name,
       user_type_id,
@@ -51,11 +49,10 @@ function* createAdminUsers({ payload: { username, password_hash, email, full_nam
   }
 }
 
-function* editAdminUsers({ payload: { id, username, password_hash, email, full_name, user_type_id, created_by } }: AdminUserData): SagaIterator {
+function* editAdminUsers({ payload: { id, username, email, full_name, user_type_id, created_by } }: AdminUserData): SagaIterator {
   try {
     const response = yield call(editAdminUsersApi, id, {
       username,
-      password_hash,
       email,
       full_name,
       user_type_id,

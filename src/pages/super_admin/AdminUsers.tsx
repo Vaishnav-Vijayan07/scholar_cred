@@ -30,7 +30,6 @@ const BasicInputElements = withSwal((props: any) => {
 
   const validationSchema = yup.object().shape({
     username: yup.string().required("Username is required"),
-    password_hash: yup.string().required("Password is required"),
     email: yup.string().required("Email is required").email("Invalid email format"),
     first_name: yup.string().required("First name is required"),
     last_name: yup.string().required("Last name is required"),
@@ -44,7 +43,6 @@ const BasicInputElements = withSwal((props: any) => {
       first_name: item.full_name.split(" ")[0],
       last_name: item.full_name.split(" ")[1],
       email: item.email,
-      password_hash: item.password_hash,
       phone: item.phone,
       username: item.username,
       user_type_id: item.user_type_id,
@@ -94,7 +92,6 @@ const BasicInputElements = withSwal((props: any) => {
           editAdminUsers(
             formData.id,
             formData.username,
-            formData.password_hash,
             formData.email,
             formData.first_name + " " + formData.last_name,
             formData.user_type_id,
@@ -103,7 +100,7 @@ const BasicInputElements = withSwal((props: any) => {
         );
       } else {
         dispatch(
-          createAdminUsers(formData.username, formData.password_hash, formData.email, formData.first_name + " " + formData.last_name, formData.user_type_id, formData.created_by)
+          createAdminUsers(formData.username, formData.email, formData.first_name + " " + formData.last_name, formData.user_type_id, formData.created_by)
         );
       }
     } catch (validationError) {
@@ -218,7 +215,6 @@ const BasicInputElements = withSwal((props: any) => {
       last_name: "doe ",
       username: "sanufeliz",
       email: "john.doe@example.com",
-      password_hash: "qwe@123",
       user_type_id: "1",
       created_by: "1",
     }));
@@ -281,15 +277,6 @@ const BasicInputElements = withSwal((props: any) => {
                   </Form.Group>
                 </Col>
               </Row>{" "}
-              <Row>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="password_hash">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password_hash" name="password_hash" placeholder="Enter password" value={formData.password_hash} onChange={handleInputChange} />
-                    {validationErrors.password_hash && <Form.Text className="text-danger">{validationErrors.password_hash}</Form.Text>}
-                  </Form.Group>
-                </Col>
-              </Row>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -328,7 +315,7 @@ const BasicInputElements = withSwal((props: any) => {
               <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
                 <i className="mdi mdi-plus-circle"></i> Add user
               </Button>
-              <h4 className="header-title mb-4">Manage Cred Admin</h4>
+              {/* <h4 className="header-title mb-4">Manage Cred Admin</h4> */}
               <Table
                 columns={columns}
                 data={records ? records : []}

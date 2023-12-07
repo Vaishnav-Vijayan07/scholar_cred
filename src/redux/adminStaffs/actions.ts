@@ -17,14 +17,13 @@ interface AdminStaffData {
   id: number;
   first_name: string;
   last_name: string;
+  username: string;
   email: string;
   phone: string;
   image: string;
   employee_id: string;
   created_by: number;
 }
-
-
 
 // Common success
 export const adminStaffApiResponseSuccess = (actionType: string, data: AdminStaffData | {}): AdminStaffActionType => ({
@@ -50,6 +49,7 @@ export const getadminStaffById = (data: AdminStaffData | {}): AdminStaffActionTy
 export const createadminStaff = (
   first_name: string,
   last_name: string,
+  username: string,
   email: string,
   phone: string,
   image: string,
@@ -60,6 +60,7 @@ export const createadminStaff = (
   payload: {
     first_name,
     last_name,
+    username,
     email,
     phone,
     image,
@@ -72,6 +73,7 @@ export const editAdminStaff = (
   id: string,
   first_name: string,
   last_name: string,
+  username: string,
   email: string,
   phone: string,
   image: string,
@@ -83,6 +85,7 @@ export const editAdminStaff = (
     id,
     first_name,
     last_name,
+    username,
     email,
     phone,
     image,

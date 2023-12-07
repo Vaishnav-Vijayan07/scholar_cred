@@ -11,7 +11,7 @@ import {
   getConsultantStaff as getConsultantStaffApi,
   getConsultantStaffById as getConsultantStaffByIdApi,
   deleteConsultantStaff as deleteConsultantStaffApi,
-} from "../../helpers/";
+} from "../../helpers";
 
 // actions
 import { consultantStaffApiResponseSuccess, consultantStaffApiResponseError, getConsultantStaff } from "./actions";
@@ -23,7 +23,6 @@ interface ConsultantStaffData {
   payload: {
     id: number;
     username: string;
-    password_hash: string;
     email: string;
     full_name: string;
     user_type_id: string;
@@ -35,11 +34,10 @@ interface ConsultantStaffData {
 
 const api = new APICore();
 
-function* createConsultantStaff({ payload: { username, password_hash, email, full_name, user_type_id, consultant_id }, type }: ConsultantStaffData): SagaIterator {
+function* createConsultantStaff({ payload: { username, email, full_name, user_type_id, consultant_id }, type }: ConsultantStaffData): SagaIterator {
   try {
     const response = yield call(createConsultantStaffApi, {
       username,
-      password_hash,
       email,
       full_name,
       user_type_id,
@@ -86,11 +84,10 @@ function* getConsultantStaffById({ payload: { id } }: ConsultantStaffData): Saga
   }
 }
 
-function* updateConsultantStaff({ payload: { id, username, password_hash, email, full_name, user_type_id, consultant_id }, type }: ConsultantStaffData): SagaIterator {
+function* updateConsultantStaff({ payload: { id, username, email, full_name, user_type_id, consultant_id }, type }: ConsultantStaffData): SagaIterator {
   try {
     const response = yield call(updateConsultantStaffApi, id, {
       username,
-      password_hash,
       email,
       full_name,
       user_type_id,

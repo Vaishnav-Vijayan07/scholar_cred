@@ -38,7 +38,6 @@ export const consultantStaffApiResponseError = (actionType: string, error: strin
 
 export const createConsultantStaff = (
   username: string,
-  password_hash: string,
   email: string,
   full_name: string,
   user_type_id: string,
@@ -47,7 +46,6 @@ export const createConsultantStaff = (
   type: ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF,
   payload: {
     username,
-    password_hash,
     email,
     full_name,
     user_type_id,
@@ -60,7 +58,6 @@ export const createConsultantStaff = (
 export const editConsultantStaff = (
   id: string,
   username: string,
-  password_hash: string,
   email: string,
   full_name: string,
   user_type_id: string,
@@ -70,7 +67,6 @@ export const editConsultantStaff = (
   payload: {
     id,
     username,
-    password_hash,
     email,
     full_name,
     user_type_id,

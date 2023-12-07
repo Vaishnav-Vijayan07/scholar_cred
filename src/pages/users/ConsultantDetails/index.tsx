@@ -62,10 +62,10 @@ const Profile = () => {
       sort: true,
     },
     {
-      Header: "password_hash",
+      Header: "Status",
       accessor: "password_hash_hash",
       sort: true,
-      Cell: ({ row }: any) => <span>*************</span>,
+      Cell: ({ row }: any) => <span>{row.original.is_active ? "Active" : "Inactive"}</span>,
     },
     {
       Header: "Actions",
@@ -114,7 +114,6 @@ const Profile = () => {
 
   const validationSchema = yup.object().shape({
     username: yup.string().required("Username is required").min(3, "Username must be at least 3 characters long"),
-    password_hash: yup.string().required("password is required").min(6, "password must be at least 6 characters long"),
     email: yup.string().required("Email is required").email("Invalid email format"),
     full_name: yup.string().required("Full name is required").min(2, "Full name must be at least 2 characters long"),
   });
@@ -131,7 +130,6 @@ const Profile = () => {
             editConsultantStaff(
               formData?.consultant_staff_id, //id of consultant staff
               formData?.username,
-              formData?.password_hash,
               formData?.email,
               formData?.full_name,
               consultant_admin_usertype, //usertype id
@@ -145,7 +143,6 @@ const Profile = () => {
           dispatch(
             createConsultantStaff(
               formData?.username,
-              formData?.password_hash,
               formData?.email,
               formData?.full_name,
               consultant_admin_usertype, //usertype id
@@ -191,7 +188,6 @@ const Profile = () => {
         ...prev,
         consultant_staff_id: item?.id,
         username: item?.username,
-        password_hash: item?.password_hash,
         email: item?.email,
         full_name: item?.full_name,
         user_type_id: item?.user_type_id,
@@ -224,9 +220,6 @@ const Profile = () => {
     if (!staffLoading && !error) {
       handleCancelUpdate();
       if (id) {
-        // dispatch(getConsultantStaff(consultant_admin_usertype, id));
-        console.log("Triggering");
-
         setResponsiveModal(false);
       }
     }
@@ -274,12 +267,6 @@ const Profile = () => {
                   <Form.Label>Username</Form.Label>
                   <Form.Control type="text" placeholder="Enter username" name="username" value={formData.username} onChange={handleInputChange} />
                   {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="password_hash">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control type="password_hash" name="password_hash" placeholder="Enter password" value={formData.password_hash} onChange={handleInputChange} />
-                  {validationErrors.password_hash && <Form.Text className="text-danger">{validationErrors.password_hash}</Form.Text>}
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>

@@ -1,9 +1,6 @@
 import { all, fork, put, takeEvery, call } from "redux-saga/effects";
 import { SagaIterator } from "@redux-saga/core";
 
-// apicore
-import { APICore } from "../../helpers/api/apiCore";
-
 // helpers
 import {
   createAdminStaff as createAdminStaffApi,
@@ -24,6 +21,7 @@ interface AdminStaffData {
     id: number;
     first_name: string;
     last_name: string;
+    username: string;
     email: string;
     phone: string;
     image: string;
@@ -33,11 +31,12 @@ interface AdminStaffData {
   type: string;
 }
 
-function* createAdminStaff({ payload: { first_name, last_name, email, phone, image, employee_id, created_by }, type }: AdminStaffData): SagaIterator {
+function* createAdminStaff({ payload: { first_name, last_name, username, email, phone, image, employee_id, created_by }, type }: AdminStaffData): SagaIterator {
   try {
     const response = yield call(createAdminStaffApi, {
       first_name,
       last_name,
+      username,
       email,
       phone,
       image,
@@ -68,11 +67,12 @@ function* getAdminStaffs(): SagaIterator {
   }
 }
 
-function* updateAdminStaff({ payload: { id, first_name, last_name, email, phone, image, employee_id, created_by }, type }: AdminStaffData): SagaIterator {
+function* updateAdminStaff({ payload: { id, first_name, last_name, username, email, phone, image, employee_id, created_by }, type }: AdminStaffData): SagaIterator {
   try {
     const response = yield call(updateAdminStaffApi, id, {
       first_name,
       last_name,
+      username,
       email,
       phone,
       image,

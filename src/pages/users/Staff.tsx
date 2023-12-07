@@ -33,6 +33,8 @@ const BasicInputElements = withSwal((props: any) => {
     first_name: yup.string().required("First name is required"),
     last_name: yup.string().required("Last name is required"),
     email: yup.string().required("Email is required").email("Invalid email format"),
+    username: yup.string().required("Username is required"),
+    employee_id: yup.string().required("Employee id is required"),
     phone: yup
       .string()
       .required("Phone number is required")
@@ -54,6 +56,7 @@ const BasicInputElements = withSwal((props: any) => {
       email: item.email,
       phone: item.phone,
       image: item.image,
+      username: item.username,
       employee_id: item.employee_id,
     }));
 
@@ -108,10 +111,10 @@ const BasicInputElements = withSwal((props: any) => {
       // Validation passed, handle form submission
       if (isUpdate) {
         // Handle update logic
-        dispatch(editAdminStaff(formData.id, formData.first_name, formData.last_name, formData.email, formData.phone, formData.image, formData.employee_id, 1));
+        dispatch(editAdminStaff(formData.id, formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, formData.image, formData.employee_id, 1));
       } else {
         // Handle add logic
-        dispatch(createadminStaff(formData.first_name, formData.last_name, formData.email, formData.phone, formData.image, formData.employee_id, 1));
+        dispatch(createadminStaff(formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, formData.image, formData.employee_id, 1));
       }
     } catch (validationError) {
       // Handle validation errors
@@ -141,6 +144,11 @@ const BasicInputElements = withSwal((props: any) => {
     {
       Header: "Last Name",
       accessor: "last_name",
+      sort: false,
+    },
+    {
+      Header: "User Name",
+      accessor: "username",
       sort: false,
     },
     {
@@ -211,6 +219,7 @@ const BasicInputElements = withSwal((props: any) => {
       ...prev,
       first_name: "John",
       last_name: "Doe",
+      username: "johndoe",
       email: "john.doe@example.com",
       phone: "9876545678",
       image: "https://example.com/john-doe.jpg",
@@ -228,8 +237,6 @@ const BasicInputElements = withSwal((props: any) => {
     }
   }, [loading, error]);
 
-  console.log("FormData", formData);
-
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -244,35 +251,59 @@ const BasicInputElements = withSwal((props: any) => {
                   {error}
                 </Alert>
               )}
-              <Form.Group className="mb-3" controlId="first_name">
-                <Form.Label>First Name</Form.Label>
-                <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
-                {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
-              </Form.Group>
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="first_name">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
+                    {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
+                  </Form.Group>
+                </Col>
 
-              <Form.Group className="mb-3" controlId="last_name">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter Second Name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
-                {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
-              </Form.Group>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="last_name">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="text" placeholder="Enter Second Name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
+                    {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-              <Form.Group className="mb-3" controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
-                {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
-              </Form.Group>
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
+                    {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                  </Form.Group>
+                </Col>
 
-              <Form.Group className="mb-3" controlId="phone">
-                <Form.Label>Phone</Form.Label>
-                <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
-                {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
-              </Form.Group>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="phone">
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
+                    {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-              <Form.Group className="mb-3" controlId="employee_id">
-                <Form.Label>Employee Id</Form.Label>
-                <Form.Control type="text" name="employee_id" placeholder="Enter Employee Id" value={formData.employee_id} onChange={handleInputChange} />
-                {validationErrors.employee_id && <Form.Text className="text-danger">{validationErrors.employee_id}</Form.Text>}
-              </Form.Group>
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="employee_id">
+                    <Form.Label>Employee Id</Form.Label>
+                    <Form.Control type="text" name="employee_id" placeholder="Enter Employee Id" value={formData.employee_id} onChange={handleInputChange} />
+                    {validationErrors.employee_id && <Form.Text className="text-danger">{validationErrors.employee_id}</Form.Text>}
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="username">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control type="text" name="username" placeholder="Enter Username" value={formData.username} onChange={handleInputChange} />
+                    {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
 
               {/* <Form.Group className="mb-3" controlId="image">
                 <Form.Label>image</Form.Label>

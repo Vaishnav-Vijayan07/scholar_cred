@@ -68,6 +68,7 @@ export interface StaffTypes {
   first_name: string;
   last_name: string;
   email: string;
+  username: string;
   phone: string;
   image: string;
   employee_id: string;
@@ -79,6 +80,7 @@ export const StaffInitialState = {
   last_name: "",
   email: "",
   phone: "",
+  username: "",
   image: "https://example.com/john-doe.jpg",
   employee_id: "",
   created_by: "1",
@@ -89,6 +91,7 @@ export const StaffInitialValidationState = {
   first_name: "",
   last_name: "",
   email: "",
+  username: "",
   phone: "",
   image: "https://picsum.photos/id/0/367/267",
   employee_id: "",

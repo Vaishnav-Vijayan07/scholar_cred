@@ -3,7 +3,7 @@ import { APICore } from "./apiCore";
 const api = new APICore();
 
 // account
-function createAdminUsers(params: { username: string; password_hash: string; email: string; full_name: string; user_type_id: number; created_by: number }) {
+function createAdminUsers(params: { username: string; email: string; full_name: string; user_type_id: number; created_by: number }) {
   const baseUrl = "/create_admin_user/";
   return api.create(`${baseUrl}`, params);
 }
@@ -13,7 +13,6 @@ function editAdminUsers(
   id: number,
   params: {
     username: string;
-    password_hash: string;
     email: string;
     full_name: string;
     user_type_id: number;

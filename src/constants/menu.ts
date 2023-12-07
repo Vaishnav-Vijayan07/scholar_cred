@@ -21,7 +21,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     label: "Dashboard",
     isTitle: false,
     icon: "airplay",
-    url: "/dashboard-4",
+    url: "/dashboard",
   },
 
   { key: "user_management", label: "User Management", isTitle: true, roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN"] },
@@ -85,9 +85,9 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
     isTitle: true,
     children: [
       {
-        key: "ds-dashboard-4",
+        key: "ds-dashboard",
         label: "Dashboard",
-        url: "/dashboard-4",
+        url: "/dashboard",
         parentKey: "dashboard",
       },
     ],
@@ -164,9 +164,9 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
     isTitle: true,
     children: [
       {
-        key: "ds-dashboard-4",
+        key: "ds-dashboard",
         label: "Dashboard",
-        url: "/dashboard-4",
+        url: "/dashboard",
         parentKey: "dashboard",
       },
     ],
