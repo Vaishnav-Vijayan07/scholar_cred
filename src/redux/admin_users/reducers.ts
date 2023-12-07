@@ -85,6 +85,14 @@ const CredAdminStates = (state: State = INIT_STATE, action: AuthActionType): any
             error: null,
           };
         }
+        case AdminActionTypes.RESET_ADMIN_PASSWORD: {
+          showSuccessAlert(action.payload.data);
+          return {
+            ...state,
+            loading: false,
+            error: null,
+          };
+        }
         default:
           return { ...state };
       }
@@ -120,6 +128,13 @@ const CredAdminStates = (state: State = INIT_STATE, action: AuthActionType): any
           };
         }
         case AdminActionTypes.DELETE_CRED_ADMIN_USERS: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+          };
+        }
+        case AdminActionTypes.RESET_ADMIN_PASSWORD: {
           return {
             ...state,
             error: action.payload.error,

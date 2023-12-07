@@ -8,6 +8,7 @@ import {
   getCredAdminUsers as getAdminUsersApi,
   getAdminUsersById as getAdminUsersByIdApi,
   deleteAdminUsers as deleteAdminUsersApi,
+  resetPassword as resetPasswordApi,
 } from "../../helpers/";
 
 // actions
@@ -106,6 +107,19 @@ function* deleteAdminUsers({ payload: { id } }: AdminUserData): SagaIterator {
   }
 }
 
+function* resetPassword({ payload: { username } }: AdminUserData): SagaIterator {
+  try {
+    const response = yield call(resetPasswordApi, username);
+    const adminUserData = response.data.message;
+    // NOTE - You can change this according to response format from your api
+
+    yield put(credAuthApiResponseSuccess(AdminActionTypes.RESET_ADMIN_PASSWORD, adminUserData));
+    // yield put(getCredAdminUsers());
+  } catch (error: any) {
+    yield put(credAuthApiResponseError(AdminActionTypes.RESET_ADMIN_PASSWORD, error));
+  }
+}
+
 export function* watchCreateAdminUser() {
   yield takeEvery(AdminActionTypes.CREATE_CRED_ADMIN_USER, createAdminUsers);
 }
@@ -122,8 +136,13 @@ export function* watchGetAdminUserbyId() {
 export function* watchDeleteAdminUser() {
   yield takeEvery(AdminActionTypes.DELETE_CRED_ADMIN_USERS, deleteAdminUsers);
 }
+
+export function* watchResetPassword() {
+  yield takeEvery(AdminActionTypes.RESET_ADMIN_PASSWORD, resetPassword);
+}
+
 function* credAdminUsersSaga() {
-  yield all([fork(watchCreateAdminUser), fork(watchEditAdminUser), fork(watchDeleteAdminUser), fork(watchGetAdminUser), fork(watchGetAdminUserbyId)]);
+  yield all([fork(watchCreateAdminUser), fork(watchEditAdminUser), fork(watchDeleteAdminUser), fork(watchGetAdminUser), fork(watchGetAdminUserbyId), fork(watchResetPassword)]);
 }
 
 export default credAdminUsersSaga;

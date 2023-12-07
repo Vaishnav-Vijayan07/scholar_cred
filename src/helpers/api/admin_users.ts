@@ -36,4 +36,9 @@ function deleteAdminUsers(id: number) {
   return api.delete(`${baseUrl}?id=${id}`);
 }
 
-export { createAdminUsers, editAdminUsers, getCredAdminUsers, getAdminUsersById, deleteAdminUsers };
+function resetPassword(username: string) {
+  const baseUrl = "/reset_password";
+  return api.create(`${baseUrl}`, { username });
+}
+
+export { createAdminUsers, editAdminUsers, getCredAdminUsers, getAdminUsersById, deleteAdminUsers, resetPassword };
