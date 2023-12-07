@@ -141,9 +141,10 @@ const BasicInputElements = withSwal((props: any) => {
       sort: false,
     },
     {
-      Header: "Password",
-      accessor: "password_hash",
+      Header: "Send mail",
+      accessor: "",
       sort: false,
+      Cell: ({ row }: any) => <div>Send</div>,
     },
     {
       Header: "Actions",

@@ -9,7 +9,8 @@ export interface AdminActionType {
     | AdminActionTypes.CREATE_CRED_ADMIN_USER
     | AdminActionTypes.GET_CRED_ADMIN_USERS
     | AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID
-    | AdminActionTypes.DELETE_CRED_ADMIN_USERS;
+    | AdminActionTypes.DELETE_CRED_ADMIN_USERS
+    | AdminActionTypes.RESET_ADMIN_PASSWORD;
   payload: {} | string;
 }
 
@@ -70,4 +71,9 @@ export const editAdminUsers = (
 export const getAdminUsersById = (id: string): AdminActionType => ({
   type: AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID,
   payload: { id },
+});
+
+export const resetPassword = (username: string): AdminActionType => ({
+  type: AdminActionTypes.RESET_ADMIN_PASSWORD,
+  payload: { username },
 });

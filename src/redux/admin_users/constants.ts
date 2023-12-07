@@ -6,4 +6,5 @@ export enum AdminActionTypes {
   GET_CRED_ADMIN_USERS = "@@cred_admin/GET_CRED_ADMIN_USERS",
   GET_CRED_ADMIN_USERS_BY_ID = "@@cred_admin/GET_CRED_ADMIN_USERS_BY_ID",
   DELETE_CRED_ADMIN_USERS = "@@cred_admin/DELETE_CRED_ADMIN_USERS",
+  RESET_ADMIN_PASSWORD = "@@cred_admin/RESET_ADMIN_PASSWORD",
 }

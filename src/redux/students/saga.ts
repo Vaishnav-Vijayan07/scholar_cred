@@ -47,7 +47,7 @@ function* createStudent({ payload: { first_name, last_name, email, phone, date_o
       application_status,
     });
 
-    const consultant_data = response.data;
+    const consultant_data = response.data.message;
 
     yield put(studentApiResponseSuccess(StudentActionTypes.CREATE_STUDENT, consultant_data));
     yield put(getStudent());
