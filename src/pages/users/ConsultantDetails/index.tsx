@@ -250,7 +250,7 @@ const Profile = () => {
           <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
             <Form onSubmit={onSubmit}>
               <Modal.Header closeButton>
-                <h4 className="modal-title">Consultant Staff Management</h4>
+                <h4 className="modal-title">Admin Management</h4>
               </Modal.Header>
               <Modal.Body className="px-3">
                 {error && (
@@ -311,7 +311,7 @@ const Profile = () => {
               <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
                 <i className="mdi mdi-plus-circle"></i> Add Users
               </Button>
-              <h4 className="header-title mb-4">Consultant Staff</h4>
+              <h4 className="header-title mb-4">Admin Login</h4>
               <Table
                 columns={columns}
                 data={records}
