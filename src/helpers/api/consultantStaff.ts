@@ -1,10 +1,13 @@
+import axios from "axios";
 import { APICore } from "./apiCore";
 
 const api = new APICore();
 
 function getConsultantStaff(consultant_id: string) {
   const baseUrl = "/get_consultant_staff";
-  return api.get(`${baseUrl}?consultant_id=${consultant_id}`, {});
+
+  // return api.get(`${baseUrl}?consultant_id=${consultant_id}`, {});
+  return axios.get(`${baseUrl}?consultant_id=${consultant_id}`);
 }
 
 function getConsultantStaffById(id: number) {

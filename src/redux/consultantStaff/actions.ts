@@ -38,9 +38,9 @@ export const ConsultantStaffsApiResponseError = (actionType: string, error: stri
   payload: { actionType, error },
 });
 
-export const getConsultantStaffs = (): ConsultantStaffsActionType => ({
+export const getConsultantStaffs = (consultant_id: string): ConsultantStaffsActionType => ({
   type: ConsultantStaffActionTypes.GET_CONSULTANT_STAFF,
-  payload: {},
+  payload: { consultant_id },
 });
 export const getConsultantStaffsById = (data: AdminStaffData | {}): ConsultantStaffsActionType => ({
   type: ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID,
@@ -99,7 +99,7 @@ export const editConsultantStaffs = (
   },
 });
 
-export const deleteConsultantStaffs = (id: string) => ({
+export const deleteConsultantStaffs = (id: string, consultant_id: string) => ({
   type: ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF,
-  payload: { id },
-})
+  payload: { id, consultant_id },
+});

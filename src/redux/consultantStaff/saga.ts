@@ -52,7 +52,7 @@ function* createConsultantStaff({
 
     yield put(ConsultantStaffsApiResponseSuccess(ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF, data));
     //calling get method after successfull api creation
-    yield put(getConsultantStaff());
+    yield put(getConsultantStaff(consultant_id));
   } catch (error: any) {
     yield put(ConsultantStaffsApiResponseError(ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF, error));
   }
@@ -90,19 +90,21 @@ function* updateConsultantStaff({
     const data = response.data.message;
 
     yield put(ConsultantStaffsApiResponseSuccess(ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF, data));
-    yield put(getConsultantStaff());
+    yield put(getConsultantStaff(consultant_id));
   } catch (error: any) {
     yield put(ConsultantStaffsApiResponseError(ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF, error));
   }
 }
 
-function* deleteConsultantStaff({ payload: { id } }: ConsultantStaffData): SagaIterator {
+function* deleteConsultantStaff({ payload: { id, consultant_id } }: ConsultantStaffData): SagaIterator {
   try {
+    console.log("consultant_id and Id", consultant_id, id);
+
     const response = yield call(deleteConsultantStaffApi, id);
     const data = response.data.message;
 
     yield put(ConsultantStaffsApiResponseSuccess(ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF, data));
-    yield put(getConsultantStaff());
+    yield put(getConsultantStaff(consultant_id));
   } catch (error: any) {
     yield put(ConsultantStaffsApiResponseSuccess(ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF, error));
     throw error;

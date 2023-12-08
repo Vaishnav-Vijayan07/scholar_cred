@@ -30,11 +30,11 @@ const BasicInputElements = withSwal((props: any) => {
   const [validationErrors, setValidationErrors] = useState(ConsultantStaffInitialValidationState);
 
   const validationSchema = yup.object().shape({
-    first_name: yup.string().required("First name is required"),
+    first_name: yup.string().required("First name is required").nullable(),
     last_name: yup.string().required("Last name is required"),
-    email: yup.string().required("Email is required").email("Invalid email format"),
-    username: yup.string().required("Username is required"),
-    employee_id: yup.string().required("Employee id is required"),
+    email: yup.string().required("Email is required").email("Invalid email format").nullable(),
+    username: yup.string().required("Username is required").nullable(),
+    employee_id: yup.string().required("Employee id is required").nullable(),
     phone: yup
       .string()
       .required("Phone number is required")
@@ -78,7 +78,7 @@ const BasicInputElements = withSwal((props: any) => {
       .then((result: any) => {
         if (result.isConfirmed) {
           // swal.fire("Deleted!", "Your item has been deleted.", "success");
-          dispatch(deleteConsultantStaffs(id));
+          dispatch(deleteConsultantStaffs(id, "7"));
         }
       });
   };
@@ -122,12 +122,12 @@ const BasicInputElements = withSwal((props: any) => {
             formData.image,
             formData.employee_id,
             1,
-            "3"
+            "7"
           )
         );
       } else {
         // Handle add logic
-        dispatch(createConsultantStaffs(formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, formData.image, formData.employee_id, 1, "3"));
+        dispatch(createConsultantStaffs(formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, formData.image, formData.employee_id, 1, "7"));
       }
     } catch (validationError) {
       // Handle validation errors
@@ -385,13 +385,13 @@ const Staff = () => {
   const dispatch = useDispatch();
 
   const { state, loading, error } = useSelector((state: RootState) => ({
-    state: state.AdminStaff.adminStaff.data,
-    loading: state?.AdminStaff.loading,
-    error: state?.AdminStaff.error
+    state: state.ConsultantStaff.ConsultantStaff.data,
+    loading: state?.ConsultantStaff.loading,
+    error: state?.ConsultantStaff.error,
   }));
 
   useEffect(() => {
-    dispatch(getConsultantStaffs());
+    dispatch(getConsultantStaffs("7"));
   }, []);
 
   return (
