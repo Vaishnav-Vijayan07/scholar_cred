@@ -46,15 +46,15 @@ const StatisticsChart = () => {
         <div className="text-center">
           <div className="row mt-2">
             <div className="col-6">
-              <h3>1,284</h3>
+              <h3>7,841</h3>
               <p className="text-muted font-13 mb-0 text-truncate">
-                Total Sales
+            Total Applications
               </p>
             </div>
             <div className="col-6">
-              <h3>7,841</h3>
+              <h3>1,841</h3>
               <p className="text-muted font-13 mb-0 text-truncate">
-                Open Campaign
+                Approved
               </p>
             </div>
           </div>
