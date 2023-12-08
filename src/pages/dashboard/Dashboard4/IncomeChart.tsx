@@ -47,14 +47,19 @@ const IncomeChart = () => {
 
   const series = [
     {
-      name: "Litecoin",
+      name: "Pending",
       type: "area",
       data: [20, 65, 40, 65, 40, 65, 60],
     },
     {
-      name: "Bitcoin",
+      name: "Apporved",
       type: "line",
       data: [10, 75, 50, 75, 50, 75, 90],
+    },
+    {
+      name: "Rejected",
+      type: "line",
+      data: [8, 10, 50, 70, 50, 25, 40],
     },
   ];
 

@@ -66,14 +66,7 @@ const projectsDetails: ProjectDetailType[] = [
         image: avatar2,
         name: "Mat Helme",
       },
-      {
-        image: avatar6,
-        name: "Michael Zenaty",
-      },
-      {
-        image: avatar7,
-        name: "Username",
-      },
+     
     ],
     status: "Completed",
     clients: "Edwings Overseas Educational Consultants Pvt Ltd",
@@ -88,14 +81,7 @@ const projectsDetails: ProjectDetailType[] = [
         image: avatar9,
         name: "Mat Helme",
       },
-      {
-        image: avatar10,
-        name: "Michael Zenaty",
-      },
-      {
-        image: avatar1,
-        name: "Username",
-      },
+      
     ],
     status: "Work in Progress",
     clients: "Donatien Brunelle",
@@ -114,14 +100,7 @@ const projectsDetails: ProjectDetailType[] = [
         image: avatar8,
         name: "Michael Zenaty",
       },
-      {
-        image: avatar2,
-        name: "James Anderson",
-      },
-      {
-        image: avatar7,
-        name: "Username",
-      },
+      
     ],
     status: "Coming Soon",
     clients: "International Academy",
