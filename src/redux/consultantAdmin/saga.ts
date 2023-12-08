@@ -6,11 +6,11 @@ import { APICore } from "../../helpers/api/apiCore";
 
 // helpers
 import {
-  createConsultantStaff as createConsultantStaffApi,
-  updateConsultantStaff as updateConsultantStaffApi,
-  getConsultantStaff as getConsultantStaffApi,
-  getConsultantStaffById as getConsultantStaffByIdApi,
-  deleteConsultantStaff as deleteConsultantStaffApi,
+  createConsultantAdmin as createConsultantAdminApi,
+  updateConsultantAdmin as updateConsultantAdminApi,
+  getConsultantAdmin as getConsultantAdminApi,
+  getConsultantAdminById as getConsultantAdminByIdApi,
+  deleteConsultantAdmin as deleteConsultantAdminApi,
 } from "../../helpers";
 
 // actions
@@ -36,7 +36,7 @@ const api = new APICore();
 
 function* createConsultantStaff({ payload: { username, email, full_name, user_type_id, consultant_id }, type }: ConsultantStaffData): SagaIterator {
   try {
-    const response = yield call(createConsultantStaffApi, {
+    const response = yield call(createConsultantAdminApi, {
       username,
       email,
       full_name,
@@ -57,7 +57,7 @@ function* createConsultantStaff({ payload: { username, email, full_name, user_ty
 
 function* getConsultantStaffs({ payload: { user_type, consultant_id }, type }: ConsultantStaffData): SagaIterator {
   try {
-    const response = yield call(getConsultantStaffApi, {
+    const response = yield call(getConsultantAdminApi, {
       user_type,
       consultant_id,
     });
@@ -73,7 +73,7 @@ function* getConsultantStaffs({ payload: { user_type, consultant_id }, type }: C
 
 function* getConsultantStaffById({ payload: { id } }: ConsultantStaffData): SagaIterator {
   try {
-    const response = yield call(getConsultantStaffByIdApi, id);
+    const response = yield call(getConsultantAdminByIdApi, id);
     const data = response.data.data;
 
     // NOTE - You can change this according to response format from your api
@@ -86,7 +86,7 @@ function* getConsultantStaffById({ payload: { id } }: ConsultantStaffData): Saga
 
 function* updateConsultantStaff({ payload: { id, username, email, full_name, user_type_id, consultant_id }, type }: ConsultantStaffData): SagaIterator {
   try {
-    const response = yield call(updateConsultantStaffApi, id, {
+    const response = yield call(updateConsultantAdminApi, id, {
       username,
       email,
       full_name,
@@ -104,7 +104,7 @@ function* updateConsultantStaff({ payload: { id, username, email, full_name, use
 
 function* deleteConsultantStaff({ payload: { id, user_type, consultant_id } }: ConsultantStaffData): SagaIterator {
   try {
-    const response = yield call(deleteConsultantStaffApi, id);
+    const response = yield call(deleteConsultantAdminApi, id);
     const data = response.data.message;
 
     yield put(consultantStaffApiResponseSuccess(ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF, data));

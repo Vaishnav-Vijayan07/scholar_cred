@@ -52,7 +52,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     roles: ["CONSULTANT_ADMIN", "SUPER_USER"],
   },
 
-  { key: "student_management", label: "Student Management", isTitle: true, roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"] },
+  { key: "student_management", label: "Student Management", isTitle: true, roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"] },
 
   {
     key: "students",
@@ -60,7 +60,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "users",
     url: "/users/students",
-    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"],
+    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
   },
 
   { key: "cred_admin_management", label: "Cred Admin Management", isTitle: true, roles: ["SUPER_USER"] },
@@ -73,8 +73,6 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/cred_admin/cred_user_management",
     roles: ["SUPER_USER"],
   },
-
-  
 ];
 
 const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
@@ -152,8 +150,6 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
       },
     ],
   },
- 
-
 ];
 
 const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [

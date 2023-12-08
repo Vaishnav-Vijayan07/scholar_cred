@@ -4,6 +4,7 @@ import { createConsultant, updateConsultant, getConsultants, getConsultantsById,
 import { createAdminUsers, editAdminUsers, getCredAdminUsers, getAdminUsersById, deleteAdminUsers, resetPassword } from "./admin_users";
 import { createAdminStaff, deleteAdminStaff, getAdminStaff, getAdminStaffById, updateAdminStaff } from "./admin_staffs";
 import { createConsultantStaff, deleteConsultantStaff, getConsultantStaff, getConsultantStaffById, updateConsultantStaff } from "./consultantStaff";
+import { createConsultantAdmin, deleteConsultantAdmin, getConsultantAdmin, getConsultantAdminById, updateConsultantAdmin } from "./consultantAdmin";
 
 import { getUserTypes } from "./user_types";
 import { createStudent, deleteStudent, getStudent, getStudentById, updateStudent } from "./students";
@@ -29,15 +30,20 @@ export {
   getAdminStaff,
   getAdminStaffById,
   updateAdminStaff,
-  createConsultantStaff,
-  deleteConsultantStaff,
-  getConsultantStaff,
-  getConsultantStaffById,
-  updateConsultantStaff,
+  createConsultantAdmin,
+  deleteConsultantAdmin,
+  getConsultantAdmin,
+  getConsultantAdminById,
+  updateConsultantAdmin,
   createStudent,
   deleteStudent,
   getStudent,
   getStudentById,
   updateStudent,
   resetPassword,
+  createConsultantStaff,
+  deleteConsultantStaff,
+  getConsultantStaff,
+  getConsultantStaffById,
+  updateConsultantStaff,
 };
