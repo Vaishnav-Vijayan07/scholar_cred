@@ -138,8 +138,8 @@ export function* watchResetPassword() {
   yield takeEvery(AdminActionTypes.RESET_ADMIN_PASSWORD, resetPassword);
 }
 
-function* credAdminUsersSaga() {
+function* consultantStaffSaga() {
   yield all([fork(watchCreateAdminUser), fork(watchEditAdminUser), fork(watchDeleteAdminUser), fork(watchGetAdminUser), fork(watchGetAdminUserbyId), fork(watchResetPassword)]);
 }
 
-export default credAdminUsersSaga;
+export default consultantStaffSaga;

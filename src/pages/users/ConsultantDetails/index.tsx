@@ -12,7 +12,7 @@ import FeatherIcons from "feather-icons-react";
 import { sizePerPageList } from "../data";
 import { InitialState, InitialValidationState, UserTypes } from "./data";
 import { useDispatch, useSelector } from "react-redux";
-import { createConsultantStaff, deleteConsultantStaff, editConsultantStaff, getConsultantStaff, getConsultantsById } from "../../../redux/actions";
+import { createConsultantAdmin, deleteConsultantAdmin, editConsultantAdmin, getConsultantAdmin, getConsultantsById } from "../../../redux/actions";
 import { RootState } from "../../../redux/store";
 import { consultant_admin_usertype } from "../../../constants/constant_ids";
 import Swal from "sweetalert2";
@@ -31,11 +31,11 @@ const Profile = () => {
   const [validationErrors, setValidationErrors] = useState(InitialValidationState);
 
   const { consultantDetails, loading, error, staffData, staffLoading } = useSelector((state: RootState) => ({
-    consultantDetails: state.ConsultantReducer.consultantById.data,
+    consultantDetails: state.ConsultantReducer.consultantById?.data,
     loading: state.ConsultantReducer.loading,
-    staffData: state?.ConsultantStaff.consultantStaff.data,
-    staffLoading: state?.ConsultantStaff.loading,
-    error: state?.ConsultantStaff.error,
+    staffData: state?.ConsultantAdmin.consultantStaff?.data,
+    staffLoading: state?.ConsultantAdmin.loading,
+    error: state?.ConsultantAdmin.error,
   }));
 
   const records: any = staffData ? staffData : [];
@@ -111,7 +111,7 @@ const Profile = () => {
       if (result.isConfirmed) {
         // swal.fire("Deleted!", "Your item has been deleted.", "success");
         if (id) {
-          dispatch(deleteConsultantStaff(itemId, consultant_admin_usertype, id));
+          dispatch(deleteConsultantAdmin(itemId, consultant_admin_usertype, id));
         }
       }
     });
@@ -132,7 +132,7 @@ const Profile = () => {
       if (isUpdate) {
         if (id) {
           dispatch(
-            editConsultantStaff(
+            editConsultantAdmin(
               formData?.consultant_staff_id, //id of consultant staff
               formData?.username,
               formData?.email,
@@ -146,7 +146,7 @@ const Profile = () => {
         // Handle add logic
         if (id) {
           dispatch(
-            createConsultantStaff(
+            createConsultantAdmin(
               formData?.username,
               formData?.email,
               formData?.full_name,
@@ -216,7 +216,7 @@ const Profile = () => {
       dispatch(getConsultantsById(id));
 
       //user_type and consultant_id
-      dispatch(getConsultantStaff(consultant_admin_usertype, id));
+      dispatch(getConsultantAdmin(consultant_admin_usertype, id));
     }
   }, [id]);
 

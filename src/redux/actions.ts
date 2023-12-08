@@ -5,4 +5,5 @@ export * from "./adminStaffs/actions";
 export * from "./admin_users/actions";
 export * from "./consultantAdmin/actions";
 export * from "./students/actions";
+export * from "./consultantStaff/actions";
 

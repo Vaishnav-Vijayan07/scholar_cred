@@ -1,122 +1,108 @@
-import React, { useDebugValue, useEffect, useState } from "react";
-import { Row, Col, Card, Tab, Nav, Button, Modal, Form, Alert } from "react-bootstrap";
 import * as yup from "yup";
+import React, { useEffect, useMemo, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { Row, Col, Card, Form, Button, Modal, Alert } from "react-bootstrap";
+import Table from "../../components/Table";
+import { withSwal } from "react-sweetalert2";
+import FeatherIcons from "feather-icons-react";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 // components
 import PageTitle from "../../components/PageTitle";
-
-import Table from "../../components/Table";
-import { Link, useParams } from "react-router-dom";
-import FeatherIcons from "feather-icons-react";
-import { sizePerPageList } from "./data";
-import { InitialState, InitialValidationState, UserTypes } from "./consultantStaffData";
+import { ConsultantStaffInitialState, ConsultantStaffInitialValidationState, ConsultantStaffTypes, sizePerPageList } from "./data";
 import { useDispatch, useSelector } from "react-redux";
-import { createConsultantStaff, deleteConsultantStaff, editConsultantStaff, getConsultantStaff, getConsultantsById } from "../../redux/actions";
+import { createConsultantStaffs, editConsultantStaffs, getConsultantStaffs, deleteConsultantStaffs } from "../../redux/actions";
 import { RootState } from "../../redux/store";
-import { consultant_admin_usertype } from "../../constants/constant_ids";
-import Swal from "sweetalert2";
+// import { getConsultantStaff } from "../../redux/actions";
 
-const Profile = () => {
-  const { id } = useParams();
-
+const BasicInputElements = withSwal((props: any) => {
+  const { swal, loading, state, error } = props;
   const dispatch = useDispatch();
-  // Modal states
-  const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
+
+  //Table data
+  const records = state;
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
-  const [formData, setFormData] = useState<UserTypes>(InitialState);
-
+  const [formData, setFormData] = useState<ConsultantStaffTypes>(ConsultantStaffInitialState);
+  // Modal states
+  const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   //validation errors
-  const [validationErrors, setValidationErrors] = useState(InitialValidationState);
-
-  const { consultantDetails, loading, error, staffData, staffLoading } = useSelector((state: RootState) => ({
-    consultantDetails: state.ConsultantReducer.consultantById.data,
-    loading: state.ConsultantReducer.loading,
-    staffData: state?.ConsultantStaff.consultantStaff.data,
-    staffLoading: state?.ConsultantStaff.loading,
-    error: state?.ConsultantStaff.error,
-  }));
-
-  const records: any = staffData ? staffData : [];
-
-  const columns = [
-    {
-      Header: "ID",
-      accessor: "id",
-      sort: true,
-    },
-    {
-      Header: "Name",
-      accessor: "full_name",
-      sort: true,
-    },
-    {
-      Header: "Username",
-      accessor: "username",
-      sort: true,
-    },
-    {
-      Header: "Email",
-      accessor: "email",
-      sort: true,
-    },
-    {
-      Header: "Status",
-      accessor: "password_hash_hash",
-      sort: true,
-      Cell: ({ row }: any) => <span>{row.original.is_active ? "Active" : "Inactive"}</span>,
-    },
-    {
-      Header: "Actions",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <div className="d-flex justify-content-center align-items-center gap-2">
-          {/* Edit Icon */}
-
-          <FeatherIcons
-            icon="edit"
-            size="15"
-            className="cursor-pointer text-secondary"
-            onClick={() => {
-              handleUpdate(row.original);
-              // openModalWithClass("modal-right");
-              toggleResponsiveModal();
-            }}
-          />
-
-          {/* Delete Icon */}
-          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.id)} />
-        </div>
-      ),
-    },
-  ];
-
-  const handleDelete = (itemId: string) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "This action cannot be undone.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result: any) => {
-      if (result.isConfirmed) {
-        // swal.fire("Deleted!", "Your item has been deleted.", "success");
-        if (id) {
-          dispatch(deleteConsultantStaff(itemId, consultant_admin_usertype, id));
-        }
-      }
-    });
-  };
+  const [validationErrors, setValidationErrors] = useState(ConsultantStaffInitialValidationState);
 
   const validationSchema = yup.object().shape({
-    username: yup.string().required("Username is required").min(3, "Username must be at least 3 characters long"),
+    first_name: yup.string().required("First name is required"),
+    last_name: yup.string().required("Last name is required"),
     email: yup.string().required("Email is required").email("Invalid email format"),
-    full_name: yup.string().required("Full name is required").min(2, "Full name must be at least 2 characters long"),
+    username: yup.string().required("Username is required"),
+    employee_id: yup.string().required("Employee id is required"),
+    phone: yup
+      .string()
+      .required("Phone number is required")
+      .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
   });
 
+  // const methods = useForm({
+  //   resolver: yupResolver(validationSchema), // Integrate yup with react-hook-form
+  //   defaultValues: initialState,
+  // });
+
+  //handling update logic
+  const handleUpdate = (item: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      id: item.id,
+      first_name: item.first_name,
+      last_name: item.last_name,
+      email: item.email,
+      phone: item.phone,
+      image: item.image,
+      username: item.username,
+      employee_id: item.employee_id,
+    }));
+
+    setIsUpdate(true);
+  };
+
+  //handle delete function
+  const handleDelete = (id: string) => {
+    swal
+      .fire({
+        title: "Are you sure?",
+        text: "This action cannot be undone.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      })
+      .then((result: any) => {
+        if (result.isConfirmed) {
+          // swal.fire("Deleted!", "Your item has been deleted.", "success");
+          dispatch(deleteConsultantStaffs(id));
+        }
+      });
+  };
+
+  //handle onchange function
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    // Limit the length to 10 characters
+    if (name == "phone") {
+      const numericValue = value.replace(/\D/g, "");
+      const truncatedValue = numericValue.slice(0, 10);
+      setFormData({
+        ...formData,
+        [name]: truncatedValue,
+      });
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  //handle form submission
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Validate the form using yup
@@ -124,31 +110,24 @@ const Profile = () => {
       await validationSchema.validate(formData, { abortEarly: false });
       // Validation passed, handle form submission
       if (isUpdate) {
-        if (id) {
-          dispatch(
-            editConsultantStaff(
-              formData?.consultant_staff_id, //id of consultant staff
-              formData?.username,
-              formData?.email,
-              formData?.full_name,
-              consultant_admin_usertype, //usertype id
-              id //consultant_id
-            )
-          );
-        }
+        // Handle update logic
+        dispatch(
+          editConsultantStaffs(
+            formData.id,
+            formData.first_name,
+            formData.last_name,
+            formData.username,
+            formData.email,
+            formData.phone,
+            formData.image,
+            formData.employee_id,
+            1,
+            "3"
+          )
+        );
       } else {
         // Handle add logic
-        if (id) {
-          dispatch(
-            createConsultantStaff(
-              formData?.username,
-              formData?.email,
-              formData?.full_name,
-              consultant_admin_usertype, //usertype id
-              id //consultant_id
-            )
-          );
-        }
+        dispatch(createConsultantStaffs(formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, formData.image, formData.employee_id, 1, "3"));
       }
     } catch (validationError) {
       // Handle validation errors
@@ -164,139 +143,228 @@ const Profile = () => {
     }
   };
 
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const columns = [
+    {
+      Header: "ID",
+      accessor: "id",
+      sort: true,
+    },
+    {
+      Header: "First Name",
+      accessor: "first_name",
+      sort: true,
+    },
+    {
+      Header: "Last Name",
+      accessor: "last_name",
+      sort: false,
+    },
+    {
+      Header: "User Name",
+      accessor: "username",
+      sort: false,
+    },
+    {
+      Header: "Email",
+      accessor: "email",
+      sort: false,
+    },
+    {
+      Header: "Phone",
+      accessor: "phone",
+      sort: false,
+    },
+    // {
+    //   Header: "Image",
+    //   accessor: "image",
+    //   sort: false,
+    //   Cell: ({ row }: any) => (
+    //     <>
+    //       <img src={row.original.image} alt="user image" width={50} />
+    //     </>
+    //   ),
+    // },
+    {
+      Header: "Employee Id",
+      accessor: "employee_id",
+      sort: false,
+    },
+    {
+      Header: "Actions",
+      accessor: "",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <div className="d-flex justify-content-center align-items-center gap-2">
+          {/* Edit Icon */}
+          <FeatherIcons
+            icon="edit"
+            size="15"
+            className="cursor-pointer text-secondary"
+            onClick={() => {
+              handleUpdate(row.original);
+              toggleResponsiveModal();
+            }}
+          />
+
+          {/* Delete Icon */}
+          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.id)} />
+        </div>
+      ),
+    },
+  ];
+
+  //handle cancel update section
+  const handleCancelUpdate = () => {
+    setIsUpdate(false);
+    setFormData(ConsultantStaffInitialState);
   };
 
   const toggleResponsiveModal = () => {
     setResponsiveModal(!responsiveModal);
-    setValidationErrors(InitialValidationState);
+    // setValidationErrors(InitialValidationState);
     if (isUpdate) {
       handleCancelUpdate();
     }
   };
 
-  //handling update logic
-  const handleUpdate = (item: any) => {
-    if (id) {
-      setFormData((prev) => ({
-        ...prev,
-        consultant_staff_id: item?.id,
-        username: item?.username,
-        email: item?.email,
-        full_name: item?.full_name,
-        user_type_id: item?.user_type_id,
-        created_by: item?.created_by,
-        consultant_id: id,
-      }));
-
-      setIsUpdate(true);
-    }
+  const setDemoData = () => {
+    setFormData((prev) => ({
+      ...prev,
+      first_name: "John",
+      last_name: "Doe",
+      username: "johndoe",
+      email: "john.doe@example.com",
+      phone: "9876545678",
+      image: "https://example.com/john-doe.jpg",
+      employee_id: "EMP001",
+      created_by: 1,
+    }));
   };
-
-  //handle cancel update section
-  const handleCancelUpdate = () => {
-    setIsUpdate(false);
-    setFormData(InitialState);
-    setValidationErrors(InitialValidationState);
-  };
-
-  useEffect(() => {
-    if (id) {
-      dispatch(getConsultantsById(id));
-
-      //user_type and consultant_id
-      dispatch(getConsultantStaff(consultant_admin_usertype, id));
-    }
-  }, [id]);
 
   useEffect(() => {
     // Check for errors and clear the form
-    if (!staffLoading && !error) {
+    if (!loading && !error) {
+      setValidationErrors(ConsultantStaffInitialValidationState);
       handleCancelUpdate();
-      if (id) {
-        setResponsiveModal(false);
-      }
+      setResponsiveModal(false);
     }
-  }, [staffLoading, error]);
+  }, [loading, error]);
 
   return (
     <>
-      <PageTitle
-        breadCrumbItems={[
-          { label: "Contacts", path: "/apps/contacts/profile" },
-          { label: "Profile", path: "/apps/contacts/profile", active: true },
-        ]}
-        title={"Consultant Details"}
-      />
-      <Row>
-        <Col>
-          <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
-            <Form onSubmit={onSubmit}>
-              <Modal.Header closeButton>
-                <h4 className="modal-title">Admin Management</h4>
-              </Modal.Header>
-              <Modal.Body className="px-3">
-                {error && (
-                  <Alert variant="danger" className="my-2">
-                    {error}
-                  </Alert>
-                )}
-                <Form.Group className="mb-3" controlId="full_name">
-                  <Form.Label>Full Name</Form.Label>
-                  <Form.Control type="text" name="full_name" placeholder="Enter first name" value={formData.full_name} onChange={handleInputChange} />
-                  {validationErrors.full_name && <Form.Text className="text-danger">{validationErrors.full_name}</Form.Text>}
-                </Form.Group>
+      <Row className="justify-content-between px-2">
+        <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
+          <Form onSubmit={onSubmit}>
+            <Modal.Header closeButton>
+              <h4 className="modal-title">Staff Management</h4>
+            </Modal.Header>
+            <Modal.Body className="px-4">
+              {error && (
+                <Alert variant="danger" className="my-2">
+                  {error}
+                </Alert>
+              )}
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="first_name">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
+                    {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
+                  </Form.Group>
+                </Col>
 
-                <Form.Group className="mb-3" controlId="email">
-                  <Form.Label>Email Address</Form.Label>
-                  <Form.Control type="text" placeholder="Enter email" name="email" value={formData.email} onChange={handleInputChange} />
-                  {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
-                </Form.Group>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="last_name">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="text" placeholder="Enter Second Name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
+                    {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-                <Form.Group className="mb-3" controlId="username">
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control type="text" placeholder="Enter username" name="username" value={formData.username} onChange={handleInputChange} />
-                  {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
-                </Form.Group>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  variant="danger"
-                  id="button-addon2"
-                  // disabled={loading}
-                  className="mt-1 waves-effect waves-light me-2"
-                  onClick={() => {
-                    if (isUpdate) {
-                      handleCancelUpdate();
-                      toggleResponsiveModal();
-                    } else {
-                      toggleResponsiveModal();
-                    }
-                  }}
-                >
-                  {!isUpdate ? "close" : "Cancel"}
-                </Button>
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
+                    {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                  </Form.Group>
+                </Col>
 
-                <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1">
-                  {isUpdate ? "Update" : "Submit"}
-                </Button>
-              </Modal.Footer>
-            </Form>
-          </Modal>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="phone">
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
+                    {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="employee_id">
+                    <Form.Label>Employee Id</Form.Label>
+                    <Form.Control type="text" name="employee_id" placeholder="Enter Employee Id" value={formData.employee_id} onChange={handleInputChange} />
+                    {validationErrors.employee_id && <Form.Text className="text-danger">{validationErrors.employee_id}</Form.Text>}
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="username">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control type="text" name="username" placeholder="Enter Username" value={formData.username} onChange={handleInputChange} />
+                    {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              {/* <Form.Group className="mb-3" controlId="image">
+                <Form.Label>image</Form.Label>
+                <Form.Control type="file" name="image" value={formData.image} onChange={handleInputChange} />
+                {validationErrors.image && <Form.Text className="text-danger">{validationErrors.image}</Form.Text>}
+              </Form.Group> */}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="danger"
+                id="button-addon2"
+                disabled={loading}
+                className="mt-1 waves-effect waves-light me-2"
+                onClick={() => {
+                  if (isUpdate) {
+                    handleCancelUpdate();
+                    toggleResponsiveModal();
+                  } else {
+                    toggleResponsiveModal();
+                  }
+                }}
+              >
+                {!isUpdate ? "close" : "Cancel"}
+              </Button>
+
+              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
+                {isUpdate ? "Update" : "Submit"}
+              </Button>
+
+              <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
+                Add test data
+              </Button>
+            </Modal.Footer>
+
+            {/* )} */}
+          </Form>
+        </Modal>
+
+        <Col className="p-0 form__card">
           <Card className="bg-white">
             <Card.Body>
               <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
-                <i className="mdi mdi-plus-circle"></i> Add Users
+                <i className="mdi mdi-plus-circle"></i> Add Consultant Staff
               </Button>
-              <h4 className="header-title mb-4">Admin Login</h4>
+              {/* <h4 className="header-title mb-4">Manage Staff</h4> */}
               <Table
                 columns={columns}
-                data={records}
+                data={records ? records : []}
                 pageSize={5}
                 sizePerPageList={sizePerPageList}
                 isSortable={true}
@@ -311,6 +379,40 @@ const Profile = () => {
       </Row>
     </>
   );
-};
+});
 
-export default Profile;
+const Staff = () => {
+  const dispatch = useDispatch();
+
+  const { state, loading, error } = useSelector((state: RootState) => ({
+    state: state.AdminStaff.adminStaff.data,
+    loading: state?.AdminStaff.loading,
+    error: state?.AdminStaff.error,
+  }));
+
+  useEffect(() => {
+    dispatch(getConsultantStaffs());
+  }, []);
+
+  return (
+    <React.Fragment>
+      <PageTitle
+        breadCrumbItems={[
+          { label: "Consultant Staff", path: "/consultant-users/staff" },
+          {
+            label: "Consultant Staff",
+            path: "/consultant-users/staff",
+            active: true,
+          },
+        ]}
+        title={"Consultant Staff"}
+      />
+      <Row>
+        <Col>
+          <BasicInputElements state={state} loading={loading} error={error} />
+        </Col>
+      </Row>
+    </React.Fragment>
+  );
+};
+export default Staff;

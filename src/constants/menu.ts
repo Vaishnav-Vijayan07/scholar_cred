@@ -36,7 +36,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
   },
   {
     key: "staff",
-    label: "Staff",
+    label: "Cred Staff",
     isTitle: false,
     icon: "user-x",
     url: "/users/staff",
@@ -106,7 +106,7 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
       },
       {
         key: "staff",
-        label: "Staff",
+        label: "Cred Staff",
         url: "/users/staff",
         parentKey: "users",
         roles: ["CRED_ADMIN", "SUPER_USER"],
@@ -183,7 +183,7 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
       },
       {
         key: "staff",
-        label: "Staff",
+        label: "Cred Staff",
         url: "/users/staff",
         parentKey: "users",
         roles: ["CRED_ADMIN", "SUPER_USER"],
