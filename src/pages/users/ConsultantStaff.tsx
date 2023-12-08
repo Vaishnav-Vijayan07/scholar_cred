@@ -16,8 +16,10 @@ import { RootState } from "../../redux/store";
 // import { getConsultantStaff } from "../../redux/actions";
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error } = props;
+  const { swal, loading, state, error, user } = props;
   const dispatch = useDispatch();
+
+  console.log("user", user);
 
   //Table data
   const records = state;
@@ -78,7 +80,7 @@ const BasicInputElements = withSwal((props: any) => {
       .then((result: any) => {
         if (result.isConfirmed) {
           // swal.fire("Deleted!", "Your item has been deleted.", "success");
-          dispatch(deleteConsultantStaffs(id, "7"));
+          dispatch(deleteConsultantStaffs(id, user?.consultant_id));
         }
       });
   };
@@ -122,12 +124,14 @@ const BasicInputElements = withSwal((props: any) => {
             formData.image,
             formData.employee_id,
             1,
-            "7"
+            user?.consultant_id
           )
         );
       } else {
         // Handle add logic
-        dispatch(createConsultantStaffs(formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, formData.image, formData.employee_id, 1, "7"));
+        dispatch(
+          createConsultantStaffs(formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, formData.image, formData.employee_id, 1, user?.consultant_id)
+        );
       }
     } catch (validationError) {
       // Handle validation errors
@@ -383,6 +387,9 @@ const BasicInputElements = withSwal((props: any) => {
 
 const Staff = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => ({
+    user: state.Auth.user,
+  }));
 
   const { state, loading, error } = useSelector((state: RootState) => ({
     state: state.ConsultantStaff.ConsultantStaff.data,
@@ -391,7 +398,9 @@ const Staff = () => {
   }));
 
   useEffect(() => {
-    dispatch(getConsultantStaffs("7"));
+    if (user) {
+      dispatch(getConsultantStaffs(user?.consultant_id));
+    }
   }, []);
 
   return (
@@ -409,7 +418,7 @@ const Staff = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} />
+          <BasicInputElements state={state} loading={loading} error={error} user={user} />
         </Col>
       </Row>
     </React.Fragment>

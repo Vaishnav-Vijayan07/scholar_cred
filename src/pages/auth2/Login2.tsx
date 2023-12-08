@@ -31,12 +31,7 @@ const BottomLink = () => {
 
   return (
     <footer className="footer footer-alt">
-      <p className="text-muted">
-        {t("Don't have an account?")}{" "}
-        <Link to={"/auth/register2"} className="text-muted ms-1">
-          <b>{t("Sign Up")}</b>
-        </Link>
-      </p>
+      <p className="text-muted d-flex gap-2"></p>
     </footer>
   );
 };
@@ -52,14 +47,12 @@ const Login2 = () => {
     dispatch(resetAuth());
   }, [dispatch]);
 
-  const { loading, userLoggedIn, user, error } = useSelector(
-    (state: RootState) => ({
-      loading: state.Auth.loading,
-      user: state.Auth.user,
-      error: state.Auth.error,
-      userLoggedIn: state.Auth.userLoggedIn,
-    })
-  );
+  const { loading, userLoggedIn, user, error } = useSelector((state: RootState) => ({
+    loading: state.Auth.loading,
+    user: state.Auth.user,
+    error: state.Auth.error,
+    userLoggedIn: state.Auth.userLoggedIn,
+  }));
 
   /*
    * form validation schema
@@ -80,15 +73,11 @@ const Login2 = () => {
 
   return (
     <>
-      {userLoggedIn || user ? (
-        <Navigate to={next ? next : "/"}></Navigate>
-      ) : null}
+      {userLoggedIn || user ? <Navigate to={next ? next : "/"}></Navigate> : null}
 
       <AuthLayout bottomLinks={<BottomLink />}>
         <h4 className="mt-0">{t("Sign In")}</h4>
-        <p className="text-muted mb-4">
-          {t("Enter your email address and password to access account.")}
-        </p>
+        <p className="text-muted mb-4">{t("Enter your email address and password to access account.")}</p>
 
         {error && (
           <Alert variant="danger" className="my-2">
@@ -96,36 +85,15 @@ const Login2 = () => {
           </Alert>
         )}
 
-        <VerticalForm
-          onSubmit={onSubmit}
-          resolver={schemaResolver}
-          defaultValues={{ username: "sudmin", password: "su_admin" }}
-        >
-          <FormInput
-            label={t("Username")}
-            type="text"
-            name="username"
-            placeholder={t("Enter your Username")}
-            containerClass={"mb-3"}
-          />
-          <FormInput
-            label={t("Password")}
-            type="password"
-            name="password"
-            placeholder={t("Enter your password")}
-            containerClass={"mb-3"}
-          >
+        <VerticalForm onSubmit={onSubmit} resolver={schemaResolver} defaultValues={{ username: "suadmin", password: "su_admin" }}>
+          <FormInput label={t("Username")} type="text" name="username" placeholder={t("Enter your Username")} containerClass={"mb-3"} />
+          <FormInput label={t("Password")} type="password" name="password" placeholder={t("Enter your password")} containerClass={"mb-3"}>
             <Link to="/auth/forget-password2" className="text-muted float-end">
               <small>{t("Forgot your password?")}</small>
             </Link>
           </FormInput>
 
-          <FormInput
-            label="Remember me"
-            type="checkbox"
-            name="checkbox"
-            containerClass={"mb-3"}
-          />
+          <FormInput label="Remember me" type="checkbox" name="checkbox" containerClass={"mb-3"} />
 
           <div className="d-grid mb-0 text-center">
             <Button variant="primary" type="submit" disabled={loading}>
@@ -133,6 +101,21 @@ const Login2 = () => {
             </Button>
           </div>
         </VerticalForm>
+
+        <div className="d-flex mt-2 justify-content-between">
+          <Button onClick={() => dispatch(loginUser("CREDADMIN", "CREDADMIN"))} className="custom_btn">
+            Cred Admin
+          </Button>
+          <Button onClick={() => dispatch(loginUser("adhnan@intersmart.in", "26VhXS"))} className="custom_btn">
+            Cred Staff
+          </Button>
+          <Button onClick={() => dispatch(loginUser("vaishnav@intersmart.in", "7i67xn"))} className="custom_btn">
+            Con. Admin
+          </Button>
+          <Button onClick={() => dispatch(loginUser("", ""))} className="custom_btn">
+            Con. Staff
+          </Button>
+        </div>
       </AuthLayout>
     </>
   );

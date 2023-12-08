@@ -13,25 +13,15 @@ interface AccountLayoutProps {
   children?: any;
 }
 
-const AuthLayout = ({
-  helpText,
-  bottomLinks,
-  children,
-  isCombineForm,
-}: AccountLayoutProps) => {
+const AuthLayout = ({ helpText, bottomLinks, children, isCombineForm }: AccountLayoutProps) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (document.body)
-      document.body.classList.remove(
-        "authentication-bg",
-        "authentication-bg-pattern"
-      );
+    if (document.body) document.body.classList.remove("authentication-bg", "authentication-bg-pattern");
     if (document.body) document.body.classList.add("auth-fluid-pages", "pb-0");
 
     return () => {
-      if (document.body)
-        document.body.classList.remove("auth-fluid-pages", "pb-0");
+      if (document.body) document.body.classList.remove("auth-fluid-pages", "pb-0");
     };
   }, []);
 
@@ -39,8 +29,7 @@ const AuthLayout = ({
     <>
       <div className="auth-fluid">
         {/* Auth fluid left content */}
-        <div className="auth-fluid-right text-center">
-        </div>
+        <div className="auth-fluid-right text-center"></div>
         {/* Auth fluid right content */}
         <div className="auth-fluid-form-box">
           <div className="align-items-center d-flex h-100">
@@ -48,10 +37,7 @@ const AuthLayout = ({
               {/* logo */}
               <div className="auth-brand text-center text-lg-start">
                 <div className="auth-logo">
-                  <Link
-                    to="/"
-                    className="logo logo-dark text-center outline-none"
-                  >
+                  <Link to="/" className="logo logo-dark text-center outline-none">
                     <span className="logo-lg">
                       <img src={LogoDark} alt="" height="40" />
                     </span>
@@ -72,8 +58,6 @@ const AuthLayout = ({
             </Card.Body>
           </div>
         </div>
-
-
       </div>
     </>
   );

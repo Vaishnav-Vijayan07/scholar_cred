@@ -51,13 +51,13 @@ const dashboardRoutes: RoutesProps = {
       path: "/",
       name: "Root",
       element: <Navigate to="/dashboard" />,
-      roles: ["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF"],
+      roles: ["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF"],
       route: PrivateRoute,
     },
     {
       path: "/dashboard",
       name: "Dashboard",
-      element: <PrivateRoute roles={["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF"]} component={Dashboard4} />,
+      element: <PrivateRoute roles={["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF"]} component={Dashboard4} />,
       route: PrivateRoute,
     },
   ],
@@ -83,7 +83,7 @@ const userRoutes = {
   path: "/users",
   name: "Users",
   route: PrivateRoute,
-  roles: ["CRED_ADMIN", "SUPER_USER", "CRED_STAFF"],
+  roles: ["CRED_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT_STAFF"],
   icon: "users",
   children: [
     {
@@ -107,7 +107,7 @@ const userRoutes = {
     {
       path: "/users/students",
       name: "Students",
-      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"]} component={Students} />,
+      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={Students} />,
       route: PrivateRoute,
     },
   ],
@@ -117,13 +117,13 @@ const credadminRoutes = {
   path: "/cred-admin-users",
   name: "Cred admin users",
   route: PrivateRoute,
-  roles: ["SUPER_USER", "CRED_STAFF"],
+  roles: ["SUPER_USER", "CRED_STAFF", "CONSULTANT"],
   icon: "users",
   children: [
     {
       path: "/cred_admin/cred_user_management",
       name: "Students",
-      element: <PrivateRoute roles={["SUPER_USER", "CRED_STAFF"]} component={AdminUsers} />,
+      element: <PrivateRoute roles={["SUPER_USER", "CRED_STAFF", "CONSULTANT"]} component={AdminUsers} />,
       route: PrivateRoute,
     },
   ],
