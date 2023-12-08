@@ -28,7 +28,7 @@ export interface ProjectDetailType {
 const projectsDetails: ProjectDetailType[] = [
   {
     id: 1,
-    name: "App design and development",
+    name: "Adhnan",
     startDate: "Jan 03, 2015",
     dueDate: "Oct 12, 2018",
     teamMembers: [
@@ -36,25 +36,14 @@ const projectsDetails: ProjectDetailType[] = [
         image: avatar1,
         name: "Mat Helme",
       },
-      {
-        image: avatar2,
-        name: "Michael Zenaty",
-      },
-      {
-        image: avatar3,
-        name: "James Anderson",
-      },
-      {
-        image: avatar5,
-        name: "Username",
-      },
+    
     ],
-    status: "Work in Progress",
-    clients: "Halette Boivin",
+    status: "Pending",
+    clients: "Oberon Overseas Education & Migration",
   },
   {
     id: 2,
-    name: "Coffee detail page - Main Page",
+    name: "Sarin",
     startDate: "Sep 21, 2016",
     dueDate: "May 05, 2018",
     teamMembers: [
@@ -62,21 +51,14 @@ const projectsDetails: ProjectDetailType[] = [
         image: avatar3,
         name: "Mat Helme",
       },
-      {
-        image: avatar4,
-        name: "Michael Zenaty",
-      },
-      {
-        image: avatar5,
-        name: "Username",
-      },
+     
     ],
     status: "Pending",
-    clients: "Durandana Jolicoeur",
+    clients: "Vostek Careers Private Limited",
   },
   {
     id: 3,
-    name: "Poster illustation design",
+    name: "Vaishnav",
     startDate: "Mar 08, 2018",
     dueDate: "Sep 22, 2018",
     teamMembers: [
@@ -84,21 +66,14 @@ const projectsDetails: ProjectDetailType[] = [
         image: avatar2,
         name: "Mat Helme",
       },
-      {
-        image: avatar6,
-        name: "Michael Zenaty",
-      },
-      {
-        image: avatar7,
-        name: "Username",
-      },
+     
     ],
     status: "Completed",
-    clients: "Lucas Sabourin",
+    clients: "Edwings Overseas Educational Consultants Pvt Ltd",
   },
   {
     id: 4,
-    name: "Drinking bottle graphics",
+    name: "Liji",
     startDate: "Oct 10, 2017",
     dueDate: "May 07, 2018",
     teamMembers: [
@@ -106,14 +81,7 @@ const projectsDetails: ProjectDetailType[] = [
         image: avatar9,
         name: "Mat Helme",
       },
-      {
-        image: avatar10,
-        name: "Michael Zenaty",
-      },
-      {
-        image: avatar1,
-        name: "Username",
-      },
+      
     ],
     status: "Work in Progress",
     clients: "Donatien Brunelle",
@@ -132,17 +100,10 @@ const projectsDetails: ProjectDetailType[] = [
         image: avatar8,
         name: "Michael Zenaty",
       },
-      {
-        image: avatar2,
-        name: "James Anderson",
-      },
-      {
-        image: avatar7,
-        name: "Username",
-      },
+      
     ],
     status: "Coming Soon",
-    clients: "Karel Auberjo",
+    clients: "International Academy",
   },
 ];
 

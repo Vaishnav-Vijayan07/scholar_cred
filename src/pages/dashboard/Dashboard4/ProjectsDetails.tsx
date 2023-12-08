@@ -16,25 +16,25 @@ interface ProjectsDetailsProps {
 const ProjectsDetails = ({ projectsDetails }: ProjectsDetailsProps) => {
   return (
     <>
-      <BasicPortlet cardTitle="Projects" titleClass="header-title">
+      <BasicPortlet cardTitle="Applications" titleClass="header-title">
         <div className="table-responsive">
           <table className="table table-centered table-nowrap table-borderless mb-0">
             <thead className="table-light">
               <tr>
-                <th>Project Name</th>
-                <th>Start Date</th>
+              <th>Start Date</th>
+                <th>Student Name</th>
                 <th>Due Date</th>
-                <th>Team</th>
+                <th>Staff</th>
                 <th>Status</th>
-                <th>Clients</th>
+                <th>Consultacy</th>
               </tr>
             </thead>
             <tbody>
               {(projectsDetails || []).map((project, i) => {
                 return (
                   <tr key={i}>
+                     <td>{project.startDate}</td>
                     <td>{project.name}</td>
-                    <td>{project.startDate}</td>
                     <td>{project.dueDate}</td>
                     <td>
                       <div className="avatar-group">

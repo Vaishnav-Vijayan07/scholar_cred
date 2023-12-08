@@ -48,25 +48,25 @@ const SalesChart = () => {
 
   return (
     <>
-      <BasicPortlet cardTitle="Lifetime Sales" titleClass="header-title">
+      <BasicPortlet cardTitle="Application Status" titleClass="header-title">
         <div className="text-center">
           <div className="row mt-2">
             <div className="col-4">
               <h3>3,487</h3>
               <p className="text-muted font-13 mb-0 text-truncate">
-                Total Sales
+              Applications received
               </p>
             </div>
             <div className="col-4">
               <h3>814</h3>
               <p className="text-muted font-13 mb-0 text-truncate">
-                Open Campaign
+                Approved
               </p>
             </div>
             <div className="col-4">
               <h3>5,324</h3>
               <p className="text-muted font-13 mb-0 text-truncate">
-                Daily Sales
+                Pending
               </p>
             </div>
           </div>
