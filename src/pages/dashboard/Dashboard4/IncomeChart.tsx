@@ -60,25 +60,25 @@ const IncomeChart = () => {
 
   return (
     <>
-      <BasicPortlet cardTitle="Income Amounts" titleClass="header-title">
+      <BasicPortlet cardTitle="Application Rejection" titleClass="header-title">
         <div className="text-center">
           <div className="row mt-2">
             <div className="col-4">
               <h3>2,845</h3>
               <p className="text-muted font-13 mb-0 text-truncate">
-                Total Sales
+              Rejected
               </p>
             </div>
             <div className="col-4">
               <h3>6,487</h3>
               <p className="text-muted font-13 mb-0 text-truncate">
-                Open Campaign
+              Rejection rate
               </p>
             </div>
             <div className="col-4">
               <h3>201</h3>
               <p className="text-muted font-13 mb-0 text-truncate">
-                Daily Sales
+              Approval rate
               </p>
             </div>
           </div>
