@@ -10,7 +10,7 @@ import {
 } from "../../helpers";
 
 // actions
-import { ConsultantStaffApiResponseSuccess, ConsultantStaffApiResponseError, getConsultantStaff } from "./actions";
+import { ConsultantStaffsApiResponseSuccess, ConsultantStaffsApiResponseError, getConsultantStaffs as getConsultantStaff } from "./actions";
 
 // constants
 import { ConsultantStaffActionTypes } from "./constants";
@@ -50,11 +50,11 @@ function* createConsultantStaff({
 
     const data = response.data.message;
 
-    yield put(ConsultantStaffApiResponseSuccess(ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF, data));
+    yield put(ConsultantStaffsApiResponseSuccess(ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF, data));
     //calling get method after successfull api creation
     yield put(getConsultantStaff());
   } catch (error: any) {
-    yield put(ConsultantStaffApiResponseError(ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF, error));
+    yield put(ConsultantStaffsApiResponseError(ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF, error));
   }
 }
 
@@ -64,9 +64,9 @@ function* getConsultantStaffs({ payload: { consultant_id } }: ConsultantStaffDat
     const data = response.data.data;
 
     // NOTE - You can change this according to response format from your api
-    yield put(ConsultantStaffApiResponseSuccess(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF, { data }));
+    yield put(ConsultantStaffsApiResponseSuccess(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF, { data }));
   } catch (error: any) {
-    yield put(ConsultantStaffApiResponseError(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF, error));
+    yield put(ConsultantStaffsApiResponseError(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF, error));
     throw error;
   }
 }
@@ -89,10 +89,10 @@ function* updateConsultantStaff({
     });
     const data = response.data.message;
 
-    yield put(ConsultantStaffApiResponseSuccess(ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF, data));
+    yield put(ConsultantStaffsApiResponseSuccess(ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF, data));
     yield put(getConsultantStaff());
   } catch (error: any) {
-    yield put(ConsultantStaffApiResponseError(ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF, error));
+    yield put(ConsultantStaffsApiResponseError(ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF, error));
   }
 }
 
@@ -101,10 +101,10 @@ function* deleteConsultantStaff({ payload: { id } }: ConsultantStaffData): SagaI
     const response = yield call(deleteConsultantStaffApi, id);
     const data = response.data.message;
 
-    yield put(ConsultantStaffApiResponseSuccess(ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF, data));
+    yield put(ConsultantStaffsApiResponseSuccess(ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF, data));
     yield put(getConsultantStaff());
   } catch (error: any) {
-    yield put(ConsultantStaffApiResponseSuccess(ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF, error));
+    yield put(ConsultantStaffsApiResponseSuccess(ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF, error));
     throw error;
   }
 }

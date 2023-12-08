@@ -42,7 +42,7 @@ interface State {
   value?: boolean;
 }
 
-const ConsultantStaff = (state: State = INIT_STATE, action: ConsultantActionType): any => {
+const ConsultantAdmin = (state: State = INIT_STATE, action: ConsultantActionType): any => {
   switch (action.type) {
     case ConsultantStaffActionTypes.API_RESPONSE_SUCCESS:
       switch (action.payload.actionType) {
@@ -149,4 +149,4 @@ const ConsultantStaff = (state: State = INIT_STATE, action: ConsultantActionType
       return { ...state };
   }
 };
-export default ConsultantStaff;
+export default ConsultantAdmin;

@@ -23,26 +23,20 @@ interface ConsultantStaffData {
 }
 
 // Common success
-export const consultantStaffApiResponseSuccess = (actionType: string, data: ConsultantStaffData | {}): ConsultantStaffActionType => ({
+export const consultantAdminApiResponseSuccess = (actionType: string, data: ConsultantStaffData | {}): ConsultantStaffActionType => ({
   type: ConsultantStaffActionTypes.API_RESPONSE_SUCCESS,
   payload: { actionType, data },
 });
 
 // Common error
-export const consultantStaffApiResponseError = (actionType: string, error: string): ConsultantStaffActionType => ({
+export const consultantAdminApiResponseError = (actionType: string, error: string): ConsultantStaffActionType => ({
   type: ConsultantStaffActionTypes.API_RESPONSE_ERROR,
   payload: { actionType, error },
 });
 
 //create consultant;
 
-export const createConsultantStaff = (
-  username: string,
-  email: string,
-  full_name: string,
-  user_type_id: string,
-  consultant_id: string
-): ConsultantStaffActionType => ({
+export const createConsultantAdmin = (username: string, email: string, full_name: string, user_type_id: string, consultant_id: string): ConsultantStaffActionType => ({
   type: ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF,
   payload: {
     username,
@@ -55,14 +49,7 @@ export const createConsultantStaff = (
 
 //edit consultant
 
-export const editConsultantStaff = (
-  id: string,
-  username: string,
-  email: string,
-  full_name: string,
-  user_type_id: string,
-  consultant_id: string
-): ConsultantStaffActionType => ({
+export const editConsultantAdmin = (id: string, username: string, email: string, full_name: string, user_type_id: string, consultant_id: string): ConsultantStaffActionType => ({
   type: ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF,
   payload: {
     id,
@@ -76,16 +63,16 @@ export const editConsultantStaff = (
 
 //delete consultant
 
-export const deleteConsultantStaff = (id: string, user_type: string, consultant_id: string) => ({
+export const deleteConsultantAdmin = (id: string, user_type: string, consultant_id: string) => ({
   type: ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF,
   payload: { id, user_type, consultant_id },
 });
 
-export const getConsultantStaff = (user_type: string, consultant_id: string): ConsultantStaffActionType => ({
+export const getConsultantAdmin = (user_type: string, consultant_id: string): ConsultantStaffActionType => ({
   type: ConsultantStaffActionTypes.GET_CONSULTANT_STAFF,
   payload: { user_type, consultant_id },
 });
-export const getConsultantStaffById = (id: string): ConsultantStaffActionType => ({
+export const getConsultantAdminById = (id: string): ConsultantStaffActionType => ({
   type: ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID,
   payload: { id },
 });
