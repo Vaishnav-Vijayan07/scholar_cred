@@ -102,4 +102,4 @@ export const editConsultantStaff = (
 export const deleteConsultantStaff = (id: string) => ({
   type: ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF,
   payload: { id },
-});
+})
