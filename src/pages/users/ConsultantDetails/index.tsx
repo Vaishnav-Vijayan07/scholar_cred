@@ -62,6 +62,11 @@ const Profile = () => {
       sort: true,
     },
     {
+      Header: "Credentials",
+      accessor: "password",
+      sort: true,
+    },
+    {
       Header: "Status",
       accessor: "password_hash_hash",
       sort: true,
