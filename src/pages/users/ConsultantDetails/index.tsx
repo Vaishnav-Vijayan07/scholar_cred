@@ -13,6 +13,7 @@ import { sizePerPageList } from "../data";
 import { InitialState, InitialValidationState, UserTypes } from "./data";
 import { useDispatch, useSelector } from "react-redux";
 import { createConsultantAdmin, deleteConsultantAdmin, editConsultantAdmin, getConsultantAdmin, getConsultantsById } from "../../../redux/actions";
+
 import { RootState } from "../../../redux/store";
 import { consultant_admin_usertype } from "../../../constants/constant_ids";
 import Swal from "sweetalert2";

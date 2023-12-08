@@ -387,7 +387,7 @@ const Staff = () => {
   const { state, loading, error } = useSelector((state: RootState) => ({
     state: state.AdminStaff.adminStaff.data,
     loading: state?.AdminStaff.loading,
-    error: state?.AdminStaff.error,
+    error: state?.AdminStaff.error
   }));
 
   useEffect(() => {
