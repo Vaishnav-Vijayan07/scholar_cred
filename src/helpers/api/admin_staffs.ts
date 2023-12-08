@@ -22,6 +22,7 @@ function createAdminStaff(params: {
   image: string;
   employee_id: string;
   created_by: number;
+  consultant_id?: string;
 }) {
   const baseUrl = "/create_admin_staff";
 
@@ -40,6 +41,7 @@ function updateAdminStaff(
     image: string;
     employee_id: string;
     created_by: number;
+    consultant_id?: string;
   }
 ) {
   const baseUrl = "/edit_admin_staff";

@@ -22,6 +22,7 @@ const CRMLeads = React.lazy(() => import("../pages/apps/CRM/Leads/"));
 
 // user pages
 const Consultant = React.lazy(() => import("../pages/users/Consultant"));
+const ConsultantStaff = React.lazy(() => import("../pages/users/ConsultantStaff"));
 const ConsultantDetails = React.lazy(() => import("../pages/users/ConsultantDetails"));
 const Staff = React.lazy(() => import("../pages/users/Staff"));
 const Students = React.lazy(() => import("../pages/users/Students"));
@@ -50,13 +51,13 @@ const dashboardRoutes: RoutesProps = {
       path: "/",
       name: "Root",
       element: <Navigate to="/dashboard" />,
-      roles: ["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER"],
+      roles: ["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF"],
       route: PrivateRoute,
     },
     {
       path: "/dashboard",
       name: "Dashboard",
-      element: <PrivateRoute roles={["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER"]} component={Dashboard4} />,
+      element: <PrivateRoute roles={["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF"]} component={Dashboard4} />,
       route: PrivateRoute,
     },
   ],
@@ -82,7 +83,7 @@ const userRoutes = {
   path: "/users",
   name: "Users",
   route: PrivateRoute,
-  roles: ["CRED_ADMIN", "SUPER_USER"],
+  roles: ["CRED_ADMIN", "SUPER_USER", "CRED_STAFF"],
   icon: "users",
   children: [
     {
@@ -106,7 +107,7 @@ const userRoutes = {
     {
       path: "/users/students",
       name: "Students",
-      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"]} component={Students} />,
+      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"]} component={Students} />,
       route: PrivateRoute,
     },
   ],
@@ -116,13 +117,13 @@ const credadminRoutes = {
   path: "/cred-admin-users",
   name: "Cred admin users",
   route: PrivateRoute,
-  roles: ["SUPER_USER"],
+  roles: ["SUPER_USER", "CRED_STAFF"],
   icon: "users",
   children: [
     {
       path: "/cred_admin/cred_user_management",
       name: "Students",
-      element: <PrivateRoute roles={["SUPER_USER"]} component={AdminUsers} />,
+      element: <PrivateRoute roles={["SUPER_USER", "CRED_STAFF"]} component={AdminUsers} />,
       route: PrivateRoute,
     },
   ],
@@ -138,7 +139,7 @@ const consultantRoutes = {
     {
       path: "/consultant-users/staff",
       name: "Staff",
-      element: <PrivateRoute roles={["CONSULTANT_ADMIN", "SUPER_USER"]} component={Staff} />,
+      element: <PrivateRoute roles={["CONSULTANT_ADMIN", "SUPER_USER"]} component={ConsultantStaff} />,
       route: PrivateRoute,
     },
   ],
