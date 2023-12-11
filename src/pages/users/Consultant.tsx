@@ -429,7 +429,8 @@ const BasicInputElements = withSwal((props: any) => {
                           onChange={(e) => {
                             // Allow only alphanumeric characters and limit the length
                             const input = e.target.value
-                              .replace(/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/, "")
+                              // .replace(/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/, "")
+                              .replace(/[^a-zA-Z0-9]/g, "")
                               .toUpperCase()
                               .slice(0, 10);
                             handleInputChange({ target: { name: "pan_no", value: input } });
