@@ -112,7 +112,7 @@ const Login2 = () => {
           <Button onClick={() => dispatch(loginUser("vaishnav@intersmart.in", "7i67xn"))} className="custom_btn">
             Con. Admin
           </Button>
-          <Button onClick={() => dispatch(loginUser("", ""))} className="custom_btn">
+          <Button onClick={() => dispatch(loginUser("xileja6404@hupoi.com", "fxfBNF"))} className="custom_btn">
             Con. Staff
           </Button>
         </div>

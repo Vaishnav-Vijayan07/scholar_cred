@@ -49,7 +49,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "users",
     url: "/consultant-users/staff",
-    roles: ["CONSULTANT_ADMIN", "SUPER_USER"],
+    roles: ["CONSULTANT_ADMIN"],
   },
 
   { key: "student_management", label: "Student Management", isTitle: true, roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"] },

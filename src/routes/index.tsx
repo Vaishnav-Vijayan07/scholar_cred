@@ -139,7 +139,7 @@ const consultantRoutes = {
     {
       path: "/consultant-users/staff",
       name: "Staff",
-      element: <PrivateRoute roles={["CONSULTANT_ADMIN", "SUPER_USER"]} component={ConsultantStaff} />,
+      element: <PrivateRoute roles={["CONSULTANT_ADMIN"]} component={ConsultantStaff} />,
       route: PrivateRoute,
     },
   ],
