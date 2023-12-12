@@ -11,7 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import PageTitle from "../../components/PageTitle";
 import { ConsultantStaffInitialState, ConsultantStaffInitialValidationState, ConsultantStaffTypes, sizePerPageList } from "./data";
 import { useDispatch, useSelector } from "react-redux";
-import { createConsultantStaffs, editConsultantStaffs, getConsultantStaffs, deleteConsultantStaffs } from "../../redux/actions";
+import { createConsultantStaffs, editConsultantStaffs, getConsultantStaffs, deleteConsultantStaffs, resetPassword } from "../../redux/actions";
 import { RootState } from "../../redux/store";
 // import { getConsultantStaff } from "../../redux/actions";
 
@@ -130,7 +130,17 @@ const BasicInputElements = withSwal((props: any) => {
       } else {
         // Handle add logic
         dispatch(
-          createConsultantStaffs(formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, formData.image, formData.employee_id, 1, user?.consultant_id)
+          createConsultantStaffs(
+            formData.first_name,
+            formData.last_name,
+            formData.username,
+            formData.email,
+            formData.phone,
+            formData.image,
+            formData.employee_id,
+            1,
+            user?.consultant_id
+          )
         );
       }
     } catch (validationError) {
@@ -192,6 +202,38 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Employee Id",
       accessor: "employee_id",
       sort: false,
+    },
+    {
+      Header: "Password",
+      accessor: "",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
+          <Button
+            variant="link"
+            onClick={() => {
+              swal
+                .fire({
+                  title: "Are you sure you want to change the password?",
+                  text: "This action cannot be undone.",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, Send it!",
+                })
+                .then((result: any) => {
+                  if (result.isConfirmed) {
+                    dispatch(resetPassword(row.original.email));
+                  }
+                });
+            }}
+          >
+            {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
+            Send Mail
+          </Button>
+        </div>
+      ),
     },
     {
       Header: "Actions",

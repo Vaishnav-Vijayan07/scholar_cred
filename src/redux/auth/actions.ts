@@ -25,26 +25,17 @@ interface UserData {
 }
 
 // common success
-export const authApiResponseSuccess = (
-  actionType: string,
-  data: UserData | {}
-): AuthActionType => ({
+export const authApiResponseSuccess = (actionType: string, data: UserData | {}): AuthActionType => ({
   type: AuthActionTypes.API_RESPONSE_SUCCESS,
   payload: { actionType, data },
 });
 // common error
-export const authApiResponseError = (
-  actionType: string,
-  error: string
-): AuthActionType => ({
+export const authApiResponseError = (actionType: string, error: string): AuthActionType => ({
   type: AuthActionTypes.API_RESPONSE_ERROR,
   payload: { actionType, error },
 });
 
-export const loginUser = (
-  username: string,
-  password: string
-): AuthActionType => ({
+export const loginUser = (username: string, password: string): AuthActionType => ({
   type: AuthActionTypes.LOGIN_USER,
   payload: { username, password },
 });
@@ -54,11 +45,7 @@ export const logoutUser = (): AuthActionType => ({
   payload: {},
 });
 
-export const signupUser = (
-  fullname: string,
-  email: string,
-  password: string
-): AuthActionType => ({
+export const signupUser = (fullname: string, email: string, password: string): AuthActionType => ({
   type: AuthActionTypes.SIGNUP_USER,
   payload: { fullname, email, password },
 });
@@ -71,4 +58,9 @@ export const forgotPassword = (username: string): AuthActionType => ({
 export const resetAuth = (): AuthActionType => ({
   type: AuthActionTypes.RESET,
   payload: {},
+});
+
+export const changePassword = (old_passowrd: string, new_password: string, user_id: string): AuthActionType => ({
+  type: AuthActionTypes.FORGOT_PASSWORD_CHANGE,
+  payload: { old_passowrd, new_password, user_id },
 });

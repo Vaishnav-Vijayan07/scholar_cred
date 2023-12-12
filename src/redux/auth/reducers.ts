@@ -22,12 +22,7 @@ interface UserData {
 }
 
 interface AuthActionType {
-  type:
-    | AuthActionTypes.API_RESPONSE_SUCCESS
-    | AuthActionTypes.API_RESPONSE_ERROR
-    | AuthActionTypes.LOGIN_USER
-    | AuthActionTypes.LOGOUT_USER
-    | AuthActionTypes.RESET;
+  type: AuthActionTypes.API_RESPONSE_SUCCESS | AuthActionTypes.API_RESPONSE_ERROR | AuthActionTypes.LOGIN_USER | AuthActionTypes.LOGOUT_USER | AuthActionTypes.RESET;
   payload: {
     actionType?: string;
     data?: UserData | {};
@@ -51,6 +46,7 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             user: action.payload.data,
             userLoggedIn: true,
             loading: false,
+            error: false,
           };
         }
         case AuthActionTypes.SIGNUP_USER: {
@@ -58,6 +54,7 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             ...state,
             loading: false,
             userSignUp: true,
+            error: false,
           };
         }
         case AuthActionTypes.LOGOUT_USER: {
@@ -66,6 +63,7 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             user: null,
             loading: false,
             userLogout: true,
+            error: false,
           };
         }
         case AuthActionTypes.FORGOT_PASSWORD: {
@@ -74,6 +72,14 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             resetPasswordSuccess: action.payload.data,
             loading: false,
             passwordReset: true,
+            error: false,
+          };
+        }
+        case AuthActionTypes.CHANGE_PASSWORD: {
+          return {
+            ...state,
+            loading: false,
+            error: false,
           };
         }
         default:
@@ -104,6 +110,13 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             error: action.payload.error,
             loading: false,
             passwordReset: false,
+          };
+        }
+        case AuthActionTypes.CHANGE_PASSWORD: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
           };
         }
         default:

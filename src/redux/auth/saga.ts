@@ -5,7 +5,7 @@ import { SagaIterator } from "@redux-saga/core";
 import { APICore, setAuthorization } from "../../helpers/api/apiCore";
 
 // helpers
-import { login as loginApi, logout as logoutApi, signup as signupApi, forgotPassword as forgotPasswordApi } from "../../helpers/";
+import { login as loginApi, logout as logoutApi, signup as signupApi, forgotPassword as forgotPasswordApi, changePassword as changePasswordApi } from "../../helpers/";
 
 // actions
 import { authApiResponseSuccess, authApiResponseError } from "./actions";
@@ -19,6 +19,9 @@ interface UserData {
     password: string;
     fullname: string;
     email: string;
+    old_passowrd: string;
+    new_password: string;
+    user_id: string;
   };
   type: string;
 }
@@ -49,7 +52,7 @@ function* login({ payload: { username, password }, type }: UserData): SagaIterat
  */
 function* logout(): SagaIterator {
   try {
-    yield call(logoutApi);
+    // yield call(logoutApi);
     api.setLoggedInUser(null);
     setAuthorization(null);
     yield put(authApiResponseSuccess(AuthActionTypes.LOGOUT_USER, {}));
@@ -80,6 +83,16 @@ function* forgotPassword({ payload: { username } }: UserData): SagaIterator {
     yield put(authApiResponseError(AuthActionTypes.FORGOT_PASSWORD, error));
   }
 }
+
+function* changePassword({ payload: { old_passowrd, new_password, user_id } }: UserData): SagaIterator {
+  try {
+    const response = yield call(changePasswordApi, { old_passowrd, new_password, user_id });
+    yield put(authApiResponseSuccess(AuthActionTypes.FORGOT_PASSWORD, response.data));
+  } catch (error: any) {
+    yield put(authApiResponseError(AuthActionTypes.FORGOT_PASSWORD, error));
+  }
+}
+
 export function* watchLoginUser() {
   yield takeEvery(AuthActionTypes.LOGIN_USER, login);
 }
@@ -96,8 +109,12 @@ export function* watchForgotPassword(): any {
   yield takeEvery(AuthActionTypes.FORGOT_PASSWORD, forgotPassword);
 }
 
+export function* watchChangePassword(): any {
+  yield takeEvery(AuthActionTypes.CHANGE_PASSWORD, changePassword);
+}
+
 function* authSaga() {
-  yield all([fork(watchLoginUser), fork(watchLogout), fork(watchSignup), fork(watchForgotPassword)]);
+  yield all([fork(watchLoginUser), fork(watchLogout), fork(watchSignup), fork(watchForgotPassword), fork(watchChangePassword)]);
 }
 
 export default authSaga;

@@ -19,8 +19,13 @@ function signup(params: { fullname: string; email: string; password: string }) {
 }
 
 function forgotPassword(params: { username: string }) {
-  const baseUrl = "/forget-password/";
+  const baseUrl = "/forget_password";
   return api.create(`${baseUrl}`, params);
 }
 
-export { login, logout, signup, forgotPassword };
+function changePassword(params: { old_passowrd: string; new_password: string; user_id: string }) {
+  const baseUrl = "/change_password";
+  return api.create(`${baseUrl}`, params);
+}
+
+export { login, logout, signup, forgotPassword, changePassword };

@@ -19,6 +19,7 @@ const SignInSignUp2 = React.lazy(() => import("../pages/auth2/SignInSignUp2"));
 const Dashboard4 = React.lazy(() => import("../pages/dashboard/Dashboard4/"));
 // - crm pages
 const CRMLeads = React.lazy(() => import("../pages/apps/CRM/Leads/"));
+const ProfilePage = React.lazy(() => import("../pages/profile"));
 
 // user pages
 const Consultant = React.lazy(() => import("../pages/users/Consultant"));
@@ -145,7 +146,23 @@ const consultantRoutes = {
   ],
 };
 
-const appRoutes = [crmAppRoutes];
+const profileRoutes = {
+  path: "/profile",
+  name: "Profile",
+  route: PrivateRoute,
+  roles: ["CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF", "STUDENT", "CRED_ADMIN"],
+  icon: "users",
+  children: [
+    {
+      path: "/profile/details",
+      name: "Profile",
+      element: <PrivateRoute roles={["CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF", "STUDENT", "CRED_ADMIN"]} component={ProfilePage} />,
+      route: PrivateRoute,
+    },
+  ],
+};
+
+const appRoutes = [crmAppRoutes, profileRoutes];
 
 // pages
 

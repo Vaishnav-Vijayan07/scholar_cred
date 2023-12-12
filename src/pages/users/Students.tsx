@@ -14,7 +14,7 @@ import { StudentDataTypes, StudentInitialState, StudentValidationState, initialS
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
-import { createStudent, deleteStudent, editStudent, getStudent } from "../../redux/actions";
+import { createStudent, deleteStudent, editStudent, getStudent, resetPassword } from "../../redux/actions";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error } = props;
@@ -186,6 +186,38 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Application Status",
       accessor: "application_status",
       sort: false,
+    },
+    {
+      Header: "Password",
+      accessor: "",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
+          <Button
+            variant="link"
+            onClick={() => {
+              swal
+                .fire({
+                  title: "Are you sure you want to change the password?",
+                  text: "This action cannot be undone.",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, Send it!",
+                })
+                .then((result: any) => {
+                  if (result.isConfirmed) {
+                    dispatch(resetPassword(row.original.email));
+                  }
+                });
+            }}
+          >
+            {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
+            Send Mail
+          </Button>
+        </div>
+      ),
     },
     {
       Header: "Actions",

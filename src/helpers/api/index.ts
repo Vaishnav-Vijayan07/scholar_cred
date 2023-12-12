@@ -1,4 +1,4 @@
-import { login, logout, signup, forgotPassword } from "./auth";
+import { login, logout, signup, forgotPassword, changePassword } from "./auth";
 import { createConsultant, updateConsultant, getConsultants, getConsultantsById, deleteConsultant } from "./consultant";
 
 import { createAdminUsers, editAdminUsers, getCredAdminUsers, getAdminUsersById, deleteAdminUsers, resetPassword } from "./admin_users";
@@ -13,6 +13,7 @@ export {
   login,
   logout,
   signup,
+  changePassword,
   forgotPassword,
   createConsultant,
   updateConsultant,

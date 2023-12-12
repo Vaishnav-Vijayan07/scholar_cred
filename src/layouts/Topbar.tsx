@@ -87,7 +87,7 @@ const ProfileMenus = [
   {
     label: "My Account",
     icon: "fe-user",
-    redirectTo: "#",
+    redirectTo: "/profile/details",
   },
   {
     label: "Logout",
