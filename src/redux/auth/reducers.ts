@@ -1,4 +1,5 @@
 // apicore
+import { showSuccessAlert } from "../../constants/alerts";
 import { APICore } from "../../helpers/api/apiCore";
 
 // constants
@@ -22,7 +23,13 @@ interface UserData {
 }
 
 interface AuthActionType {
-  type: AuthActionTypes.API_RESPONSE_SUCCESS | AuthActionTypes.API_RESPONSE_ERROR | AuthActionTypes.LOGIN_USER | AuthActionTypes.LOGOUT_USER | AuthActionTypes.RESET;
+  type:
+    | AuthActionTypes.API_RESPONSE_SUCCESS
+    | AuthActionTypes.API_RESPONSE_ERROR
+    | AuthActionTypes.LOGIN_USER
+    | AuthActionTypes.LOGOUT_USER
+    | AuthActionTypes.RESET
+    | AuthActionTypes.CHANGE_PASSWORD;
   payload: {
     actionType?: string;
     data?: UserData | {};
@@ -76,10 +83,13 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
           };
         }
         case AuthActionTypes.CHANGE_PASSWORD: {
+          showSuccessAlert(action.payload.data);
+
           return {
             ...state,
             loading: false,
-            error: false,
+            isPasswordChange: action.payload.data,
+            error: null,
           };
         }
         default:
@@ -125,6 +135,8 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
 
     case AuthActionTypes.LOGIN_USER:
       return { ...state, loading: true, userLoggedIn: false };
+    case AuthActionTypes.CHANGE_PASSWORD:
+      return { ...state, loading: true, message: null };
     case AuthActionTypes.LOGOUT_USER:
       return { ...state, loading: true, userLogout: false };
     case AuthActionTypes.RESET:

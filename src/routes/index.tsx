@@ -29,6 +29,7 @@ const Staff = React.lazy(() => import("../pages/users/Staff"));
 const Students = React.lazy(() => import("../pages/users/Students"));
 const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
+const Tickets = React.lazy(() => import("../pages/Tickets/List"));
 
 export interface RoutesProps {
   path: RouteProps["path"];
@@ -65,16 +66,16 @@ const dashboardRoutes: RoutesProps = {
 };
 
 const crmAppRoutes = {
-  path: "/apps/crm",
+  path: "/apps",
   name: "CRM",
   route: PrivateRoute,
   roles: ["CRED_ADMIN"],
   icon: "users",
   children: [
     {
-      path: "/apps/crm/leads",
-      name: "Leads",
-      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER"]} component={CRMLeads} />,
+      path: "/apps/Tickets",
+      name: "Tickets",
+      element: <PrivateRoute roles={["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF"]} component={Tickets} />,
       route: PrivateRoute,
     },
   ],

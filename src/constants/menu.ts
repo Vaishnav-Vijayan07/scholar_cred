@@ -42,7 +42,6 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/users/staff",
     roles: ["CRED_ADMIN", "SUPER_USER"],
   },
-
   {
     key: "consultant_staff",
     label: "Consultant Staff",
@@ -72,6 +71,17 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "users",
     url: "/cred_admin/cred_user_management",
     roles: ["SUPER_USER"],
+  },
+
+  { key: "apps", label: "Apps", isTitle: true, roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"] },
+
+  {
+    key: "tickets",
+    label: "Tickets",
+    isTitle: false,
+    icon: "book",
+    url: "/apps/tickets",
+    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
   },
 ];
 
@@ -150,6 +160,22 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
       },
     ],
   },
+  {
+    key: "apps",
+    icon: "book",
+    label: "Apps",
+    isTitle: true,
+    children: [
+      {
+        key: "tickets",
+        label: "Tickets",
+        isTitle: false,
+        // icon: "book",
+        url: "/apps/tickets",
+        roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+      },
+    ],
+  },
 ];
 
 const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
@@ -170,7 +196,7 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
   {
     key: "users",
     label: "Users",
-    isTitle: false,
+    isTitle: true,
     icon: "users",
     roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN"],
     children: [
@@ -209,6 +235,38 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         url: "/users/students",
         roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"],
+      },
+    ],
+  },
+  {
+    key: "apps",
+    icon: "book",
+    label: "Apps",
+    isTitle: true,
+    children: [
+      {
+        key: "tickets",
+        label: "Tickets",
+        isTitle: false,
+        // icon: "book",
+        url: "/apps/tickets",
+        roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+      },
+    ],
+  },
+
+  {
+    key: "cred_admin_management",
+    icon: "users",
+    label: "Cred Admin  Management",
+    isTitle: true,
+    children: [
+      {
+        key: "cred_admin_management",
+        label: "Cred Admin Management",
+        isTitle: false,
+        url: "/cred_admin/cred_user_management",
+        roles: ["SUPER_USER"],
       },
     ],
   },

@@ -332,7 +332,7 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="country_of_origin">
                     <Form.Label>Country</Form.Label>
-                    <Form.Control type="text" name="country_of_origin" placeholder="Enter Employee Id" value={formData.country_of_origin} onChange={handleInputChange} />
+                    <Form.Control type="text" name="country_of_origin" placeholder="Enter country name" value={formData.country_of_origin} onChange={handleInputChange} />
                     {validationErrors.country_of_origin && <Form.Text className="text-danger">{validationErrors.country_of_origin}</Form.Text>}
                   </Form.Group>
                 </Col>
@@ -360,7 +360,7 @@ const BasicInputElements = withSwal((props: any) => {
                   }
                 }}
               >
-                {!isUpdate ? "close" : "Cancel"}
+                {!isUpdate ? "Close" : "Cancel"}
               </Button>
 
               <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>

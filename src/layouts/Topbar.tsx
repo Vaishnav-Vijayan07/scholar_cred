@@ -270,9 +270,9 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
               <i className="mdi mdi-menu" />
             </button>
 
-            <div className="dropdown d-none d-xl-block">
+            {/* <div className="dropdown d-none d-xl-block">
               <CreateNew otherOptions={otherOptions} />
-            </div>
+            </div> */}
 
             {/* <div className="dropdown dropdown-mega d-none d-xl-block">
               <MegaMenu subMenus={MegaMenuOptions} />

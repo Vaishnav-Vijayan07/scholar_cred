@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 
 import profileImg from "../../assets/images/users/user-1.jpg";
 
-const UserBox1 = () => {
+const UserBox1 = ({ user }: any) => {
   return (
     <Card className="text-center">
       <Card.Body>
         <img src={profileImg} className="rounded-circle avatar-lg img-thumbnail" alt="" />
-        <h4 className="mb-0">Geneva McKnight</h4>
-        <p className="text-muted">@webdesigner</p>
+        <h4 className="mb-0">{user?.full_name}</h4>
+        <p className="text-muted">@{user?.username}</p>
 
         <div className="text-start mt-3">
           <h4 className="font-13 text-uppercase">About Me :</h4>
@@ -19,7 +19,7 @@ const UserBox1 = () => {
           </p>
           <p className="text-muted mb-2 font-13">
             <strong>Full Name :</strong>
-            <span className="ms-2">Geneva D. McKnight</span>
+            <span className="ms-2">{user?.full_name}</span>
           </p>
 
           <p className="text-muted mb-2 font-13">

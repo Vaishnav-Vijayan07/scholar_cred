@@ -10,7 +10,8 @@ export interface AuthActionType {
     | AuthActionTypes.LOGIN_USER
     | AuthActionTypes.LOGOUT_USER
     | AuthActionTypes.RESET
-    | AuthActionTypes.SIGNUP_USER;
+    | AuthActionTypes.SIGNUP_USER
+    | AuthActionTypes.CHANGE_PASSWORD;
   payload: {} | string;
 }
 
@@ -61,6 +62,6 @@ export const resetAuth = (): AuthActionType => ({
 });
 
 export const changePassword = (old_passowrd: string, new_password: string, user_id: string): AuthActionType => ({
-  type: AuthActionTypes.FORGOT_PASSWORD_CHANGE,
+  type: AuthActionTypes.CHANGE_PASSWORD,
   payload: { old_passowrd, new_password, user_id },
 });

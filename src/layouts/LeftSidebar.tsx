@@ -23,7 +23,6 @@ import logoLight2 from "../assets/images/logo-light-2.png";
 
 /* user box */
 
-
 /* sidebar content */
 const SideBarContent = () => {
   return (
@@ -54,12 +53,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
    * Handle the click anywhere in doc
    */
   const handleOtherClick = (e: any) => {
-    if (
-      menuNodeRef &&
-      menuNodeRef.current &&
-      menuNodeRef.current.contains(e.target)
-    )
-      return;
+    if (menuNodeRef && menuNodeRef.current && menuNodeRef.current.contains(e.target)) return;
     // else hide the menubar
     if (document.body) {
       document.body.classList.remove("sidebar-enable");
@@ -84,15 +78,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
                 <img src={logoSm} alt="" height="30" />
               </span>
               <span className="logo-lg">
-                <img
-                  src={
-                    layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                      ? logoDark2
-                      : logoDark
-                  }
-                  alt=""
-                  height="34"
-                />
+                <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoDark2 : logoDark} alt="" height="34" />
               </span>
             </Link>
             <Link to="/" className="logo logo-light text-center">
@@ -100,15 +86,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
                 <img src={logoSm} alt="" height="30" />
               </span>
               <span className="logo-lg">
-                <img
-                  src={
-                    layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                      ? logoLight2
-                      : logoLight
-                  }
-                  alt=""
-                  height="20"
-                />
+                <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoLight2 : logoLight} alt="" height="20" />
               </span>
             </Link>
           </div>

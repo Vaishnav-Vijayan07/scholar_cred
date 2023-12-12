@@ -12,7 +12,7 @@ import FeatherIcons from "feather-icons-react";
 import { sizePerPageList } from "../data";
 import { InitialState, InitialValidationState, UserTypes } from "./data";
 import { useDispatch, useSelector } from "react-redux";
-import { createConsultantAdmin, deleteConsultantAdmin, editConsultantAdmin, getConsultantAdmin, getConsultantsById } from "../../../redux/actions";
+import { createConsultantAdmin, deleteConsultantAdmin, editConsultantAdmin, getConsultantAdmin, getConsultantsById, resetPassword } from "../../../redux/actions";
 
 import { RootState } from "../../../redux/store";
 import { consultant_admin_usertype } from "../../../constants/constant_ids";
@@ -66,6 +66,31 @@ const Profile = () => {
       Header: "Credentials",
       accessor: "password",
       sort: true,
+      Cell: ({ row }: any) => (
+        <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
+          <Button
+            variant="link"
+            onClick={() => {
+              Swal.fire({
+                title: "Are you sure you want to change the password?",
+                text: "This action cannot be undone.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Send it!",
+              }).then((result: any) => {
+                if (result.isConfirmed) {
+                  dispatch(resetPassword(row.original.email));
+                }
+              });
+            }}
+          >
+            {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
+            Send Mail
+          </Button>
+        </div>
+      ),
     },
     {
       Header: "Status",

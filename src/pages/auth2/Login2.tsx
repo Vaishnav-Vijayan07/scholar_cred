@@ -85,7 +85,8 @@ const Login2 = () => {
           </Alert>
         )}
 
-        <VerticalForm onSubmit={onSubmit} resolver={schemaResolver} defaultValues={{ username: "suadmin", password: "su_admin" }}>
+        <VerticalForm onSubmit={onSubmit} resolver={schemaResolver}>
+          {/* <VerticalForm onSubmit={onSubmit} resolver={schemaResolver} defaultValues={{ username: "suadmin", password: "su_admin" }}> */}
           <FormInput label={t("Username")} type="text" name="username" placeholder={t("Enter your Username")} containerClass={"mb-3"} />
           <FormInput label={t("Password")} type="password" name="password" placeholder={t("Enter your password")} containerClass={"mb-3"}>
             <Link to="/auth/forget-password2" className="text-muted float-end">
@@ -109,7 +110,7 @@ const Login2 = () => {
           <Button onClick={() => dispatch(loginUser("adhnan@intersmart.in", "26VhXS"))} className="custom_btn">
             Cred Staff
           </Button>
-          <Button onClick={() => dispatch(loginUser("vaishnav@intersmart.in", "7i67xn"))} className="custom_btn">
+          <Button onClick={() => dispatch(loginUser("vaishnav@intersmart.in", "UmB9Kw"))} className="custom_btn">
             Con. Admin
           </Button>
           <Button onClick={() => dispatch(loginUser("xileja6404@hupoi.com", "fxfBNF"))} className="custom_btn">

@@ -87,9 +87,10 @@ function* forgotPassword({ payload: { username } }: UserData): SagaIterator {
 function* changePassword({ payload: { old_passowrd, new_password, user_id } }: UserData): SagaIterator {
   try {
     const response = yield call(changePasswordApi, { old_passowrd, new_password, user_id });
-    yield put(authApiResponseSuccess(AuthActionTypes.FORGOT_PASSWORD, response.data));
+
+    yield put(authApiResponseSuccess(AuthActionTypes.CHANGE_PASSWORD, response.data.message));
   } catch (error: any) {
-    yield put(authApiResponseError(AuthActionTypes.FORGOT_PASSWORD, error));
+    yield put(authApiResponseError(AuthActionTypes.CHANGE_PASSWORD, error));
   }
 }
 
