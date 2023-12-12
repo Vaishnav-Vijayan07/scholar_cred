@@ -8,6 +8,8 @@ import FeatherIcons from "feather-icons-react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 
+// import StudentData from "../../assets/excel/StudentData.xlsx";
+
 // components
 import PageTitle from "../../components/PageTitle";
 import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "./data";
@@ -27,6 +29,7 @@ const BasicInputElements = withSwal((props: any) => {
   const [formData, setFormData] = useState<StudentDataTypes>(StudentInitialState);
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
+  const [uploadModal, setUploadModal] = useState<boolean>(false);
   //validation errors
   const [validationErrors, setValidationErrors] = useState(StudentValidationState);
 
@@ -279,6 +282,53 @@ const BasicInputElements = withSwal((props: any) => {
     }
   }, [loading, error]);
 
+  // const handleDownloadClick = () => {
+  //   // Path to the local Excel file
+  //   const filePath = "../../assets/excel/StudentData.xlsx";
+
+  //   // Create a link element
+  //   const link = document.createElement("a");
+
+  //   // Set the download attribute and href with the file path
+  //   link.download = "Student.xlsx";
+  //   link.href = filePath;
+
+  //   // Append the link to the document
+  //   document.body.appendChild(link);
+
+  //   // Trigger a click on the link to start the download
+  //   link.click();
+
+  //   // Remove the link from the document
+  //   document.body.removeChild(link);
+  // };
+
+  const handleDownloadClick = () => {
+    // Relative path to the Excel file within the public folder
+    // const filePath = "/excel/StudentData.xlsx";
+    const filePath = "/excel/StudentData.xlsx";
+
+    // Create a link element
+    const link = document.createElement("a");
+
+    // Set the download attribute and href with the file path
+    link.download = "Student.xlsx";
+    link.href = "http://localhost:3000" + filePath;
+
+    // Append the link to the document
+    document.body.appendChild(link);
+
+    // Trigger a click on the link to start the download
+    link.click();
+
+    // Remove the link from the document
+    document.body.removeChild(link);
+  };
+
+  const toggleUploadModal = () => {
+    setUploadModal(!uploadModal);
+  };
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -376,12 +426,27 @@ const BasicInputElements = withSwal((props: any) => {
           </Form>
         </Modal>
 
+        {/* ----------- file upload modal ------ */}
+
+        <Modal show={uploadModal} onHide={toggleUploadModal} dialogClassName="modal-dialog-centered">
+          <Modal.Header closeButton></Modal.Header>
+          <Modal.Body>Hiiii</Modal.Body>
+        </Modal>
+
         <Col className="p-0 form__card">
           <Card className="bg-white">
             <Card.Body>
-              <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
-                <i className="mdi mdi-plus-circle"></i> Add Student
-              </Button>
+              <div className="d-flex float-end gap-2">
+                <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
+                  <i className="mdi mdi-upload"></i> Bulk Upload
+                </Button>
+                <Button className="btn-sm btn-blue waves-effect waves-light " onClick={handleDownloadClick}>
+                  <i className="mdi mdi-download-circle"></i> Download
+                </Button>
+                <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleResponsiveModal}>
+                  <i className="mdi mdi-plus-circle"></i> Add Student
+                </Button>
+              </div>
               {/* <h4 className="header-title mb-4">Manage Student</h4> */}
               <Table
                 columns={columns}
