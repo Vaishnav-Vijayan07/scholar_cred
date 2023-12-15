@@ -39,6 +39,11 @@ function getStudent() {
   return api.get(`${baseUrl}`, {});
 }
 
+function getStudentByStaff() {
+  const baseUrl = "/get_students_by_staff/";
+  return api.get(`${baseUrl}`, {});
+}
+
 function deleteStudent(id: string) {
   const baseUrl = "/delete_student";
   return api.delete(`${baseUrl}?id=${id}`);
@@ -49,4 +54,4 @@ function getStudentById(student_id: string) {
   return api.get(`${baseUrl}?id=${student_id}`, {});
 }
 
-export { createStudent, deleteStudent, getStudent, getStudentById, updateStudent };
+export { createStudent, deleteStudent, getStudent, getStudentById, updateStudent, getStudentByStaff };

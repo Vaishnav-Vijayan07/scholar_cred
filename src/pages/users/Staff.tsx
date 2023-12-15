@@ -15,10 +15,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { createadminStaff, deleteAdminStaff, editAdminStaff, getAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
 import { resetPassword } from "../../redux/actions";
+import axios from "axios";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error } = props;
   const dispatch = useDispatch();
+  const baseUrl = process.env.REACT_APP_BACKEND_URL;
 
   //Table data
   const records = state;
@@ -27,6 +29,7 @@ const BasicInputElements = withSwal((props: any) => {
   const [formData, setFormData] = useState<StaffTypes>(StaffInitialState);
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   //validation errors
   const [validationErrors, setValidationErrors] = useState(StaffInitialValidationState);
 
@@ -110,12 +113,13 @@ const BasicInputElements = withSwal((props: any) => {
     try {
       await validationSchema.validate(formData, { abortEarly: false });
       // Validation passed, handle form submission
+
       if (isUpdate) {
         // Handle update logic
-        dispatch(editAdminStaff(formData.id, formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, formData.image, formData.employee_id, 1));
+        dispatch(editAdminStaff(formData.id, formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, selectedFile, formData.employee_id, 1));
       } else {
         // Handle add logic
-        dispatch(createadminStaff(formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, formData.image, formData.employee_id, 1));
+        dispatch(createadminStaff(formData.first_name, formData.last_name, formData.username, formData.email, formData.phone, selectedFile, formData.employee_id, 1));
       }
     } catch (validationError) {
       // Handle validation errors
@@ -162,16 +166,16 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "phone",
       sort: false,
     },
-    // {
-    //   Header: "Image",
-    //   accessor: "image",
-    //   sort: false,
-    //   Cell: ({ row }: any) => (
-    //     <>
-    //       <img src={row.original.image} alt="user image" width={50} />
-    //     </>
-    //   ),
-    // },
+    {
+      Header: "Image",
+      accessor: "image",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <>
+          <img src={baseUrl + row.original.image} alt="user image" width={50} />
+        </>
+      ),
+    },
     {
       Header: "Employee Id",
       accessor: "employee_id",
@@ -270,6 +274,11 @@ const BasicInputElements = withSwal((props: any) => {
     }
   }, [loading, error]);
 
+  const handleFileChange = (event: any) => {
+    // Update the state with the selected file
+    setSelectedFile(event.target.files[0]);
+  };
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -338,12 +347,16 @@ const BasicInputElements = withSwal((props: any) => {
                 </Col>
               </Row>
 
-              {/* <Form.Group className="mb-3" controlId="image">
-                <Form.Label>image</Form.Label>
-                <Form.Control type="file" name="image" value={formData.image} onChange={handleInputChange} />
-                {validationErrors.image && <Form.Text className="text-danger">{validationErrors.image}</Form.Text>}
-              </Form.Group> */}
+              <Row>
+                <Col>
+                  <Form.Group className="mb-3" controlId="image">
+                    <Form.Label>Image</Form.Label>
+                    <Form.Control type="file" name="image" placeholder="Choose an image" onChange={handleFileChange} />
+                  </Form.Group>
+                </Col>
+              </Row>
             </Modal.Body>
+
             <Modal.Footer>
               <Button
                 variant="danger"

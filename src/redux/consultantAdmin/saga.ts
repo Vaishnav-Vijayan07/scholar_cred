@@ -61,13 +61,12 @@ function* getConsultantStaffs({ payload: { user_type, consultant_id }, type }: C
       user_type,
       consultant_id,
     });
-    const data = response.data.data;
+    const data = response?.data?.data;
 
     // NOTE - You can change this according to response format from your api
     yield put(consultantAdminApiResponseSuccess(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF, { data }));
   } catch (error: any) {
     yield put(consultantAdminApiResponseError(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF, error));
-    throw error;
   }
 }
 
@@ -80,7 +79,6 @@ function* getConsultantStaffById({ payload: { id } }: ConsultantStaffData): Saga
     yield put(consultantAdminApiResponseSuccess(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID, { data }));
   } catch (error: any) {
     yield put(consultantAdminApiResponseError(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID, error));
-    throw error;
   }
 }
 
@@ -93,7 +91,7 @@ function* updateConsultantStaff({ payload: { id, username, email, full_name, use
       user_type_id,
       consultant_id,
     });
-    const consultant_data = response.data.message;
+    const consultant_data = response?.data?.message;
 
     yield put(consultantAdminApiResponseSuccess(ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF, consultant_data));
     yield put(getConsultantAdmin(user_type_id, consultant_id));
@@ -112,7 +110,6 @@ function* deleteConsultantStaff({ payload: { id, user_type, consultant_id } }: C
     yield put(getConsultantAdmin(user_type, consultant_id));
   } catch (error: any) {
     yield put(consultantAdminApiResponseSuccess(ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF, error));
-    throw error;
   }
 }
 

@@ -9,6 +9,7 @@ import {
   createStudent as createStudentApi,
   updateStudent as updateStudentApi,
   getStudent as getStudentApi,
+  getStudentByStaff as getStudentByStaffApi,
   getStudentById as getStudentByIdApi,
   deleteStudent as deleteStudentApi,
 } from "../../helpers/";
@@ -69,6 +70,19 @@ function* getStudents(): SagaIterator {
   }
 }
 
+function* getStudentsByStaff(): SagaIterator {
+  try {
+    const response = yield call(getStudentByStaffApi);
+    const data = response.data.data;
+
+    // NOTE - You can change this according to response format from your api
+    yield put(studentApiResponseSuccess(StudentActionTypes.GET_STUDENT_BY_STAFF, data));
+  } catch (error: any) {
+    yield put(studentStaffApiResponseError(StudentActionTypes.GET_STUDENT_BY_STAFF, error));
+    throw error;
+  }
+}
+
 function* getStudentById({ payload: { student_id } }: ConsultantStaffData): SagaIterator {
   try {
     const response = yield call(getStudentByIdApi, student_id);
@@ -122,6 +136,9 @@ function* deleteStudent({ payload: { student_id } }: ConsultantStaffData): SagaI
 export function* watchGetAllStudents() {
   yield takeEvery(StudentActionTypes.GET_STUDENT, getStudents);
 }
+export function* watchGetStudentByStaff() {
+  yield takeEvery(StudentActionTypes.GET_STUDENT_BY_STAFF, getStudentsByStaff);
+}
 export function* watchgetStudentById() {
   yield takeEvery(StudentActionTypes.GET_STUDENT_BY_ID, getStudentById);
 }
@@ -139,7 +156,7 @@ export function* watchDeleteStudent() {
 }
 
 function* StudentSaga() {
-  yield all([fork(watchGetAllStudents), fork(watchEditStudent), fork(watchCreateStudent), fork(watchDeleteStudent), fork(watchgetStudentById)]);
+  yield all([fork(watchGetAllStudents), fork(watchEditStudent), fork(watchCreateStudent), fork(watchDeleteStudent), fork(watchgetStudentById), fork(watchGetStudentByStaff)]);
 }
 
 export default StudentSaga;

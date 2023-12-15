@@ -19,14 +19,14 @@ function createAdminStaff(params: {
   username: string;
   email: string;
   phone: string;
-  image: string;
+  file: File | null;
   employee_id: string;
   created_by: number;
   consultant_id?: string;
 }) {
   const baseUrl = "/create_admin_staff";
 
-  return api.create(`${baseUrl}`, params);
+  return api.createWithFile(`${baseUrl}`, params);
 }
 
 // account
@@ -38,7 +38,8 @@ function updateAdminStaff(
     username: string;
     email: string;
     phone: string;
-    image: string;
+    // image: string;
+    file: File | null;
     employee_id: string;
     created_by: number;
     consultant_id?: string;

@@ -24,14 +24,15 @@ interface AdminStaffData {
     username: string;
     email: string;
     phone: string;
-    image: string;
+    // image: string;
+    file: File | null;
     employee_id: string;
     created_by: number;
   };
   type: string;
 }
 
-function* createAdminStaff({ payload: { first_name, last_name, username, email, phone, image, employee_id, created_by }, type }: AdminStaffData): SagaIterator {
+function* createAdminStaff({ payload: { first_name, last_name, username, email, phone, file, employee_id, created_by }, type }: AdminStaffData): SagaIterator {
   try {
     const response = yield call(createAdminStaffApi, {
       first_name,
@@ -39,7 +40,7 @@ function* createAdminStaff({ payload: { first_name, last_name, username, email, 
       username,
       email,
       phone,
-      image,
+      file,
       employee_id,
       created_by,
     });
@@ -67,7 +68,7 @@ function* getAdminStaffs(): SagaIterator {
   }
 }
 
-function* updateAdminStaff({ payload: { id, first_name, last_name, username, email, phone, image, employee_id, created_by }, type }: AdminStaffData): SagaIterator {
+function* updateAdminStaff({ payload: { id, first_name, last_name, username, email, phone, file, employee_id, created_by }, type }: AdminStaffData): SagaIterator {
   try {
     const response = yield call(updateAdminStaffApi, id, {
       first_name,
@@ -75,7 +76,7 @@ function* updateAdminStaff({ payload: { id, first_name, last_name, username, ema
       username,
       email,
       phone,
-      image,
+      file,
       employee_id,
       created_by,
     });

@@ -3,9 +3,8 @@ import axios from "axios";
 
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
-axios.defaults.baseURL = "https://crm.intersmarthosting.in/cred/api";
-// axios.defaults.baseURL = "http://localhost:3002/api";
-// axios.defaults.baseURL = config.API_URL;
+// axios.defaults.baseURL = "https://crm.intersmarthosting.in/cred/api";
+axios.defaults.baseURL = process.env.BASE_URL || "http://localhost:3002/api/v1/api";
 
 // intercepting to capture errors
 axios.interceptors.response.use(
@@ -48,7 +47,7 @@ const AUTH_SESSION_KEY = "ubold_user";
  * @param {*} token
  */
 const setAuthorization = (token: string | null) => {
-  if (token) axios.defaults.headers.common["Authorization"] = "JWT " + token;
+  if (token) axios.defaults.headers.common["Authorization"] = token;
   else delete axios.defaults.headers.common["Authorization"];
 };
 
@@ -144,6 +143,8 @@ class APICore {
     for (const k in data) {
       formData.append(k, data[k]);
     }
+
+    console.log("formData=====>", formData);
 
     const config = {
       headers: {

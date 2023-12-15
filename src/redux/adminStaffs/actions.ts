@@ -52,7 +52,8 @@ export const createadminStaff = (
   username: string,
   email: string,
   phone: string,
-  image: string,
+  file: File | null,
+  // image: string,
   employee_id: string,
   created_by: number
 ): AdminStaffActionType => ({
@@ -63,7 +64,7 @@ export const createadminStaff = (
     username,
     email,
     phone,
-    image,
+    file,
     employee_id,
     created_by,
   },
@@ -76,7 +77,8 @@ export const editAdminStaff = (
   username: string,
   email: string,
   phone: string,
-  image: string,
+  // image: string,
+  file: File | null,
   employee_id: string,
   created_by: number
 ): AdminStaffActionType => ({
@@ -88,7 +90,7 @@ export const editAdminStaff = (
     username,
     email,
     phone,
-    image,
+    file,
     employee_id,
     created_by,
   },

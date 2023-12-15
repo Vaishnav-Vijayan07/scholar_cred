@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { APICore } from "./apiCore";
 
 const api = new APICore();
@@ -40,4 +41,13 @@ function resetPassword(username: string) {
   return api.create(`${baseUrl}`, { username });
 }
 
-export { createAdminUsers, editAdminUsers, getCredAdminUsers, getAdminUsersById, deleteAdminUsers, resetPassword };
+function fileUpload(params: { image: File }): Promise<AxiosResponse<any>> {
+  const { image } = params;
+
+  const file = image;
+
+  const baseUrl = "/file_upload";
+  return api.createWithFile(`${baseUrl}`, { file });
+}
+
+export { createAdminUsers, editAdminUsers, getCredAdminUsers, getAdminUsersById, deleteAdminUsers, resetPassword, fileUpload };

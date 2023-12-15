@@ -17,7 +17,7 @@ import { StudentDataTypes, StudentInitialState, StudentValidationState, initialS
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
-import { createStudent, deleteStudent, editStudent, getStudent, resetPassword } from "../../redux/actions";
+import { createStudent, deleteStudent, editStudent, getStudent, getStudentByStaff, resetPassword } from "../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
 
@@ -494,7 +494,7 @@ const BasicInputElements = withSwal((props: any) => {
   );
 });
 
-const Students = () => {
+const StudentsListByStaff = () => {
   const dispatch = useDispatch();
 
   const { state, loading, error } = useSelector((state: RootState) => ({
@@ -505,7 +505,7 @@ const Students = () => {
 
   useEffect(() => {
     // dispatch(getAdminStaff());
-    dispatch(getStudent());
+    dispatch(getStudentByStaff());
   }, []);
 
   return (
@@ -529,4 +529,4 @@ const Students = () => {
     </React.Fragment>
   );
 };
-export default Students;
+export default StudentsListByStaff;

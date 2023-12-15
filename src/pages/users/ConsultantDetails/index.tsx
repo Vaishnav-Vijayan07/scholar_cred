@@ -284,20 +284,20 @@ const Profile = () => {
                 )}
                 <Form.Group className="mb-3" controlId="full_name">
                   <Form.Label>Full Name</Form.Label>
-                  <Form.Control type="text" name="full_name" placeholder="Enter first name" value={formData.full_name} onChange={handleInputChange} />
-                  {validationErrors.full_name && <Form.Text className="text-danger">{validationErrors.full_name}</Form.Text>}
+                  <Form.Control type="text" name="full_name" placeholder="Enter first name" value={formData?.full_name} onChange={handleInputChange} />
+                  {validationErrors?.full_name && <Form.Text className="text-danger">{validationErrors?.full_name}</Form.Text>}
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="email">
                   <Form.Label>Email Address</Form.Label>
-                  <Form.Control type="text" placeholder="Enter email" name="email" value={formData.email} onChange={handleInputChange} />
-                  {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                  <Form.Control type="text" placeholder="Enter email" name="email" value={formData?.email} onChange={handleInputChange} />
+                  {validationErrors?.email && <Form.Text className="text-danger">{validationErrors?.email}</Form.Text>}
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="username">
                   <Form.Label>Username</Form.Label>
-                  <Form.Control type="text" placeholder="Enter username" name="username" value={formData.username} onChange={handleInputChange} />
-                  {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
+                  <Form.Control type="text" placeholder="Enter username" name="username" value={formData?.username} onChange={handleInputChange} />
+                  {validationErrors?.username && <Form.Text className="text-danger">{validationErrors?.username}</Form.Text>}
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
