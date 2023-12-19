@@ -61,14 +61,6 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/users/students",
     roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
   },
-  {
-    key: "students-by-staff",
-    label: "Students List by Staff",
-    isTitle: false,
-    icon: "users",
-    url: "/users/students-list-by-staff",
-    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
-  },
 
   { key: "cred_admin_management", label: "Cred Admin Management", isTitle: true, roles: ["SUPER_USER"] },
 
@@ -149,14 +141,6 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         label: "Students",
         isTitle: false,
         url: "/users/students",
-        roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"],
-      },
-      {
-        key: "students-by-staff",
-        label: "Students List by Staff",
-        isTitle: false,
-        icon: "users",
-        url: "/users/students-list-by-staff",
         roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
     ],
@@ -250,14 +234,6 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         label: "Students",
         isTitle: false,
         url: "/users/students",
-        roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"],
-      },
-      {
-        key: "students-by-staff",
-        label: "Students List by Staff",
-        isTitle: false,
-        icon: "users",
-        url: "/users/students-list-by-staff",
         roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
     ],
@@ -278,7 +254,6 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
       },
     ],
   },
-
   {
     key: "cred_admin_management",
     icon: "users",

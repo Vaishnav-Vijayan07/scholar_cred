@@ -7,7 +7,7 @@ import { createConsultantStaff, deleteConsultantStaff, getConsultantStaff, getCo
 import { createConsultantAdmin, deleteConsultantAdmin, getConsultantAdmin, getConsultantAdminById, updateConsultantAdmin } from "./consultantAdmin";
 
 import { getUserTypes } from "./user_types";
-import { createStudent, deleteStudent, getStudent, getStudentById, updateStudent, getStudentByStaff } from "./students";
+import { createStudent, deleteStudent, getStudent, getStudentById, updateStudent, getStudentByStaff, getStudentByCreated, createStudentByCredStaff } from "./students";
 
 export {
   login,
@@ -49,4 +49,6 @@ export {
   updateConsultantStaff,
   fileUpload,
   getStudentByStaff,
+  getStudentByCreated,
+  createStudentByCredStaff,
 };

@@ -6,5 +6,6 @@ export enum StudentActionTypes {
   DELETE_STUDENT = "@@students/DELETE_STUDENT",
   GET_STUDENT = "@@students/GET_STUDENT",
   GET_STUDENT_BY_STAFF = "@@students/GET_STUDENT_BY_STAFF",
+  GET_STUDENT_BY_CREATED = "@@students/GET_STUDENT_BY_CREATED",
   GET_STUDENT_BY_ID = "@@students/GET_STUDENT_BY_ID",
 }

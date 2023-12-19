@@ -17,6 +17,20 @@ function createStudent(params: {
   return api.create(`${baseUrl}`, params);
 }
 
+function createStudentByCredStaff(params: {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  date_of_birth: string;
+  country_of_origin: string;
+  application_status: string;
+}) {
+  const baseUrl = "/create_student_by_cred_staff";
+
+  return api.create(`${baseUrl}`, params);
+}
+
 // account
 function updateStudent(
   student_id: string,
@@ -44,6 +58,11 @@ function getStudentByStaff() {
   return api.get(`${baseUrl}`, {});
 }
 
+function getStudentByCreated() {
+  const baseUrl = "/get_student_by_created_user/";
+  return api.get(`${baseUrl}`, {});
+}
+
 function deleteStudent(id: string) {
   const baseUrl = "/delete_student";
   return api.delete(`${baseUrl}?id=${id}`);
@@ -54,4 +73,4 @@ function getStudentById(student_id: string) {
   return api.get(`${baseUrl}?id=${student_id}`, {});
 }
 
-export { createStudent, deleteStudent, getStudent, getStudentById, updateStudent, getStudentByStaff };
+export { createStudent, deleteStudent, getStudent, getStudentById, updateStudent, getStudentByStaff, getStudentByCreated, createStudentByCredStaff };

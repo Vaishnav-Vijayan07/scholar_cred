@@ -13,13 +13,14 @@ import FileUploader from "../../components/FileUploader";
 
 // components
 import PageTitle from "../../components/PageTitle";
-import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "./data";
+import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../users/data";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
-import { createStudent, deleteStudent, editStudent, getStudent, resetPassword } from "../../redux/actions";
+import { createStudent, deleteStudent, editStudent, getStudent, getStudentByCreated, getStudentByStaff, resetPassword } from "../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 interface FileType extends File {
   preview?: string;
@@ -27,7 +28,7 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error } = props;
+  const { swal, loading, state, error, user } = props;
   const dispatch = useDispatch();
 
   //Table data
@@ -256,6 +257,89 @@ const BasicInputElements = withSwal((props: any) => {
     },
   ];
 
+  const credStaffColumns = [
+    {
+      Header: "ID",
+      accessor: "student_id",
+      sort: true,
+    },
+    {
+      Header: "First Name",
+      accessor: "first_name",
+      sort: true,
+    },
+    {
+      Header: "Last Name",
+      accessor: "last_name",
+      sort: false,
+    },
+    {
+      Header: "Email",
+      accessor: "email",
+      sort: false,
+    },
+    {
+      Header: "Phone",
+      accessor: "phone",
+      sort: false,
+    },
+    {
+      Header: "DOB",
+      accessor: "date_of_birth",
+      sort: false,
+      Cell: ({ row }: any) => <div>{moment(row.original.date_of_birth).format("DD/MM/YYYY")}</div>,
+    },
+    {
+      Header: "Country",
+      accessor: "country_of_origin",
+      sort: false,
+    },
+    {
+      Header: "Application Status",
+      accessor: "application_status",
+      sort: false,
+    },
+    {
+      Header: "View Details",
+      accessor: "",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <div className="d-flex justify-content-center align-items-center gap-2">
+          {/* Delete Icon */}
+          <Link to="/users/student-details">
+            <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
+          </Link>
+        </div>
+      ),
+    },
+    {
+      Header: "Actions",
+      accessor: "",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <div className="d-flex justify-content-center align-items-center gap-2">
+          {/* Edit Icon */}
+          <Link to="#">
+            <FeatherIcons
+              icon="edit"
+              size="15"
+              className="cursor-pointer text-secondary"
+              onClick={() => {
+                handleUpdate(row.original);
+                toggleResponsiveModal();
+              }}
+            />
+          </Link>
+
+          <Link to="#">
+            {/* Delete Icon */}
+            <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.student_id)} />
+          </Link>
+        </div>
+      ),
+    },
+  ];
+
   //handle cancel update section
   const handleCancelUpdate = () => {
     setIsUpdate(false);
@@ -476,7 +560,7 @@ const BasicInputElements = withSwal((props: any) => {
               </div>
               {/* <h4 className="header-title mb-4">Manage Student</h4> */}
               <Table
-                columns={columns}
+                columns={user.role == "2" ? credStaffColumns : columns}
                 data={records ? records : []}
                 pageSize={5}
                 sizePerPageList={sizePerPageList}
@@ -502,10 +586,23 @@ const Students = () => {
     loading: state?.Students.loading,
     error: state?.Students.error,
   }));
+  const { user, Authloading } = useSelector((state: RootState) => ({
+    user: state.Auth.user,
+    Authloading: state.Auth.loading,
+  }));
 
   useEffect(() => {
     // dispatch(getAdminStaff());
-    dispatch(getStudent());
+    if (user?.role == "4") {
+      console.log("Consultant Staff...");
+      dispatch(getStudentByCreated());
+    } else if (user?.role == "2") {
+      console.log("Consultant Staff...");
+      dispatch(getStudentByStaff());
+    } else {
+      console.log("Other...");
+      dispatch(getStudent());
+    }
   }, []);
 
   return (
@@ -523,7 +620,7 @@ const Students = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} />
+          <BasicInputElements state={state} loading={loading} error={error} user={user} />
         </Col>
       </Row>
     </React.Fragment>
