@@ -63,6 +63,11 @@ function getStudentByCreated() {
   return api.get(`${baseUrl}`, {});
 }
 
+function getAssignedStudents() {
+  const baseUrl = "/get_all_assigned_students/";
+  return api.get(`${baseUrl}`, {});
+}
+
 function deleteStudent(id: string) {
   const baseUrl = "/delete_student";
   return api.delete(`${baseUrl}?id=${id}`);
@@ -73,4 +78,4 @@ function getStudentById(student_id: string) {
   return api.get(`${baseUrl}?id=${student_id}`, {});
 }
 
-export { createStudent, deleteStudent, getStudent, getStudentById, updateStudent, getStudentByStaff, getStudentByCreated, createStudentByCredStaff };
+export { createStudent, deleteStudent, getStudent, getStudentById, updateStudent, getStudentByStaff, getStudentByCreated, createStudentByCredStaff, getAssignedStudents };

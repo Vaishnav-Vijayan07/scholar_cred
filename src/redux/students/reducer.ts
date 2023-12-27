@@ -31,6 +31,7 @@ interface studentActionType {
     | StudentActionTypes.DELETE_STUDENT
     | StudentActionTypes.GET_STUDENT
     | StudentActionTypes.GET_STUDENT_BY_STAFF
+    | StudentActionTypes.GET_ASSIGNED_STUDENT
     | StudentActionTypes.GET_STUDENT_BY_ID;
   payload: {
     actionType?: string;
@@ -75,6 +76,13 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
           };
         }
         case StudentActionTypes.GET_STUDENT: {
+          return {
+            ...state,
+            loading: false,
+            students: action.payload.data,
+          };
+        }
+        case StudentActionTypes.GET_ASSIGNED_STUDENT: {
           return {
             ...state,
             loading: false,
@@ -134,6 +142,15 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
             students: [],
           };
         }
+
+        case StudentActionTypes.GET_ASSIGNED_STUDENT: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            students: [],
+          };
+        }
         case StudentActionTypes.GET_STUDENT_BY_CREATED: {
           return {
             ...state,
@@ -177,6 +194,9 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
       return { ...state, loading: true };
 
     case StudentActionTypes.GET_STUDENT_BY_ID:
+      return { ...state, loading: true };
+
+    case StudentActionTypes.GET_ASSIGNED_STUDENT:
       return { ...state, loading: true };
 
     case StudentActionTypes.DELETE_STUDENT:

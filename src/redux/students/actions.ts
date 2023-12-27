@@ -11,6 +11,7 @@ export interface StudentActionType {
     | StudentActionTypes.GET_STUDENT
     | StudentActionTypes.GET_STUDENT_BY_STAFF
     | StudentActionTypes.GET_STUDENT_BY_CREATED
+    | StudentActionTypes.GET_ASSIGNED_STUDENT
     | StudentActionTypes.GET_STUDENT_BY_ID;
   payload: {} | string;
 }
@@ -102,6 +103,11 @@ export const getStudentByStaff = (): StudentActionType => ({
 });
 export const getStudentByCreated = (): StudentActionType => ({
   type: StudentActionTypes.GET_STUDENT_BY_CREATED,
+  payload: {},
+});
+
+export const getAllAssignedStudents = (): StudentActionType => ({
+  type: StudentActionTypes.GET_ASSIGNED_STUDENT,
   payload: {},
 });
 export const getStudentById = (student_id: string): StudentActionType => ({

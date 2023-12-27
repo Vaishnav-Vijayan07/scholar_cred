@@ -166,16 +166,16 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "phone",
       sort: false,
     },
-    {
-      Header: "Image",
-      accessor: "image",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <>
-          <img src={baseUrl + row.original.image} alt="user image" width={50} />
-        </>
-      ),
-    },
+    // {
+    //   Header: "Image",
+    //   accessor: "image",
+    //   sort: false,
+    //   Cell: ({ row }: any) => (
+    //     <>
+    //       <img src={baseUrl + row.original.image} alt="user image" width={50} />
+    //     </>
+    //   ),
+    // },
     {
       Header: "Employee Id",
       accessor: "employee_id",

@@ -27,6 +27,7 @@ const ConsultantStaff = React.lazy(() => import("../pages/users/ConsultantStaff"
 const ConsultantDetails = React.lazy(() => import("../pages/users/ConsultantDetails"));
 const Staff = React.lazy(() => import("../pages/users/Staff"));
 const Students = React.lazy(() => import("../pages/student/Students"));
+const StudentAdminView = React.lazy(() => import("../pages/student/StudentAdminView"));
 const StudentDetails = React.lazy(() => import("../pages/student/StudentDetails"));
 const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
@@ -110,7 +111,13 @@ const userRoutes = {
     {
       path: "/users/students",
       name: "Students",
-      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={Students} />,
+      element: <PrivateRoute roles={["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={Students} />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/cred-admin/students",
+      name: "Students",
+      element: <PrivateRoute roles={["CRED_ADMIN"]} component={StudentAdminView} />,
       route: PrivateRoute,
     },
     {
@@ -131,7 +138,7 @@ const credadminRoutes = {
   children: [
     {
       path: "/cred_admin/cred_user_management",
-      name: "Students",
+      name: "AdminUsers",
       element: <PrivateRoute roles={["SUPER_USER", "CRED_STAFF", "CONSULTANT"]} component={AdminUsers} />,
       route: PrivateRoute,
     },

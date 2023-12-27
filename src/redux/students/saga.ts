@@ -14,10 +14,11 @@ import {
   getStudentById as getStudentByIdApi,
   deleteStudent as deleteStudentApi,
   getStudentByCreated as getStudentByCreatedApi,
+  getAssignedStudents as getAssignedStudentsApi,
 } from "../../helpers/";
 
 // actions
-import { studentApiResponseSuccess, studentStaffApiResponseError, getStudent, getStudentByCreated, getStudentByStaff } from "./actions";
+import { studentApiResponseSuccess, studentStaffApiResponseError, getStudent, getStudentByCreated, getStudentByStaff, getAllAssignedStudents } from "./actions";
 
 // constants
 import { StudentActionTypes } from "./constants";
@@ -60,6 +61,8 @@ function* createStudent({ payload: { first_name, last_name, email, phone, date_o
       yield put(getStudentByCreated());
     } else if (user.role == "2") {
       yield put(getStudentByStaff());
+    } else if (user.role == "1") {
+      yield put(getAllAssignedStudents());
     } else {
       yield put(getStudent());
     }
@@ -107,6 +110,19 @@ function* getStudentsByCreated(): SagaIterator {
   }
 }
 
+function* getAssignedStudents(): SagaIterator {
+  try {
+    const response = yield call(getAssignedStudentsApi);
+    const data = response.data.data;
+
+    // NOTE - You can change this according to response format from your api
+    yield put(studentApiResponseSuccess(StudentActionTypes.GET_ASSIGNED_STUDENT, data));
+  } catch (error: any) {
+    yield put(studentStaffApiResponseError(StudentActionTypes.GET_ASSIGNED_STUDENT, error));
+    throw error;
+  }
+}
+
 function* getStudentById({ payload: { student_id } }: ConsultantStaffData): SagaIterator {
   try {
     const response = yield call(getStudentByIdApi, student_id);
@@ -142,6 +158,8 @@ function* updateStudent({
       yield put(getStudentByCreated());
     } else if (user.role == "2") {
       yield put(getStudentByStaff());
+    } else if (user.role == "1") {
+      yield put(getAllAssignedStudents());
     } else {
       yield put(getStudent());
     }
@@ -162,6 +180,8 @@ function* deleteStudent({ payload: { student_id } }: ConsultantStaffData): SagaI
       yield put(getStudentByCreated());
     } else if (user.role == "2") {
       yield put(getStudentByStaff());
+    } else if (user.role == "1") {
+      yield put(getAllAssignedStudents());
     } else {
       yield put(getStudent());
     }
@@ -179,6 +199,9 @@ export function* watchGetStudentByStaff() {
 }
 export function* watchGetStudentByCreated() {
   yield takeEvery(StudentActionTypes.GET_STUDENT_BY_CREATED, getStudentsByCreated);
+}
+export function* watchGetAssignedStudent() {
+  yield takeEvery(StudentActionTypes.GET_ASSIGNED_STUDENT, getAssignedStudents);
 }
 export function* watchgetStudentById() {
   yield takeEvery(StudentActionTypes.GET_STUDENT_BY_ID, getStudentById);
@@ -205,6 +228,7 @@ function* StudentSaga() {
     fork(watchgetStudentById),
     fork(watchGetStudentByStaff),
     fork(watchGetStudentByCreated),
+    fork(watchGetAssignedStudent),
   ]);
 }
 

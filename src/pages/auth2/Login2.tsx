@@ -107,7 +107,7 @@ const Login2 = () => {
           <Button onClick={() => dispatch(loginUser("CREDADMIN", "CREDADMIN"))} className="custom_btn">
             Cred Admin
           </Button>
-          <Button onClick={() => dispatch(loginUser("adhnan@intersmart.in", "26VhXS"))} className="custom_btn">
+          <Button onClick={() => dispatch(loginUser("tohay84239@usoplay.com", "vytCmD"))} className="custom_btn">
             Cred Staff
           </Button>
           <Button onClick={() => dispatch(loginUser("vaishnav@intersmart.in", "UmB9Kw"))} className="custom_btn">
