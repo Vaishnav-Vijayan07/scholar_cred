@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Tab, Nav } from "react-bootstrap";
 
 // components
@@ -9,6 +9,12 @@ import UserBox from "./UserBox";
 import About from "./About";
 import TimeLine from "./TimeLine";
 import Settings from "./Settings";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getStudentById } from "../../../redux/actions";
+import { RootState } from "../../../redux/store";
 
 interface ProjectDetails {
   id: number;
@@ -20,48 +26,41 @@ interface ProjectDetails {
 }
 
 const Profile = () => {
-  const projectDetails: ProjectDetails[] = [
-    {
-      id: 1,
-      client: "Halette Boivin",
-      name: "App design and development",
-      startDate: "01/01/2015",
-      dueDate: "10/05/2018",
-      status: "Work in Progress",
-    },
-    {
-      id: 2,
-      client: "Durandana Jolicoeur",
-      name: "Coffee detail page - Main Page",
-      startDate: "21/07/2016",
-      dueDate: "12/05/2018",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      client: "Lucas Sabourin",
-      name: "Poster illustation design",
-      startDate: "18/03/2018",
-      dueDate: "28/09/2018",
-      status: "Done",
-    },
-    {
-      id: 4,
-      client: "Donatien Brunelle",
-      name: "Drinking bottle graphics",
-      startDate: "02/10/2017",
-      dueDate: "07/05/2018",
-      status: "Work in Progress",
-    },
-    {
-      id: 5,
-      client: "Karel Auberjo",
-      name: "Landing page design - Home",
-      startDate: "17/01/2017",
-      dueDate: "25/05/2021",
-      status: "Coming soon",
-    },
-  ];
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const [preliminaryDetails, setPreliminaryDetails] = useState({});
+
+  const { StudentData } = useSelector((state: RootState) => ({
+    StudentData: state.Students.studentById,
+  }));
+
+  const methods = useForm();
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = methods;
+
+  const getPrilimineryDetailsApi = () => {
+    axios
+      .post("getPrilimineryDetails", { student_id: location?.state })
+      .then((res) => {
+        console.log("res--->", res.data);
+        setPreliminaryDetails(res?.data?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getStudentDetails = () => {
+    dispatch(getStudentById(location?.state));
+  };
+
+  useEffect(() => {
+    getPrilimineryDetailsApi();
+    getStudentDetails();
+  }, []);
 
   return (
     <>
@@ -75,57 +74,39 @@ const Profile = () => {
       <Row>
         <Col xl={4} lg={4}>
           {/* User information */}
-          <UserBox />
-
-          {/* User's recent messages */}
-          <Messages />
+          <UserBox StudentData={StudentData} />
         </Col>
         <Col xl={8} lg={8}>
-          <Tab.Container defaultActiveKey="timeline">
+          <Tab.Container defaultActiveKey="preliminary_screening">
             <Card>
               <Card.Body>
-                <Nav
-                  variant="pills"
-                  as="ul"
-                  className="nav nav-pills nav-fill navtab-bg"
-                >
+                <Nav variant="pills" as="ul" className="nav nav-pills nav-fill navtab-bg">
                   <Nav.Item as="li" className="nav-item">
-                    <Nav.Link
-                      href="#"
-                      eventKey="aboutme"
-                      className="nav-link cursor-pointer"
-                    >
-                      About Me
+                    <Nav.Link href="#" eventKey="preliminary_screening" className="nav-link cursor-pointer">
+                      Preliminary screening
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item as="li" className="nav-item">
-                    <Nav.Link
-                      href="#"
-                      eventKey="timeline"
-                      className="nav-link cursor-pointer"
-                    >
-                      Timeline
+                    <Nav.Link href="#" eventKey="detail_screening" className="nav-link cursor-pointer">
+                      Detail Screening
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item as="li" className="nav-item">
-                    <Nav.Link
-                      href="#"
-                      eventKey="settings"
-                      className="nav-link cursor-pointer"
-                    >
-                      Settings
+                    <Nav.Link href="#" eventKey="history" className="nav-link cursor-pointer">
+                      History
                     </Nav.Link>
                   </Nav.Item>
                 </Nav>
 
                 <Tab.Content>
-                  <Tab.Pane eventKey="aboutme">
-                    <About projectDetails={projectDetails} />
+                  <Tab.Pane eventKey="preliminary_screening">
+                    {/* <About projectDetails={projectDetails} /> */}
+                    <About register={register} errors={errors} control={control} preliminaryDetails={preliminaryDetails} />
                   </Tab.Pane>
-                  <Tab.Pane eventKey="timeline">
-                    <TimeLine />
+                  <Tab.Pane eventKey="detail_screening">
+                    <TimeLine register={register} errors={errors} control={control} />
                   </Tab.Pane>
-                  <Tab.Pane eventKey="settings">
+                  <Tab.Pane eventKey="history">
                     <Settings />
                   </Tab.Pane>
                 </Tab.Content>

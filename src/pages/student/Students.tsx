@@ -31,6 +31,8 @@ const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, user } = props;
   const dispatch = useDispatch();
 
+  console.log("state---->", state);
+
   //Table data
   const records = state;
   const [isUpdate, setIsUpdate] = useState(false);
@@ -306,7 +308,7 @@ const BasicInputElements = withSwal((props: any) => {
       Cell: ({ row }: any) => (
         <div className="d-flex justify-content-center align-items-center gap-2">
           {/* Delete Icon */}
-          <Link to="/users/student-details">
+          <Link to="/users/student-details" state={row.original.student_id}>
             <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
           </Link>
         </div>
