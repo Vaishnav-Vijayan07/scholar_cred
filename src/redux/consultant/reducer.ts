@@ -9,6 +9,7 @@ const INIT_STATE = {
   consultant: [],
   consultantById: {},
   loading: false,
+  initialLoading: false,
 };
 
 interface ConsultantData {
@@ -72,6 +73,7 @@ const ConsultantReducer = (state: State = INIT_STATE, action: ConsultantActionTy
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             consultantById: action.payload.data,
           };
         }
@@ -79,6 +81,7 @@ const ConsultantReducer = (state: State = INIT_STATE, action: ConsultantActionTy
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             consultant: action.payload.data,
           };
         }
@@ -118,6 +121,7 @@ const ConsultantReducer = (state: State = INIT_STATE, action: ConsultantActionTy
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
           };
         }
 
@@ -126,6 +130,7 @@ const ConsultantReducer = (state: State = INIT_STATE, action: ConsultantActionTy
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
           };
         }
 
@@ -140,10 +145,10 @@ const ConsultantReducer = (state: State = INIT_STATE, action: ConsultantActionTy
       return { ...state, loading: true };
 
     case ConsultantActionTypes.GET_CONSULTANT:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case ConsultantActionTypes.GET_CONSULTANT_BY_ID:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case ConsultantActionTypes.DELETE_CONSULTANT:
       return { ...state, loading: true };

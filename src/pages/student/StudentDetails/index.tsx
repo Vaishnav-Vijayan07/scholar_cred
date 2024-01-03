@@ -11,10 +11,11 @@ import TimeLine from "./TimeLine";
 import Settings from "./Settings";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getStudentById } from "../../../redux/actions";
 import { RootState } from "../../../redux/store";
+import StatisticsWidget2 from "../../../components/StatisticsWidget2";
 
 interface ProjectDetails {
   id: number;
@@ -28,10 +29,13 @@ interface ProjectDetails {
 const Profile = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [preliminaryDetails, setPreliminaryDetails] = useState({});
+  const [preliminaryLoading, setPreliminaryLoading] = useState(false);
 
-  const { StudentData } = useSelector((state: RootState) => ({
+  const { StudentData, loading } = useSelector((state: RootState) => ({
     StudentData: state.Students.studentById,
+    loading: state.Students.loading,
   }));
 
   const methods = useForm();
@@ -42,14 +46,17 @@ const Profile = () => {
   } = methods;
 
   const getPrilimineryDetailsApi = () => {
+    setPreliminaryLoading(true);
     axios
       .post("getPrilimineryDetails", { student_id: location?.state })
       .then((res) => {
+        setPreliminaryLoading(false);
         console.log("res--->", res.data);
         setPreliminaryDetails(res?.data?.data);
       })
       .catch((err) => {
         console.log(err);
+        setPreliminaryLoading(false);
       });
   };
 
@@ -60,6 +67,12 @@ const Profile = () => {
   useEffect(() => {
     getPrilimineryDetailsApi();
     getStudentDetails();
+  }, []);
+
+  useEffect(() => {
+    if (!location?.state) {
+      navigate("/users/students");
+    }
   }, []);
 
   return (
@@ -74,7 +87,20 @@ const Profile = () => {
       <Row>
         <Col xl={4} lg={4}>
           {/* User information */}
-          <UserBox StudentData={StudentData} />
+          <UserBox StudentData={StudentData} loading={loading} />
+
+          <Col>
+            <StatisticsWidget2
+              variant="blue"
+              description="Application status"
+              stats="Active"
+              icon="fe-aperture"
+              progress={60}
+              counterOptions={{
+                prefix: "$",
+              }}
+            />
+          </Col>
         </Col>
         <Col xl={8} lg={8}>
           <Tab.Container defaultActiveKey="preliminary_screening">
@@ -101,7 +127,7 @@ const Profile = () => {
                 <Tab.Content>
                   <Tab.Pane eventKey="preliminary_screening">
                     {/* <About projectDetails={projectDetails} /> */}
-                    <About register={register} errors={errors} control={control} preliminaryDetails={preliminaryDetails} />
+                    <About register={register} errors={errors} control={control} preliminaryDetails={preliminaryDetails} preliminaryLoading={preliminaryLoading} />
                   </Tab.Pane>
                   <Tab.Pane eventKey="detail_screening">
                     <TimeLine register={register} errors={errors} control={control} />

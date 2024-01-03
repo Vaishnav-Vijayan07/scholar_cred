@@ -12,6 +12,8 @@ import "./assets/scss/Default.scss";
 // Other
 import "./assets/scss/Landing.scss";
 import "./assets/scss/Icons.scss";
+import 'react-loading-skeleton/dist/skeleton.css'
+
 
 const App = () => {
   return (

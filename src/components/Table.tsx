@@ -84,6 +84,7 @@ interface TableProps {
   searchBoxClass?: string;
   tableClass?: string;
   theadClass?: string;
+  onSelect?: any;
 }
 
 const Table = (props: TableProps) => {
@@ -178,6 +179,16 @@ const Table = (props: TableProps) => {
   );
 
   let rows = pagination ? dataTable.page : dataTable.rows;
+
+  const getSelectedValues = () => {
+    return dataTable?.selectedFlatRows.map((d) => d.original.student_id);
+  };
+
+  useEffect(() => {
+    if (props.onSelect) {
+      props.onSelect(getSelectedValues());
+    }
+  }, [dataTable?.state?.selectedRowIds]);
 
   return (
     <>

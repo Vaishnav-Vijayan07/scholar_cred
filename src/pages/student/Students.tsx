@@ -1,13 +1,14 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Placeholder } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import FileUploader from "../../components/FileUploader";
+import Skeleton from "react-loading-skeleton";
 
 // import StudentData from "../../assets/excel/StudentData.xlsx";
 
@@ -28,7 +29,7 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user } = props;
+  const { swal, loading, state, error, user, initialLoading } = props;
   const dispatch = useDispatch();
 
   console.log("state---->", state);
@@ -547,31 +548,34 @@ const BasicInputElements = withSwal((props: any) => {
         <Col className="p-0 form__card">
           <Card className="bg-white">
             <Card.Body>
-              <div className="d-flex float-end gap-2">
-                <Button className="btn-sm btn-blue waves-effect waves-light " onClick={handleDownloadClick}>
-                  <i className="mdi mdi-download-circle"></i> Download Sample
-                </Button>
+              <>
+                <div className="d-flex float-end gap-2">
+                  <Button className="btn-sm btn-blue waves-effect waves-light" onClick={handleDownloadClick}>
+                    <i className="mdi mdi-download-circle"></i> Download Sample
+                  </Button>
 
-                <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
-                  <i className="mdi mdi-upload"></i> Bulk Upload
-                </Button>
+                  <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleUploadModal}>
+                    <i className="mdi mdi-upload"></i> Bulk Upload
+                  </Button>
 
-                <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleResponsiveModal}>
-                  <i className="mdi mdi-plus-circle"></i> Add Student
-                </Button>
-              </div>
-              {/* <h4 className="header-title mb-4">Manage Student</h4> */}
-              <Table
-                columns={user.role == "2" ? credStaffColumns : columns}
-                data={records ? records : []}
-                pageSize={5}
-                sizePerPageList={sizePerPageList}
-                isSortable={true}
-                pagination={true}
-                isSearchable={true}
-                theadClass="table-light mt-2"
-                searchBoxClass="mt-2 mb-3"
-              />
+                  <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleResponsiveModal}>
+                    <i className="mdi mdi-plus-circle"></i> Add Student
+                  </Button>
+                </div>
+                {/* <h4 className="header-title mb-4">Manage Student</h4> */}
+
+                <Table
+                  columns={user.role == "2" ? credStaffColumns : columns}
+                  data={records ? records : []}
+                  pageSize={5}
+                  sizePerPageList={sizePerPageList}
+                  isSortable={true}
+                  pagination={true}
+                  isSearchable={true}
+                  theadClass="table-light mt-2"
+                  searchBoxClass="mt-2 mb-3"
+                />
+              </>
             </Card.Body>
           </Card>
         </Col>
@@ -583,9 +587,10 @@ const BasicInputElements = withSwal((props: any) => {
 const Students = () => {
   const dispatch = useDispatch();
 
-  const { state, loading, error } = useSelector((state: RootState) => ({
+  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.Students.students,
     loading: state?.Students.loading,
+    initialLoading: state?.Students.initialLoading,
     error: state?.Students.error,
   }));
   const { user, Authloading } = useSelector((state: RootState) => ({
@@ -622,7 +627,7 @@ const Students = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} user={user} />
+          <BasicInputElements state={state} loading={loading} error={error} user={user} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>

@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createConsultant, deleteConsultant, editConsultant, getConsultants, getCredAdminUsers } from "../../redux/actions";
 import { RootState } from "../../redux/store";
+import Skeleton from "react-loading-skeleton";
 
 const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();
@@ -301,201 +302,203 @@ const BasicInputElements = withSwal((props: any) => {
 
   return (
     <>
-      <Row className="justify-content-between px-2">
-        <Modal show={modal} onHide={toggle} dialogClassName={className} className="custom-modal">
-          <h6 className="fw-medium px-3 m-0 py-2 font-13 text-uppercase bg-light">
-            <span className="d-block py-1">Consultant Management</span>
-          </h6>
-          <Modal.Body className="mx-2">
-            <div className="alert alert-warning" role="alert">
-              <strong>Hi Admin, </strong> Enter consultant details.
-            </div>
-            <Row>
-              <Col className="bg-white">
-                {error && (
-                  <Alert variant="danger" className="my-2">
-                    {error}
-                  </Alert>
-                )}
-                <Form onSubmit={onSubmit}>
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3" controlId="company_name">
-                        <Form.Label>Company Name</Form.Label>
-                        <Form.Control type="text" name="company_name" placeholder="Enter company name" value={formData.company_name} onChange={handleInputChange} />
-                        {validationErrors.company_name && <Form.Text className="text-danger">{validationErrors.company_name}</Form.Text>}
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-3" controlId="email">
-                        <Form.Label>Email Address</Form.Label>
-                        <Form.Control type="text" placeholder="Enter email" name="email" value={formData.email} onChange={handleInputChange} />
-                        {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
-                      </Form.Group>
-                    </Col>
-                  </Row>
+      <>
+        <Row className="justify-content-between px-2">
+          <Modal show={modal} onHide={toggle} dialogClassName={className} className="custom-modal">
+            <h6 className="fw-medium px-3 m-0 py-2 font-13 text-uppercase bg-light">
+              <span className="d-block py-1">Consultant Management</span>
+            </h6>
+            <Modal.Body className="mx-2">
+              <div className="alert alert-warning" role="alert">
+                <strong>Hi Admin, </strong> Enter consultant details.
+              </div>
+              <Row>
+                <Col className="bg-white">
+                  {error && (
+                    <Alert variant="danger" className="my-2">
+                      {error}
+                    </Alert>
+                  )}
+                  <Form onSubmit={onSubmit}>
+                    <Row>
+                      <Col md={6}>
+                        <Form.Group className="mb-3" controlId="company_name">
+                          <Form.Label>Company Name</Form.Label>
+                          <Form.Control type="text" name="company_name" placeholder="Enter company name" value={formData.company_name} onChange={handleInputChange} />
+                          {validationErrors.company_name && <Form.Text className="text-danger">{validationErrors.company_name}</Form.Text>}
+                        </Form.Group>
+                      </Col>
+                      <Col md={6}>
+                        <Form.Group className="mb-3" controlId="email">
+                          <Form.Label>Email Address</Form.Label>
+                          <Form.Control type="text" placeholder="Enter email" name="email" value={formData.email} onChange={handleInputChange} />
+                          {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3" controlId="phone">
-                        <Form.Label>Phone</Form.Label>
-                        <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
-                        {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
-                      </Form.Group>
-                    </Col>
+                    <Row>
+                      <Col md={6}>
+                        <Form.Group className="mb-3" controlId="phone">
+                          <Form.Label>Phone</Form.Label>
+                          <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
+                          {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
+                        </Form.Group>
+                      </Col>
 
-                    <Col md={6}>
-                      <Form.Group className="mb-3" controlId="alternative_phone">
-                        <Form.Label>Alternative Phone</Form.Label>
+                      <Col md={6}>
+                        <Form.Group className="mb-3" controlId="alternative_phone">
+                          <Form.Label>Alternative Phone</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="alternative_phone"
+                            placeholder="Enter alternative phone number"
+                            maxLength={10}
+                            value={formData.alternative_phone}
+                            onChange={handleInputChange}
+                          />
+                          {validationErrors.alternative_phone && <Form.Text className="text-danger">{validationErrors.alternative_phone}</Form.Text>}
+                        </Form.Group>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      {/* <Col md={6}> */}
+                      <Form.Group className="mb-3" controlId="business_address">
+                        <Form.Label>Business Address</Form.Label>
                         <Form.Control
-                          type="text"
-                          name="alternative_phone"
-                          placeholder="Enter alternative phone number"
-                          maxLength={10}
-                          value={formData.alternative_phone}
+                          as="textarea"
+                          rows={5}
+                          placeholder="Enter address"
+                          className="py-2"
+                          name="business_address"
+                          value={formData.business_address}
                           onChange={handleInputChange}
                         />
-                        {validationErrors.alternative_phone && <Form.Text className="text-danger">{validationErrors.alternative_phone}</Form.Text>}
+                        {validationErrors.business_address && <Form.Text className="text-danger">{validationErrors.business_address}</Form.Text>}
                       </Form.Group>
-                    </Col>
-                  </Row>
+                      {/* </Col> */}
+                    </Row>
 
-                  <Row>
-                    {/* <Col md={6}> */}
-                    <Form.Group className="mb-3" controlId="business_address">
-                      <Form.Label>Business Address</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={5}
-                        placeholder="Enter address"
-                        className="py-2"
-                        name="business_address"
-                        value={formData.business_address}
-                        onChange={handleInputChange}
-                      />
-                      {validationErrors.business_address && <Form.Text className="text-danger">{validationErrors.business_address}</Form.Text>}
-                    </Form.Group>
-                    {/* </Col> */}
-                  </Row>
+                    <Row>
+                      <Col md={6}>
+                        <Form.Group className="mb-3" controlId="gst">
+                          <Form.Label>GST</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="gst"
+                            placeholder="Enter GST"
+                            value={formData.gst}
+                            onChange={(e) => {
+                              // Allow only alphanumeric characters and limit the length
+                              const input = e.target.value
+                                .toUpperCase()
+                                .replace(/[^A-Za-z0-9]/g, "") // Remove non-alphanumeric characters
+                                .slice(0, 15); // Limit to a specific length, adjust as needed
 
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3" controlId="gst">
-                        <Form.Label>GST</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="gst"
-                          placeholder="Enter GST"
-                          value={formData.gst}
-                          onChange={(e) => {
-                            // Allow only alphanumeric characters and limit the length
-                            const input = e.target.value
-                              .toUpperCase()
-                              .replace(/[^A-Za-z0-9]/g, "") // Remove non-alphanumeric characters
-                              .slice(0, 15); // Limit to a specific length, adjust as needed
+                              handleInputChange({ target: { name: "gst", value: input } });
+                            }}
+                          />
+                          {validationErrors.gst && <Form.Text className="text-danger">{validationErrors.gst}</Form.Text>}
+                        </Form.Group>
+                      </Col>
 
-                            handleInputChange({ target: { name: "gst", value: input } });
-                          }}
-                        />
-                        {validationErrors.gst && <Form.Text className="text-danger">{validationErrors.gst}</Form.Text>}
-                      </Form.Group>
-                    </Col>
+                      <Col md={6}>
+                        <Form.Group className="mb-3" controlId="location">
+                          <Form.Label>Location</Form.Label>
+                          <Form.Control type="text" name="location" placeholder="Enter location" value={formData.location} onChange={handleInputChange} />
+                          {validationErrors.location && <Form.Text className="text-danger">{validationErrors.location}</Form.Text>}
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md={6}>
+                        <Form.Group className="mb-3" controlId="pin_code">
+                          <Form.Label>Pin code</Form.Label>
+                          <Form.Control type="number" name="pin_code" placeholder="Enter pin code" value={formData.pin_code} onChange={handleInputChange} />
+                          {validationErrors.pin_code && <Form.Text className="text-danger">{validationErrors.pin_code}</Form.Text>}
+                        </Form.Group>
+                      </Col>
+                      <Col md={6}>
+                        <Form.Group className="mb-3" controlId="pan_no">
+                          <Form.Label>PAN Number</Form.Label>
+                          {/* <Form.Control type="number" name="pan_no" placeholder="Enter PAN number" value={formData.pan_no} onChange={handleInputChange} /> */}
+                          <Form.Control
+                            type="text"
+                            name="pan_no"
+                            placeholder="Enter PAN number"
+                            value={formData.pan_no}
+                            onChange={(e) => {
+                              // Allow only alphanumeric characters and limit the length
+                              const input = e.target.value
+                                // .replace(/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/, "")
+                                .replace(/[^a-zA-Z0-9]/g, "")
+                                .toUpperCase()
+                                .slice(0, 10);
+                              handleInputChange({ target: { name: "pan_no", value: input } });
+                            }}
+                            maxLength={10} // Adjust the maxLength based on the actual PAN number length
+                          />
+                          {validationErrors.pan_no && <Form.Text className="text-danger">{validationErrors.pan_no}</Form.Text>}
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                    <Col md={6}>
-                      <Form.Group className="mb-3" controlId="location">
-                        <Form.Label>Location</Form.Label>
-                        <Form.Control type="text" name="location" placeholder="Enter location" value={formData.location} onChange={handleInputChange} />
-                        {validationErrors.location && <Form.Text className="text-danger">{validationErrors.location}</Form.Text>}
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group className="mb-3" controlId="pin_code">
-                        <Form.Label>Pin code</Form.Label>
-                        <Form.Control type="number" name="pin_code" placeholder="Enter pin code" value={formData.pin_code} onChange={handleInputChange} />
-                        {validationErrors.pin_code && <Form.Text className="text-danger">{validationErrors.pin_code}</Form.Text>}
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group className="mb-3" controlId="pan_no">
-                        <Form.Label>PAN Number</Form.Label>
-                        {/* <Form.Control type="number" name="pan_no" placeholder="Enter PAN number" value={formData.pan_no} onChange={handleInputChange} /> */}
-                        <Form.Control
-                          type="text"
-                          name="pan_no"
-                          placeholder="Enter PAN number"
-                          value={formData.pan_no}
-                          onChange={(e) => {
-                            // Allow only alphanumeric characters and limit the length
-                            const input = e.target.value
-                              // .replace(/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/, "")
-                              .replace(/[^a-zA-Z0-9]/g, "")
-                              .toUpperCase()
-                              .slice(0, 10);
-                            handleInputChange({ target: { name: "pan_no", value: input } });
-                          }}
-                          maxLength={10} // Adjust the maxLength based on the actual PAN number length
-                        />
-                        {validationErrors.pan_no && <Form.Text className="text-danger">{validationErrors.pan_no}</Form.Text>}
-                      </Form.Group>
-                    </Col>
-                  </Row>
+                    <div className="text-end">
+                      <Button
+                        variant="danger"
+                        id="button-addon2"
+                        disabled={loading}
+                        className="mt-1 waves-effect waves-light me-2"
+                        onClick={() => {
+                          if (isUpdate) {
+                            handleCancelUpdate();
+                            toggle();
+                          } else {
+                            toggle();
+                          }
+                        }}
+                      >
+                        {!isUpdate ? "close" : "Cancel"}
+                      </Button>
 
-                  <div className="text-end">
-                    <Button
-                      variant="danger"
-                      id="button-addon2"
-                      disabled={loading}
-                      className="mt-1 waves-effect waves-light me-2"
-                      onClick={() => {
-                        if (isUpdate) {
-                          handleCancelUpdate();
-                          toggle();
-                        } else {
-                          toggle();
-                        }
-                      }}
-                    >
-                      {!isUpdate ? "close" : "Cancel"}
-                    </Button>
+                      <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
+                        {isUpdate ? "Update" : "Submit"}
+                      </Button>
+                      <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" onClick={setTestData} disabled={loading}>
+                        Add test data
+                      </Button>
+                    </div>
+                    {/* )} */}
+                  </Form>
+                </Col>
+              </Row>
+            </Modal.Body>
+          </Modal>
 
-                    <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
-                      {isUpdate ? "Update" : "Submit"}
-                    </Button>
-                    <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" onClick={setTestData} disabled={loading}>
-                      Add test data
-                    </Button>
-                  </div>
-                  {/* )} */}
-                </Form>
-              </Col>
-            </Row>
-          </Modal.Body>
-        </Modal>
-
-        <Col className="p-0 form__card">
-          <Card className="bg-white">
-            <Card.Body>
-              <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={() => openModalWithClass("modal-right")}>
-                <i className="mdi mdi-plus-circle"></i> Add Consultant
-              </Button>
-              {/* <h4 className="header-title mb-4">Manage Consultant</h4> */}
-              <Table
-                columns={columns}
-                data={records ? records : []}
-                pageSize={5}
-                sizePerPageList={sizePerPageList}
-                isSortable={true}
-                pagination={true}
-                isSearchable={true}
-                theadClass="table-light mt-2"
-                searchBoxClass="mt-2 mb-3"
-              />
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+          <Col className="p-0 form__card">
+            <Card className="bg-white">
+              <Card.Body>
+                <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={() => openModalWithClass("modal-right")}>
+                  <i className="mdi mdi-plus-circle"></i> Add Consultant
+                </Button>
+                {/* <h4 className="header-title mb-4">Manage Consultant</h4> */}
+                <Table
+                  columns={columns}
+                  data={records ? records : []}
+                  pageSize={5}
+                  sizePerPageList={sizePerPageList}
+                  isSortable={true}
+                  pagination={true}
+                  isSearchable={true}
+                  theadClass="table-light mt-2"
+                  searchBoxClass="mt-2 mb-3"
+                />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </>
     </>
   );
 });

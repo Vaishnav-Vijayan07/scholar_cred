@@ -21,6 +21,7 @@ import { createStudent, deleteStudent, editStudent, getAllAssignedStudents, getS
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
 
 interface FileType extends File {
   preview?: string;
@@ -45,6 +46,9 @@ const BasicInputElements = withSwal((props: any) => {
   const [selectedFile, setSelectedFile] = useState<FileType[]>([]);
   //validation errors
   const [validationErrors, setValidationErrors] = useState(StudentValidationState);
+
+  //selected table values
+  const [selectedValues, setSelectedValues] = useState([]);
 
   const validationSchema = yup.object().shape({
     first_name: yup.string().required("First name is required"),
@@ -354,6 +358,12 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
+  const handleSelectedValues = (values: any) => {
+    setSelectedValues(values);
+  };
+
+  console.log("selected values =========>", selectedValues);
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -468,31 +478,35 @@ const BasicInputElements = withSwal((props: any) => {
         <Col className="p-0 form__card">
           <Card className="bg-white">
             <Card.Body>
-              <div className="d-flex float-end gap-2">
-                <Button className="btn-sm btn-blue waves-effect waves-light " onClick={handleDownloadClick}>
-                  <i className="mdi mdi-download-circle"></i> Download Sample
-                </Button>
+              <>
+                <div className="d-flex float-end gap-2">
+                  <Button className="btn-sm btn-blue waves-effect waves-light " onClick={handleDownloadClick}>
+                    <i className="mdi mdi-download-circle"></i> Download Sample
+                  </Button>
 
-                <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
-                  <i className="mdi mdi-upload"></i> Bulk Upload
-                </Button>
+                  <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
+                    <i className="mdi mdi-upload"></i> Bulk Upload
+                  </Button>
 
-                <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleResponsiveModal}>
-                  <i className="mdi mdi-plus-circle"></i> Add Student
-                </Button>
-              </div>
-              {/* <h4 className="header-title mb-4">Manage Student</h4> */}
-              <Table
-                columns={columns}
-                data={records ? records : []}
-                pageSize={5}
-                sizePerPageList={sizePerPageList}
-                isSortable={true}
-                pagination={true}
-                isSearchable={true}
-                theadClass="table-light mt-2"
-                searchBoxClass="mt-2 mb-3"
-              />
+                  <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleResponsiveModal}>
+                    <i className="mdi mdi-plus-circle"></i> Add Student
+                  </Button>
+                </div>
+                {/* <h4 className="header-title mb-4">Manage Student</h4> */}
+                <Table
+                  columns={columns}
+                  data={records ? records : []}
+                  pageSize={5}
+                  sizePerPageList={sizePerPageList}
+                  isSortable={true}
+                  pagination={true}
+                  isSearchable={true}
+                  isSelectable={true}
+                  theadClass="table-light mt-2"
+                  searchBoxClass="mt-2 mb-3"
+                  onSelect={handleSelectedValues}
+                />
+              </>
             </Card.Body>
           </Card>
         </Col>

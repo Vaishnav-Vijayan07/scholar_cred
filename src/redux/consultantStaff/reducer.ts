@@ -7,6 +7,7 @@ const INIT_STATE = {
   ConsultantStaff: [],
   loading: false,
   error: null,
+  initialLoading: false,
 };
 
 interface Consultant {
@@ -51,6 +52,7 @@ const ConsultantStaff = (state: State = INIT_STATE, action: AdminStaffActionType
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             ConsultantStaff: action.payload.data,
           };
         }
@@ -59,6 +61,7 @@ const ConsultantStaff = (state: State = INIT_STATE, action: AdminStaffActionType
           return {
             ...state,
             loading: false,
+            initialLoading: false,
           };
         }
 
@@ -138,10 +141,10 @@ const ConsultantStaff = (state: State = INIT_STATE, action: AdminStaffActionType
       return { ...state, loading: true };
 
     case ConsultantStaffActionTypes.GET_CONSULTANT_STAFF:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF:
       return { ...state, loading: true };

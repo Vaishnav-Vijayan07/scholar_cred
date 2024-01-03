@@ -8,6 +8,7 @@ const INIT_STATE = {
   students: [],
   studentById: {},
   loading: false,
+  initialLoading: false,
   error: null,
 };
 
@@ -72,6 +73,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             studentById: action.payload.data,
           };
         }
@@ -79,6 +81,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             students: action.payload.data,
           };
         }
@@ -86,6 +89,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             students: action.payload.data,
           };
         }
@@ -93,6 +97,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             students: action.payload.data,
           };
         }
@@ -100,6 +105,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             students: action.payload.data,
           };
         }
@@ -139,6 +145,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
             students: [],
           };
         }
@@ -148,6 +155,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
             students: [],
           };
         }
@@ -156,6 +164,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
             students: [],
           };
         }
@@ -164,6 +173,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
             students: [],
           };
         }
@@ -188,16 +198,16 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
       return { ...state, loading: true };
 
     case StudentActionTypes.GET_STUDENT:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.GET_STUDENT_BY_STAFF:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.GET_STUDENT_BY_ID:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.GET_ASSIGNED_STUDENT:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.DELETE_STUDENT:
       return { ...state, loading: true };

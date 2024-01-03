@@ -13,6 +13,7 @@ import { createAdminUsers, deleteAdminUsers, editAdminUsers, getCredAdminUsers, 
 import { RootState } from "../../redux/store";
 import { AdminUsersType, AdminInitialState, AdminValidationState, sizePerPageList } from "./data";
 import { Link } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error } = props;
@@ -88,20 +89,9 @@ const BasicInputElements = withSwal((props: any) => {
       await validationSchema.validate(formData, { abortEarly: false });
       // Validation passed, handle form submission
       if (isUpdate) {
-        dispatch(
-          editAdminUsers(
-            formData.id,
-            formData.username,
-            formData.email,
-            formData.first_name + " " + formData.last_name,
-            formData.user_type_id,
-            formData.created_by
-          )
-        );
+        dispatch(editAdminUsers(formData.id, formData.username, formData.email, formData.first_name + " " + formData.last_name, formData.user_type_id, formData.created_by));
       } else {
-        dispatch(
-          createAdminUsers(formData.username, formData.email, formData.first_name + " " + formData.last_name, formData.user_type_id, formData.created_by)
-        );
+        dispatch(createAdminUsers(formData.username, formData.email, formData.first_name + " " + formData.last_name, formData.user_type_id, formData.created_by));
       }
     } catch (validationError) {
       // Handle validation errors
@@ -233,104 +223,106 @@ const BasicInputElements = withSwal((props: any) => {
 
   return (
     <>
-      <Row className="justify-content-between px-2">
-        <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
-          <Form onSubmit={onSubmit}>
-            <Modal.Header closeButton>
-              <h4 className="modal-title">Add Cred Admin Users</h4>
-            </Modal.Header>
-            <Modal.Body className="px-3">
-              {error && (
-                <Alert variant="danger" className="my-2">
-                  {error}
-                </Alert>
-              )}
-              <Row>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="first_name">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" name="first_name" placeholder="Enter  Name" value={formData.first_name} onChange={handleInputChange} />
-                    {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="last_name">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" name="last_name" placeholder="Enter  Name" value={formData.last_name} onChange={handleInputChange} />
-                    {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
-                    {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="username">
-                    <Form.Label>User Name</Form.Label>
-                    <Form.Control type="text" name="username" placeholder="Enter username" value={formData.username} onChange={handleInputChange} />
-                    {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
-                  </Form.Group>
-                </Col>
-              </Row>{" "}
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                variant="danger"
-                id="button-addon2"
-                disabled={loading}
-                className="mt-1 waves-effect waves-light me-2"
-                onClick={() => {
-                  if (isUpdate) {
-                    handleCancelUpdate();
-                    toggleResponsiveModal();
-                  } else {
-                    toggleResponsiveModal();
-                  }
-                }}
-              >
-                {!isUpdate ? "close" : "Cancel"}
-              </Button>
+      <>
+        <Row className="justify-content-between px-2">
+          <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
+            <Form onSubmit={onSubmit}>
+              <Modal.Header closeButton>
+                <h4 className="modal-title">Add Cred Admin Users</h4>
+              </Modal.Header>
+              <Modal.Body className="px-3">
+                {error && (
+                  <Alert variant="danger" className="my-2">
+                    {error}
+                  </Alert>
+                )}
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="first_name">
+                      <Form.Label>First Name</Form.Label>
+                      <Form.Control type="text" name="first_name" placeholder="Enter  Name" value={formData.first_name} onChange={handleInputChange} />
+                      {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="last_name">
+                      <Form.Label>Last Name</Form.Label>
+                      <Form.Control type="text" name="last_name" placeholder="Enter  Name" value={formData.last_name} onChange={handleInputChange} />
+                      {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="email">
+                      <Form.Label>Email</Form.Label>
+                      <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
+                      {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="username">
+                      <Form.Label>User Name</Form.Label>
+                      <Form.Control type="text" name="username" placeholder="Enter username" value={formData.username} onChange={handleInputChange} />
+                      {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
+                    </Form.Group>
+                  </Col>
+                </Row>{" "}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant="danger"
+                  id="button-addon2"
+                  disabled={loading}
+                  className="mt-1 waves-effect waves-light me-2"
+                  onClick={() => {
+                    if (isUpdate) {
+                      handleCancelUpdate();
+                      toggleResponsiveModal();
+                    } else {
+                      toggleResponsiveModal();
+                    }
+                  }}
+                >
+                  {!isUpdate ? "close" : "Cancel"}
+                </Button>
 
-              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
-                {isUpdate ? "Update" : "Submit"}
-              </Button>
+                <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
+                  {isUpdate ? "Update" : "Submit"}
+                </Button>
 
-              <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
-                Add test data
-              </Button>
-            </Modal.Footer>
+                <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
+                  Add test data
+                </Button>
+              </Modal.Footer>
 
-            {/* )} */}
-          </Form>
-        </Modal>
+              {/* )} */}
+            </Form>
+          </Modal>
 
-        <Col className="p-0 form__card">
-          <Card className="bg-white">
-            <Card.Body>
-              <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
-                <i className="mdi mdi-plus-circle"></i> Add user
-              </Button>
-              {/* <h4 className="header-title mb-4">Manage Cred Admin</h4> */}
-              <Table
-                columns={columns}
-                data={records ? records : []}
-                pageSize={5}
-                sizePerPageList={sizePerPageList}
-                isSortable={true}
-                pagination={true}
-                isSearchable={true}
-                theadClass="table-light mt-2"
-                searchBoxClass="mt-2 mb-3"
-              />
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+          <Col className="p-0 form__card">
+            <Card className="bg-white">
+              <Card.Body>
+                <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
+                  <i className="mdi mdi-plus-circle"></i> Add user
+                </Button>
+                {/* <h4 className="header-title mb-4">Manage Cred Admin</h4> */}
+                <Table
+                  columns={columns}
+                  data={records ? records : []}
+                  pageSize={5}
+                  sizePerPageList={sizePerPageList}
+                  isSortable={true}
+                  pagination={true}
+                  isSearchable={true}
+                  theadClass="table-light mt-2"
+                  searchBoxClass="mt-2 mb-3"
+                />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </>
     </>
   );
 });

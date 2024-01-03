@@ -6,6 +6,7 @@ const INIT_STATE = {
   credAdmin: [],
   credAdminById: {},
   loading: false,
+  initialLoading: false,
   error: null,
 };
 
@@ -59,6 +60,7 @@ const CredAdminStates = (state: State = INIT_STATE, action: AuthActionType): any
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             credAdmin: action.payload.data,
           };
         }
@@ -74,6 +76,7 @@ const CredAdminStates = (state: State = INIT_STATE, action: AuthActionType): any
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             credAdminById: action.payload.data,
           };
         }
@@ -118,6 +121,7 @@ const CredAdminStates = (state: State = INIT_STATE, action: AuthActionType): any
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
           };
         }
         case AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID: {
@@ -125,6 +129,7 @@ const CredAdminStates = (state: State = INIT_STATE, action: AuthActionType): any
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
           };
         }
         case AdminActionTypes.DELETE_CRED_ADMIN_USERS: {
@@ -150,10 +155,10 @@ const CredAdminStates = (state: State = INIT_STATE, action: AuthActionType): any
     case AdminActionTypes.EDIT_CRED_ADMIN_USER:
       return { ...state, loading: true };
     case AdminActionTypes.GET_CRED_ADMIN_USERS:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case AdminActionTypes.GET_CRED_ADMIN_USERS_BY_ID:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
     case AdminActionTypes.DELETE_CRED_ADMIN_USERS:
       return { ...state, loading: true };
     default:

@@ -8,6 +8,7 @@ const INIT_STATE = {
   consultantStaff: [],
   consultantStaffById: {},
   loading: false,
+  initialLoading: false,
   error: null,
 };
 
@@ -67,6 +68,7 @@ const ConsultantAdmin = (state: State = INIT_STATE, action: ConsultantActionType
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             consultantStaffById: action.payload.data,
           };
         }
@@ -75,6 +77,7 @@ const ConsultantAdmin = (state: State = INIT_STATE, action: ConsultantActionType
             ...state,
             loading: false,
             consultantStaff: action.payload.data,
+            initialLoading: false,
           };
         }
         case ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF: {
@@ -113,6 +116,7 @@ const ConsultantAdmin = (state: State = INIT_STATE, action: ConsultantActionType
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
             consultantStaff: [],
           };
         }
@@ -122,6 +126,7 @@ const ConsultantAdmin = (state: State = INIT_STATE, action: ConsultantActionType
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
             consultantStaffById: [],
           };
         }
@@ -137,10 +142,10 @@ const ConsultantAdmin = (state: State = INIT_STATE, action: ConsultantActionType
       return { ...state, loading: true };
 
     case ConsultantStaffActionTypes.GET_CONSULTANT_STAFF:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF:
       return { ...state, loading: true };

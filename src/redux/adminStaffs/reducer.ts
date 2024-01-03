@@ -6,6 +6,7 @@ import { AdminStaffActionTypes } from "./constants";
 const INIT_STATE = {
   adminStaff: [],
   loading: false,
+  initialLoading: false,
   error: null,
 };
 
@@ -50,6 +51,7 @@ const AdminStaff = (state: State = INIT_STATE, action: AdminStaffActionType): an
           return {
             ...state,
             loading: false,
+            initialLoading: false,
             adminStaff: action.payload.data,
           };
         }
@@ -58,6 +60,7 @@ const AdminStaff = (state: State = INIT_STATE, action: AdminStaffActionType): an
           return {
             ...state,
             loading: false,
+            initialLoading: false,
           };
         }
 
@@ -115,6 +118,7 @@ const AdminStaff = (state: State = INIT_STATE, action: AdminStaffActionType): an
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
           };
         }
 
@@ -123,6 +127,7 @@ const AdminStaff = (state: State = INIT_STATE, action: AdminStaffActionType): an
             ...state,
             error: action.payload.error,
             loading: false,
+            initialLoading: false,
           };
         }
 
@@ -137,10 +142,10 @@ const AdminStaff = (state: State = INIT_STATE, action: AdminStaffActionType): an
       return { ...state, loading: true };
 
     case AdminStaffActionTypes.GET_ADMIN_STAFF:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case AdminStaffActionTypes.GET_ADMIN_STAFF_BY_ID:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case AdminStaffActionTypes.DELETE_ADMIN_STAFF:
       return { ...state, loading: true };

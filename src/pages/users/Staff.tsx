@@ -16,6 +16,7 @@ import { createadminStaff, deleteAdminStaff, editAdminStaff, getAdminStaff } fro
 import { RootState } from "../../redux/store";
 import { resetPassword } from "../../redux/actions";
 import axios from "axios";
+import Skeleton from "react-loading-skeleton";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error } = props;
@@ -281,135 +282,137 @@ const BasicInputElements = withSwal((props: any) => {
 
   return (
     <>
-      <Row className="justify-content-between px-2">
-        <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
-          <Form onSubmit={onSubmit}>
-            <Modal.Header closeButton>
-              <h4 className="modal-title">Staff Management</h4>
-            </Modal.Header>
-            <Modal.Body className="px-4">
-              {error && (
-                <Alert variant="danger" className="my-2">
-                  {error}
-                </Alert>
-              )}
-              <Row>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="first_name">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
-                    {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
-                  </Form.Group>
-                </Col>
+      <>
+        <Row className="justify-content-between px-2">
+          <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
+            <Form onSubmit={onSubmit}>
+              <Modal.Header closeButton>
+                <h4 className="modal-title">Staff Management</h4>
+              </Modal.Header>
+              <Modal.Body className="px-4">
+                {error && (
+                  <Alert variant="danger" className="my-2">
+                    {error}
+                  </Alert>
+                )}
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="first_name">
+                      <Form.Label>First Name</Form.Label>
+                      <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
+                      {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
+                    </Form.Group>
+                  </Col>
 
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="last_name">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Second Name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
-                    {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
-                  </Form.Group>
-                </Col>
-              </Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="last_name">
+                      <Form.Label>Last Name</Form.Label>
+                      <Form.Control type="text" placeholder="Enter Second Name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
+                      {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-              <Row>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
-                    {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
-                  </Form.Group>
-                </Col>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="email">
+                      <Form.Label>Email</Form.Label>
+                      <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
+                      {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                    </Form.Group>
+                  </Col>
 
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="phone">
-                    <Form.Label>Phone</Form.Label>
-                    <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
-                    {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
-                  </Form.Group>
-                </Col>
-              </Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="phone">
+                      <Form.Label>Phone</Form.Label>
+                      <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
+                      {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-              <Row>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="employee_id">
-                    <Form.Label>Employee Id</Form.Label>
-                    <Form.Control type="text" name="employee_id" placeholder="Enter Employee Id" value={formData.employee_id} onChange={handleInputChange} />
-                    {validationErrors.employee_id && <Form.Text className="text-danger">{validationErrors.employee_id}</Form.Text>}
-                  </Form.Group>
-                </Col>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="employee_id">
+                      <Form.Label>Employee Id</Form.Label>
+                      <Form.Control type="text" name="employee_id" placeholder="Enter Employee Id" value={formData.employee_id} onChange={handleInputChange} />
+                      {validationErrors.employee_id && <Form.Text className="text-danger">{validationErrors.employee_id}</Form.Text>}
+                    </Form.Group>
+                  </Col>
 
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="username">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" name="username" placeholder="Enter Username" value={formData.username} onChange={handleInputChange} />
-                    {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
-                  </Form.Group>
-                </Col>
-              </Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3" controlId="username">
+                      <Form.Label>Username</Form.Label>
+                      <Form.Control type="text" name="username" placeholder="Enter Username" value={formData.username} onChange={handleInputChange} />
+                      {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-              <Row>
-                <Col>
-                  <Form.Group className="mb-3" controlId="image">
-                    <Form.Label>Image</Form.Label>
-                    <Form.Control type="file" name="image" placeholder="Choose an image" onChange={handleFileChange} />
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Modal.Body>
+                <Row>
+                  <Col>
+                    <Form.Group className="mb-3" controlId="image">
+                      <Form.Label>Image</Form.Label>
+                      <Form.Control type="file" name="image" placeholder="Choose an image" onChange={handleFileChange} />
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </Modal.Body>
 
-            <Modal.Footer>
-              <Button
-                variant="danger"
-                id="button-addon2"
-                disabled={loading}
-                className="mt-1 waves-effect waves-light me-2"
-                onClick={() => {
-                  if (isUpdate) {
-                    handleCancelUpdate();
-                    toggleResponsiveModal();
-                  } else {
-                    toggleResponsiveModal();
-                  }
-                }}
-              >
-                {!isUpdate ? "close" : "Cancel"}
-              </Button>
+              <Modal.Footer>
+                <Button
+                  variant="danger"
+                  id="button-addon2"
+                  disabled={loading}
+                  className="mt-1 waves-effect waves-light me-2"
+                  onClick={() => {
+                    if (isUpdate) {
+                      handleCancelUpdate();
+                      toggleResponsiveModal();
+                    } else {
+                      toggleResponsiveModal();
+                    }
+                  }}
+                >
+                  {!isUpdate ? "close" : "Cancel"}
+                </Button>
 
-              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
-                {isUpdate ? "Update" : "Submit"}
-              </Button>
+                <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
+                  {isUpdate ? "Update" : "Submit"}
+                </Button>
 
-              <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
-                Add test data
-              </Button>
-            </Modal.Footer>
+                <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
+                  Add test data
+                </Button>
+              </Modal.Footer>
 
-            {/* )} */}
-          </Form>
-        </Modal>
+              {/* )} */}
+            </Form>
+          </Modal>
 
-        <Col className="p-0 form__card">
-          <Card className="bg-white">
-            <Card.Body>
-              <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
-                <i className="mdi mdi-plus-circle"></i> Add Staff
-              </Button>
-              {/* <h4 className="header-title mb-4">Manage Staff</h4> */}
-              <Table
-                columns={columns}
-                data={records ? records : []}
-                pageSize={5}
-                sizePerPageList={sizePerPageList}
-                isSortable={true}
-                pagination={true}
-                isSearchable={true}
-                theadClass="table-light mt-2"
-                searchBoxClass="mt-2 mb-3"
-              />
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+          <Col className="p-0 form__card">
+            <Card className="bg-white">
+              <Card.Body>
+                <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
+                  <i className="mdi mdi-plus-circle"></i> Add Staff
+                </Button>
+                {/* <h4 className="header-title mb-4">Manage Staff</h4> */}
+                <Table
+                  columns={columns}
+                  data={records ? records : []}
+                  pageSize={5}
+                  sizePerPageList={sizePerPageList}
+                  isSortable={true}
+                  pagination={true}
+                  isSearchable={true}
+                  theadClass="table-light mt-2"
+                  searchBoxClass="mt-2 mb-3"
+                />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </>
     </>
   );
 });
