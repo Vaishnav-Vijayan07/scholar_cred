@@ -25,9 +25,9 @@ const StatisticsWidget2 = (props: StatisticsWidgetProps) => {
             </Col>
             <Col className="col-6">
               <div className="text-end">
-                <h3 className="text-dark my-1">
+                <h4 className="text-dark my-1">
                   <span>{props["stats"]}</span>
-                </h3>
+                </h4>
                 <p className="text-muted mb-1 text-truncate">{props["description"]}</p>
               </div>
             </Col>

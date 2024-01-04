@@ -31,7 +31,7 @@ interface FormInputProps {
   preliminaryLoading: boolean;
 }
 
-const About = ({ register, errors, control, preliminaryDetails, preliminaryLoading }: FormInputProps) => {
+const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, preliminaryLoading }: FormInputProps) => {
   console.log("preliminaryDetails-->", preliminaryDetails);
 
   const [applicationStatus, setApplicationStatus] = useState("");
@@ -142,15 +142,18 @@ const About = ({ register, errors, control, preliminaryDetails, preliminaryLoadi
         </Row>
         <Row>
           <Col md={4}>
-            <Form.Label>University Details</Form.Label>
-            <Form.Select aria-label="Default select example" value={universityDetails} onChange={(e: any) => setUniversityDetails(e.target.value)}>
-              <option>Open this select menu</option>
-              <option value="PG">PG</option>
-              <option value="UG">UG</option>
-              <option value="PG Diploma">PG Diploma</option>
-              <option value="UG Diploma">UG Diploma</option>
-              <option value="Certificate Programs">Certificate Programs</option>
-            </Form.Select>
+            <FormInput
+              label="University Details"
+              type="text"
+              name="university_details"
+              placeholder="Enter phone number"
+              containerClass={"mb-3"}
+              register={register}
+              key="university_details"
+              errors={errors}
+              control={control}
+              defaultValue={preliminaryDetails?.university_details}
+            />
           </Col>
         </Row>
 
@@ -167,7 +170,7 @@ const About = ({ register, errors, control, preliminaryDetails, preliminaryLoadi
               <option value="Mother">Mother</option>
               <option value="Siblings (brother/sister)">Siblings (brother/sister)</option>
               <option value="Husband/Wife">Husband/Wife</option>
-              <option value="In-Laws (Father/Mother/Brother/Sister in law)">In-Laws (Father/Mother/Brother/Sister in law)</option>
+              <option value="In-laws (Father/Mother/Brother/Sister in law)">In-laws (Father/Mother/Brother/Sister in law)</option>
               <option value="No earning co-applicant">No earning co-applicant</option>
             </Form.Select>
           </Col>
@@ -184,6 +187,7 @@ const About = ({ register, errors, control, preliminaryDetails, preliminaryLoadi
               <option value="Not Salaried">Not Salaried</option>
             </Form.Select>
           </Col>
+
           <Col md={4}>
             <Form.Label>Salary Range</Form.Label>
             <Form.Select aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
@@ -219,4 +223,4 @@ const About = ({ register, errors, control, preliminaryDetails, preliminaryLoadi
   );
 };
 
-export default About;
+export default PreliminaryScreening;

@@ -3,12 +3,11 @@ import { Row, Col, Card, Tab, Nav } from "react-bootstrap";
 
 // components
 import PageTitle from "../../../components/PageTitle";
-import Messages from "../../../components/Messages";
 
 import UserBox from "./UserBox";
-import About from "./About";
-import TimeLine from "./TimeLine";
-import Settings from "./Settings";
+import PreliminaryScreening from "./PreliminaryScreening";
+import DetailScreening from "./DetailScreening";
+import History from "./History";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -75,6 +74,8 @@ const Profile = () => {
     }
   }, []);
 
+  console.log("StudentData--->", StudentData);
+
   return (
     <>
       <PageTitle
@@ -93,15 +94,16 @@ const Profile = () => {
             <StatisticsWidget2
               variant="blue"
               description="Application status"
-              stats="Active"
+              stats={StudentData?.application_status ? StudentData?.application_status : "Pending"}
               icon="fe-aperture"
-              progress={60}
+              progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
               counterOptions={{
                 prefix: "$",
               }}
             />
           </Col>
         </Col>
+
         <Col xl={8} lg={8}>
           <Tab.Container defaultActiveKey="preliminary_screening">
             <Card>
@@ -127,13 +129,13 @@ const Profile = () => {
                 <Tab.Content>
                   <Tab.Pane eventKey="preliminary_screening">
                     {/* <About projectDetails={projectDetails} /> */}
-                    <About register={register} errors={errors} control={control} preliminaryDetails={preliminaryDetails} preliminaryLoading={preliminaryLoading} />
+                    <PreliminaryScreening register={register} errors={errors} control={control} preliminaryDetails={preliminaryDetails} preliminaryLoading={preliminaryLoading} />
                   </Tab.Pane>
                   <Tab.Pane eventKey="detail_screening">
-                    <TimeLine register={register} errors={errors} control={control} />
+                    <DetailScreening register={register} errors={errors} control={control} />
                   </Tab.Pane>
                   <Tab.Pane eventKey="history">
-                    <Settings />
+                    <History />
                   </Tab.Pane>
                 </Tab.Content>
               </Card.Body>

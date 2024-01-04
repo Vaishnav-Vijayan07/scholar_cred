@@ -1,4 +1,4 @@
-const Settings = () => {
+const History = () => {
   return (
     <div className="px-2 pt-2">
       {" "}
@@ -57,4 +57,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default History;

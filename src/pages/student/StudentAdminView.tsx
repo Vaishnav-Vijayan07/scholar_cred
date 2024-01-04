@@ -229,6 +229,19 @@ const BasicInputElements = withSwal((props: any) => {
       Cell: UserColumn,
     },
     {
+      Header: "View Details",
+      accessor: "",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <div className="d-flex justify-content-center align-items-center gap-2">
+          {/* Delete Icon */}
+          <Link to="/users/student-details" state={row.original.student_id}>
+            <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
+          </Link>
+        </div>
+      ),
+    },
+    {
       Header: "Actions",
       accessor: "",
       sort: false,
@@ -498,7 +511,7 @@ const BasicInputElements = withSwal((props: any) => {
                 <div className="d-flex float-end gap-2">
                   {selectedValues?.length > 0 && (
                     <Dropdown className="btn-group" align="end">
-                      <Dropdown.Toggle variant="light" className="table-action-btn btn-sm">
+                      <Dropdown.Toggle variant="light" className="table-action-btn btn-sm btn-blue">
                         Assign Staff
                       </Dropdown.Toggle>
                       <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
