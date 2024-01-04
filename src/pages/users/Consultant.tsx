@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createConsultant, deleteConsultant, editConsultant, getConsultants, getCredAdminUsers } from "../../redux/actions";
 import { RootState } from "../../redux/store";
-import Skeleton from "react-loading-skeleton";
 
 const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();

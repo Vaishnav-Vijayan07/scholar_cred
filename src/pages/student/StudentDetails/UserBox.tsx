@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 import profileImg from "../../../assets/images/users/user-1.jpg";
 import moment from "moment";
-import Skeleton from "react-loading-skeleton";
 
 const UserBox = ({ StudentData, loading }: any) => {
   console.log("StudentData=====>", StudentData);

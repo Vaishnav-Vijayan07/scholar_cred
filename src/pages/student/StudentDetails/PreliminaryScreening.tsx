@@ -4,7 +4,6 @@ import classNames from "classnames";
 import { Control, FieldErrors } from "react-hook-form";
 import { FormInput } from "../../../components";
 import { Link } from "react-router-dom";
-import Skeleton from "react-loading-skeleton";
 
 interface AboutProps {
   projectDetails: {

@@ -13,7 +13,6 @@ import { ConsultantStaffInitialState, ConsultantStaffInitialValidationState, Con
 import { useDispatch, useSelector } from "react-redux";
 import { createConsultantStaffs, editConsultantStaffs, getConsultantStaffs, deleteConsultantStaffs, resetPassword } from "../../redux/actions";
 import { RootState } from "../../redux/store";
-import Skeleton from "react-loading-skeleton";
 // import { getConsultantStaff } from "../../redux/actions";
 
 const BasicInputElements = withSwal((props: any) => {

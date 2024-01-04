@@ -16,7 +16,6 @@ import { createadminStaff, deleteAdminStaff, editAdminStaff, getAdminStaff } fro
 import { RootState } from "../../redux/store";
 import { resetPassword } from "../../redux/actions";
 import axios from "axios";
-import Skeleton from "react-loading-skeleton";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error } = props;

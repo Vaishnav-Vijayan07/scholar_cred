@@ -8,7 +8,6 @@ import FeatherIcons from "feather-icons-react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import FileUploader from "../../components/FileUploader";
-import Skeleton from "react-loading-skeleton";
 
 // import StudentData from "../../assets/excel/StudentData.xlsx";
 

@@ -13,7 +13,6 @@ import { createAdminUsers, deleteAdminUsers, editAdminUsers, getCredAdminUsers, 
 import { RootState } from "../../redux/store";
 import { AdminUsersType, AdminInitialState, AdminValidationState, sizePerPageList } from "./data";
 import { Link } from "react-router-dom";
-import Skeleton from "react-loading-skeleton";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error } = props;

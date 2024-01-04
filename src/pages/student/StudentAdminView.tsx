@@ -21,7 +21,6 @@ import { createStudent, deleteStudent, editStudent, getAllAssignedStudents, getS
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Skeleton from "react-loading-skeleton";
 
 interface FileType extends File {
   preview?: string;
