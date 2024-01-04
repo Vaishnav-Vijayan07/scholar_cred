@@ -66,14 +66,7 @@ const SocialLinks = () => {
         {(socialLinks || []).map((item, index) => {
           return (
             <li key={index} className="list-inline-item">
-              <Link
-                to="#"
-                className={classNames(
-                  "social-list-item",
-                  "border-" + item.variant,
-                  "text-" + item.variant
-                )}
-              >
+              <Link to="#" className={classNames("social-list-item", "border-" + item.variant, "text-" + item.variant)}>
                 <i className={classNames("mdi", "mdi-" + item.icon)}></i>
               </Link>
             </li>
@@ -113,9 +106,7 @@ const Register2 = () => {
    * handle form submission
    */
   const onSubmit = (formData: UserData) => {
-    dispatch(
-      signupUser(formData["fullname"], formData["email"], formData["password"])
-    );
+    dispatch(signupUser(formData["fullname"], formData["email"], formData["password"]));
   };
 
   return (
@@ -124,11 +115,7 @@ const Register2 = () => {
 
       <AuthLayout bottomLinks={<BottomLink />}>
         <h4 className="mt-0">{t("Sign Up")}</h4>
-        <p className="text-muted mb-4">
-          {t(
-            "Don't have an account? Create your account, it takes less than a minute."
-          )}
-        </p>
+        <p className="text-muted mb-4">{t("Don't have an account? Create your account, it takes less than a minute.")}</p>
 
         {error && (
           <Alert variant="danger" className="my-2">
@@ -136,38 +123,11 @@ const Register2 = () => {
           </Alert>
         )}
 
-        <VerticalForm
-          onSubmit={onSubmit}
-          resolver={schemaResolver}
-          defaultValues={{}}
-        >
-          <FormInput
-            label={t("Full Name")}
-            type="text"
-            name="fullname"
-            placeholder={t("Enter your name")}
-            containerClass={"mb-3"}
-          />
-          <FormInput
-            label={t("Email address")}
-            type="email"
-            name="email"
-            placeholder={t("Enter your email")}
-            containerClass={"mb-3"}
-          />
-          <FormInput
-            label={t("Password")}
-            type="password"
-            name="password"
-            placeholder={t("Enter your password")}
-            containerClass={"mb-3"}
-          />
-          <FormInput
-            label={t("I accept Terms and Conditions")}
-            type="checkbox"
-            name="checkboxsignup"
-            containerClass={"mb-3 text-muted"}
-          />
+        <VerticalForm onSubmit={onSubmit} resolver={schemaResolver} defaultValues={{}}>
+          <FormInput label={t("Full Name")} type="text" name="fullname" placeholder={t("Enter your name")} containerClass={"mb-3"} />
+          <FormInput label={t("Email address")} type="email" name="email" placeholder={t("Enter your email")} containerClass={"mb-3"} />
+          <FormInput label={t("Password")} type="password" name="password" placeholder={t("Enter your password")} containerClass={"mb-3"} />
+          <FormInput label={t("I accept Terms and Conditions")} type="checkbox" name="checkboxsignup" containerClass={"mb-3 text-muted"} />
 
           <div className="mb-0 d-grid text-center">
             <Button variant="primary" type="submit" disabled={loading}>
