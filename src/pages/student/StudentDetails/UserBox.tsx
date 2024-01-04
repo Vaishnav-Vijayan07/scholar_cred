@@ -22,7 +22,7 @@ const UserBox = ({ StudentData, loading }: any) => {
             Message
           </button>
           <div className="text-center mt-3">
-            <h4 className="font-13 text-uppercase mb-3">About :</h4>
+            <h4 className="font-13 text-uppercase mb-3">About</h4>
             {/* <p className="text-muted font-13 mb-3">
             Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.
           </p> */}

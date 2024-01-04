@@ -50,11 +50,41 @@ const TimeLine = ({ register, errors, control }: FormInputProps) => {
           <b>House with Land</b>
         </Form.Label>
         <div className="mb-2">
-          <Form.Check className="mb-1" type={"radio"} label={`Rc House`} />
-          <Form.Check className="mb-1" type={"radio"} label={`4 Wheeler entry`} />
-          <Form.Check className="mb-1" type={"radio"} label={`Nilam/Purayidam`} />
-          <Form.Check className="mb-1" type={"radio"} label={`Bought within last 3 years ?`} />
-          <Form.Check className="mb-1" type={"radio"} label={`Existing housing loan ?`} />
+          <Form.Group className="mb-2">
+            <Form.Label>Rc House</Form.Label>
+            <Form.Group className="d-flex gap-2">
+              <Form.Check className="mb-1" type={"radio"} label={`Yes`} />
+              <Form.Check className="mb-1" type={"radio"} label={`No`} />
+            </Form.Group>
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>4 Wheeler entry</Form.Label>
+            <Form.Group className="d-flex gap-2">
+              <Form.Check className="mb-1" type={"radio"} label={`Yes`} />
+              <Form.Check className="mb-1" type={"radio"} label={`No`} />
+            </Form.Group>
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Nilam/Purayidam</Form.Label>
+            <Form.Group className="d-flex gap-2">
+              <Form.Check className="mb-1" type={"radio"} label={`Yes`} />
+              <Form.Check className="mb-1" type={"radio"} label={`No`} />
+            </Form.Group>
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Bought within last 3 years ?</Form.Label>
+            <Form.Group className="d-flex gap-2">
+              <Form.Check className="mb-1" type={"radio"} label={`Yes`} />
+              <Form.Check className="mb-1" type={"radio"} label={`No`} />
+            </Form.Group>
+          </Form.Group>
+          <Form.Group className="mb-2">
+            <Form.Label>Existing housing loan ?</Form.Label>
+            <Form.Group className="d-flex gap-2">
+              <Form.Check className="mb-1" type={"radio"} label={`Yes`} />
+              <Form.Check className="mb-1" type={"radio"} label={`No`} />
+            </Form.Group>
+          </Form.Group>
         </div>
         <Col md={4}>
           <FormInput
@@ -89,11 +119,45 @@ const TimeLine = ({ register, errors, control }: FormInputProps) => {
           />
         </Col>
         <div className="mb-2">
-          <Form.Check className="mb-1" type={"radio"} label={`Boundary wall`} />
-          <Form.Check className="mb-1" type={"radio"} label={`4 Wheeler entry ?`} />
-          <Form.Check className="mb-1" type={"radio"} label={`Any agricultural activities ?`} />
-          <Form.Check className="mb-1" type={"radio"} label={`Bought within last 3 years ?`} />
-          <Form.Check className="mb-1" type={"radio"} label={`Value of the property ?`} />
+          <Form.Group className="mb-2">
+            <Form.Label>Boundary wall</Form.Label>
+            <Form.Group className="d-flex gap-2">
+              <Form.Check className="mb-1" type={"radio"} label={`Yes`} />
+              <Form.Check className="mb-1" type={"radio"} label={`No`} />
+            </Form.Group>
+          </Form.Group>
+
+          <Form.Group className="mb-2">
+            <Form.Label>4 Wheeler entry ?</Form.Label>
+            <Form.Group className="d-flex gap-2">
+              <Form.Check className="mb-1" type={"radio"} label={`Yes`} />
+              <Form.Check className="mb-1" type={"radio"} label={`No`} />
+            </Form.Group>
+          </Form.Group>
+
+          <Form.Group className="mb-2">
+            <Form.Label>Any agricultural activities ?</Form.Label>
+            <Form.Group className="d-flex gap-2">
+              <Form.Check className="mb-1" type={"radio"} label={`Yes`} />
+              <Form.Check className="mb-1" type={"radio"} label={`No`} />
+            </Form.Group>
+          </Form.Group>
+
+          <Form.Group className="mb-2">
+            <Form.Label>Bought within last 3 years ?</Form.Label>
+            <Form.Group className="d-flex gap-2">
+              <Form.Check className="mb-1" type={"radio"} label={`Yes`} />
+              <Form.Check className="mb-1" type={"radio"} label={`No`} />
+            </Form.Group>
+          </Form.Group>
+
+          <Form.Group className="mb-2">
+            <Form.Label>Value of the property ?</Form.Label>
+            <Form.Group className="d-flex gap-2">
+              <Form.Check className="mb-1" type={"radio"} label={`Yes`} />
+              <Form.Check className="mb-1" type={"radio"} label={`No`} />
+            </Form.Group>
+          </Form.Group>
         </div>
 
         <Col md={4}>

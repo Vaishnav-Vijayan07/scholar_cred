@@ -35,7 +35,6 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
   const [applicationStatus, setApplicationStatus] = useState("");
   const [programType, setProgramType] = useState("");
-  const [universityDetails, setUniversityDetails] = useState("");
   const [primaryApplicant, setPrimaryApplicant] = useState("");
   const [typeOfProfossion, setTypeOfProfossion] = useState("");
   const [salaryRange, setSalaryRange] = useState("");
@@ -44,7 +43,6 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
   useEffect(() => {
     setApplicationStatus(preliminaryDetails?.application_status);
     setProgramType(preliminaryDetails?.program_type);
-    setUniversityDetails(preliminaryDetails?.university_details);
     setPrimaryApplicant(preliminaryDetails?.primary_applicant);
     setTypeOfProfossion(preliminaryDetails?.type_of_profossion);
     setSalaryRange(preliminaryDetails?.salary_range);

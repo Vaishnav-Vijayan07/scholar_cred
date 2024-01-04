@@ -173,11 +173,11 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "last_name",
       sort: false,
     },
-    {
-      Header: "User Name",
-      accessor: "username",
-      sort: false,
-    },
+    // {
+    //   Header: "User Name",
+    //   accessor: "username",
+    //   sort: false,
+    // },
     {
       Header: "Email",
       accessor: "email",
