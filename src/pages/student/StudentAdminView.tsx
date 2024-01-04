@@ -364,6 +364,22 @@ const BasicInputElements = withSwal((props: any) => {
 
   console.log("selected values =========>", selectedValues);
 
+  const handleAssignUserBulk = (student_ids: Array<number>, assignedTo: number) => {
+    console.log("assignedTo", assignedTo, "student_ids", student_ids);
+
+    axios
+      .post("assign_staff_bulk", {
+        student_ids,
+        assignedTo,
+      })
+      .then((res) => {
+        console.log("res==>", res.data);
+        showSuccessAlert(res.data.message);
+        dispatch(getAllAssignedStudents());
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -480,6 +496,21 @@ const BasicInputElements = withSwal((props: any) => {
             <Card.Body>
               <>
                 <div className="d-flex float-end gap-2">
+                  {selectedValues?.length > 0 && (
+                    <Dropdown className="btn-group" align="end">
+                      <Dropdown.Toggle variant="light" className="table-action-btn btn-sm">
+                        Assign Staff
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                        {credStaffData?.map((item: any) => (
+                          <Dropdown.Item key={item.value} onClick={() => handleAssignUserBulk(selectedValues, item.value)}>
+                            {item.label}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  )}
+
                   <Button className="btn-sm btn-blue waves-effect waves-light " onClick={handleDownloadClick}>
                     <i className="mdi mdi-download-circle"></i> Download Sample
                   </Button>
