@@ -227,25 +227,31 @@ const BasicInputElements = withSwal((props: any) => {
       sort: false,
       Cell: UserColumn,
     },
-    {
-      Header: "View Details",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <div className="d-flex justify-content-center align-items-center gap-2">
-          {/* Delete Icon */}
-          <Link to="/users/student-details" state={row.original.student_id}>
-            <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
-          </Link>
-        </div>
-      ),
-    },
+    // {
+    //   Header: "View Details",
+    //   accessor: "",
+    //   sort: false,
+    //   Cell: ({ row }: any) => (
+    //     <div className="d-flex justify-content-center align-items-center gap-2">
+    //       {/* Delete Icon */}
+    //       <Link to="/users/student-details" state={row.original.student_id}>
+    //         <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
+    //       </Link>
+    //     </div>
+    //   ),
+    // },
     {
       Header: "Actions",
       accessor: "",
       sort: false,
       Cell: ({ row }: any) => (
-        <div className="d-flex justify-content-center align-items-center gap-2">
+        <div className="d-flex justify-content-center align-items-center gap-2 p-2">
+          <div className="d-flex justify-content-center align-items-center gap-2">
+            {/* Delete Icon */}
+            <Link to="/users/student-details" state={row.original.student_id}>
+              <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
+            </Link>
+          </div>
           {/* Edit Icon */}
           <FeatherIcons
             icon="edit"
