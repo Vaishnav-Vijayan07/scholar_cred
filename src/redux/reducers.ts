@@ -8,6 +8,7 @@ import ConsultantAdmin from "./consultantAdmin/reducer";
 import Students from "./students/reducer";
 import CredAdminStates from "./admin_users/reducers";
 import ConsultantStaff from "./consultantStaff/reducer";
+import Status from "./statusManagement/reducer";
 
 export default combineReducers({
   Auth,
@@ -18,4 +19,5 @@ export default combineReducers({
   Students,
   ConsultantAdmin,
   CredAdminStates,
+  Status,
 });

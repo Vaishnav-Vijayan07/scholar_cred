@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert, Placeholder } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Placeholder, Spinner } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -30,8 +30,6 @@ interface FileType extends File {
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, user, initialLoading } = props;
   const dispatch = useDispatch();
-
-  console.log("state---->", state);
 
   //Table data
   const records = state;
@@ -439,6 +437,9 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
+  if (initialLoading) {
+    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+  }
   return (
     <>
       <Row className="justify-content-between px-2">

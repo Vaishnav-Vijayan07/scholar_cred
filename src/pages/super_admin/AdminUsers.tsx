@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Form, Button, Modal, Alert } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Spinner } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -15,7 +15,7 @@ import { AdminUsersType, AdminInitialState, AdminValidationState, sizePerPageLis
 import { Link } from "react-router-dom";
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error } = props;
+  const { swal, loading, state, error, initialLoading } = props;
   const dispatch = useDispatch();
 
   //Table data
@@ -218,7 +218,9 @@ const BasicInputElements = withSwal((props: any) => {
     }
   }, [loading, error]);
 
-  console.log("formData", formData);
+  if (initialLoading) {
+    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+  }
 
   return (
     <>
@@ -329,10 +331,11 @@ const BasicInputElements = withSwal((props: any) => {
 const AdminUsers = () => {
   const dispatch = useDispatch();
 
-  const { state, loading, error } = useSelector((state: RootState) => ({
+  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.CredAdminStates.credAdmin,
     loading: state?.CredAdminStates.loading,
     error: state?.CredAdminStates.error,
+    initialLoading: state?.CredAdminStates?.initialLoading,
   }));
 
   useEffect(() => {
@@ -354,7 +357,7 @@ const AdminUsers = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} />
+          <BasicInputElements state={state} loading={loading} error={error} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>

@@ -97,10 +97,12 @@ export const getStudent = (): StudentActionType => ({
   type: StudentActionTypes.GET_STUDENT,
   payload: {},
 });
+
 export const getStudentByStaff = (): StudentActionType => ({
   type: StudentActionTypes.GET_STUDENT_BY_STAFF,
   payload: {},
 });
+
 export const getStudentByCreated = (): StudentActionType => ({
   type: StudentActionTypes.GET_STUDENT_BY_CREATED,
   payload: {},
@@ -110,6 +112,7 @@ export const getAllAssignedStudents = (): StudentActionType => ({
   type: StudentActionTypes.GET_ASSIGNED_STUDENT,
   payload: {},
 });
+
 export const getStudentById = (student_id: string): StudentActionType => ({
   type: StudentActionTypes.GET_STUDENT_BY_ID,
   payload: { student_id },

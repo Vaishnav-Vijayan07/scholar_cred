@@ -33,6 +33,7 @@ interface studentActionType {
     | StudentActionTypes.GET_STUDENT
     | StudentActionTypes.GET_STUDENT_BY_STAFF
     | StudentActionTypes.GET_ASSIGNED_STUDENT
+    | StudentActionTypes.GET_STUDENT_BY_CREATED
     | StudentActionTypes.GET_STUDENT_BY_ID;
   payload: {
     actionType?: string;
@@ -201,6 +202,9 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
       return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.GET_STUDENT_BY_STAFF:
+      return { ...state, loading: true, initialLoading: true };
+
+    case StudentActionTypes.GET_STUDENT_BY_CREATED:
       return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.GET_STUDENT_BY_ID:

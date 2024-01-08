@@ -32,6 +32,7 @@ const StudentDetails = React.lazy(() => import("../pages/student/StudentDetails"
 const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
 const Tickets = React.lazy(() => import("../pages/Tickets/List"));
+const StatusManagement = React.lazy(() => import("../pages/super_admin/StatusManagement"));
 
 export interface RoutesProps {
   path: RouteProps["path"];
@@ -177,6 +178,22 @@ const profileRoutes = {
   ],
 };
 
+const superAdminRoutes = {
+  path: "/status",
+  name: "Status",
+  route: PrivateRoute,
+  roles: ["SUPER_USER", "CRED_ADMIN"],
+  icon: "users",
+  children: [
+    {
+      path: "/status/status_management",
+      name: "Profile",
+      element: <PrivateRoute roles={["SUPER_USER", "CRED_ADMIN"]} component={StatusManagement} />,
+      route: PrivateRoute,
+    },
+  ],
+};
+
 const appRoutes = [crmAppRoutes, profileRoutes];
 
 // pages
@@ -253,7 +270,7 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 };
 
 // All routes
-const authProtectedRoutes = [dashboardRoutes, ...appRoutes, userRoutes, consultantRoutes, credadminRoutes];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes, userRoutes, consultantRoutes, credadminRoutes, superAdminRoutes];
 const publicRoutes = [...authRoutes, ...otherPublicRoutes];
 
 const authProtectedFlattenRoutes = flattenRoutes([...authProtectedRoutes]);

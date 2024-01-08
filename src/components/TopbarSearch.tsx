@@ -26,21 +26,11 @@ const TopbarSearch = (props: TopbarSearchProps) => {
   return (
     <>
       <form>
-        <input
-          type="search"
-          className="form-control rounded-pill"
-          placeholder="Search..."
-          id="top-search"
-          onFocus={showSearchOptions}
-          onBlur={hideSearchOptions}
-        />
+        <input type="search" className="form-control rounded-pill" placeholder="Search..." id="top-search" onFocus={showSearchOptions} onBlur={hideSearchOptions} />
         <span className="mdi mdi-magnify search-icon font-22"></span>
       </form>
 
-      <div
-        className="dropdown-menu dropdown-menu-animated dropdown-lg"
-        id="search-dropdown"
-      >
+      <div className="dropdown-menu dropdown-menu-animated dropdown-lg" id="search-dropdown">
         <div className="dropdown-header noti-title">
           <h5 className="text-overflow mb-2">Found 22 results</h5>
         </div>
@@ -67,12 +57,7 @@ const TopbarSearch = (props: TopbarSearchProps) => {
         <div className="notification-list">
           <Link to="#" className="dropdown-item notify-item">
             <div className="d-flex align-items-start">
-              <img
-                className="d-flex me-2 rounded-circle"
-                src={Avatar2}
-                alt="Generic placeholder"
-                height="32"
-              />
+              <img className="d-flex me-2 rounded-circle" src={Avatar2} alt="Generic placeholder" height="32" />
               <div className="w-100">
                 <h5 className="m-0 font-14">Erwin E. Brown</h5>
                 <span className="font-12 mb-0">UI Designer</span>
@@ -82,12 +67,7 @@ const TopbarSearch = (props: TopbarSearchProps) => {
 
           <Link to="#" className="dropdown-item notify-item">
             <div className="d-flex align-items-start">
-              <img
-                className="d-flex me-2 rounded-circle"
-                src={Avatar5}
-                alt="Generic placeholder"
-                height="32"
-              />
+              <img className="d-flex me-2 rounded-circle" src={Avatar5} alt="Generic placeholder" height="32" />
               <div className="w-100">
                 <h5 className="m-0 font-14">Jacob Deo</h5>
                 <span className="font-12 mb-0">Developer</span>

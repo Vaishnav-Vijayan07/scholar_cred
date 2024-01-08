@@ -1,5 +1,5 @@
 import React, { useDebugValue, useEffect, useState } from "react";
-import { Row, Col, Card, Tab, Nav, Button, Modal, Form, Alert } from "react-bootstrap";
+import { Row, Col, Card, Tab, Nav, Button, Modal, Form, Alert, Spinner } from "react-bootstrap";
 import * as yup from "yup";
 
 // components
@@ -31,12 +31,13 @@ const Profile = () => {
   //validation errors
   const [validationErrors, setValidationErrors] = useState(InitialValidationState);
 
-  const { consultantDetails, loading, error, staffData, staffLoading } = useSelector((state: RootState) => ({
+  const { consultantDetails, loading, error, staffData, staffLoading, initialLoading } = useSelector((state: RootState) => ({
     consultantDetails: state.ConsultantReducer.consultantById?.data,
     loading: state.ConsultantReducer.loading,
     staffData: state?.ConsultantAdmin.consultantStaff?.data,
     staffLoading: state?.ConsultantAdmin.loading,
     error: state?.ConsultantAdmin.error,
+    initialLoading: state?.ConsultantAdmin.initialLoading,
   }));
 
   const records: any = staffData ? staffData : [];
@@ -256,6 +257,10 @@ const Profile = () => {
     }
   }, [staffLoading, error]);
 
+  if (initialLoading) {
+    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+  }
+
   return (
     <>
       <PageTitle
@@ -329,7 +334,7 @@ const Profile = () => {
               <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
                 <i className="mdi mdi-plus-circle"></i> Add Users
               </Button>
-              <h4 className="header-title mb-4">Admin Login</h4>
+              <h4 className="header-title mb-4">Consultant Admin</h4>
               <Table
                 columns={columns}
                 data={records}

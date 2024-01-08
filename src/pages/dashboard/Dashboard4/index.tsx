@@ -5,13 +5,11 @@ import { Row, Col } from "react-bootstrap";
 import PageTitle from "../../../components/PageTitle";
 
 import SalesChart from "./SalesChart";
-import StatisticsChart from "./StatisticsChart";
-import IncomeChart from "./IncomeChart";
-import Statistics from "./Statistics";
-import ProjectsDetails from "./ProjectsDetails";
+import LifeStageStatistics from "./LifeStageStatistics";
+import StudentByStaffStatistics from "./StudentByStaffStatistics";
 
-// dummy data
-import { projectsDetails } from "./data";
+import StudentStatistics from "./StudentStatistics";
+import StudentCounts from "./StudentCounts";
 
 const Dashboard4 = () => {
   console.log("Dashboard 4");
@@ -27,24 +25,38 @@ const Dashboard4 = () => {
       />
 
       <Row>
-        <Col xl={4} md={6}>
+        {/* <Col xl={4} md={6}>
           <SalesChart />
+        </Col> */}
+        <Col xl={4}>
+          <StudentStatistics title={"Total Students"} color={"#6658dd"} data={37} totalSales={"29"} target={"480"} lastWeek={"136"} lastMonth={"300"} />
         </Col>
+
         <Col xl={4} md={6}>
-          <StatisticsChart />
+          <StudentCounts />
         </Col>
-        <Col xl={4} md={12}>
-          <IncomeChart />
+
+        <Col xl={4} md={6}>
+          <LifeStageStatistics />
         </Col>
       </Row>
 
-      <Statistics />
-
       <Row>
+        <Col xl={4} md={12}>
+          <StudentByStaffStatistics />
+        </Col>
+        <Col xl={4} md={6}>
+          <LifeStageStatistics />
+        </Col>
+      </Row>
+
+      {/* <Statistics /> */}
+
+      {/* <Row>
         <Col>
           <ProjectsDetails projectsDetails={projectsDetails} />
         </Col>
-      </Row>
+      </Row> */}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert, Dropdown } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Dropdown, Spinner } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -28,7 +28,7 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, credStaffData } = props;
+  const { swal, loading, state, error, user, credStaffData, initialLoading } = props;
   const dispatch = useDispatch();
 
   console.log("credStaffData===>", credStaffData);
@@ -398,6 +398,10 @@ const BasicInputElements = withSwal((props: any) => {
       .catch((err) => console.error(err));
   };
 
+  if (initialLoading) {
+    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+  }
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -568,10 +572,11 @@ const Students = () => {
   const dispatch = useDispatch();
   const [credStaffData, setCredStaffData] = useState([]);
 
-  const { state, loading, error } = useSelector((state: RootState) => ({
+  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.Students.students,
     loading: state?.Students.loading,
     error: state?.Students.error,
+    initialLoading: state?.Students.initialLoading,
   }));
 
   const { user, Authloading, credStaff } = useSelector((state: RootState) => ({
@@ -612,7 +617,7 @@ const Students = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} user={user} credStaffData={credStaffData} />
+          <BasicInputElements state={state} loading={loading} error={error} user={user} credStaffData={credStaffData} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>

@@ -42,13 +42,13 @@ const StatisticsChart = () => {
 
   return (
     <>
-      <BasicPortlet cardTitle="Statistics" titleClass="header-title">
+      <BasicPortlet cardTitle="Student Life Stages" titleClass="header-title">
         <div className="text-center">
           <div className="row mt-2">
             <div className="col-6">
               <h3>7,841</h3>
               <p className="text-muted font-13 mb-0 text-truncate">
-            Total Applications
+            Total Students
               </p>
             </div>
             <div className="col-6">

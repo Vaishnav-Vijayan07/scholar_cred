@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Spinner } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -18,7 +18,7 @@ import { resetPassword } from "../../redux/actions";
 import axios from "axios";
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error } = props;
+  const { swal, loading, state, error, initialLoading } = props;
   const dispatch = useDispatch();
   const baseUrl = process.env.REACT_APP_BACKEND_URL;
 
@@ -279,6 +279,10 @@ const BasicInputElements = withSwal((props: any) => {
     setSelectedFile(event.target.files[0]);
   };
 
+  if (initialLoading) {
+    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+  }
+
   return (
     <>
       <>
@@ -419,10 +423,11 @@ const BasicInputElements = withSwal((props: any) => {
 const Staff = () => {
   const dispatch = useDispatch();
 
-  const { state, loading, error } = useSelector((state: RootState) => ({
+  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.AdminStaff.adminStaff.data,
     loading: state?.AdminStaff.loading,
     error: state?.AdminStaff.error,
+    initialLoading: state?.AdminStaff.initialLoading,
   }));
 
   useEffect(() => {
@@ -444,7 +449,7 @@ const Staff = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} />
+          <BasicInputElements state={state} loading={loading} error={error} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>

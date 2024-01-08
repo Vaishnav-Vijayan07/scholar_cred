@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Spinner } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -17,7 +17,7 @@ import { RootState } from "../../redux/store";
 
 const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();
-  const { swal, loading, state, error, success } = props;
+  const { swal, loading, state, error, success, initialLoading } = props;
   const [modal, setModal] = useState<boolean>(false);
   const [className, setClassName] = useState<string>("");
 
@@ -299,6 +299,10 @@ const BasicInputElements = withSwal((props: any) => {
     }));
   };
 
+  if (initialLoading) {
+    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+  }
+
   return (
     <>
       <>
@@ -505,11 +509,12 @@ const BasicInputElements = withSwal((props: any) => {
 const Consultants = () => {
   const dispatch = useDispatch();
 
-  const { state, loading, error, success } = useSelector((state: RootState) => ({
+  const { state, loading, error, success, initialLoading } = useSelector((state: RootState) => ({
     state: state?.ConsultantReducer.consultant.data,
     loading: state?.ConsultantReducer.loading,
     error: state?.ConsultantReducer.error,
     success: state?.ConsultantReducer.success,
+    initialLoading: state?.ConsultantReducer.initialLoading,
   }));
 
   useEffect(() => {
@@ -531,7 +536,7 @@ const Consultants = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} success={success} />
+          <BasicInputElements state={state} loading={loading} error={error} success={success} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>

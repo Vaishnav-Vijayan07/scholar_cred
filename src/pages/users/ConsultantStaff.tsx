@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Spinner } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -16,7 +16,7 @@ import { RootState } from "../../redux/store";
 // import { getConsultantStaff } from "../../redux/actions";
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user } = props;
+  const { swal, loading, state, error, user, initialLoading } = props;
   const dispatch = useDispatch();
 
   console.log("user", user);
@@ -296,6 +296,10 @@ const BasicInputElements = withSwal((props: any) => {
     }
   }, [loading, error]);
 
+  if (initialLoading) {
+    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+  }
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -433,10 +437,11 @@ const Staff = () => {
     user: state.Auth.user,
   }));
 
-  const { state, loading, error } = useSelector((state: RootState) => ({
+  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.ConsultantStaff.ConsultantStaff.data,
     loading: state?.ConsultantStaff.loading,
     error: state?.ConsultantStaff.error,
+    initialLoading: state?.ConsultantStaff.initialLoading,
   }));
 
   useEffect(() => {
@@ -460,7 +465,7 @@ const Staff = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} user={user} />
+          <BasicInputElements state={state} loading={loading} error={error} user={user} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>

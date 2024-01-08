@@ -4,7 +4,7 @@ import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
 // components
-import ChartStatistics from "./ChartStatistics";
+import ChartStatistics from "../../../components/ChartStatistics";
 
 interface StatisticsChartWidgetProps {
   title: string;
@@ -16,7 +16,7 @@ interface StatisticsChartWidgetProps {
   lastMonth: string;
 }
 
-const StatisticsChartWidget2 = ({
+const StudentStatistics = ({
   title,
   color,
   data,
@@ -105,4 +105,4 @@ const StatisticsChartWidget2 = ({
   );
 };
 
-export default StatisticsChartWidget2;
+export default StudentStatistics;

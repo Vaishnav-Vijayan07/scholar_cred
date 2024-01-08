@@ -5,6 +5,7 @@ import { createAdminUsers, editAdminUsers, getCredAdminUsers, getAdminUsersById,
 import { createAdminStaff, deleteAdminStaff, getAdminStaff, getAdminStaffById, updateAdminStaff } from "./admin_staffs";
 import { createConsultantStaff, deleteConsultantStaff, getConsultantStaff, getConsultantStaffById, updateConsultantStaff } from "./consultantStaff";
 import { createConsultantAdmin, deleteConsultantAdmin, getConsultantAdmin, getConsultantAdminById, updateConsultantAdmin } from "./consultantAdmin";
+import { addStatus, deleteStatus, getAllStatus, updateStatus } from "./status";
 
 import { getUserTypes } from "./user_types";
 import {
@@ -62,4 +63,8 @@ export {
   getStudentByCreated,
   createStudentByCredStaff,
   getAssignedStudents,
+  addStatus,
+  deleteStatus,
+  getAllStatus,
+  updateStatus,
 };
