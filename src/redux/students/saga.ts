@@ -40,8 +40,6 @@ interface ConsultantStaffData {
 const api = new APICore();
 const user = api.getLoggedInUser();
 
-console.log("user------>", user);
-
 function* createStudent({ payload: { first_name, last_name, email, phone, date_of_birth, country_of_origin, application_status }, type }: ConsultantStaffData): SagaIterator {
   try {
     const response = yield call(user?.role == "2" ? createStudentByCredStaffApi : createStudentApi, {
@@ -57,6 +55,7 @@ function* createStudent({ payload: { first_name, last_name, email, phone, date_o
     const consultant_data = response.data.message;
 
     yield put(studentApiResponseSuccess(StudentActionTypes.CREATE_STUDENT, consultant_data));
+
     if (user.role == "4") {
       yield put(getStudentByCreated());
     } else if (user.role == "2") {

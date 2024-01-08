@@ -307,7 +307,7 @@ const BasicInputElements = withSwal((props: any) => {
     <>
       <>
         <Row className="justify-content-between px-2">
-          <Modal show={modal} onHide={toggle} dialogClassName={className} className="custom-modal">
+          <Modal show={modal} onHide={toggle} dialogClassName={className}>
             <h6 className="fw-medium px-3 m-0 py-2 font-13 text-uppercase bg-light">
               <span className="d-block py-1">Consultant Management</span>
             </h6>
