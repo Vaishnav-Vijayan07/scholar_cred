@@ -18,12 +18,12 @@ const StatisticsWidget2 = (props: StatisticsWidgetProps) => {
       <Card>
         <Card.Body>
           <Row>
-            <Col className="col-6">
+            <Col className="col-2">
               <div className={classNames("avatar-sm", "rounded", "bg-" + props["variant"])}>
                 <i className={classNames(props["icon"], "avatar-title font-22 text-white")}></i>
               </div>
             </Col>
-            <Col className="col-6">
+            <Col className="col-10">
               <div className="text-end">
                 <h4 className="text-dark my-1">
                   <span>{props["stats"]}</span>
