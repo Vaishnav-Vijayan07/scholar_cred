@@ -54,7 +54,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           <i className="mdi mdi-account-circle me-1"></i> Personal Info
         </h5>
         <Row>
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <FormInput
               label="Full Name"
               type="text"
@@ -69,7 +69,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             />
           </Col>
 
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <FormInput
               label="Email Id"
               type="email"
@@ -84,7 +84,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             />
           </Col>
 
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <FormInput
               label="Whatsapp Number"
               type="number"
@@ -101,7 +101,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
           {/* </Row>
         <Row> */}
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <FormInput
               label="Destination Country"
               type="text"
@@ -116,7 +116,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             />
           </Col>
 
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <Form.Label>Application Status</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={applicationStatus} onChange={(e: any) => setApplicationStatus(e.target.value)}>
               <option>Open this select menu</option>
@@ -126,7 +126,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             </Form.Select>
           </Col>
 
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <Form.Label>Program Type</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={programType} onChange={(e: any) => setProgramType(e.target.value)}>
               <option>Open this select menu</option>
@@ -139,7 +139,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
           {/* </Row>
             <Row> */}
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <FormInput
               label="University Details"
               type="text"
@@ -161,7 +161,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
         </h5>
 
         <Row>
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <Form.Label>Primary Co-Applicant Details</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={primaryApplicant} onChange={(e: any) => setPrimaryApplicant(e.target.value)}>
               <option>Open this select menu</option>
@@ -174,7 +174,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             </Form.Select>
           </Col>
 
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <Form.Label>Type Of Profession</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={typeOfProfossion} onChange={(e: any) => setTypeOfProfossion(e.target.value)}>
               <option>Open this select menu</option>
@@ -187,7 +187,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             </Form.Select>
           </Col>
 
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <Form.Label>Salary Range</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
               <option>Open this select menu</option>
@@ -197,7 +197,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             </Form.Select>
           </Col>
 
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <Form.Label>Salary Range</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
               <option>Open this select menu</option>
@@ -213,7 +213,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
         </h5>
 
         <Row>
-          <Col md={6} xxl={4}>
+          <Col xl={6} xxl={4}>
             <Form.Label>Collateral Availability</Form.Label>
             <Form.Select aria-label="Default select example" value={collatralItem} onChange={(e: any) => setCollatralItem(e.target.value)}>
               <option>Open this select menu</option>
