@@ -39,7 +39,7 @@ body {
     min-height: 100vh;
     flex-direction: row;
     align-items: stretch;
-    background: url("../../../images/bg-auth.jpg") center;
+    background: url("../../../images/bg-auth.png") left;
     background-size: cover;
 
     .auth-fluid-form-box {
@@ -57,7 +57,7 @@ body {
         flex: 1;
         position: relative;
         color: $white;
-        background-color: rgba($black, 0.3);
+        // background-color: rgba($black, 0.3);
     }
 }
 

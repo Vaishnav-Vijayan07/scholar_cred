@@ -6,7 +6,7 @@ import { StudentActionTypes } from "./constants";
 
 const INIT_STATE = {
   students: [],
-  studentById: {},
+  studentById: null,
   loading: false,
   initialLoading: false,
   error: null,
@@ -44,7 +44,7 @@ interface studentActionType {
 
 interface State {
   student?: StudentData | [];
-  studentById?: StudentData | {};
+  studentById?: StudentData | {} | null;
   loading?: boolean;
   value?: boolean;
 }

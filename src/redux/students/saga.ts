@@ -1,4 +1,4 @@
-import { all, fork, put, takeEvery, call } from "redux-saga/effects";
+import { all, fork, put, takeEvery, call, select } from "redux-saga/effects";
 import { SagaIterator } from "@redux-saga/core";
 
 // apicore
@@ -38,10 +38,11 @@ interface ConsultantStaffData {
 }
 
 const api = new APICore();
-const user = api.getLoggedInUser();
+// const user = api.getLoggedInUser();
 
 function* createStudent({ payload: { first_name, last_name, email, phone, date_of_birth, country_of_origin, application_status }, type }: ConsultantStaffData): SagaIterator {
   try {
+    const user = yield select((state) => state.Auth.user);
     const response = yield call(user?.role == "2" ? createStudentByCredStaffApi : createStudentApi, {
       first_name,
       last_name,
@@ -61,7 +62,8 @@ function* createStudent({ payload: { first_name, last_name, email, phone, date_o
     } else if (user.role == "2") {
       yield put(getStudentByStaff());
     } else if (user.role == "1") {
-      yield put(getAllAssignedStudents());
+      // yield put(getAllAssignedStudents());
+      yield put(getStudent());
     } else {
       yield put(getStudent());
     }
@@ -140,6 +142,7 @@ function* updateStudent({
   type,
 }: ConsultantStaffData): SagaIterator {
   try {
+    const user = yield select((state) => state.Auth.user);
     const response = yield call(updateStudentApi, student_id, {
       first_name,
       last_name,
@@ -171,6 +174,7 @@ function* deleteStudent({ payload: { student_id } }: ConsultantStaffData): SagaI
   try {
     const response = yield call(deleteStudentApi, student_id);
     const data = response.data.message;
+    const user = yield select((state) => state.Auth.user);
 
     yield put(studentApiResponseSuccess(StudentActionTypes.DELETE_STUDENT, data));
     // yield put(getConsultants());

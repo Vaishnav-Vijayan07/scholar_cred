@@ -122,7 +122,7 @@ const userRoutes = {
       route: PrivateRoute,
     },
     {
-      path: "/users/student-details",
+      path: "/users/student-details/:id",
       name: "Student Details",
       element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={StudentDetails} />,
       route: PrivateRoute,

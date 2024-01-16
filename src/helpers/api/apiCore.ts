@@ -42,7 +42,7 @@ axios.interceptors.response.use(
 );
 
 // to store the key for the user session in the sessionStorage
-const AUTH_SESSION_KEY = "ubold_user";
+const AUTH_SESSION_KEY = "cred_user";
 
 /**
  * Sets the default authorization

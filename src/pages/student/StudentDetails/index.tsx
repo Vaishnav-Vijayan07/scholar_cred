@@ -6,15 +6,15 @@ import PageTitle from "../../../components/PageTitle";
 
 import UserBox from "./UserBox";
 import PreliminaryScreening from "./PreliminaryScreening";
-import DetailScreening from "./DetailScreening";
 import History from "./History";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getStudentById } from "../../../redux/actions";
 import { RootState } from "../../../redux/store";
 import StatisticsWidget2 from "../../../components/StatisticsWidget2";
+import DetailedScreening from "./DetailedScreening";
 
 interface ProjectDetails {
   id: number;
@@ -26,7 +26,8 @@ interface ProjectDetails {
 }
 
 const Profile = () => {
-  const location = useLocation();
+  const { id } = useParams();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [preliminaryDetails, setPreliminaryDetails] = useState({});
@@ -47,10 +48,11 @@ const Profile = () => {
   const getPrilimineryDetailsApi = () => {
     setPreliminaryLoading(true);
     axios
-      .post("getPrilimineryDetails", { student_id: location?.state })
+      .post("getPrilimineryDetails", { student_id: id })
       .then((res) => {
+        console.log("getPrilimineryDetails======>", res.data);
+
         setPreliminaryLoading(false);
-        console.log("res--->", res.data);
         setPreliminaryDetails(res?.data?.data);
       })
       .catch((err) => {
@@ -60,7 +62,7 @@ const Profile = () => {
   };
 
   const getStudentDetails = () => {
-    dispatch(getStudentById(location?.state));
+    dispatch(getStudentById(id ? id : ""));
   };
 
   useEffect(() => {
@@ -69,12 +71,10 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (!location?.state) {
-      navigate("/users/students");
+    if (!id) {
+      navigate("/cred-admin/students");
     }
   }, []);
-
-  console.log("StudentData--->", StudentData);
 
   return (
     <>
@@ -114,11 +114,13 @@ const Profile = () => {
                       Preliminary screening
                     </Nav.Link>
                   </Nav.Item>
+
                   <Nav.Item as="li" className="nav-item">
                     <Nav.Link href="#" eventKey="detail_screening" className="nav-link cursor-pointer">
                       Detail Screening
                     </Nav.Link>
                   </Nav.Item>
+
                   <Nav.Item as="li" className="nav-item">
                     <Nav.Link href="#" eventKey="history" className="nav-link cursor-pointer">
                       History
@@ -131,9 +133,11 @@ const Profile = () => {
                     {/* <About projectDetails={projectDetails} /> */}
                     <PreliminaryScreening register={register} errors={errors} control={control} preliminaryDetails={preliminaryDetails} preliminaryLoading={preliminaryLoading} />
                   </Tab.Pane>
+
                   <Tab.Pane eventKey="detail_screening">
-                    <DetailScreening register={register} errors={errors} control={control} />
+                    <DetailedScreening student_id={id} StudentData={StudentData} />
                   </Tab.Pane>
+
                   <Tab.Pane eventKey="history">
                     <History />
                   </Tab.Pane>

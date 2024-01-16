@@ -4,7 +4,7 @@ import { Row, Col, Card } from "react-bootstrap";
 
 import logoDark from "../../assets/images/logo-dark.png";
 import logoLight from "../../assets/images/logo-light.png";
-import Banner from "../../assets/images/bg-auth.jpg";
+import Banner from "../../assets/images/bg-auth.png";
 
 const Error404Svg = () => {
   return (

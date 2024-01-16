@@ -21,6 +21,7 @@ import { createStudent, deleteStudent, editStudent, getAllAssignedStudents, getS
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 interface FileType extends File {
   preview?: string;
@@ -30,8 +31,6 @@ interface FileType extends File {
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, user, credStaffData, initialLoading } = props;
   const dispatch = useDispatch();
-
-  console.log("credStaffData===>", credStaffData);
 
   //Table data
   const records = state;
@@ -173,7 +172,7 @@ const BasicInputElements = withSwal((props: any) => {
           </Dropdown.Toggle>
           <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
             {credStaffData?.map((item: any) => (
-              <Dropdown.Item key={item.value} onClick={() => handleAssignUser(row.original.student_id, item.value)}>
+              <Dropdown.Item key={item.value} onClick={() => handleAssign(row.original.student_id, item.value)}>
                 {item.label}
               </Dropdown.Item>
             ))}
@@ -181,6 +180,27 @@ const BasicInputElements = withSwal((props: any) => {
         </Dropdown>
       </>
     );
+  };
+
+  const handleAssign = (student_id: number, staff_id: number) => {
+    Swal.fire({
+      title: "Are you sure!",
+      text: "You want to assign this staff?",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#55d94e",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, assign!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleAssignUser(student_id, staff_id);
+        Swal.fire({
+          title: "Assigned!",
+          text: "Staff assigned successfully.",
+          icon: "success",
+        });
+      }
+    });
   };
 
   const columns = [
@@ -227,19 +247,6 @@ const BasicInputElements = withSwal((props: any) => {
       sort: false,
       Cell: UserColumn,
     },
-    // {
-    //   Header: "View Details",
-    //   accessor: "",
-    //   sort: false,
-    //   Cell: ({ row }: any) => (
-    //     <div className="d-flex justify-content-center align-items-center gap-2">
-    //       {/* Delete Icon */}
-    //       <Link to="/users/student-details" state={row.original.student_id}>
-    //         <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
-    //       </Link>
-    //     </div>
-    //   ),
-    // },
     {
       Header: "Actions",
       accessor: "",
@@ -248,7 +255,7 @@ const BasicInputElements = withSwal((props: any) => {
         <div className="d-flex justify-content-center align-items-center gap-2 p-2">
           <div className="d-flex justify-content-center align-items-center gap-2">
             {/* Delete Icon */}
-            <Link to="/users/student-details" state={row.original.student_id}>
+            <Link to={`/users/student-details/${row.original.student_id}`} state={row.original.student_id}>
               <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
             </Link>
           </div>
@@ -271,15 +278,12 @@ const BasicInputElements = withSwal((props: any) => {
   ];
 
   const handleAssignUser = (student_id: number, assignedTo: number) => {
-    console.log("assignedTo", assignedTo, "student_id", student_id);
-
     axios
       .post("assign_staff", {
         student_id,
         assignedTo,
       })
       .then((res) => {
-        console.log("res==>", res.data);
         dispatch(getAllAssignedStudents());
       })
       .catch((err) => console.error(err));
@@ -380,7 +384,26 @@ const BasicInputElements = withSwal((props: any) => {
     setSelectedValues(values);
   };
 
-  console.log("selected values =========>", selectedValues);
+  const handleAssignBulk = (student_ids: Array<number>, assignedTo: number) => {
+    Swal.fire({
+      title: "Are you sure!",
+      text: "You want to assign this staff?",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#55d94e",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, assign!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleAssignUserBulk(student_ids, assignedTo);
+        Swal.fire({
+          title: "Assigned!",
+          text: "Staff assigned successfully.",
+          icon: "success",
+        });
+      }
+    });
+  };
 
   const handleAssignUserBulk = (student_ids: Array<number>, assignedTo: number) => {
     console.log("assignedTo", assignedTo, "student_ids", student_ids);
@@ -413,7 +436,7 @@ const BasicInputElements = withSwal((props: any) => {
             <Modal.Body className="px-3">
               {error && (
                 <Alert variant="danger" className="my-2">
-                  {error}
+                  {error ? error : ""}
                 </Alert>
               )}
               <Row>
@@ -525,7 +548,7 @@ const BasicInputElements = withSwal((props: any) => {
                       </Dropdown.Toggle>
                       <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
                         {credStaffData?.map((item: any) => (
-                          <Dropdown.Item key={item.value} onClick={() => handleAssignUserBulk(selectedValues, item.value)}>
+                          <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
                             {item.label}
                           </Dropdown.Item>
                         ))}
@@ -585,10 +608,9 @@ const Students = () => {
     Authloading: state.Auth.loading,
   }));
 
-  console.log("credStaff---------------->", credStaff);
-
   useEffect(() => {
-    dispatch(getAllAssignedStudents());
+    dispatch(getStudent());
+    // dispatch(getAllAssignedStudents());
     dispatch(getAdminStaff());
   }, []);
 

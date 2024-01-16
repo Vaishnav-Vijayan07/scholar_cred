@@ -1,3 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
+
+.login-banner-text {
+  font-family: "Manrope", sans-serif;
+  color: #001833;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 129%; /* 30.96px */
+  letter-spacing: -0.28px;
+}
+
+.scholarcred-text {
+  color: #00a6d9;
+  font-family: Manrope;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 129%;
+  letter-spacing: -0.28px;
+}
+
+.login-charector-img {
+  object-fit: contain;
+  height: auto;
+  max-height: 95vh;
+  min-height: 70vh;
+}
+
 .table-responsive table {
   border-collapse: collapse;
   width: 100%;
