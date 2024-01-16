@@ -50,8 +50,6 @@ const Profile = () => {
     axios
       .post("getPrilimineryDetails", { student_id: id })
       .then((res) => {
-        console.log("getPrilimineryDetails======>", res.data);
-
         setPreliminaryLoading(false);
         setPreliminaryDetails(res?.data?.data);
       })
