@@ -607,7 +607,7 @@ const BasicInputElements = withSwal((props: any) => {
                     </Dropdown.Menu>
                   </Dropdown>
 
-                  <Dropdown className="btn-group" align="end">
+                  {/* <Dropdown className="btn-group" align="end">
                     <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
                       <i className="mdi mdi-filter-variant"></i> Choose Status
                     </Dropdown.Toggle>
@@ -627,7 +627,7 @@ const BasicInputElements = withSwal((props: any) => {
                         <Dropdown.Item key={item.value}>{item.label}</Dropdown.Item>
                       ))}
                     </Dropdown.Menu>
-                  </Dropdown>
+                  </Dropdown> */}
 
                   <Dropdown className="btn-group" align="end">
                     <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
