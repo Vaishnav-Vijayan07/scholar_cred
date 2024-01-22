@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form, Row, Table } from "react-bootstrap";
-import classNames from "classnames";
+import { Col, Form, Row } from "react-bootstrap";
 import { Control, FieldErrors } from "react-hook-form";
 import { FormInput } from "../../../components";
-import { Link } from "react-router-dom";
 
 interface AboutProps {
   projectDetails: {
@@ -119,7 +117,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           <Col xl={6} xxl={4}>
             <Form.Label>Application Status</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={applicationStatus} onChange={(e: any) => setApplicationStatus(e.target.value)}>
-              <option>Open this select menu</option>
+              <option value="" disabled>Open this select menu</option>
               <option value="Not Yet Decided">Not Yet Decided</option>
               <option value="Started Applying">Started Applying</option>
               <option value="Received Offer Letter">Recieved Offer Letter</option>
@@ -129,7 +127,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           <Col xl={6} xxl={4}>
             <Form.Label>Program Type</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={programType} onChange={(e: any) => setProgramType(e.target.value)}>
-              <option>Open this select menu</option>
+              <option value="" disabled>Open this select menu</option>
               <option value="PG">PG</option>
               <option value="UG">UG</option>
               <option value="PG Diploma">PG Diploma</option>
@@ -153,7 +151,6 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
               defaultValue={preliminaryDetails?.university_details}
             />
           </Col>
-          
         </Row>
 
         <h5 className="mb-3 text-uppercase bg-light p-2 mt-3">
@@ -164,7 +161,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           <Col xl={6} xxl={4}>
             <Form.Label>Primary Co-Applicant Details</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={primaryApplicant} onChange={(e: any) => setPrimaryApplicant(e.target.value)}>
-              <option>Open this select menu</option>
+              <option value="" disabled>Open this select menu</option>
               <option value="Father">Father</option>
               <option value="Mother">Mother</option>
               <option value="Siblings (brother/sister)">Siblings (brother/sister)</option>
@@ -177,7 +174,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           <Col xl={6} xxl={4}>
             <Form.Label>Type Of Profession</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={typeOfProfossion} onChange={(e: any) => setTypeOfProfossion(e.target.value)}>
-              <option>Open this select menu</option>
+              <option value="" disabled>Open this select menu</option>
               <option value="Salaried">Salaried</option>
               <option value="Self Employed">Self Employed</option>
               <option value="Business">Business</option>
@@ -190,7 +187,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           <Col xl={6} xxl={4}>
             <Form.Label>Salary Range</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
-              <option>Open this select menu</option>
+              <option value="" disabled>Open this select menu</option>
               <option value="<30000/month">&lt;30000/month</option>
               <option value="30-40000/month">30-40000/month</option>
               <option value=">40000/month">&gt;40000/month</option>
@@ -200,7 +197,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           <Col xl={6} xxl={4}>
             <Form.Label>Salary Range</Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
-              <option>Open this select menu</option>
+              <option value="" disabled>Open this select menu</option>
               <option value="<30000/month">&lt;30000/month</option>
               <option value="30-40000/month">30-40000/month</option>
               <option value=">40000/month">&gt;40000/month</option>
@@ -216,7 +213,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           <Col xl={6} xxl={4}>
             <Form.Label>Collateral Availability</Form.Label>
             <Form.Select aria-label="Default select example" value={collatralItem} onChange={(e: any) => setCollatralItem(e.target.value)}>
-              <option>Open this select menu</option>
+              <option value="" disabled>Open this select menu</option>
               <option value="House">House</option>
               <option value="House With Housing Loan">House With Housing Loan</option>
               <option value="FD">FD</option>

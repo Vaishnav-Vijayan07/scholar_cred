@@ -299,19 +299,6 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "application_status",
       sort: false,
     },
-    // {
-    //   Header: "View Details",
-    //   accessor: "",
-    //   sort: false,
-    //   Cell: ({ row }: any) => (
-    //     <div className="d-flex justify-content-center align-items-center gap-2">
-    //       {/* Delete Icon */}
-    //       <Link to="/users/student-details" state={row.original.student_id}>
-    //         <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
-    //       </Link>
-    //     </div>
-    //   ),
-    // },
     {
       Header: "Actions",
       accessor: "",
@@ -320,7 +307,7 @@ const BasicInputElements = withSwal((props: any) => {
         <div className="d-flex justify-content-center align-items-center gap-2 p-2">
           <div className="d-flex justify-content-center align-items-center gap-2">
             {/* Delete Icon */}
-            <Link to="/users/student-details" state={row.original.student_id}>
+            <Link to={`/users/student-details/${row.original.student_id}`} state={row.original.student_id}>
               <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
             </Link>
           </div>
@@ -544,10 +531,14 @@ const BasicInputElements = withSwal((props: any) => {
           <Modal.Body>
             <p className="text-muted mb-1 font-small">*Please upload the Excel file following the example format.</p>
             <FileUploader onFileUpload={handleOnFileUpload} showPreview={true} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
-
-            <Button className="btn-sm btn-blue waves-effect waves-light mt-1 float-end" onClick={handleFileUpload} disabled={isLoading}>
-              <i className="mdi mdi-upload"></i> Upload File
-            </Button>
+            <div className="d-flex gap-2 justify-content-end mb-2">
+              <Button className="btn-sm btn-blue waves-effect waves-light" onClick={handleDownloadClick}>
+                <i className="mdi mdi-download-circle"></i> Download Sample
+              </Button>
+              <Button className="btn-sm btn-success waves-effect waves-light" onClick={handleFileUpload} disabled={isLoading}>
+                <i className="mdi mdi-upload"></i> Upload File
+              </Button>
+            </div>
           </Modal.Body>
         </Modal>
 
@@ -556,10 +547,6 @@ const BasicInputElements = withSwal((props: any) => {
             <Card.Body>
               <>
                 <div className="d-flex float-end gap-2">
-                  <Button className="btn-sm btn-blue waves-effect waves-light" onClick={handleDownloadClick}>
-                    <i className="mdi mdi-download-circle"></i> Download Sample
-                  </Button>
-
                   <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleUploadModal}>
                     <i className="mdi mdi-upload"></i> Bulk Upload
                   </Button>

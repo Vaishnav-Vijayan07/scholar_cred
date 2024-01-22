@@ -28,8 +28,6 @@ interface SectionedDynamicFormProps {
 }
 
 const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, StudentData }) => {
-  console.log("loan_type===>", StudentData);
-
   //   const [formValues, setFormValues] = useState<{ [key: string]: string }>({});
   const [formValues, setFormValues] = useState<{ [key: string]: string }>({
     // Add more fields as needed
@@ -58,8 +56,6 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
 
   useEffect(() => {
     const fetchDataFromAPI = async () => {
-      console.log("calling apis");
-
       try {
         // Replace 'API_ENDPOINT' with the actual endpoint of your API
         if (StudentData?.loan_type) {
@@ -78,6 +74,25 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
 
           // const response = await axios.get(`getSecuredScreeningData/${student_id}`);
           const response = await axios.get(apiEndpoint);
+
+          const apiResponse = await response.data.data;
+          console.log("apiResponse ========>", apiResponse);
+
+          setFormData(apiResponse);
+
+          // Process the API response and extract key-value pairs
+          const extractedData: { [key: string]: string } = {};
+          apiResponse.forEach((section: any) => {
+            section.fields.forEach((field: any) => {
+              extractedData[field.name] = field.value || "";
+            });
+          });
+
+          // Set the form values state
+          setFormValues(extractedData);
+        } else {
+          // const response = await axios.get(`getSecuredScreeningData/${student_id}`);
+          const response = await axios.get(`getSecuredScreeningData/${student_id}`);
 
           const apiResponse = await response.data.data;
           console.log("apiResponse ========>", apiResponse);
@@ -122,13 +137,16 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
                 {field.type === "text" || field.type === "email" || field.type === "number" ? (
                   <Form.Control type={field.type as "text" | "email" | "number"} name={field.name} value={formValues[field.name] || ""} onChange={handleInputChange} />
                 ) : field.type === "select" ? (
-                  <Form.Control as="select" name={field.name} value={formValues[field.name] || ""} onChange={(event: any) => handleSelectChange(field.name, event.target.value)}>
+                  <Form.Select as="select" name={field.name} value={formValues[field.name] || ""} onChange={(event: any) => handleSelectChange(field.name, event.target.value)}>
+                    <option disabled value="">
+                      Choose an option...
+                    </option>
                     {(field as { options: Option[] }).options?.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
                       </option>
                     ))}
-                  </Form.Control>
+                  </Form.Select>
                 ) : field.type === "radio" ? (
                   <div className="d-flex gap-2">
                     {(field as { options: Option[] }).options?.map((option) => (

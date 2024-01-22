@@ -62,8 +62,8 @@ function* createStudent({ payload: { first_name, last_name, email, phone, date_o
     } else if (user.role == "2") {
       yield put(getStudentByStaff());
     } else if (user.role == "1") {
-      // yield put(getAllAssignedStudents());
       yield put(getStudent());
+      // yield put(getAllAssignedStudents());
     } else {
       yield put(getStudent());
     }
@@ -155,13 +155,13 @@ function* updateStudent({
     const consultant_data = response.data.message;
 
     yield put(studentApiResponseSuccess(StudentActionTypes.EDIT_STUDENT, consultant_data));
-    // yield put(getStudent());
+
     if (user.role == "4") {
       yield put(getStudentByCreated());
     } else if (user.role == "2") {
       yield put(getStudentByStaff());
     } else if (user.role == "1") {
-      yield put(getAllAssignedStudents());
+      yield put(getStudent());
     } else {
       yield put(getStudent());
     }
@@ -177,14 +177,13 @@ function* deleteStudent({ payload: { student_id } }: ConsultantStaffData): SagaI
     const user = yield select((state) => state.Auth.user);
 
     yield put(studentApiResponseSuccess(StudentActionTypes.DELETE_STUDENT, data));
-    // yield put(getConsultants());
-    // yield put(getStudent());
+
     if (user.role == "4") {
       yield put(getStudentByCreated());
     } else if (user.role == "2") {
       yield put(getStudentByStaff());
     } else if (user.role == "1") {
-      yield put(getAllAssignedStudents());
+      yield put(getStudent());
     } else {
       yield put(getStudent());
     }

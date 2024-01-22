@@ -9,19 +9,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import FileUploader from "../../components/FileUploader";
 
-// import StudentData from "../../assets/excel/StudentData.xlsx";
-
 // components
 import PageTitle from "../../components/PageTitle";
 import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../users/data";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAdminStaff, getAdminStaff } from "../../redux/adminStaffs/actions";
+import { getAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
-import { createStudent, deleteStudent, editStudent, getAllAssignedStudents, getStudent, getStudentByCreated, getStudentByStaff, resetPassword } from "../../redux/actions";
+import { createStudent, deleteStudent, editStudent, getStudent } from "../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { truncateText } from "../../constants/functons";
 
 interface FileType extends File {
   preview?: string;
@@ -33,8 +32,12 @@ const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();
 
   //Table data
-  const records = state;
+  const [filteredItems, setFilteredItems] = useState(state);
+
+  console.log("filteredItems====>", filteredItems);
+
   const [isUpdate, setIsUpdate] = useState(false);
+  const [selectedStaff, setSelectedStaff] = useState("Choose Staff");
   //Input data
   const [formData, setFormData] = useState<StudentDataTypes>(StudentInitialState);
   // Modal states
@@ -163,6 +166,10 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
+  useEffect(() => {
+    setFilteredItems(state);
+  }, [state]);
+
   const UserColumn = ({ row }: any) => {
     return (
       <>
@@ -216,25 +223,15 @@ const BasicInputElements = withSwal((props: any) => {
       Cell: ({ row }: any) => <div>{row.original.first_name + " " + row.original.last_name}</div>,
     },
     {
-      Header: "Email",
-      accessor: "email",
-      sort: false,
-    },
-    {
-      Header: "Phone",
-      accessor: "phone",
-      sort: false,
-    },
-    {
-      Header: "DOB",
-      accessor: "date_of_birth",
-      sort: false,
-      Cell: ({ row }: any) => <div>{moment(row.original.date_of_birth).format("DD/MM/YYYY")}</div>,
-    },
-    {
       Header: "Country",
       accessor: "country_of_origin",
       sort: false,
+    },
+    {
+      Header: "Intake Month",
+      accessor: "intake_month",
+      sort: false,
+      Cell: ({ row }: any) => <span>{moment(row.original.created_at).format("LL")?.split(" ")[0]}</span>,
     },
     {
       Header: "Application Status",
@@ -242,11 +239,36 @@ const BasicInputElements = withSwal((props: any) => {
       sort: false,
     },
     {
-      Header: "Assigned Staff",
-      accessor: "",
+      Header: "Loan Status",
+      accessor: "loan_status",
       sort: false,
-      Cell: UserColumn,
     },
+    {
+      Header: "Send Password",
+      accessor: "",
+      Cell: ({ row }: any) => (
+        <div>
+          <Link to="#">Send</Link>
+        </div>
+      ),
+    },
+
+    // {
+    //   Header: "Email",
+    //   accessor: "email",
+    //   sort: false,
+    // },
+    // {
+    //   Header: "Phone",
+    //   accessor: "phone",
+    //   sort: false,
+    // },
+    // {
+    //   Header: "DOB",
+    //   accessor: "date_of_birth",
+    //   sort: false,
+    //   Cell: ({ row }: any) => <div>{moment(row.original.date_of_birth).format("DD/MM/YYYY")}</div>,
+    // },
     {
       Header: "Actions",
       accessor: "",
@@ -275,6 +297,12 @@ const BasicInputElements = withSwal((props: any) => {
         </div>
       ),
     },
+    {
+      Header: "Counselor Name",
+      accessor: "",
+      sort: false,
+      Cell: UserColumn,
+    },
   ];
 
   const handleAssignUser = (student_id: number, assignedTo: number) => {
@@ -284,7 +312,8 @@ const BasicInputElements = withSwal((props: any) => {
         assignedTo,
       })
       .then((res) => {
-        dispatch(getAllAssignedStudents());
+        dispatch(getStudent());
+        // dispatch(getStudent());
       })
       .catch((err) => console.error(err));
   };
@@ -416,9 +445,25 @@ const BasicInputElements = withSwal((props: any) => {
       .then((res) => {
         console.log("res==>", res.data);
         showSuccessAlert(res.data.message);
-        dispatch(getAllAssignedStudents());
+        dispatch(getStudent());
       })
       .catch((err) => console.error(err));
+  };
+
+  const handleFilter = (staff_id: any) => {
+    console.log("assignment_id====>", staff_id);
+
+    // Filter the initial list based on the provided category
+    const filteredList = state?.filter((item: any) => item.staff_id === staff_id);
+
+    console.log("filteredList===>", filteredList);
+
+    // Update the state with the filtered list
+    setFilteredItems(filteredList);
+  };
+
+  const handleClearFilter = () => {
+    setFilteredItems(state);
   };
 
   if (initialLoading) {
@@ -491,6 +536,7 @@ const BasicInputElements = withSwal((props: any) => {
                 </Col>
               </Row>
             </Modal.Body>
+
             <Modal.Footer>
               <Button
                 variant="danger"
@@ -529,10 +575,14 @@ const BasicInputElements = withSwal((props: any) => {
           <Modal.Body>
             <p className="text-muted mb-1 font-small">*Please upload the Excel file following the example format.</p>
             <FileUploader onFileUpload={handleOnFileUpload} showPreview={true} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
-
-            <Button className="btn-sm btn-blue waves-effect waves-light mt-1 float-end" onClick={handleFileUpload} disabled={isLoading}>
-              <i className="mdi mdi-upload"></i> Upload File
-            </Button>
+            <div className="d-flex gap-2 justify-content-end mb-2">
+              <Button className="btn-sm btn-blue waves-effect waves-light" onClick={handleDownloadClick}>
+                <i className="mdi mdi-download-circle"></i> Download Sample
+              </Button>
+              <Button className="btn-sm btn-success waves-effect waves-light" onClick={handleFileUpload} disabled={isLoading}>
+                <i className="mdi mdi-upload"></i> Upload File
+              </Button>
+            </div>
           </Modal.Body>
         </Modal>
 
@@ -541,37 +591,73 @@ const BasicInputElements = withSwal((props: any) => {
             <Card.Body>
               <>
                 <div className="d-flex float-end gap-2">
-                  {selectedValues?.length > 0 && (
-                    <Dropdown className="btn-group" align="end">
-                      <Dropdown.Toggle variant="light" className="table-action-btn btn-sm btn-blue">
-                        Assign Staff
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                        {credStaffData?.map((item: any) => (
-                          <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
-                            {item.label}
-                          </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )}
+                  <Dropdown className="btn-group" align="end">
+                    <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
+                      <i className="mdi mdi-filter-variant"></i> {truncateText(selectedStaff, 13)}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                      <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
+                        <i className="mdi mdi-close"></i> Clear Selection
+                      </Dropdown.Item>
+                      {credStaffData?.map((item: any) => (
+                        <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
+                          {item.label}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
 
-                  <Button className="btn-sm btn-blue waves-effect waves-light " onClick={handleDownloadClick}>
+                  <Dropdown className="btn-group" align="end">
+                    <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
+                      <i className="mdi mdi-filter-variant"></i> Choose Status
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                      {credStaffData?.map((item: any) => (
+                        <Dropdown.Item key={item.value}>{item.label}</Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+
+                  <Dropdown className="btn-group" align="end">
+                    <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
+                      <i className="mdi mdi-filter-variant"></i> Loan Status
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                      {credStaffData?.map((item: any) => (
+                        <Dropdown.Item key={item.value}>{item.label}</Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+
+                  <Dropdown className="btn-group" align="end">
+                    <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
+                      <i className="mdi mdi-account-plus"></i> Assign Staff
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                      {credStaffData?.map((item: any) => (
+                        <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
+                          {item.label}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+
+                  {/* <Button className="btn-sm btn-blue waves-effect waves-light " onClick={handleDownloadClick}>
                     <i className="mdi mdi-download-circle"></i> Download Sample
-                  </Button>
+                  </Button> */}
 
                   <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
                     <i className="mdi mdi-upload"></i> Bulk Upload
                   </Button>
 
-                  <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleResponsiveModal}>
+                  <Button className="btn-sm btn-success waves-effect waves-light " onClick={toggleResponsiveModal}>
                     <i className="mdi mdi-plus-circle"></i> Add Student
                   </Button>
                 </div>
                 {/* <h4 className="header-title mb-4">Manage Student</h4> */}
                 <Table
                   columns={columns}
-                  data={records ? records : []}
+                  data={filteredItems}
                   pageSize={5}
                   sizePerPageList={sizePerPageList}
                   isSortable={true}
@@ -579,7 +665,7 @@ const BasicInputElements = withSwal((props: any) => {
                   isSearchable={true}
                   isSelectable={true}
                   theadClass="table-light mt-2"
-                  searchBoxClass="mt-2 mb-3"
+                  searchBoxClass="mt-4 mb-3"
                   onSelect={handleSelectedValues}
                 />
               </>
@@ -610,7 +696,6 @@ const Students = () => {
 
   useEffect(() => {
     dispatch(getStudent());
-    // dispatch(getAllAssignedStudents());
     dispatch(getAdminStaff());
   }, []);
 
