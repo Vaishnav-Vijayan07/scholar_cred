@@ -53,8 +53,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
         </h5>
         <Row>
           <Col xl={6} xxl={4}>
+            <Form.Label>
+              <span className="text-danger">*</span> Full Name
+            </Form.Label>
             <FormInput
-              label="Full Name"
               type="text"
               name="fullname"
               placeholder="Enter full name"
@@ -68,8 +70,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
 
           <Col xl={6} xxl={4}>
+            <Form.Label>
+              <span className="text-danger">*</span> Email Id
+            </Form.Label>
             <FormInput
-              label="Email Id"
               type="email"
               name="email"
               placeholder="Enter email id"
@@ -83,8 +87,11 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
 
           <Col xl={6} xxl={4}>
+            <Form.Label>
+              <span className="text-danger">*</span> Whatsapp Number
+            </Form.Label>
+
             <FormInput
-              label="Whatsapp Number"
               type="number"
               name="phone"
               placeholder="Enter phone number"
@@ -97,11 +104,12 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             />
           </Col>
 
-          {/* </Row>
-        <Row> */}
           <Col xl={6} xxl={4}>
+            <Form.Label>
+              <span className="text-danger">*</span> Destination Country
+            </Form.Label>
+
             <FormInput
-              label="Destination Country"
               type="text"
               name="destination_country"
               placeholder="Enter Destination Country"
@@ -115,9 +123,13 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
 
           <Col xl={6} xxl={4}>
-            <Form.Label>Application Status</Form.Label>
+            <Form.Label>
+              <span className="text-danger">*</span> Application Status
+            </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={applicationStatus} onChange={(e: any) => setApplicationStatus(e.target.value)}>
-              <option value="" disabled>Open this select menu</option>
+              <option value="" disabled>
+                Open this select menu
+              </option>
               <option value="Not Yet Decided">Not Yet Decided</option>
               <option value="Started Applying">Started Applying</option>
               <option value="Received Offer Letter">Recieved Offer Letter</option>
@@ -125,9 +137,13 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
 
           <Col xl={6} xxl={4}>
-            <Form.Label>Program Type</Form.Label>
+            <Form.Label>
+              <span className="text-danger">*</span> Program Type
+            </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={programType} onChange={(e: any) => setProgramType(e.target.value)}>
-              <option value="" disabled>Open this select menu</option>
+              <option value="" disabled>
+                Open this select menu
+              </option>
               <option value="PG">PG</option>
               <option value="UG">UG</option>
               <option value="PG Diploma">PG Diploma</option>
@@ -138,8 +154,11 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           {/* </Row>
             <Row> */}
           <Col xl={6} xxl={4}>
+            <Form.Label>
+              <span className="text-danger">*</span> University Details
+            </Form.Label>
+
             <FormInput
-              label="University Details"
               type="text"
               name="university_details"
               placeholder="Enter phone number"
@@ -159,9 +178,13 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
         <Row>
           <Col xl={6} xxl={4}>
-            <Form.Label>Primary Co-Applicant Details</Form.Label>
+            <Form.Label>
+              <span className="text-danger">*</span> Primary Co-Applicant Details
+            </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={primaryApplicant} onChange={(e: any) => setPrimaryApplicant(e.target.value)}>
-              <option value="" disabled>Open this select menu</option>
+              <option value="" disabled>
+                Open this select menu
+              </option>
               <option value="Father">Father</option>
               <option value="Mother">Mother</option>
               <option value="Siblings (brother/sister)">Siblings (brother/sister)</option>
@@ -172,9 +195,13 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
 
           <Col xl={6} xxl={4}>
-            <Form.Label>Type Of Profession</Form.Label>
+            <Form.Label>
+              <span className="text-danger">*</span> Type Of Profession
+            </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={typeOfProfossion} onChange={(e: any) => setTypeOfProfossion(e.target.value)}>
-              <option value="" disabled>Open this select menu</option>
+              <option value="" disabled>
+                Open this select menu
+              </option>
               <option value="Salaried">Salaried</option>
               <option value="Self Employed">Self Employed</option>
               <option value="Business">Business</option>
@@ -185,9 +212,13 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
 
           <Col xl={6} xxl={4}>
-            <Form.Label>Salary Range</Form.Label>
+            <Form.Label>
+              <span className="text-danger">*</span> Salary Range
+            </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
-              <option value="" disabled>Open this select menu</option>
+              <option value="" disabled>
+                Open this select menu
+              </option>
               <option value="<30000/month">&lt;30000/month</option>
               <option value="30-40000/month">30-40000/month</option>
               <option value=">40000/month">&gt;40000/month</option>
@@ -195,9 +226,13 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
 
           <Col xl={6} xxl={4}>
-            <Form.Label>Salary Range</Form.Label>
+            <Form.Label>
+              <span className="text-danger">*</span> Salary Range
+            </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
-              <option value="" disabled>Open this select menu</option>
+              <option value="" disabled>
+                Open this select menu
+              </option>
               <option value="<30000/month">&lt;30000/month</option>
               <option value="30-40000/month">30-40000/month</option>
               <option value=">40000/month">&gt;40000/month</option>
@@ -211,9 +246,13 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
         <Row>
           <Col xl={6} xxl={4}>
-            <Form.Label>Collateral Availability</Form.Label>
+            <Form.Label>
+              <span className="text-danger">*</span> Collateral Availability
+            </Form.Label>
             <Form.Select aria-label="Default select example" value={collatralItem} onChange={(e: any) => setCollatralItem(e.target.value)}>
-              <option value="" disabled>Open this select menu</option>
+              <option value="" disabled>
+                Open this select menu
+              </option>
               <option value="House">House</option>
               <option value="House With Housing Loan">House With Housing Loan</option>
               <option value="FD">FD</option>

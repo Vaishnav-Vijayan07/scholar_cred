@@ -300,6 +300,11 @@ const BasicInputElements = withSwal((props: any) => {
       sort: false,
     },
     {
+      Header: "Created By",
+      accessor: "created_user",
+      sort: false,
+    },
+    {
       Header: "Actions",
       accessor: "",
       sort: false,

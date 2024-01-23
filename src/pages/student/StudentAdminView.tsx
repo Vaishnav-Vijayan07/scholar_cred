@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert, Dropdown, Spinner } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Dropdown, Spinner, Badge } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -21,6 +21,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { truncateText } from "../../constants/functons";
+import classNames from "classnames";
 
 interface FileType extends File {
   preview?: string;
@@ -37,6 +38,7 @@ const BasicInputElements = withSwal((props: any) => {
   console.log("filteredItems====>", filteredItems);
 
   const [isUpdate, setIsUpdate] = useState(false);
+  const [passwordResetLoading, setPasswordResetLoading] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState("Choose Staff");
   //Input data
   const [formData, setFormData] = useState<StudentDataTypes>(StudentInitialState);
@@ -166,6 +168,22 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
+  const handleResetPassword = (email: string) => {
+    setPasswordResetLoading(true);
+    axios
+      .post(`reset_student_password`, { email: email })
+      .then((res: any) => {
+        console.log("res===>", res);
+        showSuccessAlert("Password reset successfull");
+        setPasswordResetLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setPasswordResetLoading(false);
+        showErrorAlert("Error occured");
+      });
+  };
+
   useEffect(() => {
     setFilteredItems(state);
   }, [state]);
@@ -237,38 +255,45 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Application Status",
       accessor: "application_status",
       sort: false,
+      Cell: ({ row }: any) => (
+        <Badge bg="" className="badge-soft-success">
+          {row.original.application_status}
+        </Badge>
+      ),
     },
     {
       Header: "Loan Status",
       accessor: "loan_status",
       sort: false,
+      Cell: ({ row }: any) => (
+        <Badge bg="" className="badge-soft-primary">
+          {row.original.loan_status}
+        </Badge>
+      ),
     },
     {
       Header: "Send Password",
       accessor: "",
       Cell: ({ row }: any) => (
         <div>
-          <Link to="#">Send</Link>
+          <Button
+            variant="link"
+            className="text-underline" // Add your custom styling here
+            key={row.original.email}
+            onClick={() => {
+              handleResetPassword(row.original.email);
+            }}
+          >
+            Send Mail
+          </Button>
         </div>
       ),
     },
-
-    // {
-    //   Header: "Email",
-    //   accessor: "email",
-    //   sort: false,
-    // },
-    // {
-    //   Header: "Phone",
-    //   accessor: "phone",
-    //   sort: false,
-    // },
-    // {
-    //   Header: "DOB",
-    //   accessor: "date_of_birth",
-    //   sort: false,
-    //   Cell: ({ row }: any) => <div>{moment(row.original.date_of_birth).format("DD/MM/YYYY")}</div>,
-    // },
+    {
+      Header: "Created By",
+      accessor: "created_user",
+      sort: false,
+    },
     {
       Header: "Actions",
       accessor: "",

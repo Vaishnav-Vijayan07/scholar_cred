@@ -132,7 +132,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
           {fields.map((field) => (
             <Col key={field.name} xl={6} xxl={4} className="p-2">
               <Form.Group controlId={field.name}>
-                <Form.Label>{field.label}</Form.Label>
+                <Form.Label><span className="text-danger">*</span> {field.label}</Form.Label>
 
                 {field.type === "text" || field.type === "email" || field.type === "number" ? (
                   <Form.Control type={field.type as "text" | "email" | "number"} name={field.name} value={formValues[field.name] || ""} onChange={handleInputChange} />

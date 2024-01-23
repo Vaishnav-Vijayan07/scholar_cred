@@ -15,6 +15,7 @@ import { getStudentById } from "../../../redux/actions";
 import { RootState } from "../../../redux/store";
 import StatisticsWidget2 from "../../../components/StatisticsWidget2";
 import DetailedScreening from "./DetailedScreening";
+import DocsScreening from "./DocsScreening";
 
 interface ProjectDetails {
   id: number;
@@ -120,6 +121,12 @@ const Profile = () => {
                   </Nav.Item>
 
                   <Nav.Item as="li" className="nav-item">
+                    <Nav.Link href="#" eventKey="document_screening" className="nav-link cursor-pointer">
+                      Docs screening
+                    </Nav.Link>
+                  </Nav.Item>
+
+                  <Nav.Item as="li" className="nav-item">
                     <Nav.Link href="#" eventKey="history" className="nav-link cursor-pointer">
                       History
                     </Nav.Link>
@@ -134,6 +141,10 @@ const Profile = () => {
 
                   <Tab.Pane eventKey="detail_screening">
                     <DetailedScreening student_id={id} StudentData={StudentData} />
+                  </Tab.Pane>
+
+                  <Tab.Pane eventKey="document_screening">
+                    <DocsScreening />
                   </Tab.Pane>
 
                   <Tab.Pane eventKey="history">
