@@ -21,11 +21,10 @@ const BasicInputElements = withSwal((props: any) => {
   const [modal, setModal] = useState<boolean>(false);
   const [className, setClassName] = useState<string>("");
 
-  //Table data
-  const records = state;
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
   const [formData, setFormData] = useState<MyInitialState>(initialState);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   //validation errors
   const [validationErrors, setValidationErrors] = useState(initialValidationState);
@@ -135,7 +134,7 @@ const BasicInputElements = withSwal((props: any) => {
             formData.business_address,
             formData.email,
             formData.phone,
-            "https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
+            selectedFile ? selectedFile : null,
             formData.alternative_phone,
             formData.gst,
             formData.location,
@@ -152,7 +151,7 @@ const BasicInputElements = withSwal((props: any) => {
             formData.business_address,
             formData.email,
             formData.phone,
-            "https://as2.ftcdn.net/v2/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
+            selectedFile ? selectedFile : null,
             formData.alternative_phone,
             formData.gst,
             formData.location,
@@ -187,9 +186,14 @@ const BasicInputElements = withSwal((props: any) => {
 
   const columns = [
     {
-      Header: "ID",
-      accessor: "id",
+      Header: "SL No.",
+      accessor: "",
       sort: true,
+    },
+    {
+      Header: "Image",
+      accessor: "",
+      Cell: ({ row }: any) => <div>{row.original.image_url && <img src={`${process.env.REACT_APP_BACKEND_URL}${row.original.image_url}`} alt="comapny logo" width="50" />}</div>,
     },
     {
       Header: "Company Name",
@@ -199,11 +203,6 @@ const BasicInputElements = withSwal((props: any) => {
     {
       Header: "Business Address",
       accessor: "business_address",
-      sort: false,
-    },
-    {
-      Header: "Email",
-      accessor: "email",
       sort: false,
     },
     {
@@ -311,7 +310,7 @@ const BasicInputElements = withSwal((props: any) => {
             <h6 className="fw-medium px-3 m-0 py-2 font-13 text-uppercase bg-light">
               <span className="d-block py-1">Consultant Management</span>
             </h6>
-            <Modal.Body className="mx-2">
+            <Modal.Body className="mx-2 my-2">
               <div className="alert alert-warning" role="alert">
                 <strong>Hi Admin, </strong> Enter consultant details.
               </div>
@@ -447,6 +446,17 @@ const BasicInputElements = withSwal((props: any) => {
                       </Col>
                     </Row>
 
+                    <Row>
+                      <Col md={6}>
+                        <Form.Group className="mb-3" controlId="file">
+                          <Form.Label>Image</Form.Label>
+                          <Form.Control type="file" name="file" placeholder="Enter pin code" onChange={(e: any) => setSelectedFile(e.target.files[0])} />
+                          {validationErrors.file && <Form.Text className="text-danger">{validationErrors.file}</Form.Text>}
+                          {selectedFile && <img src={URL.createObjectURL(selectedFile)} className="mt-2" alt="selected image" width={100} />}
+                        </Form.Group>
+                      </Col>
+                    </Row>
+
                     <div className="text-end">
                       <Button
                         variant="danger"
@@ -488,7 +498,7 @@ const BasicInputElements = withSwal((props: any) => {
                 {/* <h4 className="header-title mb-4">Manage Consultant</h4> */}
                 <Table
                   columns={columns}
-                  data={records ? records : []}
+                  data={state ? state : []}
                   pageSize={5}
                   sizePerPageList={sizePerPageList}
                   isSortable={true}

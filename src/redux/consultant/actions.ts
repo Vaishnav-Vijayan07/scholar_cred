@@ -18,7 +18,7 @@ interface ConsultantData {
   business_address: string;
   email: string;
   phone: string;
-  image_url: string;
+  file: File | null;
   alternative_phone: string;
   gst: string;
   location: string;
@@ -46,7 +46,7 @@ export const createConsultant = (
   business_address: string,
   email: string,
   phone: string,
-  image_url: string,
+  file: File | null,
   alternative_phone: string,
   gst: string,
   location: string,
@@ -60,7 +60,7 @@ export const createConsultant = (
     business_address,
     email,
     phone,
-    image_url,
+    file,
     alternative_phone,
     gst,
     location,
@@ -78,7 +78,7 @@ export const editConsultant = (
   business_address: string,
   email: string,
   phone: string,
-  image_url: string,
+  file: File | null,
   alternative_phone: string,
   gst: string,
   location: string,
@@ -93,7 +93,7 @@ export const editConsultant = (
     business_address,
     email,
     phone,
-    image_url,
+    file,
     alternative_phone,
     gst,
     location,

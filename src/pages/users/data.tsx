@@ -72,6 +72,7 @@ export const initialValidationState = {
   location: "",
   pin_code: "",
   pan_no: "",
+  file: "",
 };
 
 // ----------------staff types ----------

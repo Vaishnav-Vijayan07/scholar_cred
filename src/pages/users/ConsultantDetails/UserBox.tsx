@@ -1,14 +1,10 @@
-import React from "react";
 import { Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
-
-import profileImg from "../../../assets/images/users/user-1.jpg";
 
 const UserBox = ({ consultantDetails }: any) => {
   return (
     <Card className="text-center">
       <Card.Body>
-        <img src={consultantDetails?.image_url} className="rounded-circle avatar-lg img-thumbnail" alt="" />
+        <img src={`${process.env.REACT_APP_BACKEND_URL}${consultantDetails?.image_url}`} width={150} className="img-thumbnai object-fit-cover" alt="logo" />
         <h4 className="mb-0">{consultantDetails?.company_name}</h4>
         <p className="text-muted">{consultantDetails?.email}</p>
 

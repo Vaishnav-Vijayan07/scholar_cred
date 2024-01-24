@@ -44,6 +44,10 @@ interface LeftSidebarProps {
 const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
   const menuNodeRef: any = useRef(null);
 
+  const { user } = useSelector((state: RootState) => ({
+    user: state.Auth.user,
+  }));
+
   const { layoutType } = useSelector((state: RootState) => ({
     layoutType: state.Layout.layoutType,
     leftSideBarType: state.Layout.leftSideBarType,
@@ -78,7 +82,11 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
                 <img src={logoSm} alt="" height="30" />
               </span>
               <span className="logo-lg">
-                <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoDark2 : logoDark} alt="" height="34" />
+                {user?.role == "7" || user?.role == "4" ? (
+                  <img src={`${process.env.REACT_APP_BACKEND_URL}${user?.image_url}`} alt="" height="50" />
+                ) : (
+                  <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoDark2 : logoDark} alt="" height="34" />
+                )}
               </span>
             </Link>
             <Link to="/" className="logo logo-light text-center">
@@ -94,13 +102,23 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
 
         {!isCondensed && (
           <SimpleBar
-            className="scrollbar show h-100"
+            className="scrollbar show h-100 pb-4"
             // style={{ maxHeight: '100%' }}
             // timeout={500}
             scrollbarMaxSize={320}
           >
             <SideBarContent />
           </SimpleBar>
+        )}
+        {user?.role == "7" || user?.role == "4" ? (
+          <div style={{ position: "absolute", bottom: "0", display: "flex", flexDirection: "column", alignItems: "center", width: "100%", background: "#fff" }}>
+            <p className="small mb-1" style={{ lineHeight: "0" }}>
+              Powered By
+            </p>
+            <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoDark2 : logoDark} alt="" height="25" className="mb-2" />
+          </div>
+        ) : (
+          ""
         )}
         {isCondensed && <SideBarContent />}
       </div>

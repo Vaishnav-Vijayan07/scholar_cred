@@ -172,7 +172,7 @@ class APICore {
         "content-type": "multipart/form-data",
       },
     };
-    return axios.patch(url, formData, config);
+    return axios.put(url, formData, config);
   };
 
   isUserAuthenticated = () => {

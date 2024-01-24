@@ -26,7 +26,7 @@ interface ConsultantData {
     business_address: string;
     email: string;
     phone: string;
-    image_url: string;
+    file: File;
     alternative_phone: string;
     gst: string;
     location: string;
@@ -40,7 +40,7 @@ interface ConsultantData {
 const api = new APICore();
 
 function* createConsultant({
-  payload: { company_name, business_address, email, phone, image_url, alternative_phone, gst, location, pin_code, pan_no, created_by },
+  payload: { company_name, business_address, email, phone, file, alternative_phone, gst, location, pin_code, pan_no, created_by },
   type,
 }: ConsultantData): SagaIterator {
   try {
@@ -49,7 +49,7 @@ function* createConsultant({
       business_address,
       email,
       phone,
-      image_url,
+      file,
       alternative_phone,
       gst,
       location,
@@ -95,7 +95,7 @@ function* getConsultantById({ payload: { id } }: ConsultantData): SagaIterator {
 }
 
 function* updateConsultant({
-  payload: { id, company_name, business_address, email, phone, image_url, alternative_phone, gst, location, pin_code, pan_no, created_by },
+  payload: { id, company_name, business_address, email, phone, file, alternative_phone, gst, location, pin_code, pan_no, created_by },
   type,
 }: ConsultantData): SagaIterator {
   try {
@@ -105,7 +105,7 @@ function* updateConsultant({
       business_address,
       email,
       phone,
-      image_url,
+      file,
       alternative_phone,
       gst,
       location,

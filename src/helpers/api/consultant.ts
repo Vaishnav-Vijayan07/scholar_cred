@@ -8,7 +8,7 @@ function createConsultant(params: {
   business_address: string;
   email: string;
   phone: string;
-  image_url: string;
+  file: File;
   alternative_phone: string;
   gst: string;
   location: string;
@@ -18,7 +18,7 @@ function createConsultant(params: {
 }) {
   const baseUrl = "/create_consultant";
 
-  return api.create(`${baseUrl}`, params);
+  return api.createWithFile(`${baseUrl}`, params);
 }
 
 // account
@@ -29,7 +29,7 @@ function updateConsultant(
     business_address: string;
     email: string;
     phone: string;
-    image_url: string;
+    file: File;
     alternative_phone: string;
     gst: string;
     location: string;
@@ -39,7 +39,7 @@ function updateConsultant(
   }
 ) {
   const baseUrl = "/edit_consultant_details";
-  return api.update(`${baseUrl}?id=${id}`, params);
+  return api.updateWithFile(`${baseUrl}?id=${id}`, params);
 }
 
 function getConsultants() {

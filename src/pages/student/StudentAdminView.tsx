@@ -256,7 +256,7 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "application_status",
       sort: false,
       Cell: ({ row }: any) => (
-        <Badge bg="" className="badge-soft-success">
+        <Badge bg="" className="badge-soft-success text-wrap py-1">
           {row.original.application_status}
         </Badge>
       ),
@@ -266,7 +266,7 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "loan_status",
       sort: false,
       Cell: ({ row }: any) => (
-        <Badge bg="" className="badge-soft-primary">
+        <Badge bg="" className="badge-soft-primary text-wrap py-1">
           {row.original.loan_status}
         </Badge>
       ),
