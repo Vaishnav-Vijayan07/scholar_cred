@@ -240,6 +240,12 @@ const BasicInputElements = withSwal((props: any) => {
       Cell: ({ row }: any) => (
         <div className="d-flex justify-content-center align-items-center gap-2">
           {/* Edit Icon */}
+          <div className="d-flex justify-content-center align-items-center gap-2">
+            {/* Delete Icon */}
+            <Link to={`/users/student-details-consultant/${row.original.student_id}`} state={row.original.student_id}>
+              <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
+            </Link>
+          </div>
           <FeatherIcons
             icon="edit"
             size="15"

@@ -6,6 +6,7 @@ import { createAdminStaff, deleteAdminStaff, getAdminStaff, getAdminStaffById, u
 import { createConsultantStaff, deleteConsultantStaff, getConsultantStaff, getConsultantStaffById, updateConsultantStaff } from "./consultantStaff";
 import { createConsultantAdmin, deleteConsultantAdmin, getConsultantAdmin, getConsultantAdminById, updateConsultantAdmin } from "./consultantAdmin";
 import { addStatus, deleteStatus, getAllStatus, updateStatus } from "./status";
+import { createComment, deleteComment, getComments, updateComment } from "./comments";
 
 import { getUserTypes } from "./user_types";
 import {
@@ -67,4 +68,8 @@ export {
   deleteStatus,
   getAllStatus,
   updateStatus,
+  createComment,
+  deleteComment,
+  getComments,
+  updateComment,
 };

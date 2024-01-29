@@ -9,7 +9,19 @@ import StudentSaga from "./students/saga";
 import credAdminUsersSaga from "./admin_users/saga";
 import consultantStaffSaga from "./consultantStaff/saga";
 import Status from "./statusManagement/saga";
+import commentsSaga from "./comments/saga";
 
 export default function* rootSaga() {
-  yield all([authSaga(), layoutSaga(), consultantAdminSaga(), consultantSaga(), AdminStaffSaga(), consultantStaffSaga(), StudentSaga(), credAdminUsersSaga(), Status()]);
+  yield all([
+    authSaga(),
+    layoutSaga(),
+    consultantAdminSaga(),
+    consultantSaga(),
+    AdminStaffSaga(),
+    consultantStaffSaga(),
+    StudentSaga(),
+    credAdminUsersSaga(),
+    Status(),
+    commentsSaga(),
+  ]);
 }
