@@ -10,6 +10,7 @@ import credAdminUsersSaga from "./admin_users/saga";
 import consultantStaffSaga from "./consultantStaff/saga";
 import Status from "./statusManagement/saga";
 import commentsSaga from "./comments/saga";
+import loanStatusSaga from "./loanStatus/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -23,5 +24,6 @@ export default function* rootSaga() {
     credAdminUsersSaga(),
     Status(),
     commentsSaga(),
+    loanStatusSaga(),
   ]);
 }

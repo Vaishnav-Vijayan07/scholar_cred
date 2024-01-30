@@ -34,6 +34,7 @@ const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
 const Tickets = React.lazy(() => import("../pages/Tickets/List"));
 const StatusManagement = React.lazy(() => import("../pages/super_admin/StatusManagement"));
+const LoanStatus = React.lazy(() => import("../pages/super_admin/LoanStatus"));
 
 export interface RoutesProps {
   path: RouteProps["path"];
@@ -194,8 +195,14 @@ const superAdminRoutes = {
   children: [
     {
       path: "/status/status_management",
-      name: "Profile",
+      name: "Status",
       element: <PrivateRoute roles={["SUPER_USER", "CRED_ADMIN"]} component={StatusManagement} />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/status/loan_status",
+      name: "Loan Status",
+      element: <PrivateRoute roles={["SUPER_USER", "CRED_ADMIN"]} component={LoanStatus} />,
       route: PrivateRoute,
     },
   ],

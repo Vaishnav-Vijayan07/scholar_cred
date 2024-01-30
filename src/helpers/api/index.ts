@@ -7,6 +7,7 @@ import { createConsultantStaff, deleteConsultantStaff, getConsultantStaff, getCo
 import { createConsultantAdmin, deleteConsultantAdmin, getConsultantAdmin, getConsultantAdminById, updateConsultantAdmin } from "./consultantAdmin";
 import { addStatus, deleteStatus, getAllStatus, updateStatus } from "./status";
 import { createComment, deleteComment, getComments, updateComment } from "./comments";
+import { addLoanStatus, deleteLoanStatus, getLoanStatus, updateLoanStatus } from "./loan_status";
 
 import { getUserTypes } from "./user_types";
 import {
@@ -72,4 +73,8 @@ export {
   deleteComment,
   getComments,
   updateComment,
+  addLoanStatus,
+  deleteLoanStatus,
+  getLoanStatus,
+  updateLoanStatus,
 };

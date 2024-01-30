@@ -8,4 +8,5 @@ export * from "./students/actions";
 export * from "./consultantStaff/actions";
 export * from "./statusManagement/actions";
 export * from "./comments/actions";
+export * from "./loanStatus/actions";
 

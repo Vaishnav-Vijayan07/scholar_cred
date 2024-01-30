@@ -70,7 +70,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     roles: ["CRED_ADMIN"],
   },
 
-  { key: "cred_admin_management", label: "Cred Admin Management", isTitle: true, roles: ["SUPER_USER"] },
+  { key: "cred_admin_management", label: "Cred Admin Management", isTitle: true, roles: ["SUPER_USER", "CRED_ADMIN"] },
 
   {
     key: "cred_admin_management",
@@ -86,6 +86,14 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "book-open",
     url: "/status/status_management",
+    roles: ["SUPER_USER", "CRED_ADMIN"],
+  },
+  {
+    key: "loan_status",
+    label: "Loan Status",
+    isTitle: false,
+    icon: "file-minus",
+    url: "/status/loan_status",
     roles: ["SUPER_USER", "CRED_ADMIN"],
   },
 
@@ -188,6 +196,14 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "book-open",
         url: "/status/status_management",
+        roles: ["SUPER_USER", "CRED_ADMIN"],
+      },
+      {
+        key: "loan_status",
+        label: "Loan Status",
+        isTitle: false,
+        icon: "file-minus",
+        url: "/status/loan_status",
         roles: ["SUPER_USER", "CRED_ADMIN"],
       },
     ],
@@ -313,6 +329,14 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "book-open",
         url: "/status/status_management",
+        roles: ["SUPER_USER", "CRED_ADMIN"],
+      },
+      {
+        key: "loan_status",
+        label: "Loan Status",
+        isTitle: false,
+        icon: "file-minus",
+        url: "/status/loan_status",
         roles: ["SUPER_USER", "CRED_ADMIN"],
       },
     ],

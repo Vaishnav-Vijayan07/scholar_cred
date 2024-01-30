@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 // import { addStatus, deleteStatus, getStatus, updateStatus } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
-import { addStatus, deleteStatus, getStatus, updateStatus } from "../../redux/actions";
+import { addLoanStatus, deleteLoanStatus, getLoanStatus, updateLoanStatus } from "../../redux/actions";
 
 interface TableRecords {
   id: number;
@@ -105,7 +105,7 @@ const BasicInputElements = withSwal((props: any) => {
       })
       .then((result: any) => {
         if (result.isConfirmed) {
-          dispatch(deleteStatus(id));
+          dispatch(deleteLoanStatus(id));
           // swal.fire("Deleted!", "Your item has been deleted.", "success");
         }
       });
@@ -129,9 +129,9 @@ const BasicInputElements = withSwal((props: any) => {
       await validationSchema.validate(formData, { abortEarly: false });
 
       if (isUpdate) {
-        dispatch(updateStatus(formData.id, formData.status_name, formData.status_description));
+        dispatch(updateLoanStatus(formData.id, formData.status_name, formData.status_description));
       } else {
-        dispatch(addStatus(formData.status_name, formData.status_description));
+        dispatch(addLoanStatus(formData.status_name, formData.status_description));
       }
 
       // Clear validation errors
@@ -235,7 +235,7 @@ const BasicInputElements = withSwal((props: any) => {
           {/* <Col lg={5} className="bg-white p-3 mr-2"> */}
           <Form onSubmit={onSubmit}>
             <Modal.Header closeButton>
-              <h4 className="modal-title">Status Management</h4>
+              <h4 className="modal-title">Loan Status Management</h4>
             </Modal.Header>
             <Modal.Body>
               <Form.Group className="mb-3" controlId="status_name">
@@ -278,9 +278,9 @@ const BasicInputElements = withSwal((props: any) => {
           <Card className="bg-white">
             <Card.Body>
               <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
-                <i className="mdi mdi-plus-circle"></i> Add Status
+                <i className="mdi mdi-plus-circle"></i> Add Loan Status
               </Button>
-              <h4 className="header-title mb-4">Manage Status</h4>
+              <h4 className="header-title mb-4">Manage Loan Status</h4>
               <Table
                 columns={columns}
                 data={records ? records : []}
@@ -300,38 +300,35 @@ const BasicInputElements = withSwal((props: any) => {
   );
 });
 
-const StatusManagement = () => {
+const LoanStatusManagement = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  //Fetch data from redux store
-  //   const Status = useSelector((state: RootState) => state.Status.status.data);
-
-  const { Status, loading, error, initialLoading } = useSelector((state: RootState) => ({
-    Status: state.Status.status.data,
-    loading: state.Status.loading,
-    error: state.Status.error,
-    initialLoading: state.Status.initialLoading,
+  const { LoanStatus, loading, error, initialLoading } = useSelector((state: RootState) => ({
+    LoanStatus: state.LoanStatus.status.data,
+    loading: state.LoanStatus.loading,
+    error: state.LoanStatus.error,
+    initialLoading: state.LoanStatus.initialLoading,
   }));
 
   useEffect(() => {
-    dispatch(getStatus());
+    dispatch(getLoanStatus());
   }, []);
 
   return (
     <React.Fragment>
       <PageTitle
         breadCrumbItems={[
-          { label: "Status", path: "/status/status_management" },
-          { label: "Status Management", path: "/status/status_management", active: true },
+          { label: "Status", path: "/status/loan_status" },
+          { label: "Loan Status", path: "/status/loan_status", active: true },
         ]}
-        title={"Status Management"}
+        title={"Loan Status"}
       />
       <Row>
         <Col>
-          <BasicInputElements state={Status} loading={loading} error={error} initialLoading={initialLoading} />
+          <BasicInputElements state={LoanStatus} loading={loading} error={error} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>
   );
 };
-export default StatusManagement;
+export default LoanStatusManagement;

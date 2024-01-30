@@ -10,6 +10,7 @@ import CredAdminStates from "./admin_users/reducers";
 import ConsultantStaff from "./consultantStaff/reducer";
 import Status from "./statusManagement/reducer";
 import Comments from "./comments/reducer";
+import LoanStatus from "./loanStatus/reducer";
 
 export default combineReducers({
   Auth,
@@ -21,5 +22,6 @@ export default combineReducers({
   ConsultantAdmin,
   CredAdminStates,
   Status,
-  Comments
+  Comments,
+  LoanStatus,
 });
