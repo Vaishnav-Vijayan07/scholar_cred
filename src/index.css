@@ -46,3 +46,24 @@
 .custom_btn {
   font-size: 10px;
 }
+
+
+/* Profile Circle  */
+.circle {
+  display: inline-block;
+    background-color: #00d53b;
+    /* margin: 10px; */
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.circle-inner {
+  color: white;
+  display: table-cell;
+  vertical-align: middle; 
+  text-align: center;
+  text-decoration: none;
+  height: 30px;
+  width: 31px;  
+  font-size: 12px;
+}

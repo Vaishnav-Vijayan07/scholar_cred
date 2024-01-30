@@ -28,6 +28,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [preliminaryDetails, setPreliminaryDetails] = useState({});
   const [preliminaryLoading, setPreliminaryLoading] = useState(false);
+  const [attachments, setAttachments] = useState([]);
 
   const { StudentData, loading, CommentsData, CommentsLoading } = useSelector((state: RootState) => ({
     StudentData: state.Students.studentById,
@@ -61,9 +62,22 @@ const Profile = () => {
     dispatch(getStudentById(id ? id : ""));
   };
 
+  const getAttachments = async () => {
+    try {
+      const response = await axios.get(`getAttachmentsByStudentId/${id}`);
+      setAttachments(response.data.data);
+    } catch (error) {
+      // setError(error);
+      console.log(error);
+    } finally {
+      // setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     getPrilimineryDetailsApi();
     if (id) getStudentDetails();
+    if (id) getAttachments();
     if (numericId) dispatch(getComment(numericId));
   }, []);
 
@@ -108,7 +122,7 @@ const Profile = () => {
                 {/* <TimeLine /> */}
                 <Comments CommentsData={CommentsData} studentId={numericId} />
                 <Col>
-                  <Attachments />
+                  <Attachments attachments={attachments} studentId={id} getAttachments={getAttachments} />
                 </Col>
               </Card.Body>
             </Card>

@@ -205,7 +205,7 @@ const FileUploader = (props: FileUploaderProps) => {
         <div className="dropzone-previews mt-3" id="uploadPreviewTemplate">
           {(selectedFile || []).map((f, i) => {
             return (
-              <Card className="mt-1 mb-0 shadow-none border" key={i + "-file"}>
+              <Card className="mt-1 mb-2 shadow-none border" key={i + "-file"}>
                 <div className="p-2">
                   <Row className="align-items-center">
                     {f.preview && (
