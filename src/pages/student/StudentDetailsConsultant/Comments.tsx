@@ -6,6 +6,7 @@ import { Card, Form } from "react-bootstrap";
 import avatar3 from "../../../assets/images/users/user-3.jpg";
 import { useDispatch } from "react-redux";
 import { createComment } from "../../../redux/actions";
+import { calculateTimeAgo } from "../../../constants/functons";
 
 const commentValidationState = {
   student_id: "",
@@ -72,7 +73,7 @@ const Comments = ({ CommentsData, studentId }: any) => {
 
             <div className="w-100">
               <h5 className="mt-0">
-                {item?.author} <small className="text-muted float-end">5 hours ago</small>
+                {item?.author} <small className="text-muted float-end">{calculateTimeAgo(item?.created_at)}</small>
               </h5>
               {/* <i className="mdi mdi-at"></i> */}
               {item?.comment}
