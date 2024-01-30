@@ -101,6 +101,19 @@ const Profile = () => {
               }}
             />
           </Col>
+
+          <Col>
+            <StatisticsWidget2
+              variant="success"
+              description="Loan status"
+              stats={StudentData?.loan_status ? StudentData?.loan_status : "Pending"}
+              icon="fe-aperture"
+              progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
+              counterOptions={{
+                prefix: "$",
+              }}
+            />
+          </Col>
         </Col>
 
         <Col xl={8} lg={8}>

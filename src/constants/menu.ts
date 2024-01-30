@@ -82,7 +82,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
   },
   {
     key: "status_management",
-    label: "Status",
+    label: "Application Status",
     isTitle: false,
     icon: "book-open",
     url: "/status/status_management",
@@ -192,7 +192,7 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
       },
       {
         key: "status_management",
-        label: "Status",
+        label: "Application Status",
         isTitle: false,
         icon: "book-open",
         url: "/status/status_management",
@@ -325,7 +325,7 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
       },
       {
         key: "status_management",
-        label: "Status",
+        label: "Application Status",
         isTitle: false,
         icon: "book-open",
         url: "/status/status_management",

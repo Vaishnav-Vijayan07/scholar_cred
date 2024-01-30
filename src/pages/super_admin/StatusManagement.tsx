@@ -235,7 +235,7 @@ const BasicInputElements = withSwal((props: any) => {
           {/* <Col lg={5} className="bg-white p-3 mr-2"> */}
           <Form onSubmit={onSubmit}>
             <Modal.Header closeButton>
-              <h4 className="modal-title">Status Management</h4>
+              <h4 className="modal-title">Application Status</h4>
             </Modal.Header>
             <Modal.Body>
               <Form.Group className="mb-3" controlId="status_name">
@@ -324,7 +324,7 @@ const StatusManagement = () => {
           { label: "Status", path: "/status/status_management" },
           { label: "Status Management", path: "/status/status_management", active: true },
         ]}
-        title={"Status Management"}
+        title={"Application Status"}
       />
       <Row>
         <Col>
