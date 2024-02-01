@@ -79,63 +79,61 @@ const Attachments = ({ attachments, studentId, getAttachments }: any) => {
 
   return (
     <>
-      <Card>
-        <Card.Body>
-          <Dropdown className="float-end" align="end">
-            <Dropdown.Toggle as="a" className="text-muted cursor-pointer">
-              <i className="mdi mdi-dots-horizontal font-18"></i>
-            </Dropdown.Toggle>
+      <div className="p-3">
+        {/* <Dropdown className="float-end" align="end">
+          <Dropdown.Toggle as="a" className="text-muted cursor-pointer">
+            <i className="mdi mdi-dots-horizontal font-18"></i>
+          </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item>
-                <i className="mdi mdi-attachment me-1"></i>Attachment
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <i className="mdi mdi-pencil-outline me-1"></i>Edit
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <i className="mdi mdi-content-copy me-1"></i>Mark as Duplicate
-              </Dropdown.Item>
-              <Dropdown.Divider as="div" />
-              <Dropdown.Item className="text-danger">
-                <i className="mdi mdi-delete-outline me-1"></i>Delete
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <Dropdown.Menu>
+            <Dropdown.Item>
+              <i className="mdi mdi-attachment me-1"></i>Attachment
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <i className="mdi mdi-pencil-outline me-1"></i>Edit
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <i className="mdi mdi-content-copy me-1"></i>Mark as Duplicate
+            </Dropdown.Item>
+            <Dropdown.Divider as="div" />
+            <Dropdown.Item className="text-danger">
+              <i className="mdi mdi-delete-outline me-1"></i>Delete
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown> */}
 
-          <h5 className="card-title font-16 mb-3">Attachments</h5>
-          {attachments?.map((item: any) => (
-            <Card className="mb-1 shadow-none border">
-              <div className="p-2">
-                <Row className="align-items-center">
-                  <div className="col-auto">
-                    <div className="avatar-sm">
-                      <span className="avatar-title badge-soft-primary text-primary rounded">{item.file_url?.split(".")[1]}</span>
-                    </div>
+        <h5 className="card-title font-16 mb-3">Attachments</h5>
+        {attachments?.map((item: any) => (
+          <Card className="mb-1 shadow-none border">
+            <div className="p-2">
+              <Row className="align-items-center">
+                <div className="col-auto">
+                  <div className="avatar-sm">
+                    <span className="avatar-title badge-soft-primary text-primary rounded">{item.file_url?.split(".")[1]}</span>
                   </div>
-                  <div className="col ps-0">
-                    <Link to="#" className="text-muted fw-bold">
-                      {item.file_url?.split("-")[1]}
-                    </Link>
-                    <p className="mb-0 font-12">3.5 MB</p>
-                  </div>
-                  <div className="col-auto">
-                    <Link to={`${process.env.REACT_APP_BACKEND_URL}${item?.file_url}`} className="btn btn-link font-16 text-muted" target="_blank">
-                      <i className="dripicons-download"></i>
-                    </Link>
-                  </div>
-                </Row>
-              </div>
-            </Card>
-          ))}
+                </div>
+                <div className="col ps-0">
+                  <Link to="#" className="text-muted fw-bold">
+                    {item.file_url?.split("-")[1]}
+                  </Link>
+                  <p className="mb-0 font-12">3.5 MB</p>
+                </div>
+                <div className="col-auto">
+                  <Link to={`${process.env.REACT_APP_BACKEND_URL}${item?.file_url}`} className="btn btn-link font-16 text-muted" target="_blank">
+                    <i className="dripicons-download"></i>
+                  </Link>
+                </div>
+              </Row>
+            </div>
+          </Card>
+        ))}
 
-          <br />
-          <FileUploader selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
-          <Button className="float-end" onClick={handleSubmit}>
-            Upload
-          </Button>
-        </Card.Body>
-      </Card>
+        <br />
+        <FileUploader selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
+        <Button className="float-end" onClick={handleSubmit}>
+          Upload
+        </Button>
+      </div>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert, Spinner } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Spinner, Dropdown } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,10 +15,11 @@ import PageTitle from "../../components/PageTitle";
 import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../users/data";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { createStudent, deleteStudent, editStudent, getStudent, getStudentByCreated, getStudentByStaff, resetPassword } from "../../redux/actions";
+import { createStudent, deleteStudent, editStudent, getAdminStaff, getStudent, getStudentByCreated, getStudentByStaff, resetPassword } from "../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
 import { getColumns, getConsultantStaffColumns, getCredStaffColumns } from "./ColumnsConfig";
+import { truncateText } from "../../constants/functons";
 
 interface FileType extends File {
   preview?: string;
@@ -26,14 +27,15 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, initialLoading } = props;
+  const { swal, loading, state, error, user, initialLoading, credStaffData } = props;
   const dispatch = useDispatch();
 
-  //Table data
-  const records = state;
+  const [filteredItems, setFilteredItems] = useState(state);
+
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
   const [formData, setFormData] = useState<StudentDataTypes>(StudentInitialState);
+  const [selectedStaff, setSelectedStaff] = useState("Choose Staff");
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   const [uploadModal, setUploadModal] = useState<boolean>(false);
@@ -59,6 +61,10 @@ const BasicInputElements = withSwal((props: any) => {
     resolver: yupResolver(validationSchema), // Integrate yup with react-hook-form
     defaultValues: initialState,
   });
+
+  useEffect(() => {
+    setFilteredItems(state);
+  }, [state]);
 
   //handling update logic
   const handleUpdate = (item: any) => {
@@ -269,6 +275,24 @@ const BasicInputElements = withSwal((props: any) => {
   const consultantStaffColumns = getConsultantStaffColumns(handleResetPassword, resetPassword, handleUpdate, toggleResponsiveModal, handleDelete);
   const credStaffColumns = getCredStaffColumns(handleUpdate, toggleResponsiveModal, handleDelete);
 
+  const handleFilter = (staff_id: any) => {
+    console.log("assignment_id====>", staff_id);
+
+    // Filter the initial list based on the provided category
+    const filteredList = state?.filter((item: any) => item.staff_id === staff_id);
+
+    console.log("filteredList===>", filteredList);
+
+    // Update the state with the filtered list
+    setFilteredItems(filteredList);
+  };
+
+  const handleClearFilter = () => {
+    setFilteredItems(state);
+  };
+
+
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -389,6 +413,22 @@ const BasicInputElements = withSwal((props: any) => {
             <Card.Body>
               <>
                 <div className="d-flex float-end gap-2">
+                  {user.role == "7" && <Dropdown className="btn-group" align="end">
+                    <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
+                      <i className="mdi mdi-filter-variant"></i> {truncateText(selectedStaff, 13)}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                      <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
+                        <i className="mdi mdi-close"></i> Clear Selection
+                      </Dropdown.Item>
+                      {credStaffData?.map((item: any) => (
+                        <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
+                          {item.label}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>}
+
                   <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleUploadModal}>
                     <i className="mdi mdi-upload"></i> Bulk Upload
                   </Button>
@@ -401,7 +441,7 @@ const BasicInputElements = withSwal((props: any) => {
 
                 <Table
                   columns={user.role == "2" ? credStaffColumns : user.role == "4" ? consultantStaffColumns : columns1}
-                  data={records ? records : []}
+                  data={filteredItems}
                   pageSize={5}
                   sizePerPageList={sizePerPageList}
                   isSortable={true}
@@ -421,6 +461,7 @@ const BasicInputElements = withSwal((props: any) => {
 
 const Students = () => {
   const dispatch = useDispatch();
+  const [credStaffData, setCredStaffData] = useState([]);
 
   const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.Students.students,
@@ -428,13 +469,15 @@ const Students = () => {
     initialLoading: state?.Students.initialLoading,
     error: state?.Students.error,
   }));
-  const { user, Authloading } = useSelector((state: RootState) => ({
+  const { user, Authloading, credStaff } = useSelector((state: RootState) => ({
     user: state.Auth.user,
+    credStaff: state.AdminStaff.adminStaff.data,
     Authloading: state.Auth.loading,
   }));
 
   useEffect(() => {
-    // dispatch(getAdminStaff());
+    dispatch(getAdminStaff());
+
     if (user?.role == "4") {
       console.log("Consultant Staff...");
       dispatch(getStudentByCreated());
@@ -446,6 +489,16 @@ const Students = () => {
       dispatch(getStudent());
     }
   }, []);
+
+  useEffect(() => {
+    if (credStaff) {
+      const CredStaffArray = credStaff?.map((staff: any) => ({
+        value: staff.user_id,
+        label: staff.first_name + " " + staff.last_name,
+      }));
+      setCredStaffData(CredStaffArray);
+    }
+  }, [credStaff]);
 
   return (
     <React.Fragment>
@@ -462,7 +515,7 @@ const Students = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} user={user} initialLoading={initialLoading} />
+          <BasicInputElements state={state} loading={loading} error={error} user={user} credStaffData={credStaffData} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>

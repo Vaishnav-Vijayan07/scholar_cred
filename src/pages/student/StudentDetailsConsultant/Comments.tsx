@@ -44,7 +44,7 @@ const Comments = ({ CommentsData, studentId }: any) => {
     commentText: yup.string().required("Comment name is required").min(4, "Comment must be at least 4 characters"),
   });
   return (
-    <div>
+    <div className="p-3">
       <h4 className="mb-4 mt-0 font-16">Comments ({CommentsData?.length})</h4>
 
       <div className="clerfix"></div>

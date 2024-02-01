@@ -93,7 +93,7 @@ const Profile = () => {
             <StatisticsWidget2
               variant="blue"
               description="Application status"
-              stats={StudentData?.application_status ? StudentData?.application_status : "Pending"}
+              stats={StudentData?.status_name ? StudentData?.status_name : StudentData?.application_status || "Pending"}
               icon="fe-aperture"
               progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
               counterOptions={{

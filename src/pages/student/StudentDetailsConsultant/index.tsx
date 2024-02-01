@@ -14,6 +14,7 @@ import { RootState } from "../../../redux/store";
 import StatisticsWidget2 from "../../../components/StatisticsWidget2";
 import Comments from "./Comments";
 import Attachments from "./Attachments";
+import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
 
 interface Params {
   id: string;
@@ -37,13 +38,6 @@ const Profile = () => {
     CommentsLoading: state.Comments.loading,
     loading: state.Students.loading,
   }));
-
-  const methods = useForm();
-  const {
-    register,
-    control,
-    formState: { errors },
-  } = methods;
 
   const getPrilimineryDetailsApi = () => {
     setPreliminaryLoading(true);
@@ -88,7 +82,21 @@ const Profile = () => {
     }
   }, []);
 
-  const handleAppprove = () => {};
+  const handleAppprove = () => {
+    setIsLoading(true);
+    axios
+      .post(`/update_student_status/${id}`, { status: true })
+      .then((res) => {
+        showSuccessAlert("Student approved successfully...");
+        setIsLoading(false);
+        getStudentDetails();
+      })
+      .catch((err) => {
+        showErrorAlert("Error occured");
+        setIsLoading(false);
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -108,7 +116,7 @@ const Profile = () => {
             <StatisticsWidget2
               variant="blue"
               description="Application status"
-              stats={StudentData?.application_status ? StudentData?.application_status : "Pending"}
+              stats={StudentData?.status_name ? StudentData?.status_name : StudentData?.application_status || "Pending"}
               icon="fe-aperture"
               progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
               counterOptions={{
@@ -136,13 +144,17 @@ const Profile = () => {
             <Card>
               <Card.Body>
                 {/* <TimeLine /> */}
-                {!StudentData?.status && (
-                  <div className="d-flex w-100 justify-content-end mb-2">
+                <div className="d-flex w-100 justify-content-end mb-2">
+                  {!StudentData?.status ? (
                     <Button variant="success" size="sm" disabled={isLoading} onClick={handleAppprove}>
                       {isLoading ? "Loading…" : "Approve Student"}
                     </Button>
-                  </div>
-                )}
+                  ) : (
+                    <Button variant="success" size="sm" disabled={true}>
+                      Approved
+                    </Button>
+                  )}
+                </div>
                 <Comments CommentsData={CommentsData} studentId={numericId} />
                 <Col>
                   <Attachments attachments={attachments} studentId={id} getAttachments={getAttachments} />
