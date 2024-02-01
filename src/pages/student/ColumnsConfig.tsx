@@ -59,36 +59,36 @@ export const getColumns = (handleResetPassword: any, resetPassword: any, handleU
       accessor: "assigned_staff",
       sort: false,
     },
-    {
-      Header: "Send Password",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
-          <Button
-            variant="link"
-            onClick={() => {
-              Swal.fire({
-                title: "Are you sure you want to change the password?",
-                text: "This action cannot be undone.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, Send it!",
-              }).then((result: any) => {
-                if (result.isConfirmed) {
-                  handleResetPassword(row.original.email);
-                }
-              });
-            }}
-          >
-            {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
-            Send Mail
-          </Button>
-        </div>
-      ),
-    },
+    // {
+    //   Header: "Send Password",
+    //   accessor: "",
+    //   sort: false,
+    //   Cell: ({ row }: any) => (
+    //     <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
+    //       <Button
+    //         variant="link"
+    //         onClick={() => {
+    //           Swal.fire({
+    //             title: "Are you sure you want to change the password?",
+    //             text: "This action cannot be undone.",
+    //             icon: "warning",
+    //             showCancelButton: true,
+    //             confirmButtonColor: "#3085d6",
+    //             cancelButtonColor: "#d33",
+    //             confirmButtonText: "Yes, Send it!",
+    //           }).then((result: any) => {
+    //             if (result.isConfirmed) {
+    //               handleResetPassword(row.original.email);
+    //             }
+    //           });
+    //         }}
+    //       >
+    //         {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
+    //         Send Mail
+    //       </Button>
+    //     </div>
+    //   ),
+    // },
     {
       Header: "Actions",
       accessor: "",
@@ -164,36 +164,36 @@ export const getConsultantStaffColumns = (handleResetPassword: any, resetPasswor
         </Badge>
       ),
     },
-    {
-      Header: "Send Password",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
-          <Button
-            variant="link"
-            onClick={() => {
-              Swal.fire({
-                title: "Are you sure you want to change the password?",
-                text: "This action cannot be undone.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, Send it!",
-              }).then((result: any) => {
-                if (result.isConfirmed) {
-                  handleResetPassword(row.original.email);
-                }
-              });
-            }}
-          >
-            {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
-            Send Mail
-          </Button>
-        </div>
-      ),
-    },
+    // {
+    //   Header: "Send Password",
+    //   accessor: "",
+    //   sort: false,
+    //   Cell: ({ row }: any) => (
+    //     <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
+    //       <Button
+    //         variant="link"
+    //         onClick={() => {
+    //           Swal.fire({
+    //             title: "Are you sure you want to change the password?",
+    //             text: "This action cannot be undone.",
+    //             icon: "warning",
+    //             showCancelButton: true,
+    //             confirmButtonColor: "#3085d6",
+    //             cancelButtonColor: "#d33",
+    //             confirmButtonText: "Yes, Send it!",
+    //           }).then((result: any) => {
+    //             if (result.isConfirmed) {
+    //               handleResetPassword(row.original.email);
+    //             }
+    //           });
+    //         }}
+    //       >
+    //         {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
+    //         Send Mail
+    //       </Button>
+    //     </div>
+    //   ),
+    // },
     {
       Header: "Actions",
       accessor: "",
