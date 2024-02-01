@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Tab, Nav } from "react-bootstrap";
+import { Row, Col, Card, Tab, Nav, Button } from "react-bootstrap";
 
 // components
 import PageTitle from "../../../components/PageTitle";
@@ -28,6 +28,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [preliminaryDetails, setPreliminaryDetails] = useState({});
   const [preliminaryLoading, setPreliminaryLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [attachments, setAttachments] = useState([]);
 
   const { StudentData, loading, CommentsData, CommentsLoading } = useSelector((state: RootState) => ({
@@ -87,6 +88,8 @@ const Profile = () => {
     }
   }, []);
 
+  const handleAppprove = () => {};
+
   return (
     <>
       <PageTitle
@@ -113,6 +116,19 @@ const Profile = () => {
               }}
             />
           </Col>
+
+          <Col>
+            <StatisticsWidget2
+              variant="success"
+              description="Loan status"
+              stats={StudentData?.loan_status ? StudentData?.loan_status : "Pending"}
+              icon="fe-aperture"
+              progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
+              counterOptions={{
+                prefix: "$",
+              }}
+            />
+          </Col>
         </Col>
 
         <Col xl={8} lg={8}>
@@ -120,6 +136,13 @@ const Profile = () => {
             <Card>
               <Card.Body>
                 {/* <TimeLine /> */}
+                {!StudentData?.status && (
+                  <div className="d-flex w-100 justify-content-end mb-2">
+                    <Button variant="success" size="sm" disabled={isLoading} onClick={handleAppprove}>
+                      {isLoading ? "Loading…" : "Approve Student"}
+                    </Button>
+                  </div>
+                )}
                 <Comments CommentsData={CommentsData} studentId={numericId} />
                 <Col>
                   <Attachments attachments={attachments} studentId={id} getAttachments={getAttachments} />

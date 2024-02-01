@@ -17,8 +17,6 @@ const LockScreen2 = React.lazy(() => import("../pages/auth2/LockScreen2"));
 const SignInSignUp2 = React.lazy(() => import("../pages/auth2/SignInSignUp2"));
 // dashboard
 const Dashboard4 = React.lazy(() => import("../pages/dashboard/Dashboard4/"));
-// - crm pages
-const CRMLeads = React.lazy(() => import("../pages/apps/CRM/Leads/"));
 const ProfilePage = React.lazy(() => import("../pages/profile"));
 
 // user pages
@@ -26,14 +24,15 @@ const Consultant = React.lazy(() => import("../pages/users/Consultant"));
 const ConsultantStaff = React.lazy(() => import("../pages/users/ConsultantStaff"));
 const ConsultantDetails = React.lazy(() => import("../pages/users/ConsultantDetails"));
 const Staff = React.lazy(() => import("../pages/users/Staff"));
-const Students = React.lazy(() => import("../pages/student/Students"));
+const AllStudents = React.lazy(() => import("../pages/student/AllStudents"));
+const IntakeStudents = React.lazy(() => import("../pages/student/IntakeStudents"));
 const StudentAdminView = React.lazy(() => import("../pages/student/StudentAdminView"));
 const StudentDetails = React.lazy(() => import("../pages/student/StudentDetails"));
 const StudentDetailsConsultant = React.lazy(() => import("../pages/student/StudentDetailsConsultant"));
 const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
 const Tickets = React.lazy(() => import("../pages/Tickets/List"));
-const StatusManagement = React.lazy(() => import("../pages/super_admin/StatusManagement"));
+const ApplicationStatusManagement = React.lazy(() => import("../pages/super_admin/ApplicationStatusManagement"));
 const LoanStatus = React.lazy(() => import("../pages/super_admin/LoanStatus"));
 
 export interface RoutesProps {
@@ -114,7 +113,13 @@ const userRoutes = {
     {
       path: "/users/students",
       name: "Students",
-      element: <PrivateRoute roles={["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={Students} />,
+      element: <PrivateRoute roles={["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={AllStudents} />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/users/intake-students",
+      name: "Students",
+      element: <PrivateRoute roles={["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={IntakeStudents} />,
       route: PrivateRoute,
     },
     {
@@ -196,7 +201,7 @@ const superAdminRoutes = {
     {
       path: "/status/status_management",
       name: "Status",
-      element: <PrivateRoute roles={["SUPER_USER", "CRED_ADMIN"]} component={StatusManagement} />,
+      element: <PrivateRoute roles={["SUPER_USER", "CRED_ADMIN"]} component={ApplicationStatusManagement} />,
       route: PrivateRoute,
     },
     {

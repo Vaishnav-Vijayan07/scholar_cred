@@ -55,10 +55,18 @@ const MENU_ITEMS: MenuItemTypes[] = [
 
   {
     key: "students",
-    label: "Students",
+    label: "All Students",
     isTitle: false,
     icon: "users",
     url: "/users/students",
+    roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+  },
+  {
+    key: "intake_students",
+    label: "Intake Students",
+    isTitle: false,
+    icon: "users",
+    url: "/users/intake-students",
     roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
   },
   {
@@ -162,9 +170,17 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
     children: [
       {
         key: "students",
-        label: "Students",
+        label: "All Students",
         isTitle: false,
         url: "/users/students",
+        roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+      },
+      {
+        key: "intake_students",
+        label: "Intake Students",
+        isTitle: false,
+        icon: "users",
+        url: "/users/intake-students",
         roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
       {
@@ -279,9 +295,17 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
     children: [
       {
         key: "students",
-        label: "Students",
+        label: "All Students",
         isTitle: false,
         url: "/users/students",
+        roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+      },
+      {
+        key: "intake_students",
+        label: "Intake Students",
+        isTitle: false,
+        icon: "users",
+        url: "/users/intake-students",
         roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
       {

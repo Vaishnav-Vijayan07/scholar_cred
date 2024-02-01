@@ -11,12 +11,18 @@ export function calculateTimeAgo(createdAt: number): string {
   const currentDateTime: Date = new Date();
 
   const timeDifference: number = currentDateTime.getTime() - createdAtDate.getTime();
-  const hoursAgo: number = Math.floor(timeDifference / (1000 * 60 * 60));
+  const minutesAgo: number = Math.floor(timeDifference / (1000 * 60));
 
-  if (hoursAgo < 24) {
-    return `${hoursAgo} hours ago`;
+  if (minutesAgo < 60) {
+    return `${minutesAgo} minute${minutesAgo !== 1 ? "s" : ""} ago`;
   } else {
-    const daysAgo: number = Math.floor(hoursAgo / 24);
-    return `${daysAgo} day${daysAgo !== 1 ? "s" : ""} ago`;
+    const hoursAgo: number = Math.floor(minutesAgo / 60);
+
+    if (hoursAgo < 24) {
+      return `${hoursAgo} hour${hoursAgo !== 1 ? "s" : ""} ago`;
+    } else {
+      const daysAgo: number = Math.floor(hoursAgo / 24);
+      return `${daysAgo} day${daysAgo !== 1 ? "s" : ""} ago`;
+    }
   }
 }

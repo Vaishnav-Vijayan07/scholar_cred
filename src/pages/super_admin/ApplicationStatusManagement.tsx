@@ -190,7 +190,7 @@ const BasicInputElements = withSwal((props: any) => {
           />
 
           {/* Delete Icon */}
-          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.id)} />
+          {/* <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.id)} /> */}
         </div>
       ),
     },

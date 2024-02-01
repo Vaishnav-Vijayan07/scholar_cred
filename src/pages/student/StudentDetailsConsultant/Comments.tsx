@@ -44,65 +44,54 @@ const Comments = ({ CommentsData, studentId }: any) => {
     commentText: yup.string().required("Comment name is required").min(4, "Comment must be at least 4 characters"),
   });
   return (
-    <Card>
-      <Card.Body>
-        {/* <div className="float-end">
-          <select className="form-select form-select-sm">
-            <option defaultValue="0">Recent</option>
-            <option value="1">Most Helpful</option>
-            <option value="2">High to Low</option>
-            <option value="3">Low to High</option>
-          </select>
-        </div> */}
+    <div>
+      <h4 className="mb-4 mt-0 font-16">Comments ({CommentsData?.length})</h4>
 
-        <h4 className="mb-4 mt-0 font-16">Comments ({CommentsData?.length})</h4>
+      <div className="clerfix"></div>
 
-        <div className="clerfix"></div>
-
-        {CommentsData?.map((item: any) => (
-          <div className="d-flex align-items-start mb-3">
-            {/* {item?.author_avatar ? (
+      {CommentsData?.map((item: any) => (
+        <div className="d-flex align-items-start mb-3">
+          {/* {item?.author_avatar ? (
               <img className="me-2 rounded-circle" src={`${process.env.REACT_APP_BACKEND_URL}${item?.author_avatar}`} alt="" height="32" />
             ) : (
               <img className="me-2 rounded-circle" src={avatar3} alt="" height="32" />
             )} */}
-            {/* <img className="me-2 rounded-circle" src={avatar3} alt="" height="32" /> */}
-            <div className="circle">
-              <p className="circle-inner onject-fit-contain">{item?.author[0]}</p>
-            </div>
-
-            <div className="w-100">
-              <h5 className="mt-0">
-                {item?.author} <small className="text-muted float-end">{calculateTimeAgo(item?.created_at)}</small>
-              </h5>
-              {/* <i className="mdi mdi-at"></i> */}
-              {item?.comment}
-              <br />
-            </div>
+          {/* <img className="me-2 rounded-circle" src={avatar3} alt="" height="32" /> */}
+          <div className="circle">
+            <p className="circle-inner onject-fit-contain">{item?.author[0]}</p>
           </div>
-        ))}
 
-        <div className="border rounded mt-4">
-          <form className="comment-area-box" onSubmit={handleSubmit}>
-            <textarea rows={3} className="form-control border-0 resize-none" value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Your comment..." />
-            <div className="p-2 bg-light d-flex justify-content-between align-items-center">
-              <div>
-                {/* <Link to="#" className="btn btn-sm px-1 btn-light">
+          <div className="w-100">
+            <h5 className="mt-0">
+              {item?.author} <small className="text-muted float-end">{calculateTimeAgo(item?.created_at)}</small>
+            </h5>
+            {/* <i className="mdi mdi-at"></i> */}
+            {item?.comment}
+            <br />
+          </div>
+        </div>
+      ))}
+
+      <div className="border rounded mt-4">
+        <form className="comment-area-box" onSubmit={handleSubmit}>
+          <textarea rows={3} className="form-control border-0 resize-none" value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Your comment..." />
+          <div className="p-2 bg-light d-flex justify-content-between align-items-center">
+            <div>
+              {/* <Link to="#" className="btn btn-sm px-1 btn-light">
                   <i className="mdi mdi-upload"></i>
                 </Link>
                 <Link to="#" className="btn btn-sm px-1 btn-light">
                   <i className="mdi mdi-at"></i>
                 </Link> */}
-              </div>
-              <button type="submit" className="btn btn-sm btn-success">
-                <i className="uil uil-message me-1"></i>Submit
-              </button>
             </div>
-          </form>
-        </div>
-        {validationErrors.commentText && <Form.Text className="text-danger">{validationErrors.commentText}</Form.Text>}
-      </Card.Body>
-    </Card>
+            <button type="submit" className="btn  btn-sm btn-primary">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+      {validationErrors.commentText && <Form.Text className="text-danger">{validationErrors.commentText}</Form.Text>}
+    </div>
   );
 };
 

@@ -1,27 +1,24 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert, Dropdown, Spinner, Badge } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Spinner } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
-import FeatherIcons from "feather-icons-react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import FileUploader from "../../components/FileUploader";
+
+// import StudentData from "../../assets/excel/StudentData.xlsx";
 
 // components
 import PageTitle from "../../components/PageTitle";
 import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../users/data";
 import { useDispatch, useSelector } from "react-redux";
-import { getAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
-import { createStudent, deleteStudent, editStudent, getStudent } from "../../redux/actions";
+import { createStudent, deleteStudent, editStudent, getStudent, getStudentByCreated, getStudentByStaff, resetPassword } from "../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import { truncateText } from "../../constants/functons";
-import classNames from "classnames";
+import { getColumns, getConsultantStaffColumns, getCredStaffColumns } from "./ColumnsConfig";
 
 interface FileType extends File {
   preview?: string;
@@ -29,17 +26,12 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, credStaffData, initialLoading } = props;
+  const { swal, loading, state, error, user, initialLoading } = props;
   const dispatch = useDispatch();
 
   //Table data
-  const [filteredItems, setFilteredItems] = useState(state);
-
-  console.log("filteredItems====>", filteredItems);
-
+  const records = state;
   const [isUpdate, setIsUpdate] = useState(false);
-  const [passwordResetLoading, setPasswordResetLoading] = useState(false);
-  const [selectedStaff, setSelectedStaff] = useState("Choose Staff");
   //Input data
   const [formData, setFormData] = useState<StudentDataTypes>(StudentInitialState);
   // Modal states
@@ -49,9 +41,6 @@ const BasicInputElements = withSwal((props: any) => {
   const [selectedFile, setSelectedFile] = useState<FileType[]>([]);
   //validation errors
   const [validationErrors, setValidationErrors] = useState(StudentValidationState);
-
-  //selected table values
-  const [selectedValues, setSelectedValues] = useState([]);
 
   const validationSchema = yup.object().shape({
     first_name: yup.string().required("First name is required"),
@@ -64,11 +53,6 @@ const BasicInputElements = withSwal((props: any) => {
     date_of_birth: yup.string().required("DOB is required"),
     country_of_origin: yup.string().nullable(),
     // application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
-  });
-
-  const methods = useForm({
-    resolver: yupResolver(validationSchema), // Integrate yup with react-hook-form
-    defaultValues: initialState,
   });
 
   //handling update logic
@@ -168,195 +152,6 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
-  const handleResetPassword = (email: string) => {
-    setPasswordResetLoading(true);
-    axios
-      .post(`reset_student_password`, { email: email })
-      .then((res: any) => {
-        console.log("res===>", res);
-        showSuccessAlert("Password reset successfull");
-        setPasswordResetLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setPasswordResetLoading(false);
-        showErrorAlert("Error occured");
-      });
-  };
-
-  useEffect(() => {
-    setFilteredItems(state);
-  }, [state]);
-
-  const UserColumn = ({ row }: any) => {
-    return (
-      <>
-        <Dropdown className="btn-group" align="end">
-          <Dropdown.Toggle variant="light" className="table-action-btn btn-sm">
-            {row.original.assigned_staff ? row.original.assigned_staff : "Assign"}
-          </Dropdown.Toggle>
-          <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-            {credStaffData?.map((item: any) => (
-              <Dropdown.Item key={item.value} onClick={() => handleAssign(row.original.student_id, item.value)}>
-                {item.label}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-      </>
-    );
-  };
-
-  const handleAssign = (student_id: number, staff_id: number) => {
-    Swal.fire({
-      title: "Are you sure!",
-      text: "You want to assign this staff?",
-      icon: "info",
-      showCancelButton: true,
-      confirmButtonColor: "#55d94e",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, assign!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        handleAssignUser(student_id, staff_id);
-        Swal.fire({
-          title: "Assigned!",
-          text: "Staff assigned successfully.",
-          icon: "success",
-        });
-      }
-    });
-  };
-
-  const columns = [
-    {
-      Header: "ID",
-      accessor: "student_id",
-      sort: true,
-    },
-    {
-      Header: "Name",
-      accessor: "first_name",
-      sort: true,
-      Cell: ({ row }: any) => <div>{row.original.first_name + " " + row.original.last_name}</div>,
-    },
-    {
-      Header: "Country",
-      accessor: "country_of_origin",
-      sort: false,
-    },
-    {
-      Header: "Intake Month",
-      accessor: "intake_month",
-      sort: false,
-      Cell: ({ row }: any) => <span>{moment(row.original.created_at).format("LL")?.split(" ")[0]}</span>,
-    },
-    {
-      Header: "Application Status",
-      accessor: "application_status",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <Badge bg="" className="badge-soft-success text-wrap py-1">
-          {row.original.application_status}
-        </Badge>
-      ),
-    },
-    {
-      Header: "Loan Status",
-      accessor: "loan_status",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <Badge bg="" className="badge-soft-primary text-wrap py-1">
-          {row.original.loan_status}
-        </Badge>
-      ),
-    },
-    {
-      Header: "Send Password",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
-          <Button
-            variant="link"
-            onClick={() => {
-              swal
-                .fire({
-                  title: "Are you sure you want to change the password?",
-                  text: "This action cannot be undone.",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Yes, Send it!",
-                })
-                .then((result: any) => {
-                  if (result.isConfirmed) {
-                    handleResetPassword(row.original.email);
-                  }
-                });
-            }}
-          >
-            {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
-            Send Mail
-          </Button>
-        </div>
-      ),
-    },
-    {
-      Header: "Created By",
-      accessor: "created_user",
-      sort: false,
-    },
-    {
-      Header: "Actions",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <div className="d-flex justify-content-center align-items-center gap-2 p-2">
-          <div className="d-flex justify-content-center align-items-center gap-2">
-            {/* Delete Icon */}
-            <Link to={`/users/student-details/${row.original.student_id}`} state={row.original.student_id}>
-              <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
-            </Link>
-          </div>
-          {/* Edit Icon */}
-          <FeatherIcons
-            icon="edit"
-            size="15"
-            className="cursor-pointer text-secondary"
-            onClick={() => {
-              handleUpdate(row.original);
-              toggleResponsiveModal();
-            }}
-          />
-
-          {/* Delete Icon */}
-          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.student_id)} />
-        </div>
-      ),
-    },
-    {
-      Header: "Counselor Name",
-      accessor: "",
-      sort: false,
-      Cell: UserColumn,
-    },
-  ];
-
-  const handleAssignUser = (student_id: number, assignedTo: number) => {
-    axios
-      .post("assign_staff", {
-        student_id,
-        assignedTo,
-      })
-      .then((res) => {
-        dispatch(getStudent());
-        // dispatch(getStudent());
-      })
-      .catch((err) => console.error(err));
-  };
-
   //handle cancel update section
   const handleCancelUpdate = () => {
     setIsUpdate(false);
@@ -448,66 +243,26 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
-  const handleSelectedValues = (values: any) => {
-    setSelectedValues(values);
-  };
-
-  const handleAssignBulk = (student_ids: Array<number>, assignedTo: number) => {
-    Swal.fire({
-      title: "Are you sure!",
-      text: "You want to assign this staff?",
-      icon: "info",
-      showCancelButton: true,
-      confirmButtonColor: "#55d94e",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, assign!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        handleAssignUserBulk(student_ids, assignedTo);
-        Swal.fire({
-          title: "Assigned!",
-          text: "Staff assigned successfully.",
-          icon: "success",
-        });
-      }
-    });
-  };
-
-  const handleAssignUserBulk = (student_ids: Array<number>, assignedTo: number) => {
-    console.log("assignedTo", assignedTo, "student_ids", student_ids);
-
+  const handleResetPassword = (email: string) => {
     axios
-      .post("assign_staff_bulk", {
-        student_ids,
-        assignedTo,
+      .post(`reset_student_password`, { email: email })
+      .then((res: any) => {
+        console.log("res===>", res);
+        showSuccessAlert("Password reset successfull");
       })
-      .then((res) => {
-        console.log("res==>", res.data);
-        showSuccessAlert(res.data.message);
-        dispatch(getStudent());
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const handleFilter = (staff_id: any) => {
-    console.log("assignment_id====>", staff_id);
-
-    // Filter the initial list based on the provided category
-    const filteredList = state?.filter((item: any) => item.staff_id === staff_id);
-
-    console.log("filteredList===>", filteredList);
-
-    // Update the state with the filtered list
-    setFilteredItems(filteredList);
-  };
-
-  const handleClearFilter = () => {
-    setFilteredItems(state);
+      .catch((err) => {
+        console.error(err);
+        showErrorAlert("Error occured");
+      });
   };
 
   if (initialLoading) {
     return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
   }
+
+  const columns1 = getColumns(handleResetPassword, resetPassword, handleUpdate, toggleResponsiveModal, handleDelete);
+  const consultantStaffColumns = getConsultantStaffColumns(handleResetPassword, resetPassword, handleUpdate, toggleResponsiveModal, handleDelete);
+  const credStaffColumns = getCredStaffColumns(handleUpdate, toggleResponsiveModal, handleDelete);
 
   return (
     <>
@@ -520,7 +275,7 @@ const BasicInputElements = withSwal((props: any) => {
             <Modal.Body className="px-3">
               {error && (
                 <Alert variant="danger" className="my-2">
-                  {error ? error : ""}
+                  {error}
                 </Alert>
               )}
               <Row>
@@ -575,7 +330,6 @@ const BasicInputElements = withSwal((props: any) => {
                 </Col>
               </Row>
             </Modal.Body>
-
             <Modal.Footer>
               <Button
                 variant="danger"
@@ -630,55 +384,26 @@ const BasicInputElements = withSwal((props: any) => {
             <Card.Body>
               <>
                 <div className="d-flex float-end gap-2">
-                  <Dropdown className="btn-group" align="end">
-                    <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
-                      <i className="mdi mdi-filter-variant"></i> {truncateText(selectedStaff, 13)}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                      <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
-                        <i className="mdi mdi-close"></i> Clear Selection
-                      </Dropdown.Item>
-                      {credStaffData?.map((item: any) => (
-                        <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
-                          {item.label}
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>
-
-                  <Dropdown className="btn-group" align="end">
-                    <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
-                      <i className="mdi mdi-account-plus"></i> Assign Staff
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                      {credStaffData?.map((item: any) => (
-                        <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
-                          {item.label}
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>
-
-                  <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
+                  <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleUploadModal}>
                     <i className="mdi mdi-upload"></i> Bulk Upload
                   </Button>
 
-                  <Button className="btn-sm btn-success waves-effect waves-light " onClick={toggleResponsiveModal}>
+                  <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleResponsiveModal}>
                     <i className="mdi mdi-plus-circle"></i> Add Student
                   </Button>
                 </div>
+                {/* <h4 className="header-title mb-4">Manage Student</h4> */}
+
                 <Table
-                  columns={columns}
-                  data={filteredItems}
+                  columns={user.role == "2" ? credStaffColumns : user.role == "4" ? consultantStaffColumns : columns1}
+                  data={records ? records : []}
                   pageSize={5}
                   sizePerPageList={sizePerPageList}
                   isSortable={true}
                   pagination={true}
                   isSearchable={true}
-                  isSelectable={true}
                   theadClass="table-light mt-2"
-                  searchBoxClass="mt-4 mb-3"
-                  onSelect={handleSelectedValues}
+                  searchBoxClass="mt-2 mb-3"
                 />
               </>
             </Card.Body>
@@ -689,37 +414,33 @@ const BasicInputElements = withSwal((props: any) => {
   );
 });
 
-const Students = () => {
+const IntakeStudents = () => {
   const dispatch = useDispatch();
-  const [credStaffData, setCredStaffData] = useState([]);
 
   const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.Students.students,
     loading: state?.Students.loading,
-    error: state?.Students.error,
     initialLoading: state?.Students.initialLoading,
+    error: state?.Students.error,
   }));
-
-  const { user, Authloading, credStaff } = useSelector((state: RootState) => ({
+  const { user, Authloading } = useSelector((state: RootState) => ({
     user: state.Auth.user,
-    credStaff: state.AdminStaff.adminStaff.data,
     Authloading: state.Auth.loading,
   }));
 
   useEffect(() => {
-    dispatch(getStudent());
-    dispatch(getAdminStaff());
-  }, []);
-
-  useEffect(() => {
-    if (credStaff) {
-      const CredStaffArray = credStaff?.map((staff: any) => ({
-        value: staff.user_id,
-        label: staff.first_name + " " + staff.last_name,
-      }));
-      setCredStaffData(CredStaffArray);
+    // dispatch(getAdminStaff());
+    if (user?.role == "4") {
+      console.log("Consultant Staff...");
+      dispatch(getStudentByCreated());
+    } else if (user?.role == "2") {
+      console.log("Consultant Staff...");
+      dispatch(getStudentByStaff());
+    } else {
+      console.log("Other...");
+      dispatch(getStudent());
     }
-  }, [credStaff]);
+  }, []);
 
   return (
     <React.Fragment>
@@ -736,10 +457,10 @@ const Students = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} user={user} credStaffData={credStaffData} initialLoading={initialLoading} />
+          <BasicInputElements state={state.filter((item: any) => item.status == true)} loading={loading} error={error} user={user} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>
   );
 };
-export default Students;
+export default IntakeStudents;

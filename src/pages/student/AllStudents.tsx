@@ -1,10 +1,9 @@
 import * as yup from "yup";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert, Placeholder, Spinner } from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Spinner } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
-import FeatherIcons from "feather-icons-react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import FileUploader from "../../components/FileUploader";
@@ -15,12 +14,11 @@ import FileUploader from "../../components/FileUploader";
 import PageTitle from "../../components/PageTitle";
 import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../users/data";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
 import { createStudent, deleteStudent, editStudent, getStudent, getStudentByCreated, getStudentByStaff, resetPassword } from "../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { getColumns, getConsultantStaffColumns, getCredStaffColumns } from "./ColumnsConfig";
 
 interface FileType extends File {
   preview?: string;
@@ -159,191 +157,6 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
-  const columns = [
-    {
-      Header: "ID",
-      accessor: "student_id",
-      sort: true,
-    },
-    {
-      Header: "First Name",
-      accessor: "first_name",
-      sort: true,
-    },
-    {
-      Header: "Last Name",
-      accessor: "last_name",
-      sort: false,
-    },
-    {
-      Header: "Email",
-      accessor: "email",
-      sort: false,
-    },
-    {
-      Header: "Phone",
-      accessor: "phone",
-      sort: false,
-    },
-    {
-      Header: "DOB",
-      accessor: "date_of_birth",
-      sort: false,
-      Cell: ({ row }: any) => <div>{moment(row.original.date_of_birth).format("DD/MM/YYYY")}</div>,
-    },
-    {
-      Header: "Country",
-      accessor: "country_of_origin",
-      sort: false,
-    },
-    {
-      Header: "Application Status",
-      accessor: "application_status",
-      sort: false,
-    },
-    {
-      Header: "Password",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
-          <Button
-            variant="link"
-            onClick={() => {
-              swal
-                .fire({
-                  title: "Are you sure you want to change the password?",
-                  text: "This action cannot be undone.",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Yes, Send it!",
-                })
-                .then((result: any) => {
-                  if (result.isConfirmed) {
-                    dispatch(resetPassword(row.original.email));
-                  }
-                });
-            }}
-          >
-            {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
-            Send Mail
-          </Button>
-        </div>
-      ),
-    },
-    {
-      Header: "Actions",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <div className="d-flex justify-content-center align-items-center gap-2">
-          {/* Edit Icon */}
-          <div className="d-flex justify-content-center align-items-center gap-2">
-            {/* Delete Icon */}
-            <Link to={`/users/student-details-consultant/${row.original.student_id}`} state={row.original.student_id}>
-              <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
-            </Link>
-          </div>
-          <FeatherIcons
-            icon="edit"
-            size="15"
-            className="cursor-pointer text-secondary"
-            onClick={() => {
-              handleUpdate(row.original);
-              toggleResponsiveModal();
-            }}
-          />
-
-          {/* Delete Icon */}
-          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.student_id)} />
-        </div>
-      ),
-    },
-  ];
-
-  const credStaffColumns = [
-    {
-      Header: "ID",
-      accessor: "student_id",
-      sort: true,
-    },
-    {
-      Header: "First Name",
-      accessor: "first_name",
-      sort: true,
-    },
-    {
-      Header: "Last Name",
-      accessor: "last_name",
-      sort: false,
-    },
-    {
-      Header: "Email",
-      accessor: "email",
-      sort: false,
-    },
-    {
-      Header: "Phone",
-      accessor: "phone",
-      sort: false,
-    },
-    {
-      Header: "DOB",
-      accessor: "date_of_birth",
-      sort: false,
-      Cell: ({ row }: any) => <div>{moment(row.original.date_of_birth).format("DD/MM/YYYY")}</div>,
-    },
-    {
-      Header: "Country",
-      accessor: "country_of_origin",
-      sort: false,
-    },
-    {
-      Header: "Application Status",
-      accessor: "application_status",
-      sort: false,
-    },
-    {
-      Header: "Created By",
-      accessor: "created_user",
-      sort: false,
-    },
-    {
-      Header: "Actions",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <div className="d-flex justify-content-center align-items-center gap-2 p-2">
-          <div className="d-flex justify-content-center align-items-center gap-2">
-            {/* Delete Icon */}
-            <Link to={`/users/student-details/${row.original.student_id}`} state={row.original.student_id}>
-              <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
-            </Link>
-          </div>
-          {/* Edit Icon */}
-          <Link to="#">
-            <FeatherIcons
-              icon="edit"
-              size="15"
-              className="cursor-pointer text-secondary"
-              onClick={() => {
-                handleUpdate(row.original);
-                toggleResponsiveModal();
-              }}
-            />
-          </Link>
-
-          <Link to="#">
-            {/* Delete Icon */}
-            <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.student_id)} />
-          </Link>
-        </div>
-      ),
-    },
-  ];
-
   //handle cancel update section
   const handleCancelUpdate = () => {
     setIsUpdate(false);
@@ -435,9 +248,27 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
+  const handleResetPassword = (email: string) => {
+    axios
+      .post(`reset_student_password`, { email: email })
+      .then((res: any) => {
+        console.log("res===>", res);
+        showSuccessAlert("Password reset successfull");
+      })
+      .catch((err) => {
+        console.error(err);
+        showErrorAlert("Error occured");
+      });
+  };
+
   if (initialLoading) {
     return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
   }
+
+  const columns1 = getColumns(handleResetPassword, resetPassword, handleUpdate, toggleResponsiveModal, handleDelete);
+  const consultantStaffColumns = getConsultantStaffColumns(handleResetPassword, resetPassword, handleUpdate, toggleResponsiveModal, handleDelete);
+  const credStaffColumns = getCredStaffColumns(handleUpdate, toggleResponsiveModal, handleDelete);
+
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -569,7 +400,7 @@ const BasicInputElements = withSwal((props: any) => {
                 {/* <h4 className="header-title mb-4">Manage Student</h4> */}
 
                 <Table
-                  columns={user.role == "2" ? credStaffColumns : columns}
+                  columns={user.role == "2" ? credStaffColumns : user.role == "4" ? consultantStaffColumns : columns1}
                   data={records ? records : []}
                   pageSize={5}
                   sizePerPageList={sizePerPageList}
