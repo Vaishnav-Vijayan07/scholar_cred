@@ -27,7 +27,9 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, initialLoading, credStaffData } = props;
+  const { swal, loading, state, error, user, initialLoading, credStaffData, sourceData } = props;
+  console.log("sourceData==>", sourceData);
+
   const dispatch = useDispatch();
 
   const [filteredItems, setFilteredItems] = useState(state);
@@ -54,6 +56,7 @@ const BasicInputElements = withSwal((props: any) => {
       .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
     date_of_birth: yup.string().required("DOB is required"),
     country_of_origin: yup.string().nullable(),
+    source: yup.string().required("Source is required").nullable(),
     // application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
   });
 
@@ -78,6 +81,7 @@ const BasicInputElements = withSwal((props: any) => {
       date_of_birth: moment(item.date_of_birth).format("YYYY-MM-DD"),
       country_of_origin: item.country_of_origin,
       application_status: item.application_status,
+      source: item.source,
     }));
 
     setIsUpdate(true);
@@ -140,13 +144,23 @@ const BasicInputElements = withSwal((props: any) => {
             formData.phone,
             formData.date_of_birth,
             formData.country_of_origin,
-            formData.application_status
+            formData.application_status,
+            formData.source
           )
         );
       } else {
         // Handle add logic
         dispatch(
-          createStudent(formData.first_name, formData.last_name, formData.email, formData.phone, formData.date_of_birth, formData.country_of_origin, formData.application_status)
+          createStudent(
+            formData.first_name,
+            formData.last_name,
+            formData.email,
+            formData.phone,
+            formData.date_of_birth,
+            formData.country_of_origin,
+            formData.application_status,
+            formData.source
+          )
         );
       }
     } catch (validationError) {
@@ -276,12 +290,8 @@ const BasicInputElements = withSwal((props: any) => {
   const credStaffColumns = getCredStaffColumns(handleUpdate, toggleResponsiveModal, handleDelete);
 
   const handleFilter = (staff_id: any) => {
-    console.log("assignment_id====>", staff_id);
-
     // Filter the initial list based on the provided category
     const filteredList = state?.filter((item: any) => item.staff_id === staff_id);
-
-    console.log("filteredList===>", filteredList);
 
     // Update the state with the filtered list
     setFilteredItems(filteredList);
@@ -290,8 +300,6 @@ const BasicInputElements = withSwal((props: any) => {
   const handleClearFilter = () => {
     setFilteredItems(state);
   };
-
-
 
   return (
     <>
@@ -358,6 +366,25 @@ const BasicInputElements = withSwal((props: any) => {
                   </Form.Group>
                 </Col>
               </Row>
+
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="source">
+                    <Form.Label>Source</Form.Label>
+                    <Form.Select name="source" value={formData.source} onChange={handleInputChange} aria-label="Default select example">
+                      <option disabled value="" selected>
+                        Choose a source...{" "}
+                      </option>
+                      {sourceData?.map((item: any) => (
+                        <option value={item?.id} key={item?.id}>
+                          {item?.source_name}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    {validationErrors.source && <Form.Text className="text-danger">{validationErrors.source}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -413,21 +440,23 @@ const BasicInputElements = withSwal((props: any) => {
             <Card.Body>
               <>
                 <div className="d-flex float-end gap-2">
-                  {user.role == "7" && <Dropdown className="btn-group" align="end">
-                    <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
-                      <i className="mdi mdi-filter-variant"></i> {truncateText(selectedStaff, 13)}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                      <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
-                        <i className="mdi mdi-close"></i> Clear Selection
-                      </Dropdown.Item>
-                      {credStaffData?.map((item: any) => (
-                        <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
-                          {item.label}
+                  {user.role == "7" && (
+                    <Dropdown className="btn-group" align="end">
+                      <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
+                        <i className="mdi mdi-filter-variant"></i> {truncateText(selectedStaff, 13)}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                        <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
+                          <i className="mdi mdi-close"></i> Clear Selection
                         </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>}
+                        {credStaffData?.map((item: any) => (
+                          <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
+                            {item.label}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  )}
 
                   <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleUploadModal}>
                     <i className="mdi mdi-upload"></i> Bulk Upload
@@ -462,6 +491,7 @@ const BasicInputElements = withSwal((props: any) => {
 const Students = () => {
   const dispatch = useDispatch();
   const [credStaffData, setCredStaffData] = useState([]);
+  const [sourceData, setSourceData] = useState([]);
 
   const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.Students.students,
@@ -475,9 +505,18 @@ const Students = () => {
     Authloading: state.Auth.loading,
   }));
 
+  const getSourceData = () => {
+    axios
+      .get("sourceOptions")
+      .then((res) => {
+        setSourceData(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     dispatch(getAdminStaff());
-
+    getSourceData();
     if (user?.role == "4") {
       console.log("Consultant Staff...");
       dispatch(getStudentByCreated());
@@ -515,7 +554,7 @@ const Students = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} user={user} credStaffData={credStaffData} initialLoading={initialLoading} />
+          <BasicInputElements state={state} loading={loading} error={error} user={user} credStaffData={credStaffData} initialLoading={initialLoading} sourceData={sourceData} />
         </Col>
       </Row>
     </React.Fragment>

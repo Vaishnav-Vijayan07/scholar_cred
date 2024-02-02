@@ -24,6 +24,7 @@ interface StudentData {
   date_of_birth: string;
   country_of_origin: string;
   application_status: string;
+  source: string;
 }
 
 // Common success
@@ -47,7 +48,8 @@ export const createStudent = (
   phone: string,
   date_of_birth: string | undefined,
   country_of_origin: string | undefined,
-  application_status: string | undefined
+  application_status: string | undefined,
+  source: string
 ): StudentActionType => ({
   type: StudentActionTypes.CREATE_STUDENT,
   payload: {
@@ -58,6 +60,7 @@ export const createStudent = (
     date_of_birth,
     country_of_origin,
     application_status,
+    source,
   },
 });
 
@@ -71,7 +74,8 @@ export const editStudent = (
   phone: string,
   date_of_birth: string | undefined,
   country_of_origin: string | undefined,
-  application_status: string | undefined
+  application_status: string | undefined,
+  source: string
 ): StudentActionType => ({
   type: StudentActionTypes.EDIT_STUDENT,
   payload: {
@@ -83,6 +87,7 @@ export const editStudent = (
     date_of_birth,
     country_of_origin,
     application_status,
+    source,
   },
 });
 

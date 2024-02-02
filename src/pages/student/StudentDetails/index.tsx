@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Tab, Nav } from "react-bootstrap";
+import { Row, Col, Card, Tab, Nav, ProgressBar, Dropdown } from "react-bootstrap";
 
 // components
 import PageTitle from "../../../components/PageTitle";
@@ -16,6 +16,8 @@ import { RootState } from "../../../redux/store";
 import StatisticsWidget2 from "../../../components/StatisticsWidget2";
 import DetailedScreening from "./DetailedScreening";
 import DocsScreening from "./DocsScreening";
+import classNames from "classnames";
+import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
 
 interface ProjectDetails {
   id: number;
@@ -33,6 +35,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [preliminaryDetails, setPreliminaryDetails] = useState({});
   const [preliminaryLoading, setPreliminaryLoading] = useState(false);
+  const [loanStatus, setLoanStatus] = useState([]);
 
   const { StudentData, loading } = useSelector((state: RootState) => ({
     StudentData: state.Students.studentById,
@@ -60,13 +63,20 @@ const Profile = () => {
       });
   };
 
-  const getStudentDetails = () => {
-    dispatch(getStudentById(id ? id : ""));
+  const getLoanStatus = () => {
+    axios
+      .get("loanStatus")
+      .then((res) => {
+        console.log("res ==>", res.data);
+        setLoanStatus(res.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
     getPrilimineryDetailsApi();
-    getStudentDetails();
+    dispatch(getStudentById(id ? id : ""));
+    getLoanStatus();
   }, []);
 
   useEffect(() => {
@@ -74,6 +84,20 @@ const Profile = () => {
       navigate("/cred-admin/students");
     }
   }, []);
+
+  const handleChangeStatus = (status_id: string) => {
+    axios
+      .post(`update_status/${id}`, { loan_status_id: status_id })
+      .then((res) => {
+        console.log("res", res);
+        showSuccessAlert("Status changed successfully");
+        dispatch(getStudentById(id ? id : ""));
+      })
+      .catch((err) => {
+        console.log(err);
+        showErrorAlert("Something went wrong..");
+      });
+  };
 
   return (
     <>
@@ -102,17 +126,41 @@ const Profile = () => {
             />
           </Col>
 
+          {/* Loan status */}
           <Col>
-            <StatisticsWidget2
-              variant="success"
-              description="Loan status"
-              stats={StudentData?.loan_status ? StudentData?.loan_status : "Pending"}
-              icon="fe-aperture"
-              progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
-              counterOptions={{
-                prefix: "$",
-              }}
-            />
+            <Card>
+              <Card.Body>
+                <Row>
+                  <Col className="col-2">
+                    <div className={classNames("avatar-sm", "rounded", "bg-" + "success")}>
+                      <i className={classNames("fe-refresh-cw", "avatar-title font-22 text-white")}></i>
+                    </div>
+                  </Col>
+                  <Col className="col-10">
+                    <div className="text-end">
+                      <h4 className="text-dark my-1">
+                        <span>{StudentData?.loan_status_name || StudentData?.loan_status || "Pending"}</span>
+                      </h4>
+                      <p className="text-muted mb-1 text-truncate">{"Loan status"}</p>
+                    </div>
+                  </Col>
+                </Row>
+                <div className="mt-3">
+                  <Dropdown className="float-end" align="end">
+                    <Dropdown.Toggle className="cursor-pointer" variant="light">
+                      Change status
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {loanStatus?.map((item: any) => (
+                        <Dropdown.Item eventKey={item.id} key={item.id} onClick={() => handleChangeStatus(item?.id)}>
+                          {item.status_name}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              </Card.Body>
+            </Card>
           </Col>
         </Col>
 

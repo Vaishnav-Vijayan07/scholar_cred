@@ -11,6 +11,7 @@ function createStudent(params: {
   date_of_birth: string;
   country_of_origin: string;
   application_status: string;
+  source: string
 }) {
   const baseUrl = "/create_student";
 
@@ -25,6 +26,7 @@ function createStudentByCredStaff(params: {
   date_of_birth: string;
   country_of_origin: string;
   application_status: string;
+  source: string
 }) {
   const baseUrl = "/create_student_by_cred_staff";
 
@@ -42,6 +44,7 @@ function updateStudent(
     date_of_birth: string;
     country_of_origin: string;
     application_status: string;
+    source: string
   }
 ) {
   const baseUrl = "/update_student";

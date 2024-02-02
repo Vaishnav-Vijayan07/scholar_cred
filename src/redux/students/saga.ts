@@ -33,6 +33,7 @@ interface ConsultantStaffData {
     date_of_birth: string;
     country_of_origin: string;
     application_status: string;
+    source: string
   };
   type: string;
 }
@@ -40,7 +41,7 @@ interface ConsultantStaffData {
 const api = new APICore();
 // const user = api.getLoggedInUser();
 
-function* createStudent({ payload: { first_name, last_name, email, phone, date_of_birth, country_of_origin, application_status }, type }: ConsultantStaffData): SagaIterator {
+function* createStudent({ payload: { first_name, last_name, email, phone, date_of_birth, country_of_origin, application_status, source }, type }: ConsultantStaffData): SagaIterator {
   try {
     const user = yield select((state) => state.Auth.user);
     const response = yield call(user?.role == "2" ? createStudentByCredStaffApi : createStudentApi, {
@@ -51,6 +52,7 @@ function* createStudent({ payload: { first_name, last_name, email, phone, date_o
       date_of_birth,
       country_of_origin,
       application_status,
+      source
     });
 
     const consultant_data = response.data.message;
@@ -138,7 +140,7 @@ function* getStudentById({ payload: { student_id } }: ConsultantStaffData): Saga
 }
 
 function* updateStudent({
-  payload: { student_id, first_name, last_name, email, phone, date_of_birth, country_of_origin, application_status },
+  payload: { student_id, first_name, last_name, email, phone, date_of_birth, country_of_origin, application_status, source  },
   type,
 }: ConsultantStaffData): SagaIterator {
   try {
@@ -151,6 +153,7 @@ function* updateStudent({
       date_of_birth,
       country_of_origin,
       application_status,
+      source
     });
     const consultant_data = response.data.message;
 

@@ -24,6 +24,11 @@ export const getColumns = (handleResetPassword: any, resetPassword: any, handleU
       sort: false,
     },
     {
+      Header: "Email",
+      accessor: "email",
+      sort: false,
+    },
+    {
       Header: "Intake Month",
       accessor: "intake_month",
       sort: false,
@@ -50,15 +55,20 @@ export const getColumns = (handleResetPassword: any, resetPassword: any, handleU
       ),
     },
     {
+      Header: "Source",
+      accessor: "source_name",
+      sort: false,
+    },
+    {
       Header: "Created By",
       accessor: "created_user",
       sort: false,
     },
-    {
-      Header: "Assigned Staff",
-      accessor: "assigned_staff",
-      sort: false,
-    },
+    // {
+    //   Header: "Assigned Staff",
+    //   accessor: "assigned_staff",
+    //   sort: false,
+    // },
     // {
     //   Header: "Send Password",
     //   accessor: "",
@@ -139,6 +149,11 @@ export const getConsultantStaffColumns = (handleResetPassword: any, resetPasswor
       sort: false,
     },
     {
+      Header: "Email",
+      accessor: "email",
+      sort: false,
+    },
+    {
       Header: "Intake Month",
       accessor: "intake_month",
       sort: false,
@@ -163,6 +178,11 @@ export const getConsultantStaffColumns = (handleResetPassword: any, resetPasswor
           {row.original?.loan_status}
         </Badge>
       ),
+    },
+    {
+      Header: "Source",
+      accessor: "source_name",
+      sort: false,
     },
     // {
     //   Header: "Send Password",
@@ -244,6 +264,11 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
       sort: false,
     },
     {
+      Header: "Email",
+      accessor: "email",
+      sort: false,
+    },
+    {
       Header: "Intake Month",
       accessor: "intake_month",
       sort: false,
@@ -268,6 +293,11 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
           {row.original?.loan_status}
         </Badge>
       ),
+    },
+    {
+      Header: "Source",
+      accessor: "source_name",
+      sort: false,
     },
     {
       Header: "Created By",

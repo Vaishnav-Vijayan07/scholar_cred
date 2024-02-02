@@ -27,7 +27,7 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, initialLoading, credStaffData } = props;
+  const { swal, loading, state, error, user, initialLoading, credStaffData, sourceData } = props;
   const dispatch = useDispatch();
 
   const [filteredItems, setFilteredItems] = useState(state);
@@ -54,6 +54,8 @@ const BasicInputElements = withSwal((props: any) => {
       .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
     date_of_birth: yup.string().required("DOB is required"),
     country_of_origin: yup.string().nullable(),
+    source: yup.string().required("Source is required").nullable(),
+
     // application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
   });
 
@@ -78,6 +80,7 @@ const BasicInputElements = withSwal((props: any) => {
       date_of_birth: moment(item.date_of_birth).format("YYYY-MM-DD"),
       country_of_origin: item.country_of_origin,
       application_status: item.application_status,
+      source: item.source,
     }));
 
     setIsUpdate(true);
@@ -140,13 +143,23 @@ const BasicInputElements = withSwal((props: any) => {
             formData.phone,
             formData.date_of_birth,
             formData.country_of_origin,
-            formData.application_status
+            formData.application_status,
+            formData.source
           )
         );
       } else {
         // Handle add logic
         dispatch(
-          createStudent(formData.first_name, formData.last_name, formData.email, formData.phone, formData.date_of_birth, formData.country_of_origin, formData.application_status)
+          createStudent(
+            formData.first_name,
+            formData.last_name,
+            formData.email,
+            formData.phone,
+            formData.date_of_birth,
+            formData.country_of_origin,
+            formData.application_status,
+            formData.source
+          )
         );
       }
     } catch (validationError) {
@@ -356,6 +369,24 @@ const BasicInputElements = withSwal((props: any) => {
                   </Form.Group>
                 </Col>
               </Row>
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="source">
+                    <Form.Label>Source</Form.Label>
+                    <Form.Select name="source" value={formData.source} onChange={handleInputChange} aria-label="Default select example">
+                      <option disabled value="" selected>
+                        Choose a source...{" "}
+                      </option>
+                      {sourceData?.map((item: any) => (
+                        <option value={item?.id} key={item?.id}>
+                          {item?.source_name}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    {validationErrors.source && <Form.Text className="text-danger">{validationErrors.source}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -462,6 +493,7 @@ const BasicInputElements = withSwal((props: any) => {
 const IntakeStudents = () => {
   const dispatch = useDispatch();
   const [credStaffData, setCredStaffData] = useState([]);
+  const [sourceData, setSourceData] = useState([]);
 
   const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.Students.students,
@@ -475,8 +507,18 @@ const IntakeStudents = () => {
     Authloading: state.Auth.loading,
   }));
 
+  const getSourceData = () => {
+    axios
+      .get("sourceOptions")
+      .then((res) => {
+        setSourceData(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     dispatch(getAdminStaff());
+    getSourceData();
 
     if (user?.role == "4") {
       console.log("Consultant Staff...");
@@ -522,6 +564,7 @@ const IntakeStudents = () => {
             user={user}
             credStaffData={credStaffData}
             initialLoading={initialLoading}
+            sourceData={sourceData}
           />
         </Col>
       </Row>

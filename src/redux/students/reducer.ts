@@ -21,6 +21,7 @@ interface StudentData {
   date_of_birth: string;
   country_of_origin: string;
   application_status: string;
+  source: string
 }
 
 interface studentActionType {

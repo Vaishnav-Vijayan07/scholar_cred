@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Tab, Nav, Button } from "react-bootstrap";
+import { Row, Col, Card, Tab, Nav, Button, Dropdown } from "react-bootstrap";
 
 // components
 import PageTitle from "../../../components/PageTitle";
@@ -15,6 +15,7 @@ import StatisticsWidget2 from "../../../components/StatisticsWidget2";
 import Comments from "./Comments";
 import Attachments from "./Attachments";
 import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
+import classNames from "classnames";
 
 interface Params {
   id: string;
@@ -31,6 +32,7 @@ const Profile = () => {
   const [preliminaryLoading, setPreliminaryLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [attachments, setAttachments] = useState([]);
+  const [internalStatus, setInternalStatus] = useState([]);
 
   const { StudentData, loading, CommentsData, CommentsLoading } = useSelector((state: RootState) => ({
     StudentData: state.Students.studentById,
@@ -77,10 +79,18 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
+    getInternalStatus();
     if (!id) {
       navigate("/cred-admin/students");
     }
   }, []);
+
+  const getInternalStatus = () => {
+    axios.get("internalStatus").then((res) => {
+      console.log("res==>", res.data);
+      setInternalStatus(res.data);
+    });
+  };
 
   const handleAppprove = () => {
     setIsLoading(true);
@@ -96,6 +106,17 @@ const Profile = () => {
         setIsLoading(false);
         console.log(err);
       });
+  };
+
+  const handleChangeStatus = (status_id: string) => {
+    axios
+      .post(`update_status/${id}`, { internal_status_id: status_id })
+      .then((res) => {
+        console.log("res", res);
+        showSuccessAlert("Status changed successfully");
+        getStudentDetails();
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -125,7 +146,7 @@ const Profile = () => {
             />
           </Col>
 
-          <Col>
+          {/* <Col>
             <StatisticsWidget2
               variant="success"
               description="Loan status"
@@ -136,6 +157,42 @@ const Profile = () => {
                 prefix: "$",
               }}
             />
+          </Col> */}
+          {/* Internal status */}
+          <Col>
+            <Card>
+              <Card.Body>
+                <Row>
+                  <Col className="col-2">
+                    <div className={classNames("avatar-sm", "rounded", "bg-" + "secondary")}>
+                      <i className={classNames("fe-monitor", "avatar-title font-22 text-white")}></i>
+                    </div>
+                  </Col>
+                  <Col className="col-10">
+                    <div className="text-end">
+                      <h4 className="text-dark my-1">
+                        <span>{StudentData?.internal_status_name || "Student Created"}</span>
+                      </h4>
+                      <p className="text-muted mb-1 text-truncate">{"Internal Status"}</p>
+                    </div>
+                  </Col>
+                </Row>
+                <div className="mt-3">
+                  <Dropdown className="float-end" align="end">
+                    <Dropdown.Toggle className="cursor-pointer" variant="light">
+                      Change status
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {internalStatus?.map((item: any) => (
+                        <Dropdown.Item eventKey={item.id} key={item.id} onClick={() => handleChangeStatus(item?.id)}>
+                          {item.status_name}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              </Card.Body>
+            </Card>
           </Col>
         </Col>
 

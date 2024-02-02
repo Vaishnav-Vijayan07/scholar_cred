@@ -121,6 +121,7 @@ export interface StudentDataTypes {
   date_of_birth?: string | undefined;
   country_of_origin?: string;
   application_status?: string;
+  source: string;
 }
 
 export const StudentInitialState = {
@@ -132,6 +133,7 @@ export const StudentInitialState = {
   date_of_birth: "",
   country_of_origin: "",
   application_status: "Pending",
+  source: "",
 };
 
 export const StudentValidationState = {
@@ -142,6 +144,7 @@ export const StudentValidationState = {
   date_of_birth: "",
   country_of_origin: "",
   application_status: "",
+  source: "",
 };
 
 // -------- Consultant Staffs --------------
