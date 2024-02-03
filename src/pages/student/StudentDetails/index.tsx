@@ -42,6 +42,8 @@ const Profile = () => {
     loading: state.Students.loading,
   }));
 
+  console.log("StudentData---->", StudentData);
+
   const methods = useForm();
   const {
     register,
@@ -117,7 +119,7 @@ const Profile = () => {
             <StatisticsWidget2
               variant="blue"
               description="Application status"
-              stats={StudentData?.status_name ? StudentData?.status_name : StudentData?.application_status || "Pending"}
+              stats={StudentData?.status_name || "Pending"}
               icon="fe-aperture"
               progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
               counterOptions={{
@@ -139,7 +141,7 @@ const Profile = () => {
                   <Col className="col-10">
                     <div className="text-end">
                       <h4 className="text-dark my-1">
-                        <span>{StudentData?.loan_status_name || StudentData?.loan_status || "Pending"}</span>
+                        <span>{StudentData?.loan_status_name || "Pending"}</span>
                       </h4>
                       <p className="text-muted mb-1 text-truncate">{"Loan status"}</p>
                     </div>
@@ -205,7 +207,7 @@ const Profile = () => {
                   </Tab.Pane>
 
                   <Tab.Pane eventKey="document_screening">
-                    <DocsScreening />
+                    <DocsScreening StudentData={StudentData} student_id={id} />
                   </Tab.Pane>
 
                   <Tab.Pane eventKey="history">

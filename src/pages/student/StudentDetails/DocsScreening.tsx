@@ -36,6 +36,8 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
     // Handle form submission here with formValues
   };
 
+  console.log("StudentData?.loan_type=>", StudentData?.loan_type);
+
   useEffect(() => {
     const fetchDataFromAPI = async () => {
       try {
@@ -45,12 +47,16 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
 
           let apiEndpoint;
 
+          console.log("loanType-->", loanType);
+
           // Determine the API endpoint based on the loan type
-          if (loanType === "SECURE") {
+          if (loanType == "SECURE") {
             apiEndpoint = `getSecuredDocumentsDataById/${student_id}`;
           } else {
             apiEndpoint = `getUnSecuredDocumentsDataById/${student_id}`;
           }
+
+          console.log("apiEndpoint", apiEndpoint);
 
           // const response = await axios.get(`getSecuredScreeningData/${student_id}`);
           const response = await axios.get(apiEndpoint);
@@ -104,7 +110,9 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
           {rows.map((field) => (
             <Col key={field.name} xl={6} xxl={4} className="p-2">
               <Form.Group controlId={field.name}>
-                <Form.Label><span className="text-danger">*</span> {field.label}</Form.Label>
+                <Form.Label>
+                  <span className="text-danger">*</span> {field.label}
+                </Form.Label>
 
                 <Card className="mt-1 mb-0 shadow-none border">
                   <div className="p-2">

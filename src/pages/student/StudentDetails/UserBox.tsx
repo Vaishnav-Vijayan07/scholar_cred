@@ -56,12 +56,12 @@ const UserBox = ({ StudentData, loading }: any) => {
 
               <p className="text-muted mb-2 font-13">
                 <strong>Loan Status :</strong>
-                <span className="ms-2">{StudentData?.loan_status}</span>
+                <span className="ms-2">{StudentData?.loan_status_name || "Pending"}</span>
               </p>
 
               <p className="text-muted mb-2 font-13">
                 <strong>Application Status :</strong>
-                <span className="ms-2">{StudentData?.status_name ? StudentData?.status_name : StudentData?.application_status || "Pending"}</span>
+                <span className="ms-2">{StudentData?.status_name || "Pending"}</span>
               </p>
 
               <p className="text-muted mb-2 font-13">
