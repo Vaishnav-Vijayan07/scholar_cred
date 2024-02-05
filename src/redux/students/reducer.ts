@@ -21,7 +21,7 @@ interface StudentData {
   date_of_birth: string;
   country_of_origin: string;
   application_status: string;
-  source: string
+  source: string;
 }
 
 interface studentActionType {
@@ -35,7 +35,8 @@ interface studentActionType {
     | StudentActionTypes.GET_STUDENT_BY_STAFF
     | StudentActionTypes.GET_ASSIGNED_STUDENT
     | StudentActionTypes.GET_STUDENT_BY_CREATED
-    | StudentActionTypes.GET_STUDENT_BY_ID;
+    | StudentActionTypes.GET_STUDENT_BY_ID
+    | StudentActionTypes.GET_STUDENT_BY_CONSULTANT;
   payload: {
     actionType?: string;
     data?: StudentData | {};
@@ -77,6 +78,14 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
             loading: false,
             initialLoading: false,
             studentById: action.payload.data,
+          };
+        }
+        case StudentActionTypes.GET_STUDENT_BY_CONSULTANT: {
+          return {
+            ...state,
+            loading: false,
+            initialLoading: false,
+            students: action.payload.data,
           };
         }
         case StudentActionTypes.GET_STUDENT: {
@@ -189,6 +198,16 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
           };
         }
 
+        case StudentActionTypes.GET_STUDENT_BY_CONSULTANT: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            students: [],
+            initialLoading: false,
+          };
+        }
+
         default:
           return { ...state };
       }
@@ -212,6 +231,9 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
       return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.GET_ASSIGNED_STUDENT:
+      return { ...state, loading: true, initialLoading: true };
+
+    case StudentActionTypes.GET_STUDENT_BY_CONSULTANT:
       return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.DELETE_STUDENT:

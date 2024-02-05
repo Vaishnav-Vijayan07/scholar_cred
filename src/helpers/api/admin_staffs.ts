@@ -46,7 +46,7 @@ function updateAdminStaff(
   }
 ) {
   const baseUrl = "/edit_admin_staff";
-  return api.update(`${baseUrl}?id=${id}`, params);
+  return api.updateWithFile(`${baseUrl}?id=${id}`, params);
 }
 
 function deleteAdminStaff(id: number) {

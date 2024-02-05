@@ -11,7 +11,8 @@ function createStudent(params: {
   date_of_birth: string;
   country_of_origin: string;
   application_status: string;
-  source: string
+  source: string;
+  consultant_id: string;
 }) {
   const baseUrl = "/create_student";
 
@@ -26,7 +27,8 @@ function createStudentByCredStaff(params: {
   date_of_birth: string;
   country_of_origin: string;
   application_status: string;
-  source: string
+  source: string;
+  consultant_id: string;
 }) {
   const baseUrl = "/create_student_by_cred_staff";
 
@@ -44,7 +46,7 @@ function updateStudent(
     date_of_birth: string;
     country_of_origin: string;
     application_status: string;
-    source: string
+    source: string;
   }
 ) {
   const baseUrl = "/update_student";
@@ -81,4 +83,20 @@ function getStudentById(student_id: string) {
   return api.get(`${baseUrl}?id=${student_id}`, {});
 }
 
-export { createStudent, deleteStudent, getStudent, getStudentById, updateStudent, getStudentByStaff, getStudentByCreated, createStudentByCredStaff, getAssignedStudents };
+function getStudentByConsultant(consultant_id: string) {
+  const baseUrl = "/get_students_by_staff_id";
+  return api.get(`${baseUrl}/${consultant_id}`, {});
+}
+
+export {
+  createStudent,
+  deleteStudent,
+  getStudent,
+  getStudentById,
+  updateStudent,
+  getStudentByStaff,
+  getStudentByCreated,
+  createStudentByCredStaff,
+  getAssignedStudents,
+  getStudentByConsultant,
+};

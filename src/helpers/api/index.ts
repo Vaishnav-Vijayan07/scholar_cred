@@ -20,6 +20,7 @@ import {
   getStudentByStaff,
   getStudentByCreated,
   createStudentByCredStaff,
+  getStudentByConsultant,
 } from "./students";
 
 export {
@@ -77,4 +78,5 @@ export {
   deleteLoanStatus,
   getLoanStatus,
   updateLoanStatus,
+  getStudentByConsultant,
 };

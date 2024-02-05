@@ -12,7 +12,8 @@ export interface StudentActionType {
     | StudentActionTypes.GET_STUDENT_BY_STAFF
     | StudentActionTypes.GET_STUDENT_BY_CREATED
     | StudentActionTypes.GET_ASSIGNED_STUDENT
-    | StudentActionTypes.GET_STUDENT_BY_ID;
+    | StudentActionTypes.GET_STUDENT_BY_ID
+    | StudentActionTypes.GET_STUDENT_BY_CONSULTANT;
   payload: {} | string;
 }
 interface StudentData {
@@ -49,7 +50,8 @@ export const createStudent = (
   date_of_birth: string | undefined,
   country_of_origin: string | undefined,
   application_status: string | undefined,
-  source: string
+  source: string,
+  consultant_id: string
 ): StudentActionType => ({
   type: StudentActionTypes.CREATE_STUDENT,
   payload: {
@@ -61,6 +63,7 @@ export const createStudent = (
     country_of_origin,
     application_status,
     source,
+    consultant_id
   },
 });
 
@@ -121,4 +124,9 @@ export const getAllAssignedStudents = (): StudentActionType => ({
 export const getStudentById = (student_id: string): StudentActionType => ({
   type: StudentActionTypes.GET_STUDENT_BY_ID,
   payload: { student_id },
+});
+
+export const getStudentByConsultant = (consultant_id: string): StudentActionType => ({
+  type: StudentActionTypes.GET_STUDENT_BY_CONSULTANT,
+  payload: { consultant_id },
 });

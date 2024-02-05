@@ -97,8 +97,8 @@ const BasicInputElements = withSwal((props: any) => {
       if (validationError instanceof yup.ValidationError) {
         const errors: any = {};
         validationError.inner.forEach((error) => {
-          if (error.path) {
-            errors[error.path] = error.message;
+          if (error?.path) {
+            errors[error?.path] = error?.message;
           }
         });
         setValidationErrors(errors);
@@ -232,9 +232,9 @@ const BasicInputElements = withSwal((props: any) => {
                 <h4 className="modal-title">Add Cred Admin Users</h4>
               </Modal.Header>
               <Modal.Body className="px-3">
-                {error && (
+                {error && Object.keys(error).length !== 0 && (
                   <Alert variant="danger" className="my-2">
-                    {error}
+                    {error && Object.keys(error).length !== 0 ? error : null}
                   </Alert>
                 )}
                 <Row>
@@ -334,7 +334,7 @@ const AdminUsers = () => {
   const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.CredAdminStates.credAdmin,
     loading: state?.CredAdminStates.loading,
-    error: state?.CredAdminStates.error,
+    error: state?.CredAdminStates?.error,
     initialLoading: state?.CredAdminStates?.initialLoading,
   }));
 

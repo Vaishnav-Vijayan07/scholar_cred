@@ -59,11 +59,11 @@ export const getColumns = (handleResetPassword: any, resetPassword: any, handleU
       accessor: "source_name",
       sort: false,
     },
-    {
-      Header: "Created By",
-      accessor: "created_user",
-      sort: false,
-    },
+    // {
+    //   Header: "Created By",
+    //   accessor: "created_user",
+    //   sort: false,
+    // },
     // {
     //   Header: "Assigned Staff",
     //   accessor: "assigned_staff",
@@ -299,11 +299,11 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
       accessor: "source_name",
       sort: false,
     },
-    {
-      Header: "Created By",
-      accessor: "created_user",
-      sort: false,
-    },
+    // {
+    //   Header: "Created By",
+    //   accessor: "created_user",
+    //   sort: false,
+    // },
     {
       Header: "Actions",
       accessor: "",

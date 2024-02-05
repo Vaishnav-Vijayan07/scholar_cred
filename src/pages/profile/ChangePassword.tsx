@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword } from "../../redux/actions";
 import { RootState } from "../../redux/store";
+import { useForm } from "react-hook-form";
 
 interface AboutProps {
   projectDetails: {
@@ -34,14 +35,6 @@ const ChangePassword = () => {
   const schemaResolver = yupResolver(
     yup.object().shape({
       old_password: yup.string().required(t("Please enter Old Password")),
-      // new_password: yup
-      //   .string()
-      //   .required(t("Please enter New Password"))
-      //   .min(8, t("Password must be at least 8 characters long"))
-      //   .matches(
-      //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).*$/,
-      //     t("Password must include at least one uppercase letter, one lowercase letter, one number, and one special character")
-      //   ),
       new_password: yup.string().required(t("Please enter New Password")).min(6, t("Password must be at least 6 characters long")),
       reenter_new_password: yup
         .string()
@@ -50,8 +43,22 @@ const ChangePassword = () => {
     })
   );
 
+  const { handleSubmit, register, reset } = useForm({
+    resolver: schemaResolver,
+    defaultValues: {
+      old_password: "",
+      new_password: "",
+      reenter_new_password: "",
+    },
+  });
+
   const onSubmit = (formData: any) => {
     dispatch(changePassword(formData["old_password"], formData["new_password"], user?.user_id));
+    reset({
+      old_password: "",
+      new_password: "",
+      reenter_new_password: "",
+    });
   };
 
   return (

@@ -15,7 +15,7 @@ import PageTitle from "../../components/PageTitle";
 import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../users/data";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { createStudent, deleteStudent, editStudent, getAdminStaff, getStudent, getStudentByCreated, getStudentByStaff, resetPassword } from "../../redux/actions";
+import { createStudent, deleteStudent, editStudent, getAdminStaff, getStudent, getStudentByConsultant, getStudentByCreated, getStudentByStaff, resetPassword } from "../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
 import { getColumns, getConsultantStaffColumns, getCredStaffColumns } from "./ColumnsConfig";
@@ -27,7 +27,7 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, initialLoading, credStaffData, sourceData } = props;
+  const { swal, loading, state, error, user, initialLoading, credStaffData, sourceData, getStudentBasedOnRole, consultant_id } = props;
   const dispatch = useDispatch();
 
   const [filteredItems, setFilteredItems] = useState(state);
@@ -158,7 +158,8 @@ const BasicInputElements = withSwal((props: any) => {
             formData.date_of_birth,
             formData.country_of_origin,
             formData.application_status,
-            formData.source
+            formData.source,
+            consultant_id
           )
         );
       }
@@ -258,7 +259,8 @@ const BasicInputElements = withSwal((props: any) => {
       });
       showSuccessAlert(response.data.message);
       setIsLoading(false);
-      dispatch(getStudent());
+      // dispatch(getStudent());
+      getStudentBasedOnRole();
       setSelectedFile([]);
       toggleUploadModal();
     } catch (err) {
@@ -519,18 +521,28 @@ const IntakeStudents = () => {
   useEffect(() => {
     dispatch(getAdminStaff());
     getSourceData();
+    getStudentBasedOnRole();
+  }, []);
 
+  const getStudentBasedOnRole = () => {
     if (user?.role == "4") {
-      console.log("Consultant Staff...");
+      console.log("Consultant Admin, consultant staff...");
+      // based on created
       dispatch(getStudentByCreated());
     } else if (user?.role == "2") {
-      console.log("Consultant Staff...");
+      console.log("Cred staff...");
+      // based on assigned to
       dispatch(getStudentByStaff());
-    } else {
-      console.log("Other...");
-      dispatch(getStudent());
+    } else if (user?.role == "7") {
+      console.log("Cred staff...");
+      // based on assigned to
+      dispatch(getStudentByConsultant(user?.consultant_id));
     }
-  }, []);
+    //  else {
+    //   console.log("Other...");
+    //   dispatch(getStudent());
+    // }
+  };
 
   useEffect(() => {
     if (credStaff) {
@@ -541,6 +553,7 @@ const IntakeStudents = () => {
       setCredStaffData(CredStaffArray);
     }
   }, [credStaff]);
+  
 
   return (
     <React.Fragment>
@@ -565,6 +578,8 @@ const IntakeStudents = () => {
             credStaffData={credStaffData}
             initialLoading={initialLoading}
             sourceData={sourceData}
+            getStudentBasedOnRole={getStudentBasedOnRole}
+            consultant_id={user?.consultant_id}
           />
         </Col>
       </Row>

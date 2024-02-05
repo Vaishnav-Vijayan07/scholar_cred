@@ -162,7 +162,8 @@ const BasicInputElements = withSwal((props: any) => {
             formData.date_of_birth,
             formData.country_of_origin,
             formData.application_status,
-            formData.source
+            formData.source,
+            user?.consultant_id
           )
         );
       }

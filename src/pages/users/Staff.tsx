@@ -52,6 +52,7 @@ const BasicInputElements = withSwal((props: any) => {
 
   //handling update logic
   const handleUpdate = (item: any) => {
+    handleCancelUpdate();
     setFormData((prev) => ({
       ...prev,
       id: item.id,
@@ -59,7 +60,7 @@ const BasicInputElements = withSwal((props: any) => {
       last_name: item.last_name,
       email: item.email,
       phone: item.phone,
-      image: item.image,
+      file: item.image,
       username: item.username,
       employee_id: item.employee_id,
     }));
@@ -137,9 +138,10 @@ const BasicInputElements = withSwal((props: any) => {
 
   const columns = [
     {
-      Header: "ID",
-      accessor: "id",
-      sort: true,
+      Header: "Sl No",
+      accessor: "slNo",
+      Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
+      sort: false,
     },
     {
       Header: "First Name",
@@ -166,16 +168,12 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "phone",
       sort: false,
     },
-    // {
-    //   Header: "Image",
-    //   accessor: "image",
-    //   sort: false,
-    //   Cell: ({ row }: any) => (
-    //     <>
-    //       <img src={baseUrl + row.original.image} alt="user image" width={50} />
-    //     </>
-    //   ),
-    // },
+    {
+      Header: "Image",
+      accessor: "image",
+      sort: false,
+      Cell: ({ row }: any) => <>{row.original.image && <img src={baseUrl + row.original.image} alt="user image" width={100} />}</>,
+    },
     {
       Header: "Employee Id",
       accessor: "employee_id",
@@ -241,6 +239,7 @@ const BasicInputElements = withSwal((props: any) => {
   const handleCancelUpdate = () => {
     setIsUpdate(false);
     setFormData(StaffInitialState);
+    setSelectedFile(null);
   };
 
   const toggleResponsiveModal = () => {
@@ -282,6 +281,8 @@ const BasicInputElements = withSwal((props: any) => {
   if (initialLoading) {
     return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
   }
+
+  console.log("formData", formData);
 
   return (
     <>
@@ -357,6 +358,9 @@ const BasicInputElements = withSwal((props: any) => {
                     <Form.Group className="mb-3" controlId="image">
                       <Form.Label>Image</Form.Label>
                       <Form.Control type="file" name="image" placeholder="Choose an image" onChange={handleFileChange} />
+                      {selectedFile && <img src={URL.createObjectURL(selectedFile)} alt="selected file" width={100} className="mt-2" />}
+                      {/* {isUpdate && <img src={selectedFile && URL.createObjectURL(selectedFile) || formData.file} alt="selected file" width={100} />} */}
+                      {!selectedFile && isUpdate && <img src={`${process.env.REACT_APP_BACKEND_URL}/${formData.file}`} alt="selected file" width={100} className="mt-2" />}
                     </Form.Group>
                   </Col>
                 </Row>
