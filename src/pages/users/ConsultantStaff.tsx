@@ -30,6 +30,7 @@ const BasicInputElements = withSwal((props: any) => {
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   //validation errors
   const [validationErrors, setValidationErrors] = useState(ConsultantStaffInitialValidationState);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const validationSchema = yup.object().shape({
     first_name: yup.string().required("First name is required").nullable(),
@@ -121,7 +122,8 @@ const BasicInputElements = withSwal((props: any) => {
             formData.username,
             formData.email,
             formData.phone,
-            formData.image,
+            // formData.image,
+            selectedFile,
             formData.employee_id,
             1,
             user?.consultant_id
@@ -136,7 +138,8 @@ const BasicInputElements = withSwal((props: any) => {
             formData.username,
             formData.email,
             formData.phone,
-            formData.image,
+            // formData.image,
+            selectedFile,
             formData.employee_id,
             1,
             user?.consultant_id
@@ -188,16 +191,12 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "phone",
       sort: false,
     },
-    // {
-    //   Header: "Image",
-    //   accessor: "image",
-    //   sort: false,
-    //   Cell: ({ row }: any) => (
-    //     <>
-    //       <img src={row.original.image} alt="user image" width={50} />
-    //     </>
-    //   ),
-    // },
+    {
+      Header: "Image",
+      accessor: "image",
+      sort: false,
+      Cell: ({ row }: any) => <>{row.original.image && <img src={`${process.env.REACT_APP_BACKEND_URL}${row.original.image}`} alt="user image" width={50} />}</>,
+    },
     {
       Header: "Employee Id",
       accessor: "employee_id",
@@ -263,6 +262,7 @@ const BasicInputElements = withSwal((props: any) => {
   const handleCancelUpdate = () => {
     setIsUpdate(false);
     setFormData(ConsultantStaffInitialState);
+    setSelectedFile(null)
   };
 
   const toggleResponsiveModal = () => {
@@ -364,6 +364,17 @@ const BasicInputElements = withSwal((props: any) => {
                     <Form.Label>Username</Form.Label>
                     <Form.Control type="text" name="username" placeholder="Enter Username" value={formData.username} onChange={handleInputChange} />
                     {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3" controlId="file">
+                    <Form.Label>Image</Form.Label>
+                    <Form.Control type="file" name="file" placeholder="Enter pin code" onChange={(e: any) => setSelectedFile(e.target.files[0])} />
+                    {validationErrors.file && <Form.Text className="text-danger">{validationErrors.file}</Form.Text>}
+                    {selectedFile && <img src={URL.createObjectURL(selectedFile)} className="mt-2" alt="selected image" width={100} />}
                   </Form.Group>
                 </Col>
               </Row>

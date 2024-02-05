@@ -27,6 +27,7 @@ const Staff = React.lazy(() => import("../pages/users/Staff"));
 const AllStudents = React.lazy(() => import("../pages/student/AllStudents"));
 const IntakeStudents = React.lazy(() => import("../pages/student/IntakeStudents"));
 const StudentAdminView = React.lazy(() => import("../pages/student/StudentAdminView"));
+const StudentAdminViewIntake = React.lazy(() => import("../pages/student/StudentAdminViewIntake"));
 const StudentDetails = React.lazy(() => import("../pages/student/StudentDetails"));
 const StudentDetailsConsultant = React.lazy(() => import("../pages/student/StudentDetailsConsultant"));
 const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
@@ -126,6 +127,12 @@ const userRoutes = {
       path: "/cred-admin/students",
       name: "Students",
       element: <PrivateRoute roles={["CRED_ADMIN"]} component={StudentAdminView} />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/cred-admin/all-students",
+      name: "Students",
+      element: <PrivateRoute roles={["CRED_ADMIN"]} component={StudentAdminViewIntake} />,
       route: PrivateRoute,
     },
     {

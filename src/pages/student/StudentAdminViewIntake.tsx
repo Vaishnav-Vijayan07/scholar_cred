@@ -799,7 +799,7 @@ const Students = () => {
       <Row>
         <Col>
           <BasicInputElements
-            state={state.filter((item: any) => item.status == true)}
+            state={state}
             loading={loading}
             error={error}
             user={user}

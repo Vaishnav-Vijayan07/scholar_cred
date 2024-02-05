@@ -55,6 +55,16 @@ export const getColumns = (handleResetPassword: any, resetPassword: any, handleU
       ),
     },
     {
+      Header: "Loan Type",
+      accessor: "loan_type",
+      sort: false,
+    },
+    {
+      Header: "Consultant Name",
+      accessor: "consultant_name",
+      sort: false,
+    },
+    {
       Header: "Source",
       accessor: "source_name",
       sort: false,
@@ -180,6 +190,16 @@ export const getConsultantStaffColumns = (handleResetPassword: any, resetPasswor
       ),
     },
     {
+      Header: "Loan Type",
+      accessor: "loan_type",
+      sort: false,
+    },
+    {
+      Header: "Consultant Name",
+      accessor: "consultant_name",
+      sort: false,
+    },
+    {
       Header: "Source",
       accessor: "source_name",
       sort: false,
@@ -293,6 +313,16 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
           {row.original?.loan_status}
         </Badge>
       ),
+    },
+    {
+      Header: "Loan Type",
+      accessor: "loan_type",
+      sort: false,
+    },
+    {
+      Header: "Consultant Name",
+      accessor: "consultant_name",
+      sort: false,
     },
     {
       Header: "Source",

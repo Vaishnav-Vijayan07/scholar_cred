@@ -104,13 +104,13 @@ const Login2 = () => {
         </VerticalForm>
 
         <div className="d-flex mt-2 justify-content-between">
-          <Button onClick={() => dispatch(loginUser("CREDADMIN", "CREDADMIN"))} className="custom_btn">
+          <Button onClick={() => dispatch(loginUser("cred_admin", "cred_admin"))} className="custom_btn">
             Cred Admin
           </Button>
-          <Button onClick={() => dispatch(loginUser("jatebaw277@usoplay.com", "4CPqeH"))} className="custom_btn">
+          <Button onClick={() => dispatch(loginUser("wocirey309@gosarlar.com", "ijy2As"))} className="custom_btn">
             Cred Staff
           </Button>
-          <Button onClick={() => dispatch(loginUser("vaishnav@intersmart.in", "UmB9Kw"))} className="custom_btn">
+          <Button onClick={() => dispatch(loginUser("ajaydev", "ajaydev"))} className="custom_btn">
             Con. Admin
           </Button>
           <Button onClick={() => dispatch(loginUser("xileja6404@hupoi.com", "fxfBNF"))} className="custom_btn">

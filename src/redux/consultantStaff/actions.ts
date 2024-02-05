@@ -20,7 +20,7 @@ interface AdminStaffData {
   username: string;
   email: string;
   phone: string;
-  image: string;
+  file: File | null;
   employee_id: string;
   created_by: number;
   consultant_id: string;
@@ -53,7 +53,7 @@ export const createConsultantStaffs = (
   username: string,
   email: string,
   phone: string,
-  image: string,
+  file: File | null,
   employee_id: string,
   created_by: number,
   consultant_id: string
@@ -65,7 +65,7 @@ export const createConsultantStaffs = (
     username,
     email,
     phone,
-    image,
+    file,
     employee_id,
     created_by,
     consultant_id,
@@ -79,7 +79,7 @@ export const editConsultantStaffs = (
   username: string,
   email: string,
   phone: string,
-  image: string,
+  file: File | null,
   employee_id: string,
   created_by: number,
   consultant_id: string
@@ -92,7 +92,7 @@ export const editConsultantStaffs = (
     username,
     email,
     phone,
-    image,
+    file,
     employee_id,
     created_by,
     consultant_id,

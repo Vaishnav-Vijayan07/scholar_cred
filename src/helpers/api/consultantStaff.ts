@@ -22,14 +22,14 @@ function createConsultantStaff(params: {
   username: string;
   email: string;
   phone: string;
-  image: string;
+  file: File | null;
   employee_id: string;
   created_by: number;
   consultant_id: string;
 }) {
   const baseUrl = "/create_consultant_staff";
 
-  return api.create(`${baseUrl}`, params);
+  return api.createWithFile(`${baseUrl}`, params);
 }
 
 // account
@@ -41,14 +41,14 @@ function updateConsultantStaff(
     username: string;
     email: string;
     phone: string;
-    image: string;
+    file: File | null;
     employee_id: string;
     created_by: number;
     consultant_id: string;
   }
 ) {
   const baseUrl = "/edit_consultant_staff";
-  return api.update(`${baseUrl}?id=${id}`, params);
+  return api.updateWithFile(`${baseUrl}?id=${id}`, params);
 }
 
 function deleteConsultantStaff(id: number) {

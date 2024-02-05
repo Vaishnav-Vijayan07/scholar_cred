@@ -179,6 +179,6 @@ export const ConsultantStaffInitialValidationState = {
   email: "",
   username: "",
   phone: "",
-  image: "https://picsum.photos/id/0/367/267",
+  file: "",
   employee_id: "",
 };

@@ -70,13 +70,22 @@ const MENU_ITEMS: MenuItemTypes[] = [
     roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
   },
   {
+    key: "all-students",
+    label: "All Students",
+    isTitle: false,
+    icon: "users",
+    url: "/cred-admin/all-students",
+    roles: ["CRED_ADMIN"],
+  },
+  {
     key: "students",
-    label: "Students",
+    label: "Intake Students",
     isTitle: false,
     icon: "users",
     url: "/cred-admin/students",
     roles: ["CRED_ADMIN"],
   },
+
 
   { key: "cred_admin_management", label: "Cred Admin Management", isTitle: true, roles: ["SUPER_USER", "CRED_ADMIN"] },
 
@@ -184,8 +193,16 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
       {
+        key: "all-students",
+        label: "All Students",
+        isTitle: false,
+        icon: "users",
+        url: "/cred-admin/all-students",
+        roles: ["CRED_ADMIN"],
+      },
+      {
         key: "students",
-        label: "Students",
+        label: "Intake Students",
         isTitle: false,
         icon: "users",
         url: "/cred-admin/students",
@@ -309,8 +326,16 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
       {
+        key: "all-students",
+        label: "All Students",
+        isTitle: false,
+        icon: "users",
+        url: "/cred-admin/all-students",
+        roles: ["CRED_ADMIN"],
+      },
+      {
         key: "students",
-        label: "Students",
+        label: "Intake Students",
         isTitle: false,
         icon: "users",
         url: "/cred-admin/students",

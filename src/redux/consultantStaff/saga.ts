@@ -23,7 +23,7 @@ interface ConsultantStaffData {
     username: string;
     email: string;
     phone: string;
-    image: string;
+    file: File | null;
     employee_id: string;
     created_by: number;
     consultant_id: string;
@@ -32,7 +32,7 @@ interface ConsultantStaffData {
 }
 
 function* createConsultantStaff({
-  payload: { first_name, last_name, username, email, phone, image, employee_id, created_by, consultant_id },
+  payload: { first_name, last_name, username, email, phone, file, employee_id, created_by, consultant_id },
   type,
 }: ConsultantStaffData): SagaIterator {
   try {
@@ -42,7 +42,7 @@ function* createConsultantStaff({
       username,
       email,
       phone,
-      image,
+      file,
       employee_id,
       created_by,
       consultant_id,
@@ -72,7 +72,7 @@ function* getConsultantStaffs({ payload: { consultant_id } }: ConsultantStaffDat
 }
 
 function* updateConsultantStaff({
-  payload: { id, first_name, last_name, username, email, phone, image, employee_id, created_by, consultant_id },
+  payload: { id, first_name, last_name, username, email, phone, file, employee_id, created_by, consultant_id },
   type,
 }: ConsultantStaffData): SagaIterator {
   try {
@@ -82,7 +82,7 @@ function* updateConsultantStaff({
       username,
       email,
       phone,
-      image,
+      file,
       employee_id,
       created_by,
       consultant_id,
