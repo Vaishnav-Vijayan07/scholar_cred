@@ -36,21 +36,21 @@ export const getColumns = (handleResetPassword: any, resetPassword: any, handleU
     },
     {
       Header: "Application Status",
-      accessor: "application_status",
+      accessor: "application_status_name",
       sort: false,
       Cell: ({ row }: any) => (
         <Badge bg="" className="badge-soft-success text-wrap py-1">
-          {row.original?.application_status}
+          {row.original?.application_status_name}
         </Badge>
       ),
     },
     {
       Header: "Loan Status",
-      accessor: "loan_status",
+      accessor: "loan_status_name",
       sort: false,
       Cell: ({ row }: any) => (
         <Badge bg="" className="badge-soft-primary text-wrap py-1">
-          {row.original?.loan_status}
+          {row.original?.loan_status_name}
         </Badge>
       ),
     },
@@ -171,21 +171,21 @@ export const getConsultantStaffColumns = (handleResetPassword: any, resetPasswor
     },
     {
       Header: "Application Status",
-      accessor: "application_status",
+      accessor: "application_status_name",
       sort: false,
       Cell: ({ row }: any) => (
         <Badge bg="" className="badge-soft-success text-wrap py-1">
-          {row.original?.application_status}
+          {row.original?.application_status_name}
         </Badge>
       ),
     },
     {
       Header: "Loan Status",
-      accessor: "loan_status",
+      accessor: "loan_status_name",
       sort: false,
       Cell: ({ row }: any) => (
         <Badge bg="" className="badge-soft-primary text-wrap py-1">
-          {row.original?.loan_status}
+          {row.original?.loan_status_name}
         </Badge>
       ),
     },
@@ -296,21 +296,21 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
     },
     {
       Header: "Application Status",
-      accessor: "application_status",
+      accessor: "application_status_name",
       sort: false,
       Cell: ({ row }: any) => (
         <Badge bg="" className="badge-soft-success text-wrap py-1">
-          {row.original?.application_status}
+          {row.original?.application_status_name}
         </Badge>
       ),
     },
     {
       Header: "Loan Status",
-      accessor: "loan_status",
+      accessor: "loan_status_name",
       sort: false,
       Cell: ({ row }: any) => (
         <Badge bg="" className="badge-soft-primary text-wrap py-1">
-          {row.original?.loan_status}
+          {row.original?.loan_status_name}
         </Badge>
       ),
     },

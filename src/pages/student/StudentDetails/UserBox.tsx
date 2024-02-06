@@ -61,7 +61,7 @@ const UserBox = ({ StudentData, loading }: any) => {
 
               <p className="text-muted mb-2 font-13">
                 <strong>Application Status :</strong>
-                <span className="ms-2">{StudentData?.status_name || "Pending"}</span>
+                <span className="ms-2">{StudentData?.application_status_name || "Student Created"}</span>
               </p>
 
               <p className="text-muted mb-2 font-13">

@@ -14,32 +14,16 @@ const Statistics = () => {
     <>
       <Row>
         <Col md={6} xl={3}>
-          <StatisticsWidget4
-            avatar={avatar1}
-            name="Thelma Fridley"
-            position="Admin User"
-          />
+          <StatisticsWidget4 avatar={avatar1} name="Thelma Fridley" position="Admin User" />
         </Col>
         <Col md={6} xl={3}>
-          <StatisticsWidget4
-            avatar={avatar2}
-            name="Chandler Hervieux"
-            position="Manager"
-          />
+          <StatisticsWidget4 avatar={avatar2} name="Chandler Hervieux" position="Manager" />
         </Col>
         <Col md={6} xl={3}>
-          <StatisticsWidget4
-            avatar={avatar3}
-            name="Percy Demers"
-            position="Director"
-          />
+          <StatisticsWidget4 avatar={avatar3} name="Percy Demers" position="Director" />
         </Col>
         <Col md={6} xl={3}>
-          <StatisticsWidget4
-            avatar={avatar4}
-            name="Antoine Masson"
-            position="Premium User"
-          />
+          <StatisticsWidget4 avatar={avatar4} name="Antoine Masson" position="Premium User" />
         </Col>
       </Row>
     </>

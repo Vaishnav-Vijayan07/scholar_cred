@@ -2,25 +2,25 @@ import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Row, Col, Card, Form, Button, Modal, Alert, Dropdown, Spinner, Badge } from "react-bootstrap";
-import Table from "../../components/Table";
+import Table from "../../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
-import FileUploader from "../../components/FileUploader";
+import FileUploader from "../../../components/FileUploader";
 
 // components
-import PageTitle from "../../components/PageTitle";
-import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../users/data";
+import PageTitle from "../../../components/PageTitle";
+import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../../users/data";
 import { useDispatch, useSelector } from "react-redux";
-import { getAdminStaff } from "../../redux/adminStaffs/actions";
-import { RootState } from "../../redux/store";
-import { createStudent, deleteStudent, editStudent, getStudent } from "../../redux/actions";
-import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
+import { getAdminStaff } from "../../../redux/adminStaffs/actions";
+import { RootState } from "../../../redux/store";
+import { createStudent, deleteStudent, editStudent, getStudent } from "../../../redux/actions";
+import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import { truncateText } from "../../constants/functons";
+import { truncateText } from "../../../constants/functons";
 import classNames from "classnames";
 
 interface FileType extends File {
@@ -266,21 +266,21 @@ const BasicInputElements = withSwal((props: any) => {
     },
     {
       Header: "Application Status",
-      accessor: "application_status",
+      accessor: "application_status_name",
       sort: false,
       Cell: ({ row }: any) => (
         <Badge bg="" className="badge-soft-success text-wrap py-1">
-          {row.original.application_status}
+          {row.original.application_status_name}
         </Badge>
       ),
     },
     {
       Header: "Loan Status",
-      accessor: "loan_status",
+      accessor: "loan_status_name",
       sort: false,
       Cell: ({ row }: any) => (
         <Badge bg="" className="badge-soft-primary text-wrap py-1">
-          {row.original.loan_status}
+          {row.original.loan_status_name}
         </Badge>
       ),
     },
@@ -370,7 +370,6 @@ const BasicInputElements = withSwal((props: any) => {
         </div>
       ),
     },
-
   ];
 
   const handleAssignUser = (student_id: number, assignedTo: number) => {
@@ -674,9 +673,6 @@ const BasicInputElements = withSwal((props: any) => {
         </Modal>
 
         <Col className="p-0 form__card">
-          <div className="d-flex w-100 justify-content-end">
-            <Form.Text className="text-warning">Dev note: The Cred admin can only view approved students.</Form.Text>
-          </div>
           <Card className="bg-white">
             <Card.Body>
               <>
@@ -740,76 +736,4 @@ const BasicInputElements = withSwal((props: any) => {
   );
 });
 
-const Students = () => {
-  const dispatch = useDispatch();
-  const [credStaffData, setCredStaffData] = useState([]);
-  const [sourceData, setSourceData] = useState([]);
-
-  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
-    state: state.Students.students,
-    loading: state?.Students.loading,
-    error: state?.Students.error,
-    initialLoading: state?.Students.initialLoading,
-  }));
-
-  const { user, Authloading, credStaff } = useSelector((state: RootState) => ({
-    user: state.Auth.user,
-    credStaff: state.AdminStaff.adminStaff.data,
-    Authloading: state.Auth.loading,
-  }));
-
-  const getSourceData = () => {
-    axios
-      .get("sourceOptions")
-      .then((res) => {
-        setSourceData(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    dispatch(getStudent());
-    dispatch(getAdminStaff());
-    getSourceData();
-  }, []);
-
-  useEffect(() => {
-    if (credStaff) {
-      const CredStaffArray = credStaff?.map((staff: any) => ({
-        value: staff.user_id,
-        label: staff.first_name + " " + staff.last_name,
-      }));
-      setCredStaffData(CredStaffArray);
-    }
-  }, [credStaff]);
-
-  return (
-    <React.Fragment>
-      <PageTitle
-        breadCrumbItems={[
-          { label: "Student Management", path: "/users/students" },
-          {
-            label: "Students",
-            path: "/users/students",
-            active: true,
-          },
-        ]}
-        title={"Student Management"}
-      />
-      <Row>
-        <Col>
-          <BasicInputElements
-            state={state}
-            loading={loading}
-            error={error}
-            user={user}
-            credStaffData={credStaffData}
-            initialLoading={initialLoading}
-            sourceData={sourceData}
-          />
-        </Col>
-      </Row>
-    </React.Fragment>
-  );
-};
-export default Students;
+export default BasicInputElements;

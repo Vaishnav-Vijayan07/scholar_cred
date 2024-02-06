@@ -15,7 +15,17 @@ import PageTitle from "../../components/PageTitle";
 import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../users/data";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { createStudent, deleteStudent, editStudent, getAdminStaff, getStudent, getStudentByConsultant, getStudentByCreated, getStudentByStaff, resetPassword } from "../../redux/actions";
+import {
+  createStudent,
+  deleteStudent,
+  editStudent,
+  getAdminStaff,
+  getStudent,
+  getStudentByConsultant,
+  getStudentByCreated,
+  getStudentByStaff,
+  resetPassword,
+} from "../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
 import { getColumns, getConsultantStaffColumns, getCredStaffColumns } from "./ColumnsConfig";
@@ -507,7 +517,6 @@ const Students = () => {
   }));
 
   console.log("user=========>", user);
-  
 
   const getSourceData = () => {
     axios
@@ -570,7 +579,7 @@ const Students = () => {
       <Row>
         <Col>
           <BasicInputElements
-            state={state}
+            state={state?.filter((item: any) => item.status == false)}
             loading={loading}
             error={error}
             user={user}

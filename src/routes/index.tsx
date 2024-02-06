@@ -24,17 +24,24 @@ const Consultant = React.lazy(() => import("../pages/users/Consultant"));
 const ConsultantStaff = React.lazy(() => import("../pages/users/ConsultantStaff"));
 const ConsultantDetails = React.lazy(() => import("../pages/users/ConsultantDetails"));
 const Staff = React.lazy(() => import("../pages/users/Staff"));
-const AllStudents = React.lazy(() => import("../pages/student/AllStudents"));
-const IntakeStudents = React.lazy(() => import("../pages/student/IntakeStudents"));
-const StudentAdminView = React.lazy(() => import("../pages/student/StudentAdminView"));
-const StudentAdminViewIntake = React.lazy(() => import("../pages/student/StudentAdminViewIntake"));
-const StudentDetails = React.lazy(() => import("../pages/student/StudentDetails"));
-const StudentDetailsConsultant = React.lazy(() => import("../pages/student/StudentDetailsConsultant"));
 const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
 const Tickets = React.lazy(() => import("../pages/Tickets/List"));
 const ApplicationStatusManagement = React.lazy(() => import("../pages/super_admin/ApplicationStatusManagement"));
 const LoanStatus = React.lazy(() => import("../pages/super_admin/LoanStatus"));
+
+// Students
+const AllStudents = React.lazy(() => import("../pages/student/AllStudents"));
+const IntakeStudents = React.lazy(() => import("../pages/student/IntakeStudents"));
+const StudentAdminView = React.lazy(() => import("../pages/student/AdminStudentList/StudentAdminView"));
+const StudentAdminViewIntake = React.lazy(() => import("../pages/student/AdminStudentList/StudentAdminViewIntake"));
+const DirectStudents = React.lazy(() => import("../pages/student/AdminStudentList/DirectStudents"));
+const RegisteredStudents = React.lazy(() => import("../pages/student/AdminStudentList/RegisteredStudents"));
+
+
+const StudentDetails = React.lazy(() => import("../pages/student/StudentDetails"));
+const StudentDetailsConsultant = React.lazy(() => import("../pages/student/StudentDetailsConsultant"));
+
 
 export interface RoutesProps {
   path: RouteProps["path"];
@@ -130,9 +137,21 @@ const userRoutes = {
       route: PrivateRoute,
     },
     {
-      path: "/cred-admin/all-students",
+      path: "/cred-admin/pending-students",
       name: "Students",
       element: <PrivateRoute roles={["CRED_ADMIN"]} component={StudentAdminViewIntake} />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/cred-admin/registered-students",
+      name: "Students",
+      element: <PrivateRoute roles={["CRED_ADMIN"]} component={RegisteredStudents} />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/cred-admin/direct-students",
+      name: "Students",
+      element: <PrivateRoute roles={["CRED_ADMIN"]} component={DirectStudents} />,
       route: PrivateRoute,
     },
     {
