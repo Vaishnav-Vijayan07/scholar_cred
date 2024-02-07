@@ -1,32 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Tab, Nav, ProgressBar, Dropdown } from "react-bootstrap";
+import { Row, Col, Card, Tab, Nav, Dropdown } from "react-bootstrap";
 
 // components
 import PageTitle from "../../../components/PageTitle";
 
 import UserBox from "./UserBox";
 import PreliminaryScreening from "./PreliminaryScreening";
-import History from "./History";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getStudentById } from "../../../redux/actions";
+import { getComment, getStudentById } from "../../../redux/actions";
 import { RootState } from "../../../redux/store";
 import StatisticsWidget2 from "../../../components/StatisticsWidget2";
 import DetailedScreening from "./DetailedScreening";
 import DocsScreening from "./DocsScreening";
 import classNames from "classnames";
 import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
-
-interface ProjectDetails {
-  id: number;
-  client: string;
-  name: string;
-  startDate: string;
-  dueDate: string;
-  status: string;
-}
+import Comments from "./Comments";
+import Attachments from "./Attachments";
 
 const Profile = () => {
   const { id } = useParams();
@@ -36,10 +28,13 @@ const Profile = () => {
   const [preliminaryDetails, setPreliminaryDetails] = useState({});
   const [preliminaryLoading, setPreliminaryLoading] = useState(false);
   const [loanStatus, setLoanStatus] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [attachments, setAttachments] = useState([]);
 
-  const { StudentData, loading } = useSelector((state: RootState) => ({
+  const { StudentData, loading, CommentsData } = useSelector((state: RootState) => ({
     StudentData: state.Students.studentById,
     loading: state.Students.loading,
+    CommentsData: state.Comments.comments.data,
   }));
 
   console.log("StudentData---->", StudentData);
@@ -78,6 +73,8 @@ const Profile = () => {
   useEffect(() => {
     getPrilimineryDetailsApi();
     dispatch(getStudentById(id ? id : ""));
+    if (id) dispatch(getComment(parseInt(id)));
+    if (id) getAttachments();
     getLoanStatus();
   }, []);
 
@@ -101,6 +98,34 @@ const Profile = () => {
       });
   };
 
+  const handleAppprove = () => {
+    setIsLoading(true);
+    axios
+      .post(`/update_student_status/${id}`, { status: true })
+      .then((res) => {
+        showSuccessAlert("Student approved successfully...");
+        setIsLoading(false);
+        dispatch(getStudentById(id ? id : ""));
+      })
+      .catch((err) => {
+        showErrorAlert("Error occured");
+        setIsLoading(false);
+        console.log(err);
+      });
+  };
+
+  const getAttachments = async () => {
+    try {
+      const response = await axios.get(`getAttachmentsByStudentId/${id}`);
+      setAttachments(response.data.data);
+    } catch (error) {
+      // setError(error);
+      console.log(error);
+    } finally {
+      // setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <PageTitle
@@ -113,13 +138,13 @@ const Profile = () => {
       <Row>
         <Col xl={4} lg={4}>
           {/* User information */}
-          <UserBox StudentData={StudentData} loading={loading} />
+          <UserBox StudentData={StudentData} loading={loading} handleAppprove={handleAppprove} isLoading={isLoading} />
 
           <Col>
             <StatisticsWidget2
               variant="blue"
               description="Application status"
-              stats={StudentData?.status_name || "Pending"}
+              stats={StudentData?.application_status_name || "Pending"}
               icon="fe-aperture"
               progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
               counterOptions={{
@@ -211,7 +236,8 @@ const Profile = () => {
                   </Tab.Pane>
 
                   <Tab.Pane eventKey="history">
-                    <History />
+                    <Comments CommentsData={CommentsData} studentId={id} />
+                    <Attachments attachments={attachments} studentId={id} getAttachments={getAttachments} />
                   </Tab.Pane>
                 </Tab.Content>
               </Card.Body>

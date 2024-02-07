@@ -131,7 +131,7 @@ const Profile = () => {
       <Row>
         <Col xl={4} lg={4}>
           {/* User information */}
-          <UserBox StudentData={StudentData} loading={loading} />
+          <UserBox StudentData={StudentData} loading={loading} handleAppprove={handleAppprove} isLoading={isLoading} />
 
           <Col>
             <StatisticsWidget2
@@ -146,18 +146,6 @@ const Profile = () => {
             />
           </Col>
 
-          {/* <Col>
-            <StatisticsWidget2
-              variant="success"
-              description="Loan status"
-              stats={StudentData?.loan_status ? StudentData?.loan_status : "Pending"}
-              icon="fe-aperture"
-              progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
-              counterOptions={{
-                prefix: "$",
-              }}
-            />
-          </Col> */}
           {/* Internal status */}
           <Col>
             <Card>
@@ -201,17 +189,6 @@ const Profile = () => {
             <Card>
               <Card.Body>
                 {/* <TimeLine /> */}
-                <div className="d-flex w-100 justify-content-end mb-2">
-                  {!StudentData?.status ? (
-                    <Button variant="success" size="sm" disabled={isLoading} onClick={handleAppprove}>
-                      {isLoading ? "Loading…" : "Approve Student"}
-                    </Button>
-                  ) : (
-                    <Button variant="success" size="sm" disabled={true}>
-                      Approved
-                    </Button>
-                  )}
-                </div>
                 <Comments CommentsData={CommentsData} studentId={numericId} />
                 <Col>
                   <Attachments attachments={attachments} studentId={id} getAttachments={getAttachments} />

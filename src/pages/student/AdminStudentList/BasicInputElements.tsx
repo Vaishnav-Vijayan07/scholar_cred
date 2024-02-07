@@ -205,7 +205,7 @@ const BasicInputElements = withSwal((props: any) => {
     return (
       <>
         <Dropdown className="btn-group" align="end">
-          <Dropdown.Toggle variant="light" className="table-action-btn btn-sm">
+          <Dropdown.Toggle variant="light" className="table-action-btn btn-sm" disabled={!row.original.status}>
             {row.original.assigned_staff ? row.original.assigned_staff : "Assign"}
           </Dropdown.Toggle>
           <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
@@ -325,19 +325,22 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Created By",
       accessor: "created_user",
       sort: false,
+      Cell: ({row}: any) => <div>{row.original.created_by == 0 ? "App" : row.original.created_user}</div>
     },
     {
       Header: "Loan Type",
       accessor: "loan_type",
       sort: false,
+      Cell: ({ row }: any) => <div>{row.original.loan_type || "Pending"}</div>,
     },
     {
       Header: "Consultant Name",
       accessor: "consultant_name",
       sort: false,
+      Cell: ({ row }: any) => <div>{row.original.consultant_name || "Internal"}</div>,
     },
     {
-      Header: "Cred Staff",
+      Header: "Assigned To",
       accessor: "",
       sort: false,
       Cell: UserColumn,

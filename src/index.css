@@ -67,3 +67,7 @@
   width: 31px;  
   font-size: 12px;
 }
+
+.content-page{
+  overflow: hidden;
+}

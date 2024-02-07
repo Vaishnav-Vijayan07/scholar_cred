@@ -12,7 +12,7 @@ import avatar2 from "../../../assets/images/users/user-4.jpg";
 import avatar3 from "../../../assets/images/users/user-5.jpg";
 import avatar6 from "../../../assets/images/users/user-6.jpg";
 
-const StudentByStaffStatistics = () => {
+const StudentByStaffStatistics = ({studentCountByStaff}: any) => {
   const messages = [
     {
       id: 1,

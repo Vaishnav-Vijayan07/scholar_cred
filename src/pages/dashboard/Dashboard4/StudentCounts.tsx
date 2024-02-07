@@ -8,7 +8,9 @@ import { BasicPortlet } from "../../../components/Portlet";
 
 import ChartStatistics from "../../../components/ChartStatistics";
 
-const StudentCounts = () => {
+const StudentCounts = ({ studentCount }: any) => {
+  console.log("studentCount--->", studentCount);
+
   const options: ApexOptions = {
     chart: {
       type: "pie",

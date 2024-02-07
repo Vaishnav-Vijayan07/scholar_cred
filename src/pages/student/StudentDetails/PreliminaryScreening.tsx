@@ -14,12 +14,6 @@ interface AboutProps {
   }[];
 }
 
-interface SocialInfo {
-  label: string;
-  icon: string;
-  placeholder: string;
-}
-
 interface FormInputProps {
   register: any;
   errors: FieldErrors;
@@ -53,9 +47,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
         </h5>
         <Row>
           <Col xl={6} xxl={4}>
-            <Form.Label>
-              <span className="text-danger">*</span> Full Name
-            </Form.Label>
+            <Form.Label>Full Name</Form.Label>
             <FormInput
               type="text"
               name="fullname"
@@ -70,9 +62,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
 
           <Col xl={6} xxl={4}>
-            <Form.Label>
-              <span className="text-danger">*</span> Email Id
-            </Form.Label>
+            <Form.Label>Email Id</Form.Label>
             <FormInput
               type="email"
               name="email"
@@ -87,9 +77,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
 
           <Col xl={6} xxl={4}>
-            <Form.Label>
-              <span className="text-danger">*</span> Whatsapp Number
-            </Form.Label>
+            <Form.Label>Whatsapp Number</Form.Label>
 
             <FormInput
               type="number"
@@ -105,9 +93,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           </Col>
 
           <Col xl={6} xxl={4}>
-            <Form.Label>
-              <span className="text-danger">*</span> Destination Country
-            </Form.Label>
+            <Form.Label>Destination Country</Form.Label>
 
             <FormInput
               type="text"
@@ -124,7 +110,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
           <Col xl={6} xxl={4}>
             <Form.Label>
-              <span className="text-danger">*</span> Application Status
+              Application Status <span className="badge bg-success float-right" style={{fontSize:"9px"}}>Low</span>
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={applicationStatus} onChange={(e: any) => setApplicationStatus(e.target.value)}>
               <option value="" disabled>
@@ -138,7 +124,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
           <Col xl={6} xxl={4}>
             <Form.Label>
-              <span className="text-danger">*</span> Program Type
+              Program Type <span className="badge bg-warning float-right" style={{fontSize:"9px"}}>Medium</span>
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={programType} onChange={(e: any) => setProgramType(e.target.value)}>
               <option value="" disabled>
@@ -155,7 +141,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             <Row> */}
           <Col xl={6} xxl={4}>
             <Form.Label>
-              <span className="text-danger">*</span> University Details
+              University Details <span className="badge bg-warning float-right" style={{fontSize:"9px"}}>Medium</span>
             </Form.Label>
 
             <FormInput
@@ -179,7 +165,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
         <Row>
           <Col xl={6} xxl={4}>
             <Form.Label>
-              <span className="text-danger">*</span> Primary Co-Applicant Details
+              Primary Co-Applicant Details <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>High</span>
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={primaryApplicant} onChange={(e: any) => setPrimaryApplicant(e.target.value)}>
               <option value="" disabled>
@@ -196,7 +182,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
           <Col xl={6} xxl={4}>
             <Form.Label>
-              <span className="text-danger">*</span> Type Of Profession
+              Type Of Profession <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>High</span>
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={typeOfProfossion} onChange={(e: any) => setTypeOfProfossion(e.target.value)}>
               <option value="" disabled>
@@ -213,7 +199,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
           <Col xl={6} xxl={4}>
             <Form.Label>
-              <span className="text-danger">*</span> Salary Range
+              Salary Range <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>High</span>
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
               <option value="" disabled>
@@ -225,9 +211,9 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             </Form.Select>
           </Col>
 
-          <Col xl={6} xxl={4}>
+          {/* <Col xl={6} xxl={4}>
             <Form.Label>
-              <span className="text-danger">*</span> Salary Range
+               Salary Range
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
               <option value="" disabled>
@@ -237,7 +223,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
               <option value="30-40000/month">30-40000/month</option>
               <option value=">40000/month">&gt;40000/month</option>
             </Form.Select>
-          </Col>
+          </Col> */}
         </Row>
 
         <h5 className="mb-3 text-uppercase bg-light p-2 mt-3">
@@ -247,7 +233,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
         <Row>
           <Col xl={6} xxl={4}>
             <Form.Label>
-              <span className="text-danger">*</span> Collateral Availability
+              Collateral Availability <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>High</span>
             </Form.Label>
             <Form.Select aria-label="Default select example" value={collatralItem} onChange={(e: any) => setCollatralItem(e.target.value)}>
               <option value="" disabled>
