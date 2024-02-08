@@ -9,7 +9,7 @@ function getAllStatus() {
   return api.get(`${baseUrl}`, {});
 }
 
-function addStatus(params: { status_name: string; status_description: string }) {
+function addStatus(params: { status_name: string; status_description: string; status_type: "Internal" | "External"; is_visible: Boolean }) {
   return api.create(`${baseUrl}`, params);
 }
 
@@ -18,6 +18,8 @@ function updateStatus(
   params: {
     status_name: string;
     status_description: string;
+    status_type: "Internal" | "External";
+    is_visible: Boolean;
   }
 ) {
   return api.update(`${baseUrl}/${id}`, params);

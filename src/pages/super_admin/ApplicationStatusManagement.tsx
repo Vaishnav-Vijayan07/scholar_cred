@@ -23,6 +23,14 @@ interface TableRecords {
   color: string;
 }
 
+interface FormDataType {
+  id: string;
+  status_name: string;
+  status_description: string;
+  status_type: "Internal" | "External";
+  is_visible: Boolean;
+}
+
 const sizePerPageList = [
   {
     text: "5",
@@ -38,15 +46,19 @@ const sizePerPageList = [
   },
 ];
 
-const initialState = {
+const initialState: FormDataType = {
   id: "",
   status_name: "",
   status_description: "",
+  status_type: "Internal",
+  is_visible: true,
 };
 
 const initialValidationState = {
   status_name: "",
   status_description: "",
+  status_type: "",
+  is_visible: "",
 };
 
 const BasicInputElements = withSwal((props: any) => {
@@ -60,7 +72,7 @@ const BasicInputElements = withSwal((props: any) => {
   //State for handling update function
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
-  const [formData, setFormData] = useState(initialState);
+  const [formData, setFormData] = useState<FormDataType>(initialState);
 
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
@@ -76,16 +88,18 @@ const BasicInputElements = withSwal((props: any) => {
   /*
    * form methods
    */
-  const methods = useForm({
-    resolver: yupResolver(validationSchema), // Integrate yup with react-hook-form
-    defaultValues: initialState,
-  });
+  // const methods = useForm({
+  //   resolver: yupResolver(validationSchema), // Integrate yup with react-hook-form
+  //   defaultValues: initialState,
+  // });
 
   const handleUpdate = (item: any) => {
     setFormData({
       id: item?.id,
       status_name: item?.status_name,
       status_description: item?.status_description,
+      status_type: item?.status_type,
+      is_visible: item?.is_visible,
     });
 
     setIsUpdate(true);
@@ -112,8 +126,11 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   //handle onchange function
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: any) => {
     const { name, value } = e.target;
+
+    console.log("e.target", e.target);
+
     setFormData((prevData: any) => ({
       ...prevData,
       [name]: value,
@@ -129,9 +146,9 @@ const BasicInputElements = withSwal((props: any) => {
       await validationSchema.validate(formData, { abortEarly: false });
 
       if (isUpdate) {
-        dispatch(updateStatus(formData.id, formData.status_name, formData.status_description));
+        dispatch(updateStatus(formData.id, formData.status_name, formData.status_description, formData.status_type, formData.is_visible));
       } else {
-        dispatch(addStatus(formData.status_name, formData.status_description));
+        dispatch(addStatus(formData.status_name, formData.status_description, formData.status_type, formData.is_visible));
       }
 
       // Clear validation errors
@@ -169,6 +186,11 @@ const BasicInputElements = withSwal((props: any) => {
     {
       Header: "Status Description",
       accessor: "status_description",
+      sort: false,
+    },
+    {
+      Header: "Status Type",
+      accessor: "status_type",
       sort: false,
     },
     {
@@ -221,9 +243,6 @@ const BasicInputElements = withSwal((props: any) => {
     }
   }, [loading, error]);
 
-  console.log("loading=====>", loading);
-  console.log("error=====>", error);
-
   if (initialLoading) {
     return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
   }
@@ -256,6 +275,24 @@ const BasicInputElements = withSwal((props: any) => {
                 />
                 {validationErrors.status_description && <Form.Text className="text-danger">{validationErrors.status_description}</Form.Text>}
               </Form.Group>
+
+              <Form.Group className="mb-3" controlId="status_type">
+                <Form.Label>Status Type</Form.Label>
+                <Form.Select name="status_type" value={formData.status_type} onChange={handleInputChange} aria-label="Default select example">
+                  <option disabled value="" selected>
+                    Choose a source...
+                  </option>
+                  <option value="Internal">Internal</option>
+                  <option value="External">External</option>
+                </Form.Select>
+                {validationErrors.status_type && <Form.Text className="text-danger">{validationErrors.status_type}</Form.Text>}
+              </Form.Group>
+
+              {/* <Form.Group controlId="formRadioGroup">
+                <Form.Label>Choose an option:</Form.Label>
+                <Form.Check type="radio" label="Yes" id="yes-radio" name="is_visible" value="true" checked={formData.is_visible === true} onChange={handleInputChange} />
+                <Form.Check type="radio" label="No" id="no-radio" name="is_visible" value="false" checked={formData.is_visible === false} onChange={handleInputChange} />
+              </Form.Group> */}
             </Modal.Body>
             <Modal.Footer>
               <Button

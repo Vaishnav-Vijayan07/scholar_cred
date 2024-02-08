@@ -46,10 +46,8 @@ const Dashboard4 = () => {
 
       <Row>
         <Statuses dashboardData={dashboardData?.statusWithCount} />
-        {/* <Col xl={4} md={6}>
-          <SalesChart />
-        </Col> */}
-        {user.role == "7" || user.role == "4" ? (
+
+        {/* {user.role == "7" || user.role == "4" ? (
           <Col xl={4} md={6}>
             <StudentStatistics
               title={"Total Students"}
@@ -63,7 +61,7 @@ const Dashboard4 = () => {
           </Col>
         ) : (
           ""
-        )}
+        )} */}
 
         <Col xl={4} md={6}>
           <StudentCounts studentCount={dashboardData?.studentCount} />
