@@ -8,7 +8,6 @@ import StatisticsWidget from "../../../components/StatisticsWidget";
 import "swiper/css";
 
 const Statuses = ({ dashboardData }: any) => {
-  console.log("dashboardData==>", dashboardData);
 
   return (
     <>
