@@ -137,6 +137,8 @@ const BasicInputElements = withSwal((props: any) => {
     }));
   };
 
+  console.log("formdata========>", formData);
+
   //handle form submission
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -279,7 +281,7 @@ const BasicInputElements = withSwal((props: any) => {
               <Form.Group className="mb-3" controlId="status_type">
                 <Form.Label>Status Type</Form.Label>
                 <Form.Select name="status_type" value={formData.status_type} onChange={handleInputChange} aria-label="Default select example">
-                  <option disabled value="" selected>
+                  <option disabled value="">
                     Choose a source...
                   </option>
                   <option value="Internal">Internal</option>
@@ -288,11 +290,11 @@ const BasicInputElements = withSwal((props: any) => {
                 {validationErrors.status_type && <Form.Text className="text-danger">{validationErrors.status_type}</Form.Text>}
               </Form.Group>
 
-              {/* <Form.Group controlId="formRadioGroup">
-                <Form.Label>Choose an option:</Form.Label>
-                <Form.Check type="radio" label="Yes" id="yes-radio" name="is_visible" value="true" checked={formData.is_visible === true} onChange={handleInputChange} />
-                <Form.Check type="radio" label="No" id="no-radio" name="is_visible" value="false" checked={formData.is_visible === false} onChange={handleInputChange} />
-              </Form.Group> */}
+              <Form.Group controlId="formRadioGroup">
+                <Form.Label>Visibility:</Form.Label>
+                <Form.Check type="radio" label="Yes" id="yes-radio" name="is_visible" value="1" checked={formData.is_visible == true} onChange={handleInputChange} />
+                <Form.Check type="radio" label="No" id="no-radio" name="is_visible" value="0" checked={formData.is_visible == false} onChange={handleInputChange} />
+              </Form.Group>
             </Modal.Body>
             <Modal.Footer>
               <Button
