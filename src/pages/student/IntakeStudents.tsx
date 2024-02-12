@@ -526,7 +526,7 @@ const IntakeStudents = () => {
 
   const getStudentBasedOnRole = () => {
     if (user?.role == "4") {
-      console.log("Consultant Admin, consultant staff...");
+      console.log("consultant staff...");
       // based on created
       dispatch(getStudentByCreated());
     } else if (user?.role == "2") {
@@ -534,7 +534,7 @@ const IntakeStudents = () => {
       // based on assigned to
       dispatch(getStudentByStaff());
     } else if (user?.role == "7") {
-      console.log("Cred staff...");
+      console.log("Consultant admin...");
       // based on assigned to
       dispatch(getStudentByConsultant(user?.consultant_id));
     }

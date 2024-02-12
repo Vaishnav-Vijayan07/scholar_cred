@@ -46,21 +46,13 @@ const InternalStatus = React.lazy(
 
 // Students
 const AllStudents = React.lazy(() => import("../pages/student/AllStudents"));
-const IntakeStudents = React.lazy(
-  () => import("../pages/student/IntakeStudents")
-);
-const StudentAdminView = React.lazy(
-  () => import("../pages/student/AdminStudentList/StudentAdminView")
-);
-const StudentAdminViewIntake = React.lazy(
-  () => import("../pages/student/AdminStudentList/StudentAdminViewIntake")
-);
-const DirectStudents = React.lazy(
-  () => import("../pages/student/AdminStudentList/DirectStudents")
-);
-const RegisteredStudents = React.lazy(
-  () => import("../pages/student/AdminStudentList/RegisteredStudents")
-);
+
+const IntakeStudents = React.lazy(() => import("../pages/student/IntakeStudents"));
+const StudentAdminView = React.lazy(() => import("../pages/student/AdminStudentList/StudentAdminView"));
+const StudentAdminViewIntake = React.lazy(() => import("../pages/student/AdminStudentList/StudentAdminViewPending"));
+const DirectStudents = React.lazy(() => import("../pages/student/AdminStudentList/DirectStudents"));
+const RegisteredStudents = React.lazy(() => import("../pages/student/AdminStudentList/RegisteredStudents"));
+
 
 const StudentDetails = React.lazy(
   () => import("../pages/student/StudentDetails")

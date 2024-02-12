@@ -58,16 +58,24 @@ export const getColumns = (handleResetPassword: any, resetPassword: any, handleU
       Header: "Loan Type",
       accessor: "loan_type",
       sort: false,
+      Cell: ({ row }: any) => <div>{row.original.loan_type || "Pending"}</div>,
     },
     {
       Header: "Consultant Name",
       accessor: "consultant_name",
       sort: false,
+      Cell: ({ row }: any) => <div>{row.original.consultant_name || "Internal"}</div>,
     },
     {
       Header: "Source",
       accessor: "source_name",
       sort: false,
+    },
+    {
+      Header: "Created By",
+      accessor: "created_user",
+      sort: false,
+      Cell: ({ row }: any) => <div>{row.original.created_by == 0 ? "App" : row.original.created_user}</div>,
     },
     // {
     //   Header: "Created By",
@@ -193,16 +201,24 @@ export const getConsultantStaffColumns = (handleResetPassword: any, resetPasswor
       Header: "Loan Type",
       accessor: "loan_type",
       sort: false,
+      Cell: ({ row }: any) => <div>{row.original.loan_type || "Pending"}</div>,
     },
     {
       Header: "Consultant Name",
       accessor: "consultant_name",
       sort: false,
+      Cell: ({ row }: any) => <div>{row.original.consultant_name || "Internal"}</div>,
     },
     {
       Header: "Source",
       accessor: "source_name",
       sort: false,
+    },
+    {
+      Header: "Created By",
+      accessor: "created_user",
+      sort: false,
+      Cell: ({ row }: any) => <div>{row.original.created_by == 0 ? "App" : row.original.created_user}</div>,
     },
     // {
     //   Header: "Send Password",
@@ -318,11 +334,13 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
       Header: "Loan Type",
       accessor: "loan_type",
       sort: false,
+      Cell: ({ row }: any) => <div>{row.original.loan_type || "Pending"}</div>,
     },
     {
       Header: "Consultant Name",
       accessor: "consultant_name",
       sort: false,
+      Cell: ({ row }: any) => <div>{row.original.consultant_name || "Internal"}</div>,
     },
     {
       Header: "Source",
@@ -334,6 +352,12 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
     //   accessor: "created_user",
     //   sort: false,
     // },
+    {
+      Header: "Created By",
+      accessor: "created_user",
+      sort: false,
+      Cell: ({ row }: any) => <div>{row.original.created_by == 0 ? "App" : row.original.created_user}</div>,
+    },
     {
       Header: "Actions",
       accessor: "",

@@ -1,11 +1,11 @@
 import React from "react";
-import { Card, Spinner } from "react-bootstrap";
+import { Button, Card, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import profileImg from "../../../assets/images/users/user-1.jpg";
+import profileImg from "../../../assets/images/avatar-logo.png";
 import moment from "moment";
 
-const UserBox = ({ StudentData, loading }: any) => {
+const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
   console.log("StudentData=====>", StudentData);
 
   return (
@@ -15,7 +15,11 @@ const UserBox = ({ StudentData, loading }: any) => {
           <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />
         ) : (
           <>
-            <img src={profileImg} className="rounded-circle avatar-lg img-thumbnail" alt="" />
+            {StudentData?.imageurl ? (
+              <img src={`${process.env.REACT_APP_BACKEND_URL}/${StudentData?.imageurl}`} className="rounded-circle avatar-lg img-thumbnail" alt="avatar" />
+            ) : (
+              <img src={profileImg} className="rounded-circle avatar-lg img-thumbnail" alt="avatar" />
+            )}
             <h4 className="">{StudentData?.first_name + " " + StudentData?.last_name}</h4>
             {/* <p className="text-muted">@webdesigner</p> */}
             <button type="button" className="btn btn-success btn-xs waves-effect mb-2 waves-light">
@@ -23,7 +27,16 @@ const UserBox = ({ StudentData, loading }: any) => {
             </button>{" "}
             <button type="button" className="btn btn-danger btn-xs waves-effect mb-2 waves-light">
               Message
-            </button>
+            </button>{" "}
+            {!StudentData?.status ? (
+              <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={isLoading} onClick={handleAppprove}>
+                {isLoading ? "Loading…" : "Approve"}
+              </Button>
+            ) : (
+              <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={true}>
+                Approved
+              </Button>
+            )}
             <div className="text-center mt-3">
               <h4 className="font-13 text-uppercase mb-3">About</h4>
               {/* <p className="text-muted font-13 mb-3">

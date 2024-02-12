@@ -2,39 +2,47 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import profileImg from "../../assets/images/users/user-1.jpg";
+import profileImg from "../../assets/images/avatar-logo.png";
 
 const UserBox1 = ({ user }: any) => {
   return (
     <Card className="text-center">
       <Card.Body>
-        <img src={profileImg} className="rounded-circle avatar-lg img-thumbnail" alt="" />
+        <img
+          src={user?.Avatar == "null" ? profileImg : `${process.env.REACT_APP_BACKEND_URL}/${user.Avatar}`}
+          className="rounded-circle avatar-lg img-thumbnail"
+          alt="avatar"
+          style={{ objectFit: "cover" }}
+        />
         <h4 className="mb-0">{user?.full_name}</h4>
         <p className="text-muted">@{user?.username}</p>
 
-        <div className="text-start mt-3">
+        <div className="text-center mt-3 text-center">
           <h4 className="font-13 text-uppercase">About Me :</h4>
-          <p className="text-muted font-13 mb-3">
-            Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.
-          </p>
+
           <p className="text-muted mb-2 font-13">
             <strong>Full Name :</strong>
             <span className="ms-2">{user?.full_name}</span>
           </p>
 
-          <p className="text-muted mb-2 font-13">
+          {/* <p className="text-muted mb-2 font-13">
             <strong>Mobile :</strong>
             <span className="ms-2">(123) 123 1234</span>
-          </p>
+          </p> */}
 
           <p className="text-muted mb-2 font-13">
             <strong>Email :</strong>
-            <span className="ms-2 ">user@email.domain</span>
+            <span className="ms-2 ">{user?.email}</span>
           </p>
 
           <p className="text-muted mb-1 font-13">
-            <strong>Location :</strong>
-            <span className="ms-2">USA</span>
+            <strong>Role :</strong>
+            <span className="ms-2">{user?.role_name}</span>
+          </p>
+
+          <p className="text-muted mb-1 font-13">
+            <strong>Username :</strong>
+            <span className="ms-2">{user?.username}</span>
           </p>
         </div>
         <ul className="social-list list-inline mt-3 mb-0">

@@ -18,6 +18,8 @@ interface StatusData {
     id: string;
     status_name: string;
     status_description: string;
+    status_type: "Internal" | "External";
+    is_visible: Boolean;
   };
   type: string;
 }
@@ -42,11 +44,13 @@ function* getStatuses(): SagaIterator {
   }
 }
 
-function* addStatus({ payload: { status_name, status_description } }: StatusData): SagaIterator {
+function* addStatus({ payload: { status_name, status_description, status_type, is_visible } }: StatusData): SagaIterator {
   try {
     const response = yield call(addStatusApi, {
       status_name,
       status_description,
+      status_type,
+      is_visible,
     });
     const data = response.data;
 
@@ -61,11 +65,13 @@ function* addStatus({ payload: { status_name, status_description } }: StatusData
   }
 }
 
-function* updateStatus({ payload: { id, status_name, status_description } }: StatusData): SagaIterator {
+function* updateStatus({ payload: { id, status_name, status_description, status_type, is_visible } }: StatusData): SagaIterator {
   try {
     const response = yield call(updateStatusApi, id, {
       status_name,
       status_description,
+      status_type,
+      is_visible,
     });
     const data = response.data.message;
 

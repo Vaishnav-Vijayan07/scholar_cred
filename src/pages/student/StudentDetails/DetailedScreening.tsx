@@ -14,6 +14,7 @@ interface FormField {
   type: "text" | "email" | "select" | "radio" | "date" | "number";
   value: string;
   options?: Option[];
+  priority: string;
 }
 
 interface Section {
@@ -132,7 +133,11 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
           {fields.map((field) => (
             <Col key={field.name} xl={6} xxl={4} className="p-2">
               <Form.Group controlId={field.name}>
-                <Form.Label><span className="text-danger">*</span> {field.label}</Form.Label>
+                <Form.Label>
+                  {field.label} {field?.priority == "High" && <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>{field?.priority}</span>}
+                  {field?.priority == "Medium" && <span className="badge bg-warning float-right" style={{fontSize:"9px"}}>{field?.priority}</span>}
+                  {field?.priority == "Low" && <span className="badge bg-success float-right" style={{fontSize:"9px"}}>{field?.priority}</span>}
+                </Form.Label>
 
                 {field.type === "text" || field.type === "email" || field.type === "number" ? (
                   <Form.Control type={field.type as "text" | "email" | "number"} name={field.name} value={formValues[field.name] || ""} onChange={handleInputChange} />

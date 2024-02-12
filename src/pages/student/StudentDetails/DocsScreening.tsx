@@ -1,8 +1,10 @@
 import axios from "axios";
-import moment from "moment";
-import React, { useState, ChangeEvent, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Form, Button, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useDownload } from "../../../hooks/useDownload";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 interface Option {
   label: string;
@@ -30,13 +32,46 @@ interface SectionedDynamicFormProps {
 
 const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, StudentData }) => {
   const [formData, setFormData] = useState<Array<{ titile: Section; rows: FormField[] }>>([]);
+  const [ImageUrls, setImageUrls] = useState<any>({});
+
+  console.log("ImageUrls", ImageUrls);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission here with formValues
   };
 
-  console.log("StudentData?.loan_type=>", StudentData?.loan_type);
+  const onClick = useCallback(async () => {
+    var zip = new JSZip();
+
+    zip.file("ReadMe.txt", "Open image folder to see all files.\n");
+
+    const imagesFolder = zip.folder("documents");
+
+    const imagesFetcher = await Promise.all(
+      Object.entries(ImageUrls).map(async ([key, value]: any) => {
+        // const res = await fetch(imgSrc, { mode: "no-cors" });
+        console.log("value", value);
+
+        const res = await fetch(value, {
+          method: "GET",
+          mode: "no-cors",
+        });
+
+        return res.blob();
+      })
+    );
+
+    imagesFetcher.forEach((imgBlob: any, index) => {
+      const key = Object.keys(ImageUrls)[index];
+      imagesFolder?.file(`${key}.jpg`, imgBlob);
+    });
+
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      // see FileSaver.js
+      saveAs(content, "Documents.zip");
+    });
+  }, []);
 
   useEffect(() => {
     const fetchDataFromAPI = async () => {
@@ -47,16 +82,12 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
 
           let apiEndpoint;
 
-          console.log("loanType-->", loanType);
-
           // Determine the API endpoint based on the loan type
           if (loanType == "SECURE") {
             apiEndpoint = `getSecuredDocumentsDataById/${student_id}`;
           } else {
             apiEndpoint = `getUnSecuredDocumentsDataById/${student_id}`;
           }
-
-          console.log("apiEndpoint", apiEndpoint);
 
           // const response = await axios.get(`getSecuredScreeningData/${student_id}`);
           const response = await axios.get(apiEndpoint);
@@ -72,12 +103,13 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
               extractedData[field.label] = field.value || "";
             });
           });
+          setImageUrls(extractedData);
         } else {
           // const response = await axios.get(`getSecuredScreeningData/${student_id}`);
           const response = await axios.get(`getUnSecuredDocumentsDataById/93`);
 
           const apiResponse = await response.data.data.sections;
-          console.log("apiResponse ========>", apiResponse);
+          console.log("apiResponse: ", apiResponse);
 
           setFormData(apiResponse);
 
@@ -88,6 +120,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
               extractedData[field.label] = field.value || "";
             });
           });
+          setImageUrls(extractedData);
         }
       } catch (error) {
         console.error("Error fetching data from API", error);
@@ -151,9 +184,16 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
     ));
   };
 
-  console.log("FormData----------->", formData);
-
-  return <Form onSubmit={handleSubmit}>{renderFormItems()}</Form>;
+  return (
+    <>
+      <Button variant="success" className="btn-xs waves-effect waves-light float-end" onClick={onClick}>
+        Download all
+      </Button>
+      <Form className="pt-3" onSubmit={handleSubmit}>
+        {renderFormItems()}
+      </Form>{" "}
+    </>
+  );
 };
 
 export default DetailedScreening;

@@ -69,7 +69,15 @@ const IntakeStudents = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} user={user} credStaffData={credStaffData} initialLoading={initialLoading} sourceData={sourceData} />
+          <BasicInputElements
+            state={state.filter((item: any) => item.status == false)}
+            loading={loading}
+            error={error}
+            user={user}
+            credStaffData={credStaffData}
+            initialLoading={initialLoading}
+            sourceData={sourceData}
+          />
         </Col>
       </Row>
     </React.Fragment>

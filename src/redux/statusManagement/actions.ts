@@ -16,6 +16,8 @@ interface StatusData {
   id: string;
   status_name: string;
   status_description: string;
+  status_type: "Internal" | "External";
+  is_visible: Boolean;
 }
 
 // common success
@@ -34,20 +36,24 @@ export const getStatus = (): StatusActionType => ({
   payload: {},
 });
 
-export const addStatus = (status_name: string, status_description: string): StatusActionType => ({
+export const addStatus = (status_name: string, status_description: string, status_type: "Internal" | "External", is_visible: Boolean): StatusActionType => ({
   type: StatusActionTypes.ADD_STATUS,
   payload: {
     status_name,
     status_description,
+    status_type,
+    is_visible,
   },
 });
 
-export const updateStatus = (id: string, status_name: string, status_description: string): StatusActionType => ({
+export const updateStatus = (id: string, status_name: string, status_description: string, status_type: "Internal" | "External", is_visible: Boolean): StatusActionType => ({
   type: StatusActionTypes.UPDATE_STATUS,
   payload: {
     id,
     status_name,
     status_description,
+    status_type,
+    is_visible,
   },
 });
 

@@ -18,15 +18,13 @@ import MaximizeScreen from "../components/MaximizeScreen";
 // import SearchDropdown from '../components/SearchDropdown';
 import NotificationDropdown from "../components/NotificationDropdown";
 import ProfileDropdown from "../components/ProfileDropdown";
-import CreateNew from "../components/CreateNew";
 
 import profilePic from "../assets/images/users/user-1.jpg";
 import avatar4 from "../assets/images/users/user-4.jpg";
 import logoSm from "../assets/images/logo-sm.png";
 import logoDark from "../assets/images/logo-dark.png";
 import logoDark2 from "../assets/images/logo-dark-2.png";
-import logoLight from "../assets/images/logo-light.png";
-import logoLight2 from "../assets/images/logo-light-2.png";
+import AvatarLogo from "../assets/images/avatar-logo.png";
 import { useViewport } from "../hooks/useViewPort";
 
 export interface NotificationItem {
@@ -269,14 +267,7 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
             <button className="button-toggle-menu" onClick={handleLeftMenuCallBack}>
               <i className="mdi mdi-menu" />
             </button>
-
-            {/* <div className="dropdown d-none d-xl-block">
-              <CreateNew otherOptions={otherOptions} />
-            </div> */}
-
-            {/* <div className="dropdown dropdown-mega d-none d-xl-block">
-              <MegaMenu subMenus={MegaMenuOptions} />
-            </div> */}
+            
           </div>
 
           <ul className="topbar-menu d-flex align-items-center">
@@ -291,17 +282,17 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
             </li>
             <li className="dropdown d-flex flex-column">
               <ProfileDropdown
-                profilePic={profilePic}
+                profilePic={user?.Avatar !== "null" ? `${process.env.REACT_APP_BACKEND_URL}/${user?.Avatar}` : AvatarLogo}
                 menuItems={ProfileMenus}
                 username={user?.role_name == "ADMIN" ? user?.full_name : user?.full_name?.split(" ")[0]}
                 userTitle={user?.role_name?.split("_")?.join(" ")}
               />
             </li>
-            <li>
+            {/* <li>
               <button className="nav-link dropdown-toggle right-bar-toggle waves-effect waves-light btn btn-link shadow-none" onClick={handleRightSideBar}>
                 <i className="fe-settings noti-icon font-22"></i>
               </button>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

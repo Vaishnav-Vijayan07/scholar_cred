@@ -1,11 +1,11 @@
 import React from "react";
-import { Card, Spinner } from "react-bootstrap";
+import { Button, Card, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import profileImg from "../../../assets/images/users/user-1.jpg";
 import moment from "moment";
 
-const UserBox = ({ StudentData, loading }: any) => {
+const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
   console.log("StudentData=====>", StudentData);
 
   return (
@@ -23,7 +23,16 @@ const UserBox = ({ StudentData, loading }: any) => {
             </button>{" "}
             <button type="button" className="btn btn-danger btn-xs waves-effect mb-2 waves-light">
               Message
-            </button>
+            </button>{" "}
+            {!StudentData?.status ? (
+              <Button variant="success" size="sm" disabled={isLoading} onClick={handleAppprove} className="btn-xs waves-effect mb-2 waves-light">
+                {isLoading ? "Loading…" : "Approve Student"}
+              </Button>
+            ) : (
+              <Button variant="success" size="sm" disabled={true} className="btn-xs waves-effect mb-2 waves-light">
+                Approved
+              </Button>
+            )}
             <div className="text-center mt-3">
               <h4 className="font-13 text-uppercase mb-3">About</h4>
               {/* <p className="text-muted font-13 mb-3">
