@@ -8,7 +8,12 @@ const UserBox1 = ({ user }: any) => {
   return (
     <Card className="text-center">
       <Card.Body>
-        <img src={profileImg} className="rounded-circle avatar-lg img-thumbnail" alt="" />
+        <img
+          src={user?.Avatar == "null" ? profileImg : `${process.env.REACT_APP_BACKEND_URL}/${user.Avatar}`}
+          className="rounded-circle avatar-lg img-thumbnail"
+          alt="avatar"
+          style={{ objectFit: "cover" }}
+        />
         <h4 className="mb-0">{user?.full_name}</h4>
         <p className="text-muted">@{user?.username}</p>
 

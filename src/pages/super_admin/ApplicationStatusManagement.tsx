@@ -85,14 +85,6 @@ const BasicInputElements = withSwal((props: any) => {
     status_description: yup.string().required("status description is required").min(3, "status description must be at least 3 characters long"),
   });
 
-  /*
-   * form methods
-   */
-  // const methods = useForm({
-  //   resolver: yupResolver(validationSchema), // Integrate yup with react-hook-form
-  //   defaultValues: initialState,
-  // });
-
   const handleUpdate = (item: any) => {
     setFormData({
       id: item?.id,

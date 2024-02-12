@@ -267,14 +267,7 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
             <button className="button-toggle-menu" onClick={handleLeftMenuCallBack}>
               <i className="mdi mdi-menu" />
             </button>
-
-            {/* <div className="dropdown d-none d-xl-block">
-              <CreateNew otherOptions={otherOptions} />
-            </div> */}
-
-            {/* <div className="dropdown dropdown-mega d-none d-xl-block">
-              <MegaMenu subMenus={MegaMenuOptions} />
-            </div> */}
+            
           </div>
 
           <ul className="topbar-menu d-flex align-items-center">
@@ -289,17 +282,17 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
             </li>
             <li className="dropdown d-flex flex-column">
               <ProfileDropdown
-                profilePic={AvatarLogo}
+                profilePic={user?.Avatar !== "null" ? `${process.env.REACT_APP_BACKEND_URL}/${user?.Avatar}` : AvatarLogo}
                 menuItems={ProfileMenus}
                 username={user?.role_name == "ADMIN" ? user?.full_name : user?.full_name?.split(" ")[0]}
                 userTitle={user?.role_name?.split("_")?.join(" ")}
               />
             </li>
-            <li>
+            {/* <li>
               <button className="nav-link dropdown-toggle right-bar-toggle waves-effect waves-light btn btn-link shadow-none" onClick={handleRightSideBar}>
                 <i className="fe-settings noti-icon font-22"></i>
               </button>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
