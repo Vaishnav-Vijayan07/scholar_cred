@@ -9,7 +9,12 @@ function getLoanStatus() {
   return api.get(`${baseUrl}`, {});
 }
 
-function addLoanStatus(params: { status_name: string; status_description: string }) {
+function addLoanStatus(params: {
+  status_name: string;
+  status_description: string;
+  status_type: "Internal" | "External";
+  is_visible: boolean | string;
+}) {
   return api.create(`${baseUrl}`, params);
 }
 
@@ -18,6 +23,8 @@ function updateLoanStatus(
   params: {
     status_name: string;
     status_description: string;
+    status_type: "Internal" | "External";
+    is_visible: boolean | string;
   }
 ) {
   return api.update(`${baseUrl}/${id}`, params);

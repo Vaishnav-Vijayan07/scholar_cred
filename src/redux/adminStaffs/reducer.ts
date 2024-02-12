@@ -43,11 +43,14 @@ interface State {
   value?: boolean;
 }
 
-const AdminStaff = (state: State = INIT_STATE, action: AdminStaffActionType): any => {
+const AdminStaff = (
+  state: State = INIT_STATE,
+  action: AdminStaffActionType
+): any => {
   switch (action.type) {
     case AdminStaffActionTypes.API_RESPONSE_SUCCESS:
       switch (action.payload.actionType) {
-        case AdminStaffActionTypes.GET_ADMIN_STAFF: {
+        case AdminStaffActionTypes.GET_ADMIN_STAFF: {          
           return {
             ...state,
             loading: false,

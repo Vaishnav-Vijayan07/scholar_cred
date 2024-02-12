@@ -19,6 +19,13 @@ export interface TicketDetailsItems {
   due_date: string;
 }
 
+export const statusvalues = [
+  { label: "Open", value: "open" },
+  { label: "Medium", value: "medium" },
+  { label: "High", value: "high" },
+  { label: "Closed", value: "closed" },
+];
+
 const ticketDetails: TicketDetailsItems[] = [
   {
     id: "#1256",
@@ -216,5 +223,38 @@ const ticketDetails: TicketDetailsItems[] = [
     due_date: "21/05/2017",
   },
 ];
+
+export const getStatusProperties = (statusName: string) => {
+
+  switch (statusName.toLowerCase()) {
+    case "closed":
+      return { icon: "fe-trash-2", variant: "danger" };
+    case "in progress":
+      return { icon: "fe-clock", variant: "warning" };
+    case "resolved":
+      return { icon: "fe-check-circle", variant: "success" };
+    case "open":
+      return { icon: "fe-tag", variant: "primary" };
+    default:
+      return { icon: "", variant: "" };
+  }
+};
+
+export const getStatusNames = (statusCode:number)=>{
+
+  switch (statusCode) {
+    case 1:
+      return "Open";
+    case 2:
+      return "Closed";
+    case 3:
+      return "Resolved";
+    case 4:
+      return "In Progress";
+    default:
+      return "";
+  }
+  
+}
 
 export { ticketDetails };

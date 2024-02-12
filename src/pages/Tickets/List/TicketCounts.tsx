@@ -1,40 +1,36 @@
 import React, { useEffect } from "react";
-import { Row, Col, Spinner } from "react-bootstrap";
-
-// components
 import PageTitle from "../../../components/PageTitle";
-
+import { Col, Row } from "react-bootstrap";
 import Statistics from "./Statistics";
-import ManageTickets from "./ManageTickets";
-
-// dummy data
-import { getStatusProperties, ticketDetails } from "./data";
 import { useDispatch, useSelector } from "react-redux";
 import { getAdminTicketsCount } from "../../../redux/actions";
+import { getStatusProperties } from "./data";
 import { RootState } from "../../../redux/store";
+import { useLocation } from "react-router-dom";
 
-const List = () => {
-  const dispatch = useDispatch();
+interface StatusData {
+  status_id: number;
+  status_name: string;
+  status_count: string;
+}
 
-  const { state } = useSelector((state: RootState) => ({
-    state: state?.AdminTickets?.adminTicketsCount?.data || [],
-  }));
+interface Componentprops {
+    countDetails: StatusData[];
+}
 
-  useEffect(() => {
-    dispatch(getAdminTicketsCount());
-  }, []);
-
+const TicketCounts = ({ countDetails }:Componentprops) => {
+  const {pathname} = useLocation();
   return (
     <>
       <PageTitle
         breadCrumbItems={[
-          { label: "Tickets", path: "/apps/tickets" },
-          { label: "Ticket List", path: "/apps/tickets", active: true },
+          { label: "Tickets", path: pathname },
+          { label: pathname === '/apps/closed-tickets' ? "Closed Tickets" : "Tickets", path: pathname, active: true },
         ]}
         title={"Ticket List"}
       />
       <Row>
-        {state.map((item: any) => (
+        {countDetails.map((item: any) => (
           <Col md={6} xl={3}>
             <Statistics
               icon={getStatusProperties(item.status_name).icon}
@@ -45,13 +41,8 @@ const List = () => {
           </Col>
         ))}
       </Row>
-      <Row>
-        <Col>
-          <ManageTickets ticketDetails={ticketDetails} />
-        </Col>
-      </Row>
     </>
   );
 };
 
-export default List;
+export default TicketCounts;

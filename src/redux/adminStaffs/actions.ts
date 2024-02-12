@@ -26,13 +26,19 @@ interface AdminStaffData {
 }
 
 // Common success
-export const adminStaffApiResponseSuccess = (actionType: string, data: AdminStaffData | {}): AdminStaffActionType => ({
+export const adminStaffApiResponseSuccess = (
+  actionType: string,
+  data: AdminStaffData | {}
+): AdminStaffActionType => ({
   type: AdminStaffActionTypes.API_RESPONSE_SUCCESS,
   payload: { actionType, data },
 });
 
 // Common error
-export const adminStaffApiResponseError = (actionType: string, error: string): AdminStaffActionType => ({
+export const adminStaffApiResponseError = (
+  actionType: string,
+  error: string
+): AdminStaffActionType => ({
   type: AdminStaffActionTypes.API_RESPONSE_ERROR,
   payload: { actionType, error },
 });
@@ -41,7 +47,9 @@ export const getAdminStaff = (): AdminStaffActionType => ({
   type: AdminStaffActionTypes.GET_ADMIN_STAFF,
   payload: {},
 });
-export const getadminStaffById = (data: AdminStaffData | {}): AdminStaffActionType => ({
+export const getadminStaffById = (
+  data: AdminStaffData | {}
+): AdminStaffActionType => ({
   type: AdminStaffActionTypes.GET_ADMIN_STAFF_BY_ID,
   payload: { data },
 });

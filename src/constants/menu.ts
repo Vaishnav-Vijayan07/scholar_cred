@@ -24,7 +24,12 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/dashboard",
   },
 
-  { key: "user_management", label: "User Management", isTitle: true, roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN"] },
+  {
+    key: "user_management",
+    label: "User Management",
+    isTitle: true,
+    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN"],
+  },
 
   {
     key: "consultant",
@@ -51,7 +56,18 @@ const MENU_ITEMS: MenuItemTypes[] = [
     roles: ["CONSULTANT_ADMIN"],
   },
 
-  { key: "student_management", label: "Student Management", isTitle: true, roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"] },
+  {
+    key: "student_management",
+    label: "Student Management",
+    isTitle: true,
+    roles: [
+      "CRED_ADMIN",
+      "SUPER_USER",
+      "CONSULTANT_ADMIN",
+      "CONSULTANT_STAFF",
+      "CRED_STAFF",
+    ],
+  },
 
   {
     key: "intake_students",
@@ -103,7 +119,12 @@ const MENU_ITEMS: MenuItemTypes[] = [
     roles: ["CRED_ADMIN"],
   },
 
-  { key: "cred_admin_management", label: "Cred Admin Management", isTitle: true, roles: ["SUPER_USER", "CRED_ADMIN"] },
+  {
+    key: "cred_admin_management",
+    label: "Cred Admin Management",
+    isTitle: true,
+    roles: ["SUPER_USER", "CRED_ADMIN"],
+  },
 
   {
     key: "cred_admin_management",
@@ -129,8 +150,27 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/status/loan_status",
     roles: ["SUPER_USER", "CRED_ADMIN"],
   },
+  {
+    key: "internal_status",
+    label: "Internal Status",
+    isTitle: false,
+    icon: "file-minus",
+    url: "/status/internal_status",
+    roles: ["SUPER_USER", "CRED_ADMIN"],
+  },
 
-  { key: "apps", label: "Apps", isTitle: true, roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"] },
+  {
+    key: "apps",
+    label: "Apps",
+    isTitle: true,
+    roles: [
+      "CRED_ADMIN",
+      "SUPER_USER",
+      "CONSULTANT_ADMIN",
+      "CONSULTANT_STAFF",
+      "CRED_STAFF",
+    ],
+  },
 
   {
     key: "tickets",
@@ -138,7 +178,27 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "book",
     url: "/apps/tickets",
-    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+    roles: [
+      "CRED_ADMIN",
+      "SUPER_USER",
+      "CONSULTANT_ADMIN",
+      "CONSULTANT_STAFF",
+      "CRED_STAFF",
+    ],
+  },
+  {
+    key: "ticketsclosed",
+    label: "Tickets(Closed)",
+    isTitle: false,
+    icon: "book",
+    url: "/apps/closed-tickets",
+    roles: [
+      "CRED_ADMIN",
+      "SUPER_USER",
+      "CONSULTANT_ADMIN",
+      "CONSULTANT_STAFF",
+      "CRED_STAFF",
+    ],
   },
 ];
 
@@ -199,14 +259,24 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "users",
         url: "/users/intake-students",
-        roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+        roles: [
+          "SUPER_USER",
+          "CONSULTANT_ADMIN",
+          "CONSULTANT_STAFF",
+          "CRED_STAFF",
+        ],
       },
       {
         key: "students",
         label: "Students (Pending)",
         isTitle: false,
         url: "/users/students",
-        roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+        roles: [
+          "SUPER_USER",
+          "CONSULTANT_ADMIN",
+          "CONSULTANT_STAFF",
+          "CRED_STAFF",
+        ],
       },
       {
         key: "students",
@@ -285,7 +355,13 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         // icon: "book",
         url: "/apps/tickets",
-        roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+        roles: [
+          "CRED_ADMIN",
+          "SUPER_USER",
+          "CONSULTANT_ADMIN",
+          "CONSULTANT_STAFF",
+          "CRED_STAFF",
+        ],
       },
     ],
   },
@@ -348,14 +424,24 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "users",
         url: "/users/intake-students",
-        roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+        roles: [
+          "SUPER_USER",
+          "CONSULTANT_ADMIN",
+          "CONSULTANT_STAFF",
+          "CRED_STAFF",
+        ],
       },
       {
         key: "students",
         label: "Students (Pending)",
         isTitle: false,
         url: "/users/students",
-        roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+        roles: [
+          "SUPER_USER",
+          "CONSULTANT_ADMIN",
+          "CONSULTANT_STAFF",
+          "CRED_STAFF",
+        ],
       },
       {
         key: "students",
@@ -403,7 +489,13 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         // icon: "book",
         url: "/apps/tickets",
-        roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+        roles: [
+          "CRED_ADMIN",
+          "SUPER_USER",
+          "CONSULTANT_ADMIN",
+          "CONSULTANT_STAFF",
+          "CRED_STAFF",
+        ],
       },
     ],
   },

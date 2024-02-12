@@ -17,8 +17,8 @@ const App = () => {
   return (
     <>
       <React.Fragment>
-        <ToastContainer />
-        <AllRoutes />
+          <ToastContainer />
+          <AllRoutes />
       </React.Fragment>
     </>
   );

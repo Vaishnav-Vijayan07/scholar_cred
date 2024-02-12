@@ -11,6 +11,8 @@ import ConsultantStaff from "./consultantStaff/reducer";
 import Status from "./statusManagement/reducer";
 import Comments from "./comments/reducer";
 import LoanStatus from "./loanStatus/reducer";
+import AdminTickets from "./adminTickets/reducer";
+import InternalStatus from "./internalStatus/reducer";
 
 export default combineReducers({
   Auth,
@@ -24,4 +26,6 @@ export default combineReducers({
   Status,
   Comments,
   LoanStatus,
+  InternalStatus,
+  AdminTickets,
 });

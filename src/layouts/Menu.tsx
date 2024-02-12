@@ -175,7 +175,7 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
       <ul className="menu" ref={menuRef} id="main-side-menu">
         {(menuItems || []).map((item, idx) => {
           const loggedInUser = api.getLoggedInUser();
-
+          
           if (item.roles && !item?.roles?.includes(loggedInUser?.role_name)) {
             // No matching role found, so redirect to the unauthorized page
             return null;

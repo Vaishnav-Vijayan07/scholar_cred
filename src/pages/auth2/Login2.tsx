@@ -44,6 +44,7 @@ const Login2 = () => {
   const next = query.get("next");
 
   useEffect(() => {
+    
     dispatch(resetAuth());
   }, [dispatch]);
 
@@ -110,10 +111,10 @@ const Login2 = () => {
           <Button onClick={() => dispatch(loginUser("wocirey309@gosarlar.com", "ijy2As"))} className="custom_btn">
             Cred Staff
           </Button>
-          <Button onClick={() => dispatch(loginUser("ajaydev", "ajaydev"))} className="custom_btn">
+          <Button onClick={() => dispatch(loginUser("gabani9897@seosnaps.com", "sjjUjG"))} className="custom_btn">
             Con. Admin
           </Button>
-          <Button onClick={() => dispatch(loginUser("xileja6404@hupoi.com", "fxfBNF"))} className="custom_btn">
+          <Button onClick={() => dispatch(loginUser("davohip637@tupanda.com", "WubSWZ"))} className="custom_btn">
             Con. Staff
           </Button>
         </div>

@@ -1,33 +1,19 @@
-import * as yup from "yup";
 import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Spinner } from "react-bootstrap";
-import Table from "../../components/Table";
-
-import { withSwal } from "react-sweetalert2";
-import FeatherIcons from "feather-icons-react";
-import { yupResolver } from "@hookform/resolvers/yup";
-
-// components
-import PageTitle from "../../components/PageTitle";
+import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
-// import { addStatus, deleteStatus, getStatus, updateStatus } from "../../redux/actions";
-import { useNavigate } from "react-router-dom";
+import { withSwal } from "react-sweetalert2";
+import { RootState } from "../../redux/store";
 import {
-  addLoanStatus,
-  deleteLoanStatus,
-  getLoanStatus,
-  updateLoanStatus,
-} from "../../redux/actions";
-import { FormDataTypes, statusTypes } from "./data";
-
-interface TableRecords {
-  id: number;
-  status_name: string;
-  status_description: string;
-  color: string;
-}
+  addInternalStatus,
+  deleteInternalStatus,
+  getInternalStatus,
+  updateInternalStatus,
+} from "../../redux/internalStatus/actions";
+import FeatherIcons from "feather-icons-react";
+import PageTitle from "../../components/PageTitle";
+import { Button, Card, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
+import Table from "../../components/Table";
+import { internalInitialState, internalValidationState } from "./data";
 
 const sizePerPageList = [
   {
@@ -44,74 +30,57 @@ const sizePerPageList = [
   },
 ];
 
-const initialState: FormDataTypes = {
-  id: "",
-  status_name: "",
-  status_description: "",
-  status_type: "Internal",
-  is_visible: false,
-};
-
-const initialValidationState = {
-  status_name: "",
-  status_description: "",
-  status_type: "",
-};
-
 const BasicInputElements = withSwal((props: any) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const { swal, state, error, loading, initialLoading } = props;
 
-  //Table data
-
-  const records: TableRecords[] = state;
-
-  //State for handling update function
-  const [isUpdate, setIsUpdate] = useState(false);
-  //Input data
-  const [formData, setFormData] = useState<FormDataTypes>(initialState);
-
-  // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
-
-  //validation errors
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [formData, setFormData] = useState(internalInitialState);
   const [validationErrors, setValidationErrors] = useState(
-    initialValidationState
+    internalValidationState
   );
 
-  const validationSchema = yup.object().shape({
+  const handleCancelUpdate = () => {
+    setIsUpdate(false);
+    setFormData(internalInitialState);
+  };
+
+  const toggleResponsiveModal = () => {
+    console.log(formData);
+    
+    setResponsiveModal(!responsiveModal);
+    setValidationErrors(internalValidationState);
+    if (isUpdate) {
+      handleCancelUpdate();
+    }
+  };
+
+  const validation = yup.object().shape({
     status_name: yup
       .string()
-      .required("Status name is required")
-      .min(3, "Status name must be at least 3 characters long"),
+      .trim() // Trim whitespace
+      .min(1, "Status name must not be empty")
+      .required("Status name is required"),
     status_description: yup
       .string()
-      .required("Status description is required")
-      .min(3, "Status description must be at least 3 characters long"),
+      .trim() // Trim whitespace
+      .min(1, "Status description must not be empty")
+      .required("Status description is required"),
   });
 
-  /*
-   * form methods
-   */
-  const methods = useForm({
-    resolver: yupResolver(validationSchema), // Integrate yup with react-hook-form
-    defaultValues: initialState,
-  });
+  //Table data
+  const records: any = state;
 
-  const handleUpdate = (item: any) => {
+  const handleUpdate = (data: any) => {
     setFormData({
-      id: item?.id,
-      status_name: item?.status_name,
-      status_description: item?.status_description,
-      status_type: item?.status_type,
-      is_visible: item?.is_visible,
+      id: data?.id,
+      status_name: data?.status_name,
+      status_description: data?.status_description,
     });
-
     setIsUpdate(true);
   };
 
-  //handle delete function
   const handleDelete = (id: string) => {
     swal
       .fire({
@@ -125,62 +94,41 @@ const BasicInputElements = withSwal((props: any) => {
       })
       .then((result: any) => {
         if (result.isConfirmed) {
-          dispatch(deleteLoanStatus(id));
+          dispatch(deleteInternalStatus(id));
           // swal.fire("Deleted!", "Your item has been deleted.", "success");
         }
       });
   };
 
-  //handle onchange function
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    console.log(name, value);
-
-    setFormData((prevData: any) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prevData: any) => {
+      return { ...prevData, [name]: value };
+    });
   };
 
-  //handle form submission
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
-    // Validate the form using yup
     try {
-      await validationSchema.validate(formData, { abortEarly: false });
+      await validation.validate(formData, { abortEarly: false });
 
-      if (isUpdate) {
-        dispatch(
-          updateLoanStatus(
+      const actionTodispatch = isUpdate
+        ? updateInternalStatus(
             formData.id,
+            formData.status_name,
+            formData.status_description,
+          )
+        : addInternalStatus(
             formData.status_name.trim(),
             formData.status_description.trim(),
-            formData.is_visible,
-            formData.status_type
-          )
-        );
-      } else {
-        console.log(formData);
+          );
 
-        dispatch(
-          addLoanStatus(
-            formData.status_name.trim(),
-            formData.status_description.trim(),
-            formData.is_visible,
-            formData.status_type
-          )
-        );
-      }
+      dispatch(actionTodispatch);
 
-      // Clear validation errors
-      setValidationErrors(initialValidationState);
-
-      //clear form data
-      setFormData(initialState);
-
-      // ... Rest of the form submission logic ...
+      setFormData(internalInitialState);
+      setValidationErrors(internalValidationState);
+      toggleResponsiveModal();
     } catch (validationError) {
-      // Handle validation errors
       if (validationError instanceof yup.ValidationError) {
         const errors: any = {};
         validationError.inner.forEach((error) => {
@@ -210,19 +158,6 @@ const BasicInputElements = withSwal((props: any) => {
       sort: false,
     },
     {
-      Header: "Status Type",
-      accessor: "status_type",
-      sort: false,
-    },
-    {
-      Header: "Visibility",
-      accessor: "is_visible",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <span>{row.original.is_visible ? "Yes" : " No"}</span>
-      ),
-    },
-    {
       Header: "Actions",
       accessor: "",
       sort: false,
@@ -236,7 +171,7 @@ const BasicInputElements = withSwal((props: any) => {
             onClick={() => {
               handleUpdate(row.original);
               toggleResponsiveModal();
-              setValidationErrors(initialValidationState);
+              //   setValidationErrors(initialValidationState);
             }}
           />
 
@@ -251,32 +186,6 @@ const BasicInputElements = withSwal((props: any) => {
       ),
     },
   ];
-
-  //handle cancel update section
-  const handleCancelUpdate = () => {
-    setIsUpdate(false);
-    setFormData(initialState);
-  };
-
-  const toggleResponsiveModal = () => {
-    setResponsiveModal(!responsiveModal);
-    setValidationErrors(initialValidationState);
-    if (isUpdate) {
-      handleCancelUpdate();
-    }
-  };
-
-  useEffect(() => {
-    // Check for errors and clear the form
-    if (!loading && !error) {
-      //   setValidationErrors();
-      handleCancelUpdate();
-      setResponsiveModal(false);
-    }
-  }, [loading, error]);
-
-  console.log("loading=====>", loading);
-  console.log("error=====>", error);
 
   if (initialLoading) {
     return (
@@ -333,50 +242,6 @@ const BasicInputElements = withSwal((props: any) => {
                   </Form.Text>
                 )}
               </Form.Group>
-              <Row className="d-flex align-items-center ">
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="source">
-                    <Form.Label>Status Types</Form.Label>
-                    <Form.Select
-                      name="status_type"
-                      value={formData.status_type}
-                      onChange={handleInputChange}
-                      aria-label="Default select example"
-                    >
-                      <option disabled value="" selected>
-                        Choose a value
-                      </option>
-                      <option value="Internal">Internal</option>
-                      <option value="External">External</option>
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="source">
-                    <Form.Label>Visibility</Form.Label>
-                    <div className="d-flex gap-3 align-items-center">
-                      <Form.Check
-                        type="radio"
-                        label="Yes"
-                        name="is_visible"
-                        id="yes"
-                        value="1"
-                        onChange={handleInputChange}
-                        checked={formData.is_visible == true}
-                      />
-                      <Form.Check
-                        type="radio"
-                        label="No"
-                        name="is_visible"
-                        id="no"
-                        value="0"
-                        onChange={handleInputChange}
-                        checked={formData.is_visible == false}
-                      />
-                    </div>
-                  </Form.Group>
-                </Col>
-              </Row>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -411,7 +276,7 @@ const BasicInputElements = withSwal((props: any) => {
                 className="btn-sm btn-blue waves-effect waves-light float-end"
                 onClick={toggleResponsiveModal}
               >
-                <i className="mdi mdi-plus-circle"></i> Add Loan Status
+                <i className="mdi mdi-plus-circle"></i> Add Internal Status
               </Button>
               <h4 className="header-title mb-4">Manage Loan Status</h4>
               <Table
@@ -433,35 +298,38 @@ const BasicInputElements = withSwal((props: any) => {
   );
 });
 
-const LoanStatusManagement = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const { LoanStatus, loading, error, initialLoading } = useSelector(
+const InternalStatus = () => {
+  const dispatch = useDispatch();
+  const { InternalStatus, loading, error, initialLoading } = useSelector(
     (state: RootState) => ({
-      LoanStatus: state.LoanStatus.status.data,
-      loading: state.LoanStatus.loading,
-      error: state.LoanStatus.error,
-      initialLoading: state.LoanStatus.initialLoading,
+      InternalStatus: state.InternalStatus.status.data,
+      loading: state.InternalStatus.loading,
+      error: state.InternalStatus.error,
+      initialLoading: state.InternalStatus.initialLoading,
     })
   );
 
   useEffect(() => {
-    dispatch(getLoanStatus());
+    dispatch(getInternalStatus());
   }, []);
 
   return (
     <React.Fragment>
       <PageTitle
         breadCrumbItems={[
-          { label: "Status", path: "/status/loan_status" },
-          { label: "Loan Status", path: "/status/loan_status", active: true },
+          { label: "Status", path: "/status/internal_status" },
+          {
+            label: "Internal Status",
+            path: "/status/internal_status",
+            active: true,
+          },
         ]}
-        title={"Loan Status"}
+        title={"Internal Status"}
       />
       <Row>
         <Col>
           <BasicInputElements
-            state={LoanStatus}
+            state={InternalStatus}
             loading={loading}
             error={error}
             initialLoading={initialLoading}
@@ -471,4 +339,4 @@ const LoanStatusManagement = () => {
     </React.Fragment>
   );
 };
-export default LoanStatusManagement;
+export default InternalStatus;

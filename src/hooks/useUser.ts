@@ -7,6 +7,7 @@ const useUser = (): { user: any | void } => {
 
   const [user, setuser] = useState();
 
+
   useEffect(() => {
     if (api.isUserAuthenticated()) {
       setuser(api.getLoggedInUser());

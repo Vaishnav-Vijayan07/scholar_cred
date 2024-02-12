@@ -29,7 +29,15 @@ const ProfileDropdown = (props: ProfileDropdownProps) => {
 
   return (
     <Dropdown show={dropdownOpen} onToggle={toggleDropdown}>
-      <Dropdown.Toggle id="dropdown-profile" as="a" onClick={toggleDropdown} className={classNames("nav-link nav-user me-0 waves-effect waves-light", { show: dropdownOpen })}>
+      <Dropdown.Toggle
+        id="dropdown-profile"
+        as="a"
+        onClick={toggleDropdown}
+        className={classNames(
+          "nav-link nav-user me-0 waves-effect waves-light",
+          { show: dropdownOpen }
+        )}
+      >
         <img src={profilePic!} className="rounded-circle" alt="" />
         <span className="pro-user-name ms-1" style={{ lineHeight: 1 }}>
           <div>
@@ -46,8 +54,14 @@ const ProfileDropdown = (props: ProfileDropdownProps) => {
           {(props.menuItems || []).map((item, i) => {
             return (
               <React.Fragment key={i}>
-                {i === props["menuItems"].length - 1 && <div className="dropdown-divider"></div>}
-                <Link to={item.redirectTo} className="dropdown-item notify-item" key={i + "-profile-menu"}>
+                {i === props["menuItems"].length - 1 && (
+                  <div className="dropdown-divider"></div>
+                )}
+                <Link
+                  to={item.redirectTo}
+                  className="dropdown-item notify-item"
+                  key={i + "-profile-menu"}
+                >
                   <i className={`${item.icon} me-1`}></i>
                   <span>{item.label}</span>
                 </Link>

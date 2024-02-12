@@ -20,6 +20,7 @@ import { APICore } from "../helpers/api/apiCore";
 
 interface IRoutesProps {}
 
+
 const AllRoutes = (props: IRoutesProps) => {
   const { layout } = useSelector((state: RootState) => ({
     layout: state.Layout,
@@ -71,6 +72,8 @@ const AllRoutes = (props: IRoutesProps) => {
           {authProtectedFlattenRoutes.map((route, idx) => (
             <Route
               path={route.path}
+              
+              
               element={
                 api.isUserAuthenticated() === false ? (
                   <Navigate

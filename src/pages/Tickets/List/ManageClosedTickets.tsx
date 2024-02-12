@@ -12,12 +12,6 @@ import {
   Spinner,
 } from "react-bootstrap";
 import classNames from "classnames";
-
-// components
-import Table from "../../../components/Table";
-
-// dummy data
-import { TicketDetailsItems, getStatusNames, statusvalues } from "./data";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
@@ -26,9 +20,15 @@ import {
   getAdminTickets,
   getAdminTicketsCount,
 } from "../../../redux/actions";
-import { getTicketStatus } from "../../../helpers/api/admin_tickets";
+
+// components
+import Table from "../../../components/Table";
+
+// dummy data
+import { TicketDetailsItems, statusvalues } from "./data";
+import PageTitle from "../../../components/PageTitle";
+import Statistics from "./Statistics";
 import TicketCounts from "./TicketCounts";
-import StatusDropdown from "./StatusDropdown";
 
 /* id column render */
 const IdColumn = ({ row }: { row: any }) => {
@@ -161,26 +161,7 @@ const columns = [
     Header: "Status",
     accessor: "status_name",
     sort: true,
-    // Cell: ({ row }: any) => {
-    //   const [selectedStatus, setSelectedStatus] = useState<string>(
-    //     row.original.status_name
-    //   );
-
-    //   console.log(row.original.status_name);
-
-    //   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    //     setSelectedStatus(e.target.value);
-    //   };
-
-    //   return (
-    //     <select value={selectedStatus} onChange={handleStatusChange}>
-    //       <option value="Open">Open</option>
-    //       <option value="Closed">Close</option>
-    //       <option value="Pending">Pending</option>
-    //     </select>
-    //   );
-    // },
-    Cell: ({row}:any) => (<StatusDropdown data = {row.original}/>)
+    Cell: PriorityColumn,
   },
   {
     Header: "Priority",
@@ -232,32 +213,32 @@ interface ManageTicketsProps {
   ticketDetails: TicketDetailsItems[];
 }
 
-const ManageTickets = ({ ticketDetails }: ManageTicketsProps) => {
-  const { state, initailLoading, status, countDetails, user } = useSelector(
+const ManageClosedTickets = ({ ticketDetails }: ManageTicketsProps) => {
+  const { state, initailLoading, countDetails, status } = useSelector(
     (state: RootState) => ({
       state: state.AdminTickets.adminTickets.data,
-      user: state.Auth,
       status: state.AdminTickets.adminTicketsStatus.data,
       initailLoading: state.AdminTickets.initialLoading,
       countDetails: state.AdminTickets.adminTicketsCount.data || [],
     })
   );
   const dispatch = useDispatch();
+
   const [options, setOptions] = useState("");
   const [filteredItems, setFilteredItems] = useState(state);
-
-  const handleClearFilter = () => {
-    setOptions("");
-    setFilteredItems(state);
-  };
 
   const handleStatusChange = (type: any) => {
     const items = state?.filter((item: any) => item.status_name === type);
     setFilteredItems(items);
   };
 
+  const handleClearFilter = () => {
+    setOptions("");
+    setFilteredItems(state);
+  };
+
   useEffect(() => {
-    dispatch(getAdminTickets(0));
+    dispatch(getAdminTickets(1));
     dispatch(getAdminTicketsCount());
   }, []);
 
@@ -285,19 +266,19 @@ const ManageTickets = ({ ticketDetails }: ManageTicketsProps) => {
         <Card.Body>
           <div className="d-flex float-end">
             <Dropdown className="btn-group" align="end">
-              <Dropdown.Toggle
-                variant=""
-                className="btn-sm btn-outline-blue"
-                style={{ minWidth: "150px" }}
-              >
+              <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
                 <i className="mdi mdi-filter-variant"></i>{" "}
+                {/* {truncateText(selectedStaff, 13)} */}
                 {options === "" ? "Filter by status" : options}
               </Dropdown.Toggle>
               <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
                 <Dropdown.Item
                   key={"clear"}
                   style={{ backgroundColor: "#fa9393" }}
-                  onClick={() => [handleClearFilter(), setOptions("")]}
+                  onClick={() => [
+                    handleClearFilter(),
+                    setOptions(""),
+                  ]}
                 >
                   <i className="mdi mdi-close"></i> Clear Selection
                 </Dropdown.Item>
@@ -334,4 +315,4 @@ const ManageTickets = ({ ticketDetails }: ManageTicketsProps) => {
   );
 };
 
-export default ManageTickets;
+export default ManageClosedTickets;

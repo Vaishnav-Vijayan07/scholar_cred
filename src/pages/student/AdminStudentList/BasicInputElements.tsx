@@ -63,7 +63,7 @@ const BasicInputElements = withSwal((props: any) => {
       .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
     date_of_birth: yup.string().required("DOB is required"),
     country_of_origin: yup.string().nullable(),
-    source: yup.string().required("Source is required").nullable(),
+    
     // application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
   });
 
@@ -168,6 +168,8 @@ const BasicInputElements = withSwal((props: any) => {
         );
       }
     } catch (validationError) {
+      console.log(validationError);
+      
       // Handle validation errors
       if (validationError instanceof yup.ValidationError) {
         const errors: any = {};

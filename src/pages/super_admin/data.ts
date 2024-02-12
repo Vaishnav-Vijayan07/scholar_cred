@@ -11,6 +11,14 @@ export interface AdminUsersType {
   created_by: string;
 }
 
+export interface FormDataTypes {
+  id: string;
+  status_name: string;
+  status_description: string;
+  status_type: "Internal" | "External";
+  is_visible: boolean | string;
+}
+
 export const sizePerPageList = [
   {
     text: "5",
@@ -43,3 +51,20 @@ export const AdminValidationState = {
   user_type_id: "",
   created_by: "",
 };
+
+export const internalInitialState  = {
+  id: "",
+  status_name: "",
+  status_description: "",
+};
+
+export const internalValidationState = {
+  id: "",
+  status_name: "",
+  status_description: "",
+};
+
+export const statusTypes = [
+  { id:1,value: "internal", label: "Internal" },
+  { id:2,value: "external", label: "External" },
+];
