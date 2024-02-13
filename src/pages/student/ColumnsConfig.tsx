@@ -84,7 +84,7 @@ export const getColumns = (handleResetPassword: any, resetPassword: any, handleU
     // },
     // {
     //   Header: "Assigned Staff",
-    //   accessor: "assigned_staff",
+    //   accessor: "assigned_cred_staff",
     //   sort: false,
     // },
     // {

@@ -112,7 +112,7 @@ class APICore {
   /**
    * post given data to url
    */
-  create = (url: string, data: any) => {    
+  create = (url: string, data: any) => {
     return axios.post(url, data);
   };
 
@@ -182,6 +182,7 @@ class APICore {
       return false;
     }
     const decoded: any = jwtDecode(user.token);
+
     const currentTime = Date.now() / 1000;
     if (decoded.exp < currentTime) {
       console.warn("access token expired");
