@@ -10,6 +10,7 @@ export interface ConsultantStaffsActionType {
     | ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF
     | ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF
     | ConsultantStaffActionTypes.GET_CONSULTANT_STAFF
+    | ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ADMIN
     | ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID;
   payload: {} | string;
 }
@@ -41,6 +42,10 @@ export const ConsultantStaffsApiResponseError = (actionType: string, error: stri
 export const getConsultantStaffs = (consultant_id: string): ConsultantStaffsActionType => ({
   type: ConsultantStaffActionTypes.GET_CONSULTANT_STAFF,
   payload: { consultant_id },
+});
+export const getConsultantStaffByAdmin = (): ConsultantStaffsActionType => ({
+  type: ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ADMIN,
+  payload: {},
 });
 export const getConsultantStaffsById = (data: AdminStaffData | {}): ConsultantStaffsActionType => ({
   type: ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID,

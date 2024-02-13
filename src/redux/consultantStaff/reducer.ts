@@ -5,6 +5,7 @@ import { ConsultantStaffActionTypes } from "./constants";
 
 const INIT_STATE = {
   ConsultantStaff: [],
+  ConsultantStaffByAdmin: [],
   loading: false,
   error: null,
   initialLoading: false,
@@ -30,6 +31,7 @@ interface AdminStaffActionType {
     | ConsultantStaffActionTypes.EDIT_CONSULTANT_STAFF
     | ConsultantStaffActionTypes.DELETE_CONSULTANT_STAFF
     | ConsultantStaffActionTypes.GET_CONSULTANT_STAFF
+    | ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ADMIN
     | ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID;
   payload: {
     actionType?: string;
@@ -54,6 +56,15 @@ const ConsultantStaff = (state: State = INIT_STATE, action: AdminStaffActionType
             loading: false,
             initialLoading: false,
             ConsultantStaff: action.payload.data,
+          };
+        }
+
+        case ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ADMIN: {
+          return {
+            ...state,
+            loading: false,
+            initialLoading: false,
+            ConsultantStaffByAdmin: action.payload.data,
           };
         }
 
@@ -122,6 +133,14 @@ const ConsultantStaff = (state: State = INIT_STATE, action: AdminStaffActionType
           };
         }
 
+        case ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ADMIN: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+          };
+        }
+
         case ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID: {
           return {
             ...state,
@@ -141,6 +160,9 @@ const ConsultantStaff = (state: State = INIT_STATE, action: AdminStaffActionType
       return { ...state, loading: true };
 
     case ConsultantStaffActionTypes.GET_CONSULTANT_STAFF:
+      return { ...state, loading: true, initialLoading: true };
+
+    case ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ADMIN:
       return { ...state, loading: true, initialLoading: true };
 
     case ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ID:

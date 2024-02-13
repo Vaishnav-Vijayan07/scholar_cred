@@ -1,11 +1,13 @@
 import React, { ReactNode } from "react";
 import moment from "moment";
-import { Badge, Button } from "react-bootstrap";
+import { Badge, Button, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import FeatherIcons from "feather-icons-react";
 
-export const getColumns = (handleResetPassword: any, resetPassword: any, handleUpdate: any, toggleResponsiveModal: any, handleDelete: any) => {
+export const getColumns = (handleUpdate: any, toggleResponsiveModal: any, handleDelete: any, handleAssign: any, credStaffData: any) => {
+  console.log("credStaffData in component", credStaffData);
+
   return [
     {
       Header: "ID",
@@ -72,51 +74,33 @@ export const getColumns = (handleResetPassword: any, resetPassword: any, handleU
       sort: false,
     },
     {
+      Header: "AssignedTo",
+      accessor: "assigned_consultant_staff",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <>
+          <Dropdown className="btn-group" align="end">
+            <Dropdown.Toggle variant="light" className="table-action-btn btn-sm" disabled={!row.original.status}>
+              {row.original.assigned_consultant_staff ? row.original.assigned_consultant_staff : "Assign"}
+            </Dropdown.Toggle>
+            <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+              {credStaffData?.map((item: any) => (
+                <Dropdown.Item key={item.id} onClick={() => handleAssign(item.id, row.original.student_id)}>
+                  {item.full_name}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+        </>
+      ),
+    },
+    {
       Header: "Created By",
       accessor: "created_user",
       sort: false,
       Cell: ({ row }: any) => <div>{row.original.created_by == 0 ? "App" : row.original.created_user}</div>,
     },
-    // {
-    //   Header: "Created By",
-    //   accessor: "created_user",
-    //   sort: false,
-    // },
-    // {
-    //   Header: "Assigned Staff",
-    //   accessor: "assigned_cred_staff",
-    //   sort: false,
-    // },
-    // {
-    //   Header: "Send Password",
-    //   accessor: "",
-    //   sort: false,
-    //   Cell: ({ row }: any) => (
-    //     <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
-    //       <Button
-    //         variant="link"
-    //         onClick={() => {
-    //           Swal.fire({
-    //             title: "Are you sure you want to change the password?",
-    //             text: "This action cannot be undone.",
-    //             icon: "warning",
-    //             showCancelButton: true,
-    //             confirmButtonColor: "#3085d6",
-    //             cancelButtonColor: "#d33",
-    //             confirmButtonText: "Yes, Send it!",
-    //           }).then((result: any) => {
-    //             if (result.isConfirmed) {
-    //               handleResetPassword(row.original.email);
-    //             }
-    //           });
-    //         }}
-    //       >
-    //         {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
-    //         Send Mail
-    //       </Button>
-    //     </div>
-    //   ),
-    // },
+
     {
       Header: "Actions",
       accessor: "",

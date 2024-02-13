@@ -7,6 +7,7 @@ import {
   updateConsultantStaff as updateConsultantStaffApi,
   getConsultantStaff as getConsultantStaffApi,
   deleteConsultantStaff as deleteConsultantStaffApi,
+  getConsultantStaffByAdmin as getConsultantStaffByAdminApi,
 } from "../../helpers";
 
 // actions
@@ -71,6 +72,19 @@ function* getConsultantStaffs({ payload: { consultant_id } }: ConsultantStaffDat
   }
 }
 
+function* getConsultantStaffByAdmin(): SagaIterator {
+  try {
+    const response = yield call(getConsultantStaffByAdminApi);
+    const data = response.data.data;
+
+    // NOTE - You can change this according to response format from your api
+    yield put(ConsultantStaffsApiResponseSuccess(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ADMIN, { data }));
+  } catch (error: any) {
+    yield put(ConsultantStaffsApiResponseError(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ADMIN, error));
+    throw error;
+  }
+}
+
 function* updateConsultantStaff({
   payload: { id, first_name, last_name, username, email, phone, file, employee_id, created_by, consultant_id },
   type,
@@ -115,6 +129,10 @@ export function* watchGetAllAdminStaff() {
   yield takeEvery(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF, getConsultantStaffs);
 }
 
+export function* watchGetConsultantStaffByAdmin() {
+  yield takeEvery(ConsultantStaffActionTypes.GET_CONSULTANT_STAFF_BY_ADMIN, getConsultantStaffByAdmin);
+}
+
 export function* watchCreateAdminStaff() {
   yield takeEvery(ConsultantStaffActionTypes.CREATE_CONSULTANT_STAFF, createConsultantStaff);
 }
@@ -128,7 +146,14 @@ export function* watchDeleteAdminStaff() {
 }
 
 function* AdminStafftSaga() {
-  yield all([fork(watchGetAllAdminStaff), fork(watchEditAdminStaff), fork(watchCreateAdminStaff), fork(watchGetAllAdminStaff), fork(watchDeleteAdminStaff)]);
+  yield all([
+    fork(watchGetAllAdminStaff),
+    fork(watchEditAdminStaff),
+    fork(watchCreateAdminStaff),
+    fork(watchGetAllAdminStaff),
+    fork(watchDeleteAdminStaff),
+    fork(watchGetConsultantStaffByAdmin),
+  ]);
 }
 
 export default AdminStafftSaga;
