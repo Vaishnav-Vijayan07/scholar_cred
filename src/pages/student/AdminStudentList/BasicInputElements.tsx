@@ -208,7 +208,7 @@ const BasicInputElements = withSwal((props: any) => {
       <>
         <Dropdown className="btn-group" align="end">
           <Dropdown.Toggle variant="light" className="table-action-btn btn-sm" disabled={!row.original.status}>
-            {row.original.assigned_staff ? row.original.assigned_staff : "Assign"}
+            {row.original.assigned_cred_staff ? row.original.assigned_cred_staff : "Assign"}
           </Dropdown.Toggle>
           <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
             {credStaffData?.map((item: any) => (
