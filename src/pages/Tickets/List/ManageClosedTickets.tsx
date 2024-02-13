@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
-import * as yup from "yup";
 import { Link } from "react-router-dom";
-import {
-  Card,
-  Button,
-  Dropdown,
-  Form,
-  Modal,
-  Row,
-  Col,
-  Spinner,
-} from "react-bootstrap";
+import { Card, Dropdown, Spinner } from "react-bootstrap";
 import classNames from "classnames";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,9 +16,8 @@ import Table from "../../../components/Table";
 
 // dummy data
 import { TicketDetailsItems, statusvalues } from "./data";
-import PageTitle from "../../../components/PageTitle";
-import Statistics from "./Statistics";
 import TicketCounts from "./TicketCounts";
+import StatusDropdown from "./StatusDropdown";
 
 /* id column render */
 const IdColumn = ({ row }: { row: any }) => {
@@ -58,16 +47,36 @@ const RequestedBy = ({ row }: { row: any }) => {
 
 /* assignee column render */
 const AssigneeColumn = ({ row }: { row: any }) => {
+  const firstLetter = row.original.assigned_to_user_name
+    ? row.original.assigned_to_user_name.charAt(0).toUpperCase()
+    : "A";
+
+  const assigneeName = row.original.assigned_to_user_name
+    ? row.original.assigned_to_user_name.trim()
+    : "Assignee";
+
   return (
     <>
-      <Link to="#">
-        <img
-          src={row.original.assignee}
-          alt=""
-          title="contact-img"
-          className="rounded-circle avatar-xs"
-        />
-      </Link>
+      <div className="d-flex ">
+        <div className="d-flex justify-content-center align-items-center gap-1">
+          <div
+            className="rounded-circle avatar-xs mr-2"
+            style={{
+              width: "30px",
+              height: "30px",
+              backgroundColor: "#FFA500", // You can change the background color as desired
+              color: "#fff", // You can change the text color as desired
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "bold",
+            }}
+          >
+            {firstLetter}
+          </div>
+          <div>{assigneeName}</div>
+        </div>
+      </div>
     </>
   );
 };
@@ -161,7 +170,7 @@ const columns = [
     Header: "Status",
     accessor: "status_name",
     sort: true,
-    Cell: PriorityColumn,
+    Cell: ({ row }: any) => <StatusDropdown data={row.original} />,
   },
   {
     Header: "Priority",
@@ -184,12 +193,6 @@ const columns = [
     Cell: ({ row }: any) => (
       <span>{moment(row.original.ticket_updated_at).format("YYYY-MM-DD")}</span>
     ),
-  },
-  {
-    Header: "Action",
-    accessor: "action",
-    Cell: ActionColumn,
-    sort: false,
   },
 ];
 
@@ -275,16 +278,13 @@ const ManageClosedTickets = ({ ticketDetails }: ManageTicketsProps) => {
                 <Dropdown.Item
                   key={"clear"}
                   style={{ backgroundColor: "#fa9393" }}
-                  onClick={() => [
-                    handleClearFilter(),
-                    setOptions(""),
-                  ]}
+                  onClick={() => [handleClearFilter(), setOptions("")]}
                 >
                   <i className="mdi mdi-close"></i> Clear Selection
                 </Dropdown.Item>
                 {status?.map((item: any) => (
                   <Dropdown.Item
-                    key={item.value}
+                    key={item.id}
                     onClick={() => [
                       handleStatusChange(item.ticketstatus),
                       setOptions(item.ticketstatus),

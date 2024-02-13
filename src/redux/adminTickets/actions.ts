@@ -1,4 +1,3 @@
-import { string } from "yup";
 import { AdminTicketsActionTypes } from "./constants";
 
 interface AdminTicketData {
@@ -58,8 +57,6 @@ export const updateAdminTicketStatus = (
   status_id: any,
   ticket_id: any
 ): AdminTicketActionType => {
-  console.log(status_id, ticket_id);
-
   return {
     type: AdminTicketsActionTypes.UPDATE_ADMIN_TICKET_STATUS,
     payload: { status_id, ticket_id },

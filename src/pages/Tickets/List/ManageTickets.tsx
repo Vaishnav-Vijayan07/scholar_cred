@@ -1,23 +1,13 @@
-import React, { useEffect, useState } from "react";
-import * as yup from "yup";
+import { useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
-import {
-  Card,
-  Button,
-  Dropdown,
-  Form,
-  Modal,
-  Row,
-  Col,
-  Spinner,
-} from "react-bootstrap";
+import { Card, Dropdown, Spinner } from "react-bootstrap";
 import classNames from "classnames";
 
 // components
 import Table from "../../../components/Table";
 
 // dummy data
-import { TicketDetailsItems, getStatusNames, statusvalues } from "./data";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
@@ -26,7 +16,6 @@ import {
   getAdminTickets,
   getAdminTicketsCount,
 } from "../../../redux/actions";
-import { getTicketStatus } from "../../../helpers/api/admin_tickets";
 import TicketCounts from "./TicketCounts";
 import StatusDropdown from "./StatusDropdown";
 
@@ -58,16 +47,36 @@ const RequestedBy = ({ row }: { row: any }) => {
 
 /* assignee column render */
 const AssigneeColumn = ({ row }: { row: any }) => {
+  const firstLetter = row.original.assigned_to_user_name
+    ? row.original.assigned_to_user_name.charAt(0).toUpperCase()
+    : "A";
+
+  const assigneeName = row.original.assigned_to_user_name
+    ? row.original.assigned_to_user_name
+    : "Assignee";
+
   return (
     <>
-      <Link to="#">
-        <img
-          src={row.original.assignee}
-          alt=""
-          title="contact-img"
-          className="rounded-circle avatar-xs"
-        />
-      </Link>
+      <div className="d-flex ">
+        <div className="d-flex justify-content-center align-items-center gap-1">
+          <div
+            className="rounded-circle avatar-xs mr-2"
+            style={{
+              width: "30px",
+              height: "30px",
+              backgroundColor: "#FFA500", // You can change the background color as desired
+              color: "#fff", // You can change the text color as desired
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "bold",
+            }}
+          >
+            {firstLetter}
+          </div>
+          <div>{assigneeName}</div>
+        </div>
+      </div>
     </>
   );
 };
@@ -161,26 +170,7 @@ const columns = [
     Header: "Status",
     accessor: "status_name",
     sort: true,
-    // Cell: ({ row }: any) => {
-    //   const [selectedStatus, setSelectedStatus] = useState<string>(
-    //     row.original.status_name
-    //   );
-
-    //   console.log(row.original.status_name);
-
-    //   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    //     setSelectedStatus(e.target.value);
-    //   };
-
-    //   return (
-    //     <select value={selectedStatus} onChange={handleStatusChange}>
-    //       <option value="Open">Open</option>
-    //       <option value="Closed">Close</option>
-    //       <option value="Pending">Pending</option>
-    //     </select>
-    //   );
-    // },
-    Cell: ({row}:any) => (<StatusDropdown data = {row.original}/>)
+    Cell: ({ row }: any) => <StatusDropdown data={row.original} />,
   },
   {
     Header: "Priority",
@@ -204,12 +194,6 @@ const columns = [
       <span>{moment(row.original.ticket_updated_at).format("YYYY-MM-DD")}</span>
     ),
   },
-  {
-    Header: "Action",
-    accessor: "action",
-    Cell: ActionColumn,
-    sort: false,
-  },
 ];
 
 // get pagelist to display
@@ -228,15 +212,10 @@ const sizePerPageList = [
   },
 ];
 
-interface ManageTicketsProps {
-  ticketDetails: TicketDetailsItems[];
-}
-
-const ManageTickets = ({ ticketDetails }: ManageTicketsProps) => {
-  const { state, initailLoading, status, countDetails, user } = useSelector(
+const ManageTickets = () => {
+  const { state, initailLoading, status, countDetails } = useSelector(
     (state: RootState) => ({
       state: state.AdminTickets.adminTickets.data,
-      user: state.Auth,
       status: state.AdminTickets.adminTicketsStatus.data,
       initailLoading: state.AdminTickets.initialLoading,
       countDetails: state.AdminTickets.adminTicketsCount.data || [],
@@ -303,7 +282,7 @@ const ManageTickets = ({ ticketDetails }: ManageTicketsProps) => {
                 </Dropdown.Item>
                 {status?.map((item: any) => (
                   <Dropdown.Item
-                    key={item.value}
+                    key={item.ticketstatus}
                     onClick={() => [
                       handleStatusChange(item.ticketstatus),
                       setOptions(item.ticketstatus),
