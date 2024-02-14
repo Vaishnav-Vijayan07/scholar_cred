@@ -13,6 +13,7 @@ import commentsSaga from "./comments/saga";
 import loanStatusSaga from "./loanStatus/saga";
 import AdminTicketsSaga from "./adminTickets/saga";
 import internalStatusSaga from "./internalStatus/saga";
+import TicketsSaga from "./tickets/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -29,5 +30,6 @@ export default function* rootSaga() {
     loanStatusSaga(),
     internalStatusSaga(),
     AdminTicketsSaga(),
+    TicketsSaga()
   ]);
 }

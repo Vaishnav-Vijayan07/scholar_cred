@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, Dropdown, Spinner } from "react-bootstrap";
+import FeatherIcons from "feather-icons-react";
 import classNames from "classnames";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -138,63 +139,6 @@ const ActionColumn = () => {
 };
 
 // get all columns
-const columns = [
-  {
-    Header: "ID",
-    accessor: "id",
-    sort: true,
-    Cell: IdColumn,
-  },
-  {
-    Header: "Requested By",
-    accessor: "requested_by",
-    sort: true,
-    Cell: ({ row }: any) => (
-      <span>
-        {row.original.student_first_name + " " + row.original.student_last_name}
-      </span>
-    ),
-  },
-  {
-    Header: "Subject",
-    accessor: "subjects_description",
-    sort: true,
-  },
-
-  {
-    Header: "Assignee",
-    accessor: "assignee",
-    Cell: AssigneeColumn,
-  },
-  {
-    Header: "Status",
-    accessor: "status_name",
-    sort: true,
-    Cell: ({ row }: any) => <StatusDropdown data={row.original} />,
-  },
-  {
-    Header: "Priority",
-    accessor: "status",
-    sort: true,
-    Cell: ({ row }: any) => <span>{row.original.status}</span>,
-  },
-  {
-    Header: "Created Date",
-    accessor: "ticket_created_at",
-    sort: true,
-    Cell: ({ row }: any) => (
-      <span>{moment(row.original.ticket_created_at).format("YYYY-MM-DD")}</span>
-    ),
-  },
-  {
-    Header: "Due Date",
-    accessor: "ticket_updated_at",
-    sort: true,
-    Cell: ({ row }: any) => (
-      <span>{moment(row.original.ticket_updated_at).format("YYYY-MM-DD")}</span>
-    ),
-  },
-];
 
 // get pagelist to display
 const sizePerPageList = [
@@ -217,6 +161,90 @@ interface ManageTicketsProps {
 }
 
 const ManageClosedTickets = ({ ticketDetails }: ManageTicketsProps) => {
+  const columns = [
+    {
+      Header: "ID",
+      accessor: "id",
+      sort: true,
+      Cell: IdColumn,
+    },
+    {
+      Header: "Requested By",
+      accessor: "requested_by",
+      sort: true,
+      Cell: ({ row }: any) => (
+        <span>
+          {row.original.student_first_name +
+            " " +
+            row.original.student_last_name}
+        </span>
+      ),
+    },
+    {
+      Header: "Subject",
+      accessor: "subjects_description",
+      sort: true,
+    },
+
+    {
+      Header: "Assignee",
+      accessor: "assignee",
+      Cell: AssigneeColumn,
+    },
+    {
+      Header: "Status",
+      accessor: "status_name",
+      sort: true,
+      Cell: ({ row }: any) => <StatusDropdown data={row.original} />,
+    },
+    {
+      Header: "Priority",
+      accessor: "status",
+      sort: true,
+      Cell: ({ row }: any) => <span>{row.original.status}</span>,
+    },
+    {
+      Header: "Created Date",
+      accessor: "ticket_created_at",
+      sort: true,
+      Cell: ({ row }: any) => (
+        <span>
+          {moment(row.original.ticket_created_at).format("YYYY-MM-DD")}
+        </span>
+      ),
+    },
+    {
+      Header: "Due Date",
+      accessor: "ticket_updated_at",
+      sort: true,
+      Cell: ({ row }: any) => (
+        <span>
+          {moment(row.original.ticket_updated_at).format("YYYY-MM-DD")}
+        </span>
+      ),
+    },
+    {
+      Header: "Actions",
+      accessor: "",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <div className="d-flex justify-content-center align-items-center gap-2">
+          {/* Edit Icon */}
+          <FeatherIcons
+            icon="eye"
+            onClick={() => handleGetTicket(row.original.ticket_id)}
+            size="15"
+            className="cursor-pointer text-secondary"
+          />
+        </div>
+      ),
+    },
+  ];
+  const navigate = useNavigate();
+  const handleGetTicket = (id: any) => {
+    navigate(`/apps/Tickets-details/${id}`);
+  };
+
   const { state, initailLoading, countDetails, status } = useSelector(
     (state: RootState) => ({
       state: state.AdminTickets.adminTickets.data,

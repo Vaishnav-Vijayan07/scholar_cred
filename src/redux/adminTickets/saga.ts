@@ -7,6 +7,9 @@ import {
   getadminTicketsCount as getadminTicketsCountApi,
   updateAdminTicketStatus as updateAdminTicketStatusApi,
 } from "../../helpers/api/admin_tickets";
+
+import { getTicketDetails as getTicketDetailsApi } from "../tickets/actions";
+
 import {
   adminTicketsApiResponseError,
   adminTicketsApiResponseSuccess,
@@ -18,8 +21,6 @@ import { AdminTicketsActionTypes } from "./constants";
 
 function* getadminTickets({ payload: { status } }: any): SagaIterator {
   try {
-
-   
     const response = yield call(getAdminTicketsApi, status);
     const data = response.data.data;
     yield put(
@@ -77,10 +78,10 @@ function* updateAdminTicketStatus({
       )
     );
     yield all([
-      put(getAdminTicketStatusAction(1)),
       put(getAdminTicketStatusAction(0)),
       put(getAdminTicketsCountApi()),
       put(getAdminTicketStatusApi()),
+      put(getTicketDetailsApi(ticket_id)),
     ]);
   } catch (error: any) {
     yield put(

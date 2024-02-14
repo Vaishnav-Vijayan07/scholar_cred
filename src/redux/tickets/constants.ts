@@ -1,0 +1,8 @@
+export enum TicketsActionTypes {
+    API_RESPONSE_SUCCESS = "@@tickets/API_RESPONSE_SUCCESS",
+    API_RESPONSE_ERROR = "@@tickets/API_RESPONSE_ERROR",
+    GET_A_TICKET = "@@tickets/GET_A_TICKET",
+    GET_TICKET_COMMENT="@@tickets/GET_TICKET_COMMENT",
+    UPDATE_TICKET_COMMENT="@@tickets/UPDATE_TICKET_COMMENT"
+  }
+  
