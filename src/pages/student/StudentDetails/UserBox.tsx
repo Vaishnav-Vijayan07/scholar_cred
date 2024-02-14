@@ -22,19 +22,19 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
             )}
             <h4 className="">{StudentData?.first_name + " " + StudentData?.last_name}</h4>
             {/* <p className="text-muted">@webdesigner</p> */}
-            <button type="button" className="btn btn-success btn-xs waves-effect mb-2 waves-light">
+            {/* <button type="button" className="btn btn-success btn-xs waves-effect mb-2 waves-light">
               Call
             </button>{" "}
             <button type="button" className="btn btn-danger btn-xs waves-effect mb-2 waves-light">
               Message
-            </button>{" "}
+            </button>{" "} */}
             {!StudentData?.status ? (
               <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={isLoading} onClick={handleAppprove}>
-                {isLoading ? "Loading…" : "Approve"}
+                {isLoading ? "Loading…" : "Initiation loan process"}
               </Button>
             ) : (
               <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={true}>
-                Approved
+                Initiation loan processed
               </Button>
             )}
             <div className="text-center mt-3">
