@@ -1,5 +1,5 @@
-import img1 from "../../../../assets/images/users/user-9.jpg";
-import img2 from "../../../../assets/images/users/user-2.jpg";
+import img1 from "../../../assets/images/users/user-9.jpg";
+import img2 from "../../../assets/images/users/user-2.jpg";
 
 export interface TicketDetailsTypes {
   id: number;
@@ -23,6 +23,21 @@ export interface TicketDetailsTypes {
   };
   overview: string;
 }
+
+export const getStatusId = (name:string) => {
+  switch (name) {
+    case "Open":
+      return 1;
+    case "Closed":
+      return 2;
+    case "In Progress":
+      return 3;
+    case "Resolved":
+      return 4;
+    default:
+      return "";
+  }
+};
 
 const ticketDetails: TicketDetailsTypes = {
   id: 1,

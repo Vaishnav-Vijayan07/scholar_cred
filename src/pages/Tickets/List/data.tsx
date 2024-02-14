@@ -240,6 +240,8 @@ export const getStatusProperties = (statusName: string) => {
   }
 };
 
+const roles =[]
+
 export const getStatusNames = (statusCode:number)=>{
 
   switch (statusCode) {

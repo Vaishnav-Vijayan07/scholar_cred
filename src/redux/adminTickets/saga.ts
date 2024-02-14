@@ -7,6 +7,9 @@ import {
   getadminTicketsCount as getadminTicketsCountApi,
   updateAdminTicketStatus as updateAdminTicketStatusApi,
 } from "../../helpers/api/admin_tickets";
+
+import { getTicketDetails as getTicketDetailsApi } from "../tickets/actions";
+
 import {
   adminTicketsApiResponseError,
   adminTicketsApiResponseSuccess,
@@ -75,10 +78,10 @@ function* updateAdminTicketStatus({
       )
     );
     yield all([
-      put(getAdminTicketStatusAction(1)),
-      put(getAdminTicketStatusAction(2)),
+      put(getAdminTicketStatusAction(0)),
       put(getAdminTicketsCountApi()),
       put(getAdminTicketStatusApi()),
+      put(getTicketDetailsApi(ticket_id)),
     ]);
   } catch (error: any) {
     yield put(

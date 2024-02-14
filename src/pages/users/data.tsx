@@ -118,8 +118,8 @@ export interface StudentDataTypes {
   last_name: string;
   email: string;
   phone: string;
-  date_of_birth?: string | undefined;
-  country_of_origin?: string;
+  // date_of_birth?: string | undefined;
+  // country_of_origin?: string;
   application_status?: string;
   source: string;
 }

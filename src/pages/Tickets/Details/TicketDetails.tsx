@@ -1,38 +1,49 @@
-import React from "react";
-import { Row, Col, Card } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Row, Col, Card, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 // dummy data
-import { TicketDetailsTypes } from "./data";
+import { TicketDetailsTypes, getStatusId } from "./data";
+import moment from "moment";
+import Avatar from "./Avatar";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAdminTicketStatus,
+  updateAdminTicketStatus,
+} from "../../../redux/actions";
+import { RootState } from "../../../redux/store";
 
 interface TicketDetailsProps {
   ticketDetails: TicketDetailsTypes;
 }
 
-const TicketDetails = ({ ticketDetails }: TicketDetailsProps) => {
+const TicketDetails = ({ state, ticket_id }: any) => {
+  const [options, setOptions] = useState(state[0]?.status_name);
+
+  const { status, user } = useSelector((state: RootState) => ({
+    status: state.AdminTickets.adminTicketsStatus.data,
+    user: state.Auth.user,
+  }));
+
+  useEffect(() => {
+    dispatch(getAdminTicketStatus());
+  }, []);
+
+  useEffect(() => {
+    setOptions(state[0]?.status_name);
+  }, [state[0]?.status_name]);
+
+  const dispatch = useDispatch();
+
+  const handleChange = (status: any) => {
+    const status_id = getStatusId(status);
+    dispatch(updateAdminTicketStatus(status_id, ticket_id));
+  };
+
   return (
     <>
       <Card className="d-block">
         <Card.Body>
-          <div className="float-sm-end mb-2 mb-sm-0">
-            <div className="row g-2">
-              <div className="col-auto">
-                <Link to="/apps/tickets/list" className="btn btn-sm btn-link">
-                  <i className="mdi mdi-keyboard-backspace"></i> Back
-                </Link>
-              </div>
-              <div className="col-auto">
-                <select className="form-select form-select-sm form">
-                  <option defaultValue="0">Watch</option>
-                  <option value="1">Remind me</option>
-                  <option value="2">Close</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <h4 className="mb-3 mt-0 font-18">{ticketDetails.title}</h4>
-
           <div className="clerfix"></div>
 
           <Row>
@@ -40,7 +51,7 @@ const TicketDetails = ({ ticketDetails }: TicketDetailsProps) => {
               <label className="mt-2 mb-1">Ticket Type :</label>
               <p>
                 <i className="mdi mdi-ticket font-18 text-success me-1 align-middle"></i>{" "}
-                {ticketDetails.type}
+                {state[0]?.subject_name}
               </p>
             </Col>
           </Row>
@@ -48,29 +59,19 @@ const TicketDetails = ({ ticketDetails }: TicketDetailsProps) => {
           <Row>
             <Col md={6}>
               <label className="mt-2 mb-1">Reported By :</label>
-              <div className="d-flex align-items-start">
-                <img
-                  src={ticketDetails.reported_by.image}
-                  alt=""
-                  className="rounded-circle me-2"
-                  height="24"
-                />
+              <div className="d-flex align-items-start gap-2">
+                <Avatar name={state[0]?.assigned_by_user_name} />
                 <div className="w-100">
-                  <p>{ticketDetails.reported_by.name}</p>
+                  <p>{state[0]?.assigned_by_user_name}</p>
                 </div>
               </div>
             </Col>
             <Col md={6}>
               <label className="mt-2 mb-1">Assigned To :</label>
-              <div className="d-flex align-items-start">
-                <img
-                  src={ticketDetails.assigned_to.image}
-                  alt=""
-                  className="rounded-circle me-2"
-                  height="24"
-                />
+              <div className="d-flex align-items-start gap-2">
+                <Avatar name={state[0]?.assigned_to_user_name} />
                 <div className="w-100">
-                  <p> {ticketDetails.assigned_to.name} </p>
+                  <p> {state[0]?.assigned_to_user_name} </p>
                 </div>
               </div>
             </Col>
@@ -79,21 +80,11 @@ const TicketDetails = ({ ticketDetails }: TicketDetailsProps) => {
           <Row>
             <Col md={6}>
               <label className="mt-2 mb-1">Created On :</label>
-              <p>
-                {ticketDetails.created_on.date}{" "}
-                <small className="text-muted">
-                  {ticketDetails.created_on.time}
-                </small>
-              </p>
+              <p>{moment(state[0]?.ticket_created_at).format("YYYY-MM-DD")} </p>
             </Col>
             <Col md={6}>
               <label className="mt-2 mb-1">Updated On :</label>
-              <p>
-                {ticketDetails.updated_on.date}{" "}
-                <small className="text-muted">
-                  {ticketDetails.updated_on.time}
-                </small>
-              </p>
+              <p>{moment(state[0]?.ticket_updated_at).format("YYYY-MM-DD")} </p>
             </Col>
           </Row>
 
@@ -102,10 +93,23 @@ const TicketDetails = ({ ticketDetails }: TicketDetailsProps) => {
               <label className="mt-2 form-label">Status :</label>
               <div className="row">
                 <div className="col-auto">
-                  <select className="form-select form-select-sm">
-                    <option>Open</option>
-                    <option>Close</option>
-                    <option>In Progress</option>
+                  <select
+                    className="form-select form-select-sm"
+                    value={options}
+                    onChange={(e) => {
+                      const selectedValue = e.target.value;
+                      setOptions(selectedValue);
+                      handleChange(selectedValue);
+                    }}
+                    disabled={
+                      options === "Closed" || (user.role >= 3 && user.role <= 7)
+                    }
+                  >
+                    {status?.map((item: any) => (
+                      <option key={item.ticketstatus} value={item.status_name}>
+                        {item.ticketstatus}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -114,18 +118,16 @@ const TicketDetails = ({ ticketDetails }: TicketDetailsProps) => {
               <label className="mt-2 mb-1">Priority :</label>
               <div className="row">
                 <div className="col-auto">
-                  <select className="form-select form-select-sm">
-                    <option>Low</option>
-                    <option defaultValue="medium">Medium</option>
-                    <option>High</option>
-                  </select>
+                  <div className=" d-flex" style={{ width: 100 }}>
+                    {state[0]?.subject_priority}
+                  </div>
                 </div>
               </div>
             </Col>
           </Row>
 
           <label className="mt-4 mb-1">Overview :</label>
-          <p className="text-muted mb-0">{ticketDetails.overview}</p>
+          <p className="text-muted mb-0">{state[0]?.subjects_description}</p>
         </Card.Body>
       </Card>
     </>

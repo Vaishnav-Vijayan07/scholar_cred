@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
-import * as yup from "yup";
-import { Link } from "react-router-dom";
-import {
-  Card,
-  Button,
-  Dropdown,
-  Form,
-  Modal,
-  Row,
-  Col,
-  Spinner,
-} from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { Card, Dropdown, Spinner } from "react-bootstrap";
+import FeatherIcons from "feather-icons-react";
 import classNames from "classnames";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,10 +16,9 @@ import {
 import Table from "../../../components/Table";
 
 // dummy data
-import { TicketDetailsItems, statusvalues } from "./data";
-import PageTitle from "../../../components/PageTitle";
-import Statistics from "./Statistics";
+import { TicketDetailsItems} from "./data";
 import TicketCounts from "./TicketCounts";
+import StatusDropdown from "./StatusDropdown";
 
 /* id column render */
 const IdColumn = ({ row }: { row: any }) => {
@@ -58,16 +48,36 @@ const RequestedBy = ({ row }: { row: any }) => {
 
 /* assignee column render */
 const AssigneeColumn = ({ row }: { row: any }) => {
+  const firstLetter = row.original.assigned_to_user_name
+    ? row.original.assigned_to_user_name.charAt(0).toUpperCase()
+    : "A";
+
+  const assigneeName = row.original.assigned_to_user_name
+    ? row.original.assigned_to_user_name.trim()
+    : "Assignee";
+
   return (
     <>
-      <Link to="#">
-        <img
-          src={row.original.assignee}
-          alt=""
-          title="contact-img"
-          className="rounded-circle avatar-xs"
-        />
-      </Link>
+      <div className="d-flex ">
+        <div className="d-flex justify-content-center align-items-center gap-1">
+          <div
+            className="rounded-circle avatar-xs mr-2"
+            style={{
+              width: "30px",
+              height: "30px",
+              backgroundColor: "#FFA500", // You can change the background color as desired
+              color: "#fff", // You can change the text color as desired
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "bold",
+            }}
+          >
+            {firstLetter}
+          </div>
+          <div>{assigneeName}</div>
+        </div>
+      </div>
     </>
   );
 };
@@ -129,69 +139,6 @@ const ActionColumn = () => {
 };
 
 // get all columns
-const columns = [
-  {
-    Header: "ID",
-    accessor: "id",
-    sort: true,
-    Cell: IdColumn,
-  },
-  {
-    Header: "Requested By",
-    accessor: "requested_by",
-    sort: true,
-    Cell: ({ row }: any) => (
-      <span>
-        {row.original.student_first_name + " " + row.original.student_last_name}
-      </span>
-    ),
-  },
-  {
-    Header: "Subject",
-    accessor: "subjects_description",
-    sort: true,
-  },
-
-  {
-    Header: "Assignee",
-    accessor: "assignee",
-    Cell: AssigneeColumn,
-  },
-  {
-    Header: "Status",
-    accessor: "status_name",
-    sort: true,
-    Cell: PriorityColumn,
-  },
-  {
-    Header: "Priority",
-    accessor: "status",
-    sort: true,
-    Cell: ({ row }: any) => <span>{row.original.status}</span>,
-  },
-  {
-    Header: "Created Date",
-    accessor: "ticket_created_at",
-    sort: true,
-    Cell: ({ row }: any) => (
-      <span>{moment(row.original.ticket_created_at).format("YYYY-MM-DD")}</span>
-    ),
-  },
-  {
-    Header: "Due Date",
-    accessor: "ticket_updated_at",
-    sort: true,
-    Cell: ({ row }: any) => (
-      <span>{moment(row.original.ticket_updated_at).format("YYYY-MM-DD")}</span>
-    ),
-  },
-  {
-    Header: "Action",
-    accessor: "action",
-    Cell: ActionColumn,
-    sort: false,
-  },
-];
 
 // get pagelist to display
 const sizePerPageList = [
@@ -214,6 +161,90 @@ interface ManageTicketsProps {
 }
 
 const ManageClosedTickets = ({ ticketDetails }: ManageTicketsProps) => {
+  const columns = [
+    {
+      Header: "ID",
+      accessor: "id",
+      sort: true,
+      Cell: IdColumn,
+    },
+    {
+      Header: "Requested By",
+      accessor: "requested_by",
+      sort: true,
+      Cell: ({ row }: any) => (
+        <span>
+          {row.original.student_first_name +
+            " " +
+            row.original.student_last_name}
+        </span>
+      ),
+    },
+    {
+      Header: "Subject",
+      accessor: "subjects_description",
+      sort: true,
+    },
+
+    {
+      Header: "Assignee",
+      accessor: "assignee",
+      Cell: AssigneeColumn,
+    },
+    {
+      Header: "Status",
+      accessor: "status_name",
+      sort: true,
+      Cell: ({ row }: any) => <StatusDropdown data={row.original} />,
+    },
+    {
+      Header: "Priority",
+      accessor: "status",
+      sort: true,
+      Cell: ({ row }: any) => <span>{row.original.status}</span>,
+    },
+    {
+      Header: "Created Date",
+      accessor: "ticket_created_at",
+      sort: true,
+      Cell: ({ row }: any) => (
+        <span>
+          {moment(row.original.ticket_created_at).format("YYYY-MM-DD")}
+        </span>
+      ),
+    },
+    {
+      Header: "Due Date",
+      accessor: "ticket_updated_at",
+      sort: true,
+      Cell: ({ row }: any) => (
+        <span>
+          {moment(row.original.ticket_updated_at).format("YYYY-MM-DD")}
+        </span>
+      ),
+    },
+    {
+      Header: "Actions",
+      accessor: "",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <div className="d-flex justify-content-center align-items-center gap-2">
+          {/* Edit Icon */}
+          <FeatherIcons
+            icon="eye"
+            onClick={() => handleGetTicket(row.original.ticket_id)}
+            size="15"
+            className="cursor-pointer text-secondary"
+          />
+        </div>
+      ),
+    },
+  ];
+  const navigate = useNavigate();
+  const handleGetTicket = (id: any) => {
+    navigate(`/apps/Tickets-details/${id}`);
+  };
+
   const { state, initailLoading, countDetails, status } = useSelector(
     (state: RootState) => ({
       state: state.AdminTickets.adminTickets.data,
@@ -275,16 +306,13 @@ const ManageClosedTickets = ({ ticketDetails }: ManageTicketsProps) => {
                 <Dropdown.Item
                   key={"clear"}
                   style={{ backgroundColor: "#fa9393" }}
-                  onClick={() => [
-                    handleClearFilter(),
-                    setOptions(""),
-                  ]}
+                  onClick={() => [handleClearFilter(), setOptions("")]}
                 >
                   <i className="mdi mdi-close"></i> Clear Selection
                 </Dropdown.Item>
                 {status?.map((item: any) => (
                   <Dropdown.Item
-                    key={item.value}
+                    key={item.id}
                     onClick={() => [
                       handleStatusChange(item.ticketstatus),
                       setOptions(item.ticketstatus),

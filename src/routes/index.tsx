@@ -33,6 +33,7 @@ const Staff = React.lazy(() => import("../pages/users/Staff"));
 const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
 const Tickets = React.lazy(() => import("../pages/Tickets/List/ManageTickets"));
+const TicketDetails = React.lazy(()=>import("../pages/Tickets/Details"))
 const ClosedTickets = React.lazy(
   () => import("../pages/Tickets/List/ManageClosedTickets")
 );
@@ -139,6 +140,24 @@ const crmAppRoutes = {
       ),
       route: PrivateRoute,
     },
+    {
+      path: "/apps/Tickets-details/:id",
+      name: "Ticket Details",
+      element: (
+        <PrivateRoute
+          roles={[
+            "CRED_ADMIN",
+            "CONSULTANT_ADMIN",
+            "SUPER_USER",
+            "CRED_STAFF",
+            "CONSULTANT",
+            "CONSULTANT_STAFF",
+          ]}
+          component={TicketDetails}
+        />
+      ),
+      route: PrivateRoute,
+    }
   ],
 };
 

@@ -47,7 +47,7 @@ const List = () => {
       </Row>
       <Row>
         <Col>
-          <ManageTickets ticketDetails={ticketDetails} />
+          {/* <ManageTickets ticketDetails={ticketDetails} /> */}
         </Col>
       </Row>
     </>

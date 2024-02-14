@@ -14,7 +14,6 @@ function getTicketStatus() {
 
 function updateAdminTicketStatus(status_id: number, ticket_id: string) {
   const baseUrl = "updateTicketStatus";
-  console.log(status_id, ticket_id);
   return api.create(`${baseUrl}`, { status_id, ticket_id });
 }
 
