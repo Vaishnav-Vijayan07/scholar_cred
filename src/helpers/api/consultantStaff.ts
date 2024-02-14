@@ -10,6 +10,13 @@ function getConsultantStaff(consultant_id: string) {
   return axios.get(`${baseUrl}?consultant_id=${consultant_id}`);
 }
 
+function getConsultantStaffByAdmin() {
+  const baseUrl = "/get_consultant_staff_by_admin";
+
+  // return api.get(`${baseUrl}?consultant_id=${consultant_id}`, {});
+  return api.get(`${baseUrl}`, {});
+}
+
 function getConsultantStaffById(id: number) {
   const baseUrl = "/get_admin_staff_by_id";
   return api.create(`${baseUrl}/${id}`, {});
@@ -56,4 +63,4 @@ function deleteConsultantStaff(id: number) {
   return api.delete(`${baseUrl}?id=${id}`);
 }
 
-export { createConsultantStaff, deleteConsultantStaff, getConsultantStaff, getConsultantStaffById, updateConsultantStaff };
+export { createConsultantStaff, deleteConsultantStaff, getConsultantStaff, getConsultantStaffById, updateConsultantStaff, getConsultantStaffByAdmin };

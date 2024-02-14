@@ -1,25 +1,31 @@
 import * as yup from "yup";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { Row, Col, Card, Form, Button, Modal, Alert, Spinner, Dropdown } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
-import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import FileUploader from "../../components/FileUploader";
-
-// import StudentData from "../../assets/excel/StudentData.xlsx";
-
 // components
 import PageTitle from "../../components/PageTitle";
-import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../users/data";
+import { StudentDataTypes, StudentInitialState, StudentValidationState, sizePerPageList } from "../users/data";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { createStudent, deleteStudent, editStudent, getAdminStaff, getStudent, getStudentByConsultant, getStudentByCreated, getStudentByStaff, resetPassword } from "../../redux/actions";
+import {
+  createStudent,
+  deleteStudent,
+  editStudent,
+  getAdminStaff,
+  getConsultantStaffByAdmin,
+  getStudentByConsultant,
+  getStudentByCreated,
+  getStudentByStaff,
+  resetPassword,
+} from "../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
 import { getColumns, getConsultantStaffColumns, getCredStaffColumns } from "./ColumnsConfig";
 import { truncateText } from "../../constants/functons";
+import Swal from "sweetalert2";
 
 interface FileType extends File {
   preview?: string;
@@ -27,8 +33,9 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, initialLoading, credStaffData, sourceData, getStudentBasedOnRole, consultant_id } = props;
+  const { swal, loading, state, error, user, initialLoading, credStaffData, sourceData, getStudentBasedOnRole, consultant_id, ConsultantStaff } = props;
   const dispatch = useDispatch();
+  const [selectedValues, setSelectedValues] = useState([]);
 
   const [filteredItems, setFilteredItems] = useState(state);
 
@@ -57,11 +64,6 @@ const BasicInputElements = withSwal((props: any) => {
     source: yup.string().required("Source is required").nullable(),
 
     // application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
-  });
-
-  const methods = useForm({
-    resolver: yupResolver(validationSchema), // Integrate yup with react-hook-form
-    defaultValues: initialState,
   });
 
   useEffect(() => {
@@ -278,7 +280,23 @@ const BasicInputElements = withSwal((props: any) => {
       })
       .catch((err) => {
         console.error(err);
-        showErrorAlert("Error occured");
+        showErrorAlert("Error occured.");
+      });
+  };
+
+  const handleAssign = (assigned_staff_id: string, student_id: string) => {
+    axios
+      .post("assign_consultant_staff", {
+        assigned_staff_id,
+        student_id,
+      })
+      .then((res) => {
+        showSuccessAlert("Staff assigned succesfully...");
+        getStudentBasedOnRole();
+      })
+      .catch((err) => {
+        console.log(err);
+        showErrorAlert("Something went wrong!");
       });
   };
 
@@ -286,24 +304,58 @@ const BasicInputElements = withSwal((props: any) => {
     return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
   }
 
-  const columns1 = getColumns(handleResetPassword, resetPassword, handleUpdate, toggleResponsiveModal, handleDelete);
+  const columns1 = getColumns(handleUpdate, toggleResponsiveModal, handleDelete, handleAssign, ConsultantStaff);
   const consultantStaffColumns = getConsultantStaffColumns(handleResetPassword, resetPassword, handleUpdate, toggleResponsiveModal, handleDelete);
   const credStaffColumns = getCredStaffColumns(handleUpdate, toggleResponsiveModal, handleDelete);
 
   const handleFilter = (staff_id: any) => {
-    console.log("assignment_id====>", staff_id);
-
     // Filter the initial list based on the provided category
-    const filteredList = state?.filter((item: any) => item.staff_id === staff_id);
-
-    console.log("filteredList===>", filteredList);
-
+    const filteredList = state?.filter((item: any) => item.assigned_staff_id === staff_id);
     // Update the state with the filtered list
     setFilteredItems(filteredList);
   };
 
   const handleClearFilter = () => {
     setFilteredItems(state);
+  };
+
+  const handleSelectedValues = (values: any) => {
+    setSelectedValues(values);
+  };
+
+  const handleAssignBulk = (student_ids: Array<number>, assignedTo: number) => {
+    console.log("student_ids", student_ids);
+
+    Swal.fire({
+      title: "Are you sure!",
+      text: "You want to assign this staff?",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#55d94e",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, assign!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleAssignUserBulk(student_ids, assignedTo);
+      }
+    });
+  };
+
+  const handleAssignUserBulk = (student_ids: Array<number>, assigned_staff_id: number) => {
+    console.log("student_ids", student_ids);
+    console.log("assigned_staff_id", assigned_staff_id);
+
+    axios
+      .post("bulk_assign_consultant_staff", {
+        student_ids,
+        assigned_staff_id,
+      })
+      .then((res) => {
+        console.log("res==>", res.data);
+        showSuccessAlert(res.data.message);
+        getStudentBasedOnRole();
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -453,14 +505,27 @@ const BasicInputElements = withSwal((props: any) => {
                         <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
                           <i className="mdi mdi-close"></i> Clear Selection
                         </Dropdown.Item>
-                        {credStaffData?.map((item: any) => (
-                          <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
-                            {item.label}
+                        {ConsultantStaff?.map((item: any) => (
+                          <Dropdown.Item key={item.id} onClick={() => [handleFilter(item.id), setSelectedStaff(item.full_name)]}>
+                            {item.full_name}
                           </Dropdown.Item>
                         ))}
                       </Dropdown.Menu>
                     </Dropdown>
                   )}
+
+                  <Dropdown className="btn-group" align="end">
+                    <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
+                      <i className="mdi mdi-account-plus"></i> Assign Staff
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                      {ConsultantStaff?.map((item: any) => (
+                        <Dropdown.Item key={item.id} onClick={() => handleAssignBulk(selectedValues, item.id)}>
+                          {item.full_name}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
 
                   <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleUploadModal}>
                     <i className="mdi mdi-upload"></i> Bulk Upload
@@ -479,9 +544,11 @@ const BasicInputElements = withSwal((props: any) => {
                   sizePerPageList={sizePerPageList}
                   isSortable={true}
                   pagination={true}
+                  isSelectable={true}
                   isSearchable={true}
                   theadClass="table-light mt-2"
                   searchBoxClass="mt-2 mb-3"
+                  onSelect={handleSelectedValues}
                 />
               </>
             </Card.Body>
@@ -503,10 +570,10 @@ const IntakeStudents = () => {
     initialLoading: state?.Students.initialLoading,
     error: state?.Students.error,
   }));
-  const { user, Authloading, credStaff } = useSelector((state: RootState) => ({
+  const { user, credStaff, ConsultantStaff } = useSelector((state: RootState) => ({
     user: state.Auth.user,
     credStaff: state.AdminStaff.adminStaff.data,
-    Authloading: state.Auth.loading,
+    ConsultantStaff: state.ConsultantStaff.ConsultantStaffByAdmin.data,
   }));
 
   const getSourceData = () => {
@@ -522,6 +589,7 @@ const IntakeStudents = () => {
     dispatch(getAdminStaff());
     getSourceData();
     getStudentBasedOnRole();
+    dispatch(getConsultantStaffByAdmin());
   }, []);
 
   const getStudentBasedOnRole = () => {
@@ -553,7 +621,6 @@ const IntakeStudents = () => {
       setCredStaffData(CredStaffArray);
     }
   }, [credStaff]);
-  
 
   return (
     <React.Fragment>
@@ -580,6 +647,7 @@ const IntakeStudents = () => {
             sourceData={sourceData}
             getStudentBasedOnRole={getStudentBasedOnRole}
             consultant_id={user?.consultant_id}
+            ConsultantStaff={ConsultantStaff}
           />
         </Col>
       </Row>

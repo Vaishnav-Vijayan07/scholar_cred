@@ -5,6 +5,7 @@ export enum ConsultantStaffActionTypes {
     EDIT_CONSULTANT_STAFF = "@@consultant_staffs/EDIT_CONSULTANT_STAFF",
     DELETE_CONSULTANT_STAFF = "@@consultant_staffs/DELETE_CONSULTANT_STAFF",
     GET_CONSULTANT_STAFF = "@@consultant_staffs/GET_CONSULTANT_STAFF",
+    GET_CONSULTANT_STAFF_BY_ADMIN = "@@consultant_staffs/GET_CONSULTANT_STAFF_BY_ADMIN",
     GET_CONSULTANT_STAFF_BY_ID = "@@consultant_staffs/GET_CONSULTANT_STAFF_BY_ID",
   }
   

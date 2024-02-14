@@ -20,6 +20,7 @@ import {
   deleteStudent,
   editStudent,
   getAdminStaff,
+  getConsultantStaffByAdmin,
   getStudent,
   getStudentByConsultant,
   getStudentByCreated,
@@ -37,7 +38,7 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, initialLoading, credStaffData, sourceData, getStudentBasedOnRole, consultant_id } = props;
+  const { swal, loading, state, error, user, initialLoading, credStaffData, sourceData, getStudentBasedOnRole, consultant_id, ConsultantStaff } = props;
   console.log("sourceData==>", sourceData);
 
   const dispatch = useDispatch();
@@ -292,11 +293,29 @@ const BasicInputElements = withSwal((props: any) => {
       });
   };
 
+  const handleAssign = (assigned_staff_id: string, student_id: string) => {
+    axios
+      .post("assign_consultant_staff", {
+        assigned_staff_id,
+        student_id,
+      })
+      .then((res) => {
+        showSuccessAlert("Assigned staff succesfully...");
+        getStudentBasedOnRole()
+      })
+      .catch((err) => {
+        console.log(err);
+        showErrorAlert("Something went wrong!");
+      });
+  };
+
   if (initialLoading) {
     return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
   }
 
-  const columns1 = getColumns(handleResetPassword, resetPassword, handleUpdate, toggleResponsiveModal, handleDelete);
+  console.log("ConsultantStaff", ConsultantStaff);
+
+  const columns1 = getColumns(handleUpdate, toggleResponsiveModal, handleDelete, handleAssign, ConsultantStaff);
   const consultantStaffColumns = getConsultantStaffColumns(handleResetPassword, resetPassword, handleUpdate, toggleResponsiveModal, handleDelete);
   const credStaffColumns = getCredStaffColumns(handleUpdate, toggleResponsiveModal, handleDelete);
 
@@ -510,13 +529,12 @@ const Students = () => {
     initialLoading: state?.Students.initialLoading,
     error: state?.Students.error,
   }));
-  const { user, Authloading, credStaff } = useSelector((state: RootState) => ({
+  const { user, Authloading, credStaff, ConsultantStaff } = useSelector((state: RootState) => ({
     user: state.Auth.user,
     credStaff: state.AdminStaff.adminStaff.data,
     Authloading: state.Auth.loading,
+    ConsultantStaff: state.ConsultantStaff.ConsultantStaffByAdmin.data,
   }));
-
-  console.log("user=========>", user);
 
   const getSourceData = () => {
     axios
@@ -530,6 +548,7 @@ const Students = () => {
   useEffect(() => {
     dispatch(getAdminStaff());
     getSourceData();
+    dispatch(getConsultantStaffByAdmin());
     getStudentBasedOnRole();
   }, []);
 
@@ -588,6 +607,7 @@ const Students = () => {
             sourceData={sourceData}
             getStudentBasedOnRole={getStudentBasedOnRole}
             consultant_id={user?.consultant_id}
+            ConsultantStaff={ConsultantStaff}
           />
         </Col>
       </Row>
