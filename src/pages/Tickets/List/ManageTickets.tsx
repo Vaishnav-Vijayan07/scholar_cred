@@ -235,7 +235,7 @@ const ManageTickets = () => {
   useEffect(() => {
     dispatch(getAdminTickets(0));
     dispatch(getAdminTicketsCount());
-  }, [options]);
+  }, []);
 
   useEffect(() => {
     setFilteredItems(state);
