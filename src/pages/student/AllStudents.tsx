@@ -65,9 +65,9 @@ const BasicInputElements = withSwal((props: any) => {
       .string()
       .required("Phone number is required")
       .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
-    date_of_birth: yup.string().required("DOB is required"),
-    country_of_origin: yup.string().nullable(),
-    source: yup.string().required("Source is required").nullable(),
+    // date_of_birth: yup.string().required("DOB is required"),
+    // country_of_origin: yup.string().nullable(),
+    // source: yup.string().required("Source is required").nullable(),
     // application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
   });
 
@@ -89,8 +89,8 @@ const BasicInputElements = withSwal((props: any) => {
       last_name: item.last_name,
       email: item.email,
       phone: item.phone,
-      date_of_birth: moment(item.date_of_birth).format("YYYY-MM-DD"),
-      country_of_origin: item.country_of_origin,
+      // date_of_birth: moment(item.date_of_birth).format("YYYY-MM-DD"),
+      // country_of_origin: item.country_of_origin,
       application_status: item.application_status,
       source: item.source,
     }));
@@ -153,8 +153,8 @@ const BasicInputElements = withSwal((props: any) => {
             formData.last_name,
             formData.email,
             formData.phone,
-            formData.date_of_birth,
-            formData.country_of_origin,
+            // formData.date_of_birth,
+            // formData.country_of_origin,
             formData.application_status,
             formData.source
           )
@@ -167,8 +167,8 @@ const BasicInputElements = withSwal((props: any) => {
             formData.last_name,
             formData.email,
             formData.phone,
-            formData.date_of_birth,
-            formData.country_of_origin,
+            // formData.date_of_birth,
+            // formData.country_of_origin,
             formData.application_status,
             formData.source,
             consultant_id
@@ -380,7 +380,7 @@ const BasicInputElements = withSwal((props: any) => {
                 </Col>
               </Row>
 
-              <Row>
+              {/* <Row>
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="country_of_origin">
                     <Form.Label>Country</Form.Label>
@@ -395,7 +395,7 @@ const BasicInputElements = withSwal((props: any) => {
                     {validationErrors.date_of_birth && <Form.Text className="text-danger">{validationErrors.date_of_birth}</Form.Text>}
                   </Form.Group>
                 </Col>
-              </Row>
+              </Row> */}
 
               <Row>
                 <Col md={6}>

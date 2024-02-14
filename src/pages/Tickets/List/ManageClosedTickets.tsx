@@ -16,7 +16,7 @@ import {
 import Table from "../../../components/Table";
 
 // dummy data
-import { TicketDetailsItems, statusvalues } from "./data";
+import { TicketDetailsItems} from "./data";
 import TicketCounts from "./TicketCounts";
 import StatusDropdown from "./StatusDropdown";
 

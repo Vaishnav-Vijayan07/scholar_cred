@@ -22,8 +22,8 @@ interface StudentData {
   last_name: string;
   email: string;
   phone: string;
-  date_of_birth: string;
-  country_of_origin: string;
+  // date_of_birth: string;
+  // country_of_origin: string;
   application_status: string;
   source: string;
 }
@@ -48,8 +48,8 @@ export const createStudent = (
   email: string,
   phone: string,
   date_of_birth: string | undefined,
-  country_of_origin: string | undefined,
-  application_status: string | undefined,
+  // country_of_origin: string | undefined,
+  // application_status: string | undefined,
   source: string,
   consultant_id: string
 ): StudentActionType => ({
@@ -60,8 +60,8 @@ export const createStudent = (
     email,
     phone,
     date_of_birth,
-    country_of_origin,
-    application_status,
+    // country_of_origin,
+    // application_status,
     source,
     consultant_id
   },
@@ -75,8 +75,8 @@ export const editStudent = (
   last_name: string,
   email: string,
   phone: string,
-  date_of_birth: string | undefined,
-  country_of_origin: string | undefined,
+  // date_of_birth: string | undefined,
+  // country_of_origin: string | undefined,
   application_status: string | undefined,
   source: string
 ): StudentActionType => ({
@@ -87,8 +87,8 @@ export const editStudent = (
     last_name,
     email,
     phone,
-    date_of_birth,
-    country_of_origin,
+    // date_of_birth,
+    // country_of_origin,
     application_status,
     source,
   },
