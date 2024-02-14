@@ -280,7 +280,7 @@ const BasicInputElements = withSwal((props: any) => {
       })
       .catch((err) => {
         console.error(err);
-        showErrorAlert("Error occured");
+        showErrorAlert("Error occured.");
       });
   };
 
@@ -291,7 +291,7 @@ const BasicInputElements = withSwal((props: any) => {
         student_id,
       })
       .then((res) => {
-        showSuccessAlert("Assigned staff succesfully...");
+        showSuccessAlert("Staff assigned succesfully...");
         getStudentBasedOnRole();
       })
       .catch((err) => {
@@ -310,7 +310,7 @@ const BasicInputElements = withSwal((props: any) => {
 
   const handleFilter = (staff_id: any) => {
     // Filter the initial list based on the provided category
-    const filteredList = state?.filter((item: any) => item.staff_id === staff_id);
+    const filteredList = state?.filter((item: any) => item.assigned_staff_id === staff_id);
     // Update the state with the filtered list
     setFilteredItems(filteredList);
   };
@@ -318,11 +318,14 @@ const BasicInputElements = withSwal((props: any) => {
   const handleClearFilter = () => {
     setFilteredItems(state);
   };
+
   const handleSelectedValues = (values: any) => {
     setSelectedValues(values);
   };
 
   const handleAssignBulk = (student_ids: Array<number>, assignedTo: number) => {
+    console.log("student_ids", student_ids);
+
     Swal.fire({
       title: "Are you sure!",
       text: "You want to assign this staff?",
@@ -334,22 +337,18 @@ const BasicInputElements = withSwal((props: any) => {
     }).then((result) => {
       if (result.isConfirmed) {
         handleAssignUserBulk(student_ids, assignedTo);
-        Swal.fire({
-          title: "Assigned!",
-          text: "Staff assigned successfully.",
-          icon: "success",
-        });
       }
     });
   };
 
-  const handleAssignUserBulk = (student_ids: Array<number>, assignedTo: number) => {
-    console.log("assignedTo", assignedTo, "student_ids", student_ids);
+  const handleAssignUserBulk = (student_ids: Array<number>, assigned_staff_id: number) => {
+    console.log("student_ids", student_ids);
+    console.log("assigned_staff_id", assigned_staff_id);
 
     axios
-      .post("assign_staff_bulk", {
+      .post("bulk_assign_consultant_staff", {
         student_ids,
-        assignedTo,
+        assigned_staff_id,
       })
       .then((res) => {
         console.log("res==>", res.data);
@@ -506,9 +505,9 @@ const BasicInputElements = withSwal((props: any) => {
                         <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
                           <i className="mdi mdi-close"></i> Clear Selection
                         </Dropdown.Item>
-                        {credStaffData?.map((item: any) => (
-                          <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
-                            {item.label}
+                        {ConsultantStaff?.map((item: any) => (
+                          <Dropdown.Item key={item.id} onClick={() => [handleFilter(item.id), setSelectedStaff(item.full_name)]}>
+                            {item.full_name}
                           </Dropdown.Item>
                         ))}
                       </Dropdown.Menu>
@@ -520,9 +519,9 @@ const BasicInputElements = withSwal((props: any) => {
                       <i className="mdi mdi-account-plus"></i> Assign Staff
                     </Dropdown.Toggle>
                     <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                      {credStaffData?.map((item: any) => (
-                        <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
-                          {item.label}
+                      {ConsultantStaff?.map((item: any) => (
+                        <Dropdown.Item key={item.id} onClick={() => handleAssignBulk(selectedValues, item.id)}>
+                          {item.full_name}
                         </Dropdown.Item>
                       ))}
                     </Dropdown.Menu>
