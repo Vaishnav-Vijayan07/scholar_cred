@@ -9,6 +9,7 @@ function createConsultant(params: {
   email: string;
   phone: string;
   file: File;
+  second_file: File;
   alternative_phone: string;
   gst: string;
   location: string;
@@ -30,6 +31,7 @@ function updateConsultant(
     email: string;
     phone: string;
     file: File;
+    // alt_file: File;
     alternative_phone: string;
     gst: string;
     location: string;
@@ -38,6 +40,8 @@ function updateConsultant(
     created_by: number;
   }
 ) {
+  // console.log(params.file);
+
   const baseUrl = "/edit_consultant_details";
   return api.updateWithFile(`${baseUrl}?id=${id}`, params);
 }
@@ -57,4 +61,10 @@ function getConsultantsById(id: number) {
   return api.get(`${baseUrl}?id=${id}`, {});
 }
 
-export { createConsultant, updateConsultant, getConsultants, deleteConsultant, getConsultantsById };
+export {
+  createConsultant,
+  updateConsultant,
+  getConsultants,
+  deleteConsultant,
+  getConsultantsById,
+};

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 // import classNames from 'classnames';
@@ -26,6 +26,7 @@ import logoDark from "../assets/images/logo-dark.png";
 import logoDark2 from "../assets/images/logo-dark-2.png";
 import AvatarLogo from "../assets/images/avatar-logo.png";
 import { useViewport } from "../hooks/useViewPort";
+import { getNotifications } from "../redux/notifications/actions";
 
 export interface NotificationItem {
   id: number;
@@ -37,48 +38,48 @@ export interface NotificationItem {
 }
 
 // get the notifications
-const Notifications: NotificationItem[] = [
-  {
-    id: 1,
-    text: "Cristina Pride",
-    subText: "Hi, How are you? What about our next meeting",
-    avatar: profilePic,
-  },
-  {
-    id: 2,
-    text: "Caleb Flakelar commented on Admin",
-    subText: "1 min ago",
-    icon: "mdi mdi-comment-account-outline",
-    bgColor: "primary",
-  },
-  {
-    id: 3,
-    text: "Karen Robinson",
-    subText: "Wow ! this admin looks good and awesome design",
-    avatar: avatar4,
-  },
-  {
-    id: 4,
-    text: "New user registered.",
-    subText: "5 hours ago",
-    icon: "mdi mdi-account-plus",
-    bgColor: "warning",
-  },
-  {
-    id: 5,
-    text: "Caleb Flakelar commented on Admin",
-    subText: "1 min ago",
-    icon: "mdi mdi-comment-account-outline",
-    bgColor: "info",
-  },
-  {
-    id: 6,
-    text: "Carlos Crouch liked Admin",
-    subText: "13 days ago",
-    icon: "mdi mdi-heart",
-    bgColor: "secondary",
-  },
-];
+// const Notifications: NotificationItem[] = [
+//   {
+//     id: 1,
+//     text: "Cristina Pride",
+//     subText: "Hi, How are you? What about our next meeting",
+//     avatar: profilePic,
+//   },
+//   {
+//     id: 2,
+//     text: "Caleb Flakelar commented on Admin",
+//     subText: "1 min ago",
+//     icon: "mdi mdi-comment-account-outline",
+//     bgColor: "primary",
+//   },
+//   {
+//     id: 3,
+//     text: "Karen Robinson",
+//     subText: "Wow ! this admin looks good and awesome design",
+//     avatar: avatar4,
+//   },
+//   {
+//     id: 4,
+//     text: "New user registered.",
+//     subText: "5 hours ago",
+//     icon: "mdi mdi-account-plus",
+//     bgColor: "warning",
+//   },
+//   {
+//     id: 5,
+//     text: "Caleb Flakelar commented on Admin",
+//     subText: "1 min ago",
+//     icon: "mdi mdi-comment-account-outline",
+//     bgColor: "info",
+//   },
+//   {
+//     id: 6,
+//     text: "Carlos Crouch liked Admin",
+//     subText: "13 days ago",
+//     icon: "mdi mdi-heart",
+//     bgColor: "secondary",
+//   },
+// ];
 
 // get the profilemenu
 const ProfileMenus = [
@@ -151,7 +152,12 @@ interface TopbarProps {
   topbarDark?: boolean;
 }
 
-const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: TopbarProps) => {
+const Topbar = ({
+  hideLogo,
+  navCssClasses,
+  openLeftMenuCallBack,
+  topbarDark,
+}: TopbarProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { width } = useViewport();
 
@@ -162,10 +168,17 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
   const navbarCssClasses: string = navCssClasses || "";
   const containerCssClasses: string = !hideLogo ? "container-fluid" : "";
 
-  const { layoutType, leftSideBarType } = useSelector((state: RootState) => ({
-    layoutType: state.Layout.layoutType,
-    leftSideBarType: state.Layout.leftSideBarType,
-  }));
+  const { layoutType, leftSideBarType, notifications } = useSelector(
+    (state: RootState) => ({
+      layoutType: state.Layout.layoutType,
+      leftSideBarType: state.Layout.leftSideBarType,
+      notifications: state.Notifications.notifications,
+    })
+  );
+
+
+  console.log(notifications);
+  
 
   /**
    * Toggle the leftmenu when having mobile screen
@@ -174,7 +187,9 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
     if (width < 1140) {
       if (leftSideBarType === "full") {
         showLeftSideBarBackdrop();
-        document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
+        document
+          .getElementsByTagName("html")[0]
+          .classList.add("sidebar-enable");
       } else {
         dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       }
@@ -200,7 +215,9 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
     // backdrop.style.zIndex = '999'
     document.body.appendChild(backdrop);
 
-    if (document.getElementsByTagName("html")[0]?.getAttribute("dir") !== "rtl") {
+    if (
+      document.getElementsByTagName("html")[0]?.getAttribute("dir") !== "rtl"
+    ) {
       document.body.style.overflow = "hidden";
       if (width > 1140) {
         document.body.style.paddingRight = "15px";
@@ -208,7 +225,9 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
     }
 
     backdrop.addEventListener("click", function (e) {
-      document.getElementsByTagName("html")[0].classList.remove("sidebar-enable");
+      document
+        .getElementsByTagName("html")[0]
+        .classList.remove("sidebar-enable");
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       hideLeftSideBarBackdrop();
     });
@@ -238,6 +257,10 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
   //   if (leftSideBarType === 'condensed') dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_DEFAULT));
   // };
 
+  useEffect(() => {
+    dispatch(getNotifications());
+  }, []);
+
   return (
     <React.Fragment>
       <div className={`navbar-custom ${navbarCssClasses}`}>
@@ -250,7 +273,15 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
                     <img src={logoSm} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoDark2 : logoDark} alt="" height="30" />
+                    <img
+                      src={
+                        layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
+                          ? logoDark2
+                          : logoDark
+                      }
+                      alt=""
+                      height="30"
+                    />
                   </span>
                 </Link>
                 <Link to="/" className="logo logo-light text-center">
@@ -258,16 +289,26 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
                     <img src={logoSm} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoSm : logoSm} alt="" height="30" />
+                    <img
+                      src={
+                        layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
+                          ? logoSm
+                          : logoSm
+                      }
+                      alt=""
+                      height="30"
+                    />
                   </span>
                 </Link>
               </div>
             )}
 
-            <button className="button-toggle-menu" onClick={handleLeftMenuCallBack}>
+            <button
+              className="button-toggle-menu"
+              onClick={handleLeftMenuCallBack}
+            >
               <i className="mdi mdi-menu" />
             </button>
-            
           </div>
 
           <ul className="topbar-menu d-flex align-items-center">
@@ -278,13 +319,21 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
               <MaximizeScreen />
             </li>
             <li className="dropdown notification-list">
-              <NotificationDropdown notifications={Notifications} />
+              <NotificationDropdown notifications={notifications} />
             </li>
             <li className="dropdown d-flex flex-column">
               <ProfileDropdown
-                profilePic={user?.Avatar !== "null" ? `${process.env.REACT_APP_BACKEND_URL}/${user?.Avatar}` : AvatarLogo}
+                profilePic={
+                  user?.Avatar !== "null"
+                    ? `${process.env.REACT_APP_BACKEND_URL}/${user?.Avatar}`
+                    : AvatarLogo
+                }
                 menuItems={ProfileMenus}
-                username={user?.role_name == "ADMIN" ? user?.full_name : user?.full_name?.split(" ")[0]}
+                username={
+                  user?.role_name == "ADMIN"
+                    ? user?.full_name
+                    : user?.full_name?.split(" ")[0]
+                }
                 userTitle={user?.role_name?.split("_")?.join(" ")}
               />
             </li>

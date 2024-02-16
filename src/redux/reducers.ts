@@ -14,6 +14,7 @@ import LoanStatus from "./loanStatus/reducer";
 import AdminTickets from "./adminTickets/reducer";
 import InternalStatus from "./internalStatus/reducer";
 import Tickets from './tickets/reducer'
+import Notifications from "./notifications/reducer";
 
 export default combineReducers({
   Auth,
@@ -29,5 +30,6 @@ export default combineReducers({
   LoanStatus,
   InternalStatus,
   AdminTickets,
-  Tickets
+  Tickets,
+  Notifications,
 });
