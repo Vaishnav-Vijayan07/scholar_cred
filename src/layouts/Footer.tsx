@@ -12,7 +12,7 @@ const Footer = () => {
           <Row>
             <Col md={6}>
               {currentYear} &copy; {" "}
-              <Link to="#">Intersmart solutions</Link>
+              <Link to="#">Scholar Cred</Link>
             </Col>
           </Row>
         </div>
