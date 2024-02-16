@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Tab, Nav, Dropdown } from "react-bootstrap";
+import { Row, Col, Card, Tab, Nav, Dropdown, Button } from "react-bootstrap";
 
 // components
 import PageTitle from "../../../components/PageTitle";
@@ -178,11 +178,15 @@ const Profile = () => {
                       Change status
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      {loanStatus?.map((item: any) => (
-                        <Dropdown.Item eventKey={item.id} key={item.id} onClick={() => handleChangeStatus(item?.id)}>
-                          {item.status_name}
-                        </Dropdown.Item>
-                      ))}
+                      {loanStatus?.map(
+                        (item: any) =>
+                          // Check if the item is visible before rendering the Dropdown.Item
+                          item.is_visible && (
+                            <Dropdown.Item eventKey={item.id} key={item.id} onClick={() => handleChangeStatus(item?.id)}>
+                              {item.status_name}
+                            </Dropdown.Item>
+                          )
+                      )}
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>

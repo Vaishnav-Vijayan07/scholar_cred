@@ -30,6 +30,8 @@ interface FileType extends File {
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, user, credStaffData, initialLoading, sourceData } = props;
+  console.log("user-->", user);
+  
   const dispatch = useDispatch();
 
   //Table data
@@ -63,7 +65,7 @@ const BasicInputElements = withSwal((props: any) => {
       .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
     // date_of_birth: yup.string().required("DOB is required"),
     // country_of_origin: yup.string().nullable(),
-    
+
     // application_status: yup.string().oneOf(["Pending", "Approved", "Rejected"]).required(),
   });
 
@@ -169,7 +171,7 @@ const BasicInputElements = withSwal((props: any) => {
       }
     } catch (validationError) {
       console.log(validationError);
-      
+
       // Handle validation errors
       if (validationError instanceof yup.ValidationError) {
         const errors: any = {};
@@ -327,7 +329,7 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Created By",
       accessor: "created_user",
       sort: false,
-      Cell: ({row}: any) => <div>{row.original.created_by == 0 ? "App" : row.original.created_user}</div>
+      Cell: ({ row }: any) => <div>{row.original.created_by == 0 ? "App" : row.original.created_user}</div>,
     },
     {
       Header: "Loan Type",
@@ -698,18 +700,20 @@ const BasicInputElements = withSwal((props: any) => {
                     </Dropdown.Menu>
                   </Dropdown>
 
-                  <Dropdown className="btn-group" align="end">
-                    <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
-                      <i className="mdi mdi-account-plus"></i> Assign Staff
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                      {credStaffData?.map((item: any) => (
-                        <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
-                          {item.label}
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  {user.role == 1 && (
+                    <Dropdown className="btn-group" align="end">
+                      <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
+                        <i className="mdi mdi-account-plus"></i> Assign Staff
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                        {credStaffData?.map((item: any) => (
+                          <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
+                            {item.label}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  )}
 
                   <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
                     <i className="mdi mdi-upload"></i> Bulk Upload

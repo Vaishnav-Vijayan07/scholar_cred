@@ -72,13 +72,13 @@ const StatisticsChartWidget2 = ({
               className="apex-charts mt-0"
             />
 
-            <h5 className="text-muted mt-0">Total students joined today</h5>
+            <h5 className="text-muted mt-0">Total students joined this week</h5>
             <h2>{totalSales}</h2>
 
             <Row className="row mt-5">
               <Col className="col-4">
                 <ChartStatistics
-                  title="Total students"
+                  title="Total"
                   stats={target}
                   variant="danger"
                 />

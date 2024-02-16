@@ -123,7 +123,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "cred_admin_management",
     label: "Cred Admin Management",
     isTitle: true,
-    roles: ["SUPER_USER", "CRED_ADMIN"],
+    roles: ["SUPER_USER"],
   },
 
   {
@@ -140,7 +140,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "book-open",
     url: "/status/status_management",
-    roles: ["SUPER_USER", "CRED_ADMIN"],
+    roles: ["SUPER_USER"],
   },
   {
     key: "loan_status",
@@ -148,7 +148,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "file-minus",
     url: "/status/loan_status",
-    roles: ["SUPER_USER", "CRED_ADMIN"],
+    roles: ["SUPER_USER"],
   },
   {
     key: "internal_status",
@@ -156,7 +156,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "file-minus",
     url: "/status/internal_status",
-    roles: ["SUPER_USER", "CRED_ADMIN"],
+    roles: ["SUPER_USER"],
   },
 
   {

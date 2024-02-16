@@ -49,7 +49,7 @@ const BasicPortlet = (props: PortletProps) => {
   return (
     <>
       {!hidden ? (
-        <Card className={classNames(props["className"])}>
+        <Card className={classNames(props["className"])} style={{ height: "95%" }}>
           {loading && (
             <div className="card-disabled">
               <div className="card-portlets-loader"></div>
@@ -57,26 +57,7 @@ const BasicPortlet = (props: PortletProps) => {
           )}
 
           <Card.Body>
-            <div className="card-widgets">
-              <Link to="#" onClick={reloadContent}>
-                <i className="mdi mdi-refresh"></i>
-              </Link>
-              <Link to="#" onClick={toggleContent}>
-                <i
-                  className={classNames("mdi", {
-                    "mdi-minus": collapse,
-                    "mdi-plus": !collapse,
-                  })}
-                ></i>
-              </Link>
-              <Link to="#" onClick={remove}>
-                <i className="mdi mdi-close"></i>
-              </Link>
-            </div>
-
-            <h5 className={classNames("mb-0", props["titleClass"])}>
-              {cardTitle}
-            </h5>
+            <h5 className={classNames("mb-0", props["titleClass"])}>{cardTitle}</h5>
 
             <Collapse in={collapse}>
               <div>
@@ -150,9 +131,7 @@ const PortletWithHeader = (props: PortletProps) => {
               </Link>
             </div>
 
-            <h5 className={classNames("mb-0", props["titleClass"])}>
-              {cardTitle}
-            </h5>
+            <h5 className={classNames("mb-0", props["titleClass"])}>{cardTitle}</h5>
           </Card.Header>
           <Collapse in={collapse} className="pt-3">
             <Card.Body>{children}</Card.Body>

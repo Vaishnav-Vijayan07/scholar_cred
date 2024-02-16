@@ -8,8 +8,8 @@ function createStudent(params: {
   last_name: string;
   email: string;
   phone: string;
-  date_of_birth: string;
-  country_of_origin: string;
+  // date_of_birth: string;
+  // country_of_origin: string;
   application_status: string;
   source: string;
   consultant_id: string;
@@ -24,8 +24,8 @@ function createStudentByCredStaff(params: {
   last_name: string;
   email: string;
   phone: string;
-  date_of_birth: string;
-  country_of_origin: string;
+  // date_of_birth: string;
+  // country_of_origin: string;
   application_status: string;
   source: string;
   consultant_id: string;
@@ -43,8 +43,8 @@ function updateStudent(
     last_name: string;
     email: string;
     phone: string;
-    date_of_birth: string;
-    country_of_origin: string;
+    // date_of_birth: string;
+    // country_of_origin: string;
     application_status: string;
     source: string;
   }

@@ -71,3 +71,11 @@
 .content-page{
   overflow: hidden;
 }
+.noBorderTable {
+  border-collapse: collapse;
+  border: none;
+}
+
+.noBorderTable th, .noBorderTable td {
+  border: none;
+}

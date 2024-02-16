@@ -5,10 +5,7 @@ import { Row, Col, Card, Form, Button, Modal, Alert, Spinner, Dropdown } from "r
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import { yupResolver } from "@hookform/resolvers/yup";
-import moment from "moment";
 import FileUploader from "../../components/FileUploader";
-
-// import StudentData from "../../assets/excel/StudentData.xlsx";
 
 // components
 import PageTitle from "../../components/PageTitle";

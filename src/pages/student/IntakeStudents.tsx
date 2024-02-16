@@ -39,6 +39,11 @@ const BasicInputElements = withSwal((props: any) => {
 
   const [filteredItems, setFilteredItems] = useState(state);
 
+  useEffect(() => {
+   
+  }, [])
+  
+
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
   const [formData, setFormData] = useState<StudentDataTypes>(StudentInitialState);
@@ -514,18 +519,20 @@ const BasicInputElements = withSwal((props: any) => {
                     </Dropdown>
                   )}
 
-                  <Dropdown className="btn-group" align="end">
-                    <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
-                      <i className="mdi mdi-account-plus"></i> Assign Staff
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                      {ConsultantStaff?.map((item: any) => (
-                        <Dropdown.Item key={item.id} onClick={() => handleAssignBulk(selectedValues, item.id)}>
-                          {item.full_name}
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  {user.role == "7" && (
+                    <Dropdown className="btn-group" align="end">
+                      <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
+                        <i className="mdi mdi-account-plus"></i> Assign Staff
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                        {ConsultantStaff?.map((item: any) => (
+                          <Dropdown.Item key={item.id} onClick={() => handleAssignBulk(selectedValues, item.id)}>
+                            {item.full_name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  )}
 
                   <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleUploadModal}>
                     <i className="mdi mdi-upload"></i> Bulk Upload

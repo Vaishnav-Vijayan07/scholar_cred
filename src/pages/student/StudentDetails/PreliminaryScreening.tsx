@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import { Control, FieldErrors } from "react-hook-form";
 import { FormInput } from "../../../components";
 
@@ -110,7 +110,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
           <Col xl={6} xxl={4}>
             <Form.Label>
-              Application Status <span className="badge bg-success float-right" style={{fontSize:"9px"}}>Low</span>
+              Application Status{" "}
+              <span className="badge bg-success float-right" style={{ fontSize: "9px" }}>
+                Low
+              </span>
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={applicationStatus} onChange={(e: any) => setApplicationStatus(e.target.value)}>
               <option value="" disabled>
@@ -124,7 +127,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
           <Col xl={6} xxl={4}>
             <Form.Label>
-              Program Type <span className="badge bg-warning float-right" style={{fontSize:"9px"}}>Medium</span>
+              Program Type{" "}
+              <span className="badge bg-warning float-right" style={{ fontSize: "9px" }}>
+                Medium
+              </span>
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={programType} onChange={(e: any) => setProgramType(e.target.value)}>
               <option value="" disabled>
@@ -141,7 +147,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             <Row> */}
           <Col xl={6} xxl={4}>
             <Form.Label>
-              University Details <span className="badge bg-warning float-right" style={{fontSize:"9px"}}>Medium</span>
+              University Details{" "}
+              <span className="badge bg-warning float-right" style={{ fontSize: "9px" }}>
+                Medium
+              </span>
             </Form.Label>
 
             <FormInput
@@ -165,7 +174,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
         <Row>
           <Col xl={6} xxl={4}>
             <Form.Label>
-              Primary Co-Applicant Details <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>High</span>
+              Primary Co-Applicant Details{" "}
+              <span className="badge bg-danger float-right" style={{ fontSize: "9px" }}>
+                High
+              </span>
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={primaryApplicant} onChange={(e: any) => setPrimaryApplicant(e.target.value)}>
               <option value="" disabled>
@@ -182,7 +194,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
           <Col xl={6} xxl={4}>
             <Form.Label>
-              Type Of Profession <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>High</span>
+              Type Of Profession{" "}
+              <span className="badge bg-danger float-right" style={{ fontSize: "9px" }}>
+                High
+              </span>
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={typeOfProfossion} onChange={(e: any) => setTypeOfProfossion(e.target.value)}>
               <option value="" disabled>
@@ -199,7 +214,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
           <Col xl={6} xxl={4}>
             <Form.Label>
-              Salary Range <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>High</span>
+              Salary Range{" "}
+              <span className="badge bg-danger float-right" style={{ fontSize: "9px" }}>
+                High
+              </span>
             </Form.Label>
             <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
               <option value="" disabled>
@@ -233,7 +251,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
         <Row>
           <Col xl={6} xxl={4}>
             <Form.Label>
-              Collateral Availability <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>High</span>
+              Collateral Availability{" "}
+              <span className="badge bg-danger float-right" style={{ fontSize: "9px" }}>
+                High
+              </span>
             </Form.Label>
             <Form.Select aria-label="Default select example" value={collatralItem} onChange={(e: any) => setCollatralItem(e.target.value)}>
               <option value="" disabled>
@@ -248,6 +269,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
               <option value="No collateral security available">No collateral security available</option>
             </Form.Select>
           </Col>
+
+          <Button variant="primary" className="mt-4" type="submit">
+            Submit
+          </Button>
         </Row>
       </>
     </>

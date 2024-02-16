@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 
 // componets
@@ -8,16 +8,48 @@ import StatisticsWidget from "../../../components/StatisticsWidget";
 import "swiper/css";
 
 const Statuses = ({ dashboardData }: any) => {
+  const calculateSlidesPerView = () => {
+    const screenWidth = window.innerWidth;
+
+    // Define your breakpoints and corresponding slidesPerView values
+    if (screenWidth >= 1200) {
+      return 4;
+    } else if (screenWidth >= 992) {
+      return 3;
+    } else if (screenWidth >= 768) {
+      return 2;
+    } else {
+      return 1;
+    }
+  };
+
+  const [slidesPerView, setSlidesPerView] = useState(calculateSlidesPerView());
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSlidesPerView(calculateSlidesPerView());
+    };
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Remove event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // Function to calculate slidesPerView based on screen width
 
   return (
     <>
-      <Row>
+      <Row style={{margin:"0"}}>
         {/* <Swiper spaceBetween={50} slidesPerView={4} onSlideChange={() => console.log("slide change")} onSwiper={(swiper: any) => console.log(swiper)}> */}
         <Swiper
           // install Swiper modules
           modules={[Navigation, Pagination, Scrollbar, A11y]}
-          spaceBetween={15}
-          slidesPerView={5}
+          spaceBetween={20}
+          slidesPerView={slidesPerView}
           navigation
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
