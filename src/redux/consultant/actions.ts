@@ -18,7 +18,8 @@ interface ConsultantData {
   business_address: string;
   email: string;
   phone: string;
-  file: File | null;
+  imgfile: File | null;
+  second_file: File | null;
   alternative_phone: string;
   gst: string;
   location: string;
@@ -28,13 +29,19 @@ interface ConsultantData {
 }
 
 // Common success
-export const consultantApiResponseSuccess = (actionType: string, data: ConsultantData | {}): ConsultantActionType => ({
+export const consultantApiResponseSuccess = (
+  actionType: string,
+  data: ConsultantData | {}
+): ConsultantActionType => ({
   type: ConsultantActionTypes.API_RESPONSE_SUCCESS,
   payload: { actionType, data },
 });
 
 // Common error
-export const consultantApiResponseError = (actionType: string, error: string): ConsultantActionType => ({
+export const consultantApiResponseError = (
+  actionType: string,
+  error: string
+): ConsultantActionType => ({
   type: ConsultantActionTypes.API_RESPONSE_ERROR,
   payload: { actionType, error },
 });
@@ -47,28 +54,33 @@ export const createConsultant = (
   email: string,
   phone: string,
   file: File | null,
+  second_file: File | null,
   alternative_phone: string,
   gst: string,
   location: string,
   pin_code: string,
   pan_no: string,
   created_by: number
-): ConsultantActionType => ({
-  type: ConsultantActionTypes.CREATE_CONSULTANT,
-  payload: {
-    company_name,
-    business_address,
-    email,
-    phone,
-    file,
-    alternative_phone,
-    gst,
-    location,
-    pin_code,
-    pan_no,
-    created_by,
-  },
-});
+): ConsultantActionType => {
+
+  return {
+    type: ConsultantActionTypes.CREATE_CONSULTANT,
+    payload: {
+      company_name,
+      business_address,
+      email,
+      phone,
+      file,
+      second_file,
+      alternative_phone,
+      gst,
+      location,
+      pin_code,
+      pan_no,
+      created_by,
+    },
+  };
+};
 
 //edit consultant
 

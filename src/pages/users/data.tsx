@@ -45,7 +45,7 @@ export interface MyInitialState {
   gst: string;
   location: string;
   pin_code: string;
-  pan_no: string;
+  pan_no: string ;
 }
 
 export const initialState = {
@@ -123,6 +123,11 @@ export interface StudentDataTypes {
   application_status?: string;
   source: string;
 }
+
+export const IMG_CONFIG_CROP = {
+  width: 50,
+  height: 50,
+};
 
 export const StudentInitialState = {
   student_id: "",

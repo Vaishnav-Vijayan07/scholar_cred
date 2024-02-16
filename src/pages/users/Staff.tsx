@@ -327,6 +327,10 @@ const BasicInputElements = withSwal((props: any) => {
     }));
   };
 
+
+  console.log(selectedFile);
+  
+
   useEffect(() => {
     // Check for errors and clear the form
     if (!loading && !error) {

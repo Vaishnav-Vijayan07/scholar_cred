@@ -102,8 +102,6 @@ const InternalStatus = (state = INIT_STATE, action: StatusActionType): any => {
         }
 
         case InternalStatusActionTypes.DELETE_INTERNAL_STATUS: {
-          console.log(action.payload.error);
-
           showErrorAlert(action.payload.error);
           return {
             ...state,

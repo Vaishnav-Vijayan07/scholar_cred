@@ -14,7 +14,11 @@ import {
 } from "../../helpers/";
 
 // actions
-import { consultantApiResponseSuccess, consultantApiResponseError, getConsultants } from "./actions";
+import {
+  consultantApiResponseSuccess,
+  consultantApiResponseError,
+  getConsultants,
+} from "./actions";
 
 // constants
 import { ConsultantActionTypes } from "./constants";
@@ -27,6 +31,7 @@ interface ConsultantData {
     email: string;
     phone: string;
     file: File;
+    second_file: File;
     alternative_phone: string;
     gst: string;
     location: string;
@@ -40,16 +45,32 @@ interface ConsultantData {
 const api = new APICore();
 
 function* createConsultant({
-  payload: { company_name, business_address, email, phone, file, alternative_phone, gst, location, pin_code, pan_no, created_by },
+  payload: {
+    company_name,
+    business_address,
+    email,
+    phone,
+    file,
+    second_file,
+    alternative_phone,
+    gst,
+    location,
+    pin_code,
+    pan_no,
+    created_by,
+  },
   type,
 }: ConsultantData): SagaIterator {
   try {
+  
+    
     const response = yield call(createConsultantApi, {
       company_name,
       business_address,
       email,
       phone,
       file,
+      second_file,
       alternative_phone,
       gst,
       location,
@@ -59,12 +80,18 @@ function* createConsultant({
     });
 
     const consultant_data = response.data.message;
-
-    yield put(consultantApiResponseSuccess(ConsultantActionTypes.CREATE_CONSULTANT, consultant_data));
+    yield put(
+      consultantApiResponseSuccess(
+        ConsultantActionTypes.CREATE_CONSULTANT,
+        consultant_data
+      )
+    );
     //calling get method after successfull api creation
     yield put(getConsultants());
   } catch (error: any) {
-    yield put(consultantApiResponseError(ConsultantActionTypes.CREATE_CONSULTANT, error));
+    yield put(
+      consultantApiResponseError(ConsultantActionTypes.CREATE_CONSULTANT, error)
+    );
   }
 }
 
@@ -74,9 +101,15 @@ function* getConsultant(): SagaIterator {
     const data = response.data.data;
 
     // NOTE - You can change this according to response format from your api
-    yield put(consultantApiResponseSuccess(ConsultantActionTypes.GET_CONSULTANT, { data }));
+    yield put(
+      consultantApiResponseSuccess(ConsultantActionTypes.GET_CONSULTANT, {
+        data,
+      })
+    );
   } catch (error: any) {
-    yield put(consultantApiResponseError(ConsultantActionTypes.GET_CONSULTANT, error));
+    yield put(
+      consultantApiResponseError(ConsultantActionTypes.GET_CONSULTANT, error)
+    );
     throw error;
   }
 }
@@ -87,25 +120,48 @@ function* getConsultantById({ payload: { id } }: ConsultantData): SagaIterator {
     const data = response.data.data;
 
     // NOTE - You can change this according to response format from your api
-    yield put(consultantApiResponseSuccess(ConsultantActionTypes.GET_CONSULTANT_BY_ID, { data }));
+    yield put(
+      consultantApiResponseSuccess(ConsultantActionTypes.GET_CONSULTANT_BY_ID, {
+        data,
+      })
+    );
   } catch (error: any) {
-    yield put(consultantApiResponseError(ConsultantActionTypes.GET_CONSULTANT_BY_ID, error));
+    yield put(
+      consultantApiResponseError(
+        ConsultantActionTypes.GET_CONSULTANT_BY_ID,
+        error
+      )
+    );
     throw error;
   }
 }
 
 function* updateConsultant({
-  payload: { id, company_name, business_address, email, phone, file, alternative_phone, gst, location, pin_code, pan_no, created_by },
+  payload: {
+    id,
+    company_name,
+    business_address,
+    email,
+    phone,
+    file,
+    // alt_file,
+    alternative_phone,
+    gst,
+    location,
+    pin_code,
+    pan_no,
+    created_by,
+  },
   type,
 }: ConsultantData): SagaIterator {
   try {
-
     const response = yield call(updateConsultantApi, id, {
       company_name,
       business_address,
       email,
       phone,
       file,
+      // alt_file,
       alternative_phone,
       gst,
       location,
@@ -115,11 +171,17 @@ function* updateConsultant({
     });
     const consultant_data = response.data.message;
 
-
-    yield put(consultantApiResponseSuccess(ConsultantActionTypes.EDIT_CONSULTANT, consultant_data));
+    yield put(
+      consultantApiResponseSuccess(
+        ConsultantActionTypes.EDIT_CONSULTANT,
+        consultant_data
+      )
+    );
     yield put(getConsultants());
   } catch (error: any) {
-    yield put(consultantApiResponseError(ConsultantActionTypes.EDIT_CONSULTANT, error));
+    yield put(
+      consultantApiResponseError(ConsultantActionTypes.EDIT_CONSULTANT, error)
+    );
   }
 }
 
@@ -128,10 +190,20 @@ function* deleteConsultant({ payload: { id } }: ConsultantData): SagaIterator {
     const response = yield call(deleteConsultantApi, id);
     const data = response.data.message;
 
-    yield put(consultantApiResponseSuccess(ConsultantActionTypes.DELETE_CONSULTANT, data));
+    yield put(
+      consultantApiResponseSuccess(
+        ConsultantActionTypes.DELETE_CONSULTANT,
+        data
+      )
+    );
     yield put(getConsultants());
   } catch (error: any) {
-    yield put(consultantApiResponseSuccess(ConsultantActionTypes.DELETE_CONSULTANT, error));
+    yield put(
+      consultantApiResponseSuccess(
+        ConsultantActionTypes.DELETE_CONSULTANT,
+        error
+      )
+    );
     throw error;
   }
 }
@@ -140,7 +212,10 @@ export function* watchGetAllConsultant() {
   yield takeEvery(ConsultantActionTypes.GET_CONSULTANT, getConsultant);
 }
 export function* watchGetConsultantById() {
-  yield takeEvery(ConsultantActionTypes.GET_CONSULTANT_BY_ID, getConsultantById);
+  yield takeEvery(
+    ConsultantActionTypes.GET_CONSULTANT_BY_ID,
+    getConsultantById
+  );
 }
 
 export function* watchCreateConsultant() {
