@@ -12,15 +12,28 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
     <Card className="text-center">
       <Card.Body style={{ minHeight: "400px" }}>
         {loading ? (
-          <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />
+          <Spinner
+            animation="border"
+            style={{ position: "absolute", top: "50%", left: "50%" }}
+          />
         ) : (
           <>
             {StudentData?.imageurl ? (
-              <img src={`${process.env.REACT_APP_BACKEND_URL}/${StudentData?.imageurl}`} className="rounded-circle avatar-lg img-thumbnail" alt="avatar" />
+              <img
+                src={`${process.env.REACT_APP_BACKEND_URL}/${StudentData?.imageurl}`}
+                className="rounded-circle avatar-lg img-thumbnail"
+                alt="avatar"
+              />
             ) : (
-              <img src={profileImg} className="rounded-circle avatar-lg img-thumbnail" alt="avatar" />
+              <img
+                src={profileImg}
+                className="rounded-circle avatar-lg img-thumbnail"
+                alt="avatar"
+              />
             )}
-            <h4 className="">{StudentData?.first_name + " " + StudentData?.last_name}</h4>
+            <h4 className="">
+              {StudentData?.first_name + " " + StudentData?.last_name}
+            </h4>
             {/* <p className="text-muted">@webdesigner</p> */}
             {/* <button type="button" className="btn btn-success btn-xs waves-effect mb-2 waves-light">
               Call
@@ -29,11 +42,22 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
               Message
             </button>{" "} */}
             {!StudentData?.status ? (
-              <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={isLoading} onClick={handleAppprove}>
+              <Button
+                variant="success"
+                className="btn-xs waves-effect mb-2 waves-light"
+                size="sm"
+                disabled={isLoading}
+                onClick={handleAppprove}
+              >
                 {isLoading ? "Loading…" : "Initiation loan process"}
               </Button>
             ) : (
-              <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={true}>
+              <Button
+                variant="success"
+                className="btn-xs waves-effect mb-2 waves-light"
+                size="sm"
+                disabled={true}
+              >
                 Initiation loan processed
               </Button>
             )}
@@ -43,13 +67,11 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
             Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.
           </p> */}
               <p className="text-muted mb-2 font-13">
-                <strong>Full Name : {StudentData?.first_name + " " + StudentData?.last_name}</strong>
+                <strong>
+                  Full Name :{" "}
+                  {StudentData?.first_name + " " + StudentData?.last_name}
+                </strong>
                 <span className="ms-2"></span>
-              </p>
-
-              <p className="text-muted mb-2 font-13">
-                <strong>DOB :</strong>
-                <span className="ms-2">{moment(StudentData?.date_of_birth).format("DD-MM-YYYY")}</span>
               </p>
 
               <p className="text-muted mb-2 font-13">
@@ -63,18 +85,17 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
               </p>
 
               <p className="text-muted mb-2 font-13">
-                <strong>Location :</strong>
-                <span className="ms-2">{StudentData?.country_of_origin}</span>
-              </p>
-
-              <p className="text-muted mb-2 font-13">
                 <strong>Loan Status :</strong>
-                <span className="ms-2">{StudentData?.loan_status_name || "Pending"}</span>
+                <span className="ms-2">
+                  {StudentData?.loan_status_name || "Pending"}
+                </span>
               </p>
 
               <p className="text-muted mb-2 font-13">
                 <strong>Application Status :</strong>
-                <span className="ms-2">{StudentData?.application_status_name || "Student Created"}</span>
+                <span className="ms-2">
+                  {StudentData?.application_status_name || "Student Created"}
+                </span>
               </p>
 
               <p className="text-muted mb-2 font-13">

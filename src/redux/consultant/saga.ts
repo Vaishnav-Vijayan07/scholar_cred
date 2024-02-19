@@ -62,8 +62,6 @@ function* createConsultant({
   type,
 }: ConsultantData): SagaIterator {
   try {
-  
-    
     const response = yield call(createConsultantApi, {
       company_name,
       business_address,
@@ -144,7 +142,7 @@ function* updateConsultant({
     email,
     phone,
     file,
-    // alt_file,
+    second_file,
     alternative_phone,
     gst,
     location,
@@ -161,7 +159,7 @@ function* updateConsultant({
       email,
       phone,
       file,
-      // alt_file,
+      second_file,
       alternative_phone,
       gst,
       location,
@@ -171,6 +169,8 @@ function* updateConsultant({
     });
     const consultant_data = response.data.message;
 
+    console.log(consultant_data);
+
     yield put(
       consultantApiResponseSuccess(
         ConsultantActionTypes.EDIT_CONSULTANT,
@@ -179,6 +179,8 @@ function* updateConsultant({
     );
     yield put(getConsultants());
   } catch (error: any) {
+    console.log(error);
+
     yield put(
       consultantApiResponseError(ConsultantActionTypes.EDIT_CONSULTANT, error)
     );
