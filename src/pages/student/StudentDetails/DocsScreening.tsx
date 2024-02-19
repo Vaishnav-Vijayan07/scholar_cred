@@ -192,6 +192,9 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
       <Form className="pt-3" onSubmit={handleSubmit}>
         {renderFormItems()}
       </Form>{" "}
+      <Button variant="primary" className="mt-4" type="submit">
+        Submit
+      </Button>
     </>
   );
 };

@@ -19,7 +19,15 @@ import {
 } from "../../helpers/";
 
 // actions
-import { studentApiResponseSuccess, studentStaffApiResponseError, getStudent, getStudentByCreated, getStudentByStaff, getAllAssignedStudents, getStudentByConsultant } from "./actions";
+import {
+  studentApiResponseSuccess,
+  studentStaffApiResponseError,
+  getStudent,
+  getStudentByCreated,
+  getStudentByStaff,
+  getAllAssignedStudents,
+  getStudentByConsultant,
+} from "./actions";
 
 // constants
 import { StudentActionTypes } from "./constants";
@@ -43,10 +51,7 @@ interface ConsultantStaffData {
 const api = new APICore();
 // const user = api.getLoggedInUser();
 
-function* createStudent({
-  payload: { first_name, last_name, email, phone, date_of_birth, country_of_origin, application_status, source, consultant_id },
-  type,
-}: ConsultantStaffData): SagaIterator {
+function* createStudent({ payload: { first_name, last_name, email, phone, application_status, source, consultant_id }, type }: ConsultantStaffData): SagaIterator {
   try {
     const user = yield select((state) => state.Auth.user);
     const response = yield call(user?.role == "2" ? createStudentByCredStaffApi : createStudentApi, {
@@ -54,8 +59,8 @@ function* createStudent({
       last_name,
       email,
       phone,
-      date_of_birth,
-      country_of_origin,
+      // date_of_birth,
+      // country_of_origin,
       application_status,
       source,
       consultant_id,
@@ -162,10 +167,7 @@ function* getStudentByConsultants({ payload: { consultant_id } }: ConsultantStaf
   }
 }
 
-function* updateStudent({
-  payload: { student_id, first_name, last_name, email, phone, date_of_birth, country_of_origin, application_status, source },
-  type,
-}: ConsultantStaffData): SagaIterator {
+function* updateStudent({ payload: { student_id, first_name, last_name, email, phone, application_status, source }, type }: ConsultantStaffData): SagaIterator {
   try {
     const user = yield select((state) => state.Auth.user);
     const response = yield call(updateStudentApi, student_id, {
@@ -173,8 +175,8 @@ function* updateStudent({
       last_name,
       email,
       phone,
-      date_of_birth,
-      country_of_origin,
+      // date_of_birth,
+      // country_of_origin,
       application_status,
       source,
     });

@@ -30,7 +30,7 @@ const UsersChart = () => {
       y: {
         title: {
           formatter: (seriesName: string) => {
-            return "";
+            return seriesName;
           },
         },
       },
@@ -38,6 +38,7 @@ const UsersChart = () => {
         show: false,
       },
     },
+    labels: ["Initiated", "Pending", "Pending", "Pending"],
   };
 
   const series = [20, 40, 30, 10];
@@ -46,38 +47,17 @@ const UsersChart = () => {
     <>
       <BasicPortlet cardTitle="Total Users" titleClass="header-title">
         <div className="text-center">
-          <Chart
-            options={options}
-            series={series}
-            height={270}
-            type="pie"
-            className="apex-charts mt-0"
-          />
+          <Chart options={options} series={series} height={270} type="pie" className="apex-charts mt-0" />
 
           <Row className="row mt-3">
             <Col className="col-4">
-              <ChartStatistics
-                title="Target"
-                icon="fe-arrow-down"
-                stats="18k"
-                variant="danger"
-              />
+              <ChartStatistics title="Target" icon="fe-arrow-down" stats="18k" variant="danger" />
             </Col>
             <Col className="col-4">
-              <ChartStatistics
-                title="Last week"
-                icon="fe-arrow-up"
-                stats="3.25k"
-                variant="success"
-              />
+              <ChartStatistics title="Last week" icon="fe-arrow-up" stats="3.25k" variant="success" />
             </Col>
             <Col className="col-4">
-              <ChartStatistics
-                title="Last Month"
-                icon="fe-arrow-up"
-                stats="28k"
-                variant="success"
-              />
+              <ChartStatistics title="Last Month" icon="fe-arrow-up" stats="28k" variant="success" />
             </Col>
           </Row>
         </div>

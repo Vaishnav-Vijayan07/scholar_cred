@@ -162,9 +162,10 @@ const BasicInputElements = withSwal((props: any) => {
 
   const columns = [
     {
-      Header: "ID",
-      accessor: "id",
-      sort: true,
+      Header: "Sl No",
+      accessor: "slNo",
+      Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
+      sort: false,
     },
     {
       Header: "First Name",
@@ -195,7 +196,7 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Image",
       accessor: "image",
       sort: false,
-      Cell: ({ row }: any) => <>{row.original.image && <img src={`${process.env.REACT_APP_BACKEND_URL}${row.original.image}`} alt="user image" width={50} />}</>,
+      Cell: ({ row }: any) => <>{row.original.image && <img src={`${process.env.REACT_APP_BACKEND_URL}${row.original.image}`} alt="user image" width={100} />}</>,
     },
     {
       Header: "Employee Id",
