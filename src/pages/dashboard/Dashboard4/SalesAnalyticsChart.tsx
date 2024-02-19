@@ -153,7 +153,7 @@ const SalesAnalyticsChart = ({ summary }: any) => {
                 className={`btn btn-xs ${activeButton === "yearly" ? "btn-secondary" : "btn-light"}`}
                 onClick={() => [handleYearlyReport(), setActiveButton("yearly")]}
               >
-                Weekly
+                Yearly
               </button>
             </div>
           </div>

@@ -257,11 +257,11 @@ const BasicInputElements = withSwal((props: any) => {
       sort: true,
       Cell: ({ row }: any) => <div>{row.original.first_name + " " + row.original.last_name}</div>,
     },
-    {
-      Header: "Country",
-      accessor: "country_of_origin",
-      sort: false,
-    },
+    // {
+    //   Header: "Country",
+    //   accessor: "country_of_origin",
+    //   sort: false,
+    // },
     {
       Header: "Intake Month",
       accessor: "intake_month",

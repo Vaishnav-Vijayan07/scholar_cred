@@ -104,11 +104,10 @@ const Dashboard4 = () => {
 
           {/* <Row> */}
           {user.role == "7" && (
-            <Row>
-              <Col xl={4} md={12}>
-                <StudentCounts studentCount={dashboardData?.studentsCount || []} />
-              </Col>
-            </Row>
+            // <Row>
+            <Col xl={4} md={12}>
+              <StudentCounts studentCount={dashboardData?.studentsCount || []} />
+            </Col>
           )}
 
           {user.role == "4" && (
@@ -137,15 +136,15 @@ const Dashboard4 = () => {
         <Row>
           <Statuses dashboardData={dashboardData?.statusWithCount} />
           <Row>
-            <Col md={6} xl={4}>
+            <Col md={5} xl={4}>
               <UsersChart />
             </Col>
-            <Col lg={8}>
+            <Col lg={7} xl={8}>
               <SalesAnalyticsChart summary={dashboardData?.summary} />
             </Col>
           </Row>
 
-          <Row>
+          {/* <Row>
             <Col md={12} xl={4}>
               <SalesChart />
             </Col>
@@ -155,7 +154,7 @@ const Dashboard4 = () => {
             <Col md={6} xl={4}>
               <UsersChart />
             </Col>
-          </Row>
+          </Row> */}
         </Row>
       ) : (
         ""

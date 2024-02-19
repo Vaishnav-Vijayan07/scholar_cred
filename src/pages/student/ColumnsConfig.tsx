@@ -20,11 +20,11 @@ export const getColumns = (handleUpdate: any, toggleResponsiveModal: any, handle
       sort: true,
       Cell: ({ row }: any) => <span>{row.original.first_name + " " + row.original.last_name}</span>,
     },
-    {
-      Header: "Country",
-      accessor: "country_of_origin",
-      sort: false,
-    },
+    // {
+    //   Header: "Country",
+    //   accessor: "country_of_origin",
+    //   sort: false,
+    // },
     {
       Header: "Email",
       accessor: "email",
@@ -145,11 +145,11 @@ export const getConsultantStaffColumns = (handleResetPassword: any, resetPasswor
       sort: true,
       Cell: ({ row }: any) => <span>{row.original.first_name + " " + row.original.last_name}</span>,
     },
-    {
-      Header: "Country",
-      accessor: "country_of_origin",
-      sort: false,
-    },
+    // {
+    //   Header: "Country",
+    //   accessor: "country_of_origin",
+    //   sort: false,
+    // },
     {
       Header: "Email",
       accessor: "email",
@@ -278,11 +278,11 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
       sort: true,
       Cell: ({ row }: any) => <span>{row.original.first_name + " " + row.original.last_name}</span>,
     },
-    {
-      Header: "Country",
-      accessor: "country_of_origin",
-      sort: false,
-    },
+    // {
+    //   Header: "Country",
+    //   accessor: "country_of_origin",
+    //   sort: false,
+    // },
     {
       Header: "Email",
       accessor: "email",
