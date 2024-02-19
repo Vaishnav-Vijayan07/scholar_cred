@@ -124,10 +124,6 @@ export interface StudentDataTypes {
   source: string;
 }
 
-export const IMG_CONFIG_CROP = {
-  width: 50,
-  height: 50,
-};
 
 export const StudentInitialState = {
   student_id: "",
