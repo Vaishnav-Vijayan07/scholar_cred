@@ -100,7 +100,7 @@ const BasicInputElements = withSwal((props: any) => {
     location: yup
       .string()
       .required("Location is required")
-      .min(8, "Location must be at least 8 characters long"),
+      .min(3, "Location must be at least 3 characters long"),
     pin_code: yup
       .string()
       .nullable()
