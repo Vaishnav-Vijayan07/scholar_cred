@@ -19,7 +19,9 @@ function signup(params: { fullname: string; email: string; password: string }) {
 }
 
 function forgotPassword(params: { username: string }) {
-  const baseUrl = "/forget_password";
+  // const baseUrl = "/forget_password";
+  const baseUrl = "/reset_password";
+
   return api.create(`${baseUrl}`, params);
 }
 
