@@ -678,14 +678,14 @@ const BasicInputElements = withSwal((props: any) => {
                               }
                             }}
                           />
-                          {fileErrors.image && (
+                          {fileErrors?.image && (
                             <Form.Text className="text-danger">
-                              {fileErrors.image}
+                              {fileErrors?.image}
                             </Form.Text>
                           )}
-                          {croppedFile.croppedImage && (
+                          {croppedFile?.croppedImage && (
                             <img
-                              src={croppedFile.croppedImage}
+                              src={croppedFile?.croppedImage}
                               className="mt-2"
                               alt="selected image"
                             />
@@ -781,7 +781,7 @@ const BasicInputElements = withSwal((props: any) => {
                       >
                         {isUpdate ? "Update" : "Submit"}
                       </Button>
-                      <Button
+                      {/* <Button
                         variant="success"
                         id="button-addon2"
                         className="waves-effect waves-light mt-1"
@@ -789,7 +789,7 @@ const BasicInputElements = withSwal((props: any) => {
                         disabled={loading}
                       >
                         Add test data
-                      </Button>
+                      </Button> */}
                     </div>
                     {/* )} */}
                   </Form>

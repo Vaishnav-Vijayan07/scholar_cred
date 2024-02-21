@@ -408,9 +408,9 @@ const BasicInputElements = withSwal((props: any) => {
                 {isUpdate ? "Update" : "Submit"}
               </Button>
 
-              <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
+              {/* <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
                 Add test data
-              </Button>
+              </Button> */}
             </Modal.Footer>
 
             {/* )} */}
