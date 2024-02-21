@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site":"scholar-cred-live",
+    "site":"scholar-cred",
     "public": "build",
     "ignore": [
       "firebase.json",
