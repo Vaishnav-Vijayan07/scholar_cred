@@ -72,8 +72,6 @@ const AllRoutes = (props: IRoutesProps) => {
           {authProtectedFlattenRoutes.map((route, idx) => (
             <Route
               path={route.path}
-              
-              
               element={
                 api.isUserAuthenticated() === false ? (
                   <Navigate

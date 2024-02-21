@@ -61,9 +61,9 @@ const Statuses = ({ dashboardData }: any) => {
               <Col>
                 <StatisticsWidget
                   variant="primary"
-                  //   counterOptions={{
-                  //     prefix: "$",
-                  //   }}
+                    // counterOptions={{
+                    //   prefix: "$",
+                    // }}
                   description={item?.status_name}
                   stats={item?.status_count}
                   icon="fe-aperture"

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { Button } from "react-bootstrap";
-// import { IMG_CONFIG_CROP } from "./data";
 
 const Img = { width: 150, height: 50 };
 const Alt = { width: 30, height: 30 };
@@ -92,7 +91,6 @@ function ImageCrop({
       });
     };
 
-    // Usage
     getBlob(canvas)
       .then((file) => {
         if (file) {
@@ -129,8 +127,6 @@ function ImageCrop({
       <div className="d-flex flex-column justify-content-center gap-4 align-items-center">
         <div
           style={{
-            // minWidth: "500px",
-            // minHeight: "400px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -147,7 +143,6 @@ function ImageCrop({
               src={files}
               alt=""
               onClick={handleclick}
-              // style={{ minWidth: "500px" }}
             />
           </ReactCrop>
         </div>

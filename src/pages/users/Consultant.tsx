@@ -34,8 +34,6 @@ import {
   getCredAdminUsers,
 } from "../../redux/actions";
 import { RootState } from "../../redux/store";
-import Croppe from "./ImageCrop";
-import { file } from "jszip";
 import ImageCrop from "./ImageCrop";
 
 const BasicInputElements = withSwal((props: any) => {
@@ -120,6 +118,10 @@ const BasicInputElements = withSwal((props: any) => {
 
   //handling update logic
   const handleUpdate = (item: any) => {
+    setCroppedFile((prev) => ({
+      ...prev,
+      croppedImage: `${process.env.REACT_APP_BACKEND_URL}/${item?.image_url}`,
+    }));
     setFormData((prev) => ({
       ...prev,
       id: item?.id,
@@ -176,19 +178,20 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
-  const fileInputRef: any = useRef(null);
+  const fileInputImgRef: any = useRef(null);
+  const fileInputAltRef: any = useRef(null);
 
-  const handleClear = () => {
-    fileInputRef.current.value = "";
+  const handleClear = (type: string) => {
+    if (type === "image") {
+      fileInputImgRef.current.value = "";
+    } else {
+      fileInputAltRef.current.value = "";
+    }
   };
 
   //handle form submission
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (blobData.img == null && blobData.alt == null) {
-      setFileErrors({ image: "Choose an image", alt: "Choose an image" });
-    }
-    // Validate the form using yup
 
     try {
       await validationSchema.validate(formData, { abortEarly: false });
@@ -203,7 +206,8 @@ const BasicInputElements = withSwal((props: any) => {
             formData.business_address,
             formData.email,
             formData.phone,
-            selectedFile ? selectedFile : null,
+            blobData ? blobData.img : null,
+            blobData ? blobData.alt : null,
             formData.alternative_phone,
             formData.gst,
             formData.location,
@@ -213,6 +217,16 @@ const BasicInputElements = withSwal((props: any) => {
           )
         );
       } else {
+        if (blobData.img == null || blobData.alt == null) {
+          if (!blobData.img) {
+            setFileErrors((prev) => ({ ...prev, image: "Choose an image" }));
+          }
+          if (!blobData.alt) {
+            setFileErrors((prev) => ({ ...prev, alt: "Choose an image" }));
+          }
+          return;
+        }
+
         // Handle add logic
         dispatch(
           createConsultant(
@@ -231,6 +245,7 @@ const BasicInputElements = withSwal((props: any) => {
           )
         );
       }
+      setCroppedFile({ croppedAltImage: "", croppedImage: "" });
     } catch (validationError) {
       // Handle validation errors
       if (validationError instanceof yup.ValidationError) {
@@ -623,12 +638,12 @@ const BasicInputElements = withSwal((props: any) => {
                         <Form.Group className="mb-3" controlId="file">
                           <Form.Label>Image</Form.Label>
                           <Form.Control
-                            ref={fileInputRef}
-                            itemRef={fileInputRef}
+                            ref={fileInputImgRef}
+                            itemRef={fileInputImgRef}
                             type="file"
                             name="file"
                             placeholder="Enter pin code"
-                            onClick={handleClear}
+                            onClick={() => handleClear("image")}
                             onChange={(
                               e: React.ChangeEvent<HTMLInputElement>
                             ) => {
@@ -642,6 +657,7 @@ const BasicInputElements = withSwal((props: any) => {
                                   image: URL.createObjectURL(file),
                                 }));
                                 setShowModal(!showModal);
+
                                 setFileErrors((prev) => ({
                                   ...prev,
                                   image: "",
@@ -651,7 +667,6 @@ const BasicInputElements = withSwal((props: any) => {
                                   image: true,
                                 }));
                               } else {
-                                console.log("Choose proper file");
                                 setCroppedFile((prev: any) => ({
                                   ...prev,
                                   croppedImage: null,
@@ -663,14 +678,14 @@ const BasicInputElements = withSwal((props: any) => {
                               }
                             }}
                           />
-                          {fileErrors.image && (
+                          {fileErrors?.image && (
                             <Form.Text className="text-danger">
-                              {fileErrors.image}
+                              {fileErrors?.image}
                             </Form.Text>
                           )}
-                          {croppedFile.croppedImage && (
+                          {croppedFile?.croppedImage && (
                             <img
-                              src={croppedFile.croppedImage}
+                              src={croppedFile?.croppedImage}
                               className="mt-2"
                               alt="selected image"
                             />
@@ -681,6 +696,9 @@ const BasicInputElements = withSwal((props: any) => {
                         <Form.Group className="mb-3" controlId="file">
                           <Form.Label>Alt Image</Form.Label>
                           <Form.Control
+                            ref={fileInputAltRef}
+                            itemRef={fileInputAltRef}
+                            onClick={() => handleClear("alt")}
                             type="file"
                             name="file"
                             placeholder="Enter pin code"
@@ -688,31 +706,35 @@ const BasicInputElements = withSwal((props: any) => {
                               e: React.ChangeEvent<HTMLInputElement>
                             ) => {
                               const file: any = e.target.files?.[0];
-                              if (file.type && file.type.startsWith("image/")) {
-                                setImages((prev: any) => ({
-                                  ...prev,
-                                  image: null,
-                                  altImage: URL.createObjectURL(file),
-                                }));
-                                setShowModal(!showModal);
-                                setFileErrors((prev) => ({
-                                  ...prev,
-                                  alt: "",
-                                }));
-                                setCropConfig((prev) => ({
-                                  ...prev,
-                                  alt: true,
-                                }));
-                              } else {
-                                console.log("choose correct file");
-                                setCroppedFile((prev: any) => ({
-                                  ...prev,
-                                  croppedAltImage: null,
-                                }));
-                                setFileErrors((prev) => ({
-                                  ...prev,
-                                  alt: "Choose proper image file",
-                                }));
+                              if (file) {
+                                if (
+                                  file.type &&
+                                  file.type.startsWith("image/")
+                                ) {
+                                  setImages((prev: any) => ({
+                                    ...prev,
+                                    image: null,
+                                    altImage: URL.createObjectURL(file),
+                                  }));
+                                  setShowModal(!showModal);
+                                  setFileErrors((prev) => ({
+                                    ...prev,
+                                    alt: "",
+                                  }));
+                                  setCropConfig((prev) => ({
+                                    ...prev,
+                                    alt: true,
+                                  }));
+                                } else {
+                                  setCroppedFile((prev: any) => ({
+                                    ...prev,
+                                    croppedAltImage: null,
+                                  }));
+                                  setFileErrors((prev) => ({
+                                    ...prev,
+                                    alt: "Choose proper image file",
+                                  }));
+                                }
                               }
                             }}
                           />
@@ -759,7 +781,7 @@ const BasicInputElements = withSwal((props: any) => {
                       >
                         {isUpdate ? "Update" : "Submit"}
                       </Button>
-                      <Button
+                      {/* <Button
                         variant="success"
                         id="button-addon2"
                         className="waves-effect waves-light mt-1"
@@ -767,7 +789,7 @@ const BasicInputElements = withSwal((props: any) => {
                         disabled={loading}
                       >
                         Add test data
-                      </Button>
+                      </Button> */}
                     </div>
                     {/* )} */}
                   </Form>
@@ -782,14 +804,14 @@ const BasicInputElements = withSwal((props: any) => {
             dialogClassName=" modal-right"
             // centered
           >
-            <Modal.Body style={{height:"100%"}}>
+            <Modal.Body style={{ height: "100%" }}>
               <ImageCrop
                 file={images}
                 cropConfig={cropConfig}
                 setCroppedFile={setCroppedFile}
                 setSelectedFile={setSelectedFile}
                 setShowModal={setShowModal}
-                setCropConfig = {setCropConfig}
+                setCropConfig={setCropConfig}
                 setBlobdata={setBlobdata}
               />
             </Modal.Body>

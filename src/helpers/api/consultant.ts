@@ -31,7 +31,7 @@ function updateConsultant(
     email: string;
     phone: string;
     file: File;
-    // alt_file: File;
+    second_file: File ,
     alternative_phone: string;
     gst: string;
     location: string;

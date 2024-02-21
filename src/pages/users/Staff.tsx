@@ -25,7 +25,6 @@ import {
   initialState,
   sizePerPageList,
 } from "./data";
-import { InitialValidationState } from "./ConsultantDetails/data";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createadminStaff,
@@ -35,7 +34,6 @@ import {
 } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
 import { resetPassword } from "../../redux/actions";
-import axios from "axios";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, initialLoading } = props;
@@ -550,7 +548,7 @@ const BasicInputElements = withSwal((props: any) => {
                   {isUpdate ? "Update" : "Submit"}
                 </Button>
 
-                <Button
+                {/* <Button
                   variant="success"
                   id="button-addon2"
                   className="waves-effect waves-light mt-1"
@@ -558,7 +556,7 @@ const BasicInputElements = withSwal((props: any) => {
                   onClick={() => setDemoData()}
                 >
                   Add test data
-                </Button>
+                </Button> */}
               </Modal.Footer>
 
               {/* )} */}
