@@ -4,7 +4,7 @@ import axios from "axios";
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
 // axios.defaults.baseURL = "https://crm.intersmarthosting.in/cred/api/v1/api";
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "https://crm.intersmarthosting.in/scholar_cred/api/v1/api";
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
 
 console.log("process.env.BASE_URL =======>", process.env.REACT_APP_BASE_URL);
 
