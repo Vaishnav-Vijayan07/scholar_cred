@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import Cropper from "react-easy-crop";
 
-const Img = 3 / 1;
+const Img = 5 / 1;
 const Alt = 1 / 1;
 
 

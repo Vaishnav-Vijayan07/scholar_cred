@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 
 // auth2
 const Login2 = React.lazy(() => import("../pages/auth2/Login2"));
+const StudentLogin = React.lazy(() => import("../pages/studentAuth/StudentLogin"));
 const Logout2 = React.lazy(() => import("../pages/auth2/Logout2"));
 const Register2 = React.lazy(() => import("../pages/auth2/Register2"));
 const Confirm2 = React.lazy(() => import("../pages/auth2/Confirm2"));
@@ -510,6 +511,12 @@ const otherPublicRoutes = [
     path: "/unauthorized",
     name: "forbidden",
     element: <ForbiddenPage />,
+    route: Route,
+  },
+  {
+    path: "/student/delete-data",
+    name: "forbidden",
+    element: <StudentLogin />,
     route: Route,
   },
 ];
