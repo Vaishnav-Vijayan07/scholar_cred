@@ -92,7 +92,6 @@ export const CustomCropper = ({
             .then((file) => {
                 if (file) {
                     const blobValue = file;
-                    console.log(blobValue);
 
                     if (flag) {
                         setBlobdata((prev: any) => ({ ...prev, img: file }));

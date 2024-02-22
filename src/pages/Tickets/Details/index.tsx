@@ -22,12 +22,12 @@ const Details = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const { state, initialLoading, comments, status } = useSelector(
+  const { state, initialLoading, comments, user } = useSelector(
     (state: RootState) => ({
       state: state.Tickets.Ticket,
+      user  : state.Auth.user,
       initialLoading: state.Tickets.initialLoading,
       comments: state.Tickets.TicketComments,
-      status: state.AdminTickets.adminTicketsStatus.data,
     })
   );
 
@@ -61,7 +61,7 @@ const Details = () => {
       <Row>
         <Col>
           <TicketDetails state={state || []} ticket_id={id} />
-          <Discussion comments={comments || []} ticket_id={id} />
+          <Discussion comments={comments || []} ticket_id={id || ""} user={user} />
         </Col>
       </Row>
     </>

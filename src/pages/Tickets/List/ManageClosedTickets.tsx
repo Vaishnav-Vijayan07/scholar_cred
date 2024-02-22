@@ -295,35 +295,6 @@ const ManageClosedTickets = ({ ticketDetails }: ManageTicketsProps) => {
       <TicketCounts countDetails={countDetails} />
       <Card>
         <Card.Body>
-          <div className="d-flex float-end">
-            <Dropdown className="btn-group" align="end">
-              <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
-                <i className="mdi mdi-filter-variant"></i>{" "}
-                {/* {truncateText(selectedStaff, 13)} */}
-                {options === "" ? "Filter by status" : options}
-              </Dropdown.Toggle>
-              <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                <Dropdown.Item
-                  key={"clear"}
-                  style={{ backgroundColor: "#fa9393" }}
-                  onClick={() => [handleClearFilter(), setOptions("")]}
-                >
-                  <i className="mdi mdi-close"></i> Clear Selection
-                </Dropdown.Item>
-                {status?.map((item: any) => (
-                  <Dropdown.Item
-                    key={item.id}
-                    onClick={() => [
-                      handleStatusChange(item.ticketstatus),
-                      setOptions(item.ticketstatus),
-                    ]}
-                  >
-                    {item.ticketstatus}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
           <h4 className="header-title mb-4">Manage Tickets</h4>
 
           <Table

@@ -377,6 +377,7 @@ const BasicInputElements = withSwal((props: any) => {
   //toggle modal
   const toggle = () => {
     setModal(!modal);
+    setCroppedFile({ croppedAltImage: "", croppedImage: "" });
   };
 
   const toggleImageModal = () => {
