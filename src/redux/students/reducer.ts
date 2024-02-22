@@ -1,11 +1,12 @@
 // apicore
-import { showSuccessAlert } from "../../constants/alerts";
+import { showSuccessAlert, showWarningAlert } from "../../constants/alerts";
 
 // constants
 import { StudentActionTypes } from "./constants";
 
 const INIT_STATE = {
   students: [],
+  deletedStudents: [],
   studentById: null,
   loading: false,
   initialLoading: false,
@@ -26,26 +27,30 @@ interface StudentData {
 
 interface studentActionType {
   type:
-    | StudentActionTypes.API_RESPONSE_SUCCESS
-    | StudentActionTypes.API_RESPONSE_ERROR
-    | StudentActionTypes.CREATE_STUDENT
-    | StudentActionTypes.EDIT_STUDENT
-    | StudentActionTypes.DELETE_STUDENT
-    | StudentActionTypes.GET_STUDENT
-    | StudentActionTypes.GET_STUDENT_BY_STAFF
-    | StudentActionTypes.GET_ASSIGNED_STUDENT
-    | StudentActionTypes.GET_STUDENT_BY_CREATED
-    | StudentActionTypes.GET_STUDENT_BY_ID
-    | StudentActionTypes.GET_STUDENT_BY_CONSULTANT;
+  | StudentActionTypes.API_RESPONSE_SUCCESS
+  | StudentActionTypes.API_RESPONSE_ERROR
+  | StudentActionTypes.CREATE_STUDENT
+  | StudentActionTypes.EDIT_STUDENT
+  | StudentActionTypes.DELETE_STUDENT
+  | StudentActionTypes.PERMANENT_DELETE_STUDENT
+  | StudentActionTypes.GET_STUDENT
+  | StudentActionTypes.GET_DELETED_STUDENT
+  | StudentActionTypes.GET_STUDENT_BY_STAFF
+  | StudentActionTypes.GET_ASSIGNED_STUDENT
+  | StudentActionTypes.GET_STUDENT_BY_CREATED
+  | StudentActionTypes.GET_STUDENT_BY_ID
+  | StudentActionTypes.GET_STUDENT_BY_CONSULTANT;
   payload: {
     actionType?: string;
     data?: StudentData | {};
+    message?: string,
     error?: string;
   };
 }
 
 interface State {
   student?: StudentData | [];
+  deletedStudent?: StudentData | [];
   studentById?: StudentData | {} | null;
   loading?: boolean;
   value?: boolean;
@@ -65,6 +70,15 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
         }
 
         case StudentActionTypes.EDIT_STUDENT: {
+          showSuccessAlert(action.payload.data);
+          return {
+            ...state,
+            loading: false,
+            error: null,
+          };
+        }
+
+        case StudentActionTypes.APPROVE_STUDENT: {
           showSuccessAlert(action.payload.data);
           return {
             ...state,
@@ -94,6 +108,14 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
             loading: false,
             initialLoading: false,
             students: action.payload.data,
+          };
+        }
+        case StudentActionTypes.GET_DELETED_STUDENT: {
+          return {
+            ...state,
+            loading: false,
+            initialLoading: false,
+            deletedStudents: action.payload.data,
           };
         }
         case StudentActionTypes.GET_ASSIGNED_STUDENT: {
@@ -129,6 +151,15 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
           };
         }
 
+        case StudentActionTypes.PERMANENT_DELETE_STUDENT: {
+          showSuccessAlert(action.payload.data);
+          return {
+            ...state,
+            loading: false,
+            error: null,
+          };
+        }
+
         default:
           return { ...state };
       }
@@ -151,6 +182,15 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
           };
         }
 
+        case StudentActionTypes.APPROVE_STUDENT: {
+          showWarningAlert(action.payload.error);
+          return {
+            ...state,
+            loading: false,
+            error: action.payload.error,
+          };
+        }
+
         case StudentActionTypes.GET_STUDENT: {
           return {
             ...state,
@@ -158,6 +198,16 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
             loading: false,
             initialLoading: false,
             students: [],
+          };
+        }
+        case StudentActionTypes.GET_DELETED_STUDENT: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            initialLoading: false,
+            students: [],
+            deletedStudents: [],
           };
         }
 
@@ -208,6 +258,16 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
           };
         }
 
+        case StudentActionTypes.PERMANENT_DELETE_STUDENT: {
+          showWarningAlert(action.payload.error)
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            initialLoading: false,
+          };
+        }
+
         default:
           return { ...state };
       }
@@ -219,6 +279,9 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
       return { ...state, loading: true };
 
     case StudentActionTypes.GET_STUDENT:
+      return { ...state, loading: true, initialLoading: true };
+
+    case StudentActionTypes.GET_DELETED_STUDENT:
       return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.GET_STUDENT_BY_STAFF:
@@ -237,6 +300,9 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
       return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.DELETE_STUDENT:
+      return { ...state, loading: true };
+
+    case StudentActionTypes.PERMANENT_DELETE_STUDENT:
       return { ...state, loading: true };
 
     default:

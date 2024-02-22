@@ -34,7 +34,7 @@ import {
   getCredAdminUsers,
 } from "../../redux/actions";
 import { RootState } from "../../redux/store";
-import ImageCrop from "./ImageCrop";
+import {CustomCropper} from "./CustomCropper";
 
 const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();
@@ -688,6 +688,8 @@ const BasicInputElements = withSwal((props: any) => {
                               src={croppedFile?.croppedImage}
                               className="mt-2"
                               alt="selected image"
+                              width={150}
+                              height={50}
                             />
                           )}
                         </Form.Group>
@@ -748,6 +750,8 @@ const BasicInputElements = withSwal((props: any) => {
                               src={croppedFile.croppedAltImage}
                               className="mt-2"
                               alt="selected image"
+                              width={50}
+                              height={50}
                             />
                           )}
                         </Form.Group>
@@ -781,7 +785,7 @@ const BasicInputElements = withSwal((props: any) => {
                       >
                         {isUpdate ? "Update" : "Submit"}
                       </Button>
-                      {/* <Button
+                      <Button
                         variant="success"
                         id="button-addon2"
                         className="waves-effect waves-light mt-1"
@@ -789,7 +793,7 @@ const BasicInputElements = withSwal((props: any) => {
                         disabled={loading}
                       >
                         Add test data
-                      </Button> */}
+                      </Button>
                     </div>
                     {/* )} */}
                   </Form>
@@ -802,18 +806,16 @@ const BasicInputElements = withSwal((props: any) => {
             show={showModal}
             onHide={toggleImageModal}
             dialogClassName=" modal-right"
-            // centered
+          // centered
           >
-            <Modal.Body style={{ height: "100%" }}>
-              <ImageCrop
-                file={images}
+            <Modal.Body>
+              <CustomCropper file={images}
                 cropConfig={cropConfig}
                 setCroppedFile={setCroppedFile}
                 setSelectedFile={setSelectedFile}
                 setShowModal={setShowModal}
                 setCropConfig={setCropConfig}
-                setBlobdata={setBlobdata}
-              />
+                setBlobdata={setBlobdata} />
             </Modal.Body>
           </Modal>
 

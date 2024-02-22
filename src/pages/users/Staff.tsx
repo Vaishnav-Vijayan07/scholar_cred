@@ -184,6 +184,8 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
+
+
   const columns = [
     {
       Header: "Sl No",
@@ -328,8 +330,7 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
 
-  console.log(selectedFile);
-  
+
 
   useEffect(() => {
     // Check for errors and clear the form
@@ -564,6 +565,8 @@ const BasicInputElements = withSwal((props: any) => {
               {/* )} */}
             </Form>
           </Modal>
+
+
 
           <Col className="p-0 form__card">
             <Card className="bg-white">
