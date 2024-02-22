@@ -76,7 +76,7 @@ const ForbiddenPage = () => {
           </div>
         </div>
         <div className="auth-fluid-right text-center">
-          <img src={Banner} alt="Logo" className="auth__banner" width={100} />
+          {/* <img src={Banner} alt="Logo" className="auth__banner" width={100} /> */}
         </div>
       </div>
     </React.Fragment>
