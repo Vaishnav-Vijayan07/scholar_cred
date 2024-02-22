@@ -3,17 +3,18 @@ import { StudentActionTypes } from "./constants";
 
 export interface StudentActionType {
   type:
-    | StudentActionTypes.API_RESPONSE_SUCCESS
-    | StudentActionTypes.API_RESPONSE_ERROR
-    | StudentActionTypes.DELETE_STUDENT
-    | StudentActionTypes.EDIT_STUDENT
-    | StudentActionTypes.CREATE_STUDENT
-    | StudentActionTypes.GET_STUDENT
-    | StudentActionTypes.GET_STUDENT_BY_STAFF
-    | StudentActionTypes.GET_STUDENT_BY_CREATED
-    | StudentActionTypes.GET_ASSIGNED_STUDENT
-    | StudentActionTypes.GET_STUDENT_BY_ID
-    | StudentActionTypes.GET_STUDENT_BY_CONSULTANT;
+  | StudentActionTypes.API_RESPONSE_SUCCESS
+  | StudentActionTypes.API_RESPONSE_ERROR
+  | StudentActionTypes.DELETE_STUDENT
+  | StudentActionTypes.EDIT_STUDENT
+  | StudentActionTypes.APPROVE_STUDENT
+  | StudentActionTypes.CREATE_STUDENT
+  | StudentActionTypes.GET_STUDENT
+  | StudentActionTypes.GET_STUDENT_BY_STAFF
+  | StudentActionTypes.GET_STUDENT_BY_CREATED
+  | StudentActionTypes.GET_ASSIGNED_STUDENT
+  | StudentActionTypes.GET_STUDENT_BY_ID
+  | StudentActionTypes.GET_STUDENT_BY_CONSULTANT;
   payload: {} | string;
 }
 interface StudentData {
@@ -96,15 +97,21 @@ export const editStudent = (
 
 //delete consultant
 
-export const deleteStudent = (student_id: string) => ({
+export const deleteStudent = (student_id: string,status?:any) => ({
   type: StudentActionTypes.DELETE_STUDENT,
+  payload: { student_id,status },
+});
+
+export const getStudent = (status?: any): StudentActionType => ({
+  type: StudentActionTypes.GET_STUDENT,
+  payload: { status },
+});
+
+export const approveStudent = (student_id:any): StudentActionType => ({
+  type: StudentActionTypes.APPROVE_STUDENT,
   payload: { student_id },
 });
 
-export const getStudent = (): StudentActionType => ({
-  type: StudentActionTypes.GET_STUDENT,
-  payload: {},
-});
 
 export const getStudentByStaff = (): StudentActionType => ({
   type: StudentActionTypes.GET_STUDENT_BY_STAFF,

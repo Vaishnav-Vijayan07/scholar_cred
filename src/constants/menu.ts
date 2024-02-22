@@ -110,6 +110,14 @@ const MENU_ITEMS: MenuItemTypes[] = [
     url: "/cred-admin/registered-students",
     roles: ["CRED_ADMIN"],
   },
+  {
+    key: "deleted-students",
+    label: "Deleted Students",
+    isTitle: false,
+    icon: "trash",
+    url: "/cred-admin/deleted-students",
+    roles: ["CRED_ADMIN"],
+  },
   // {
   //   key: "pending-students",
   //   label: "Students (Pending)",

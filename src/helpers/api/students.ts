@@ -58,6 +58,11 @@ function getStudent() {
   return api.get(`${baseUrl}`, {});
 }
 
+function getDeletedStudent() {
+  const baseUrl = "/get_deleted_students/";
+  return api.get(`${baseUrl}`, {});
+}
+
 function getStudentByStaff() {
   const baseUrl = "/get_students_by_staff/";
   return api.get(`${baseUrl}`, {});
@@ -75,6 +80,18 @@ function getAssignedStudents() {
 
 function deleteStudent(id: string) {
   const baseUrl = "/delete_student";
+  return api.delete(`${baseUrl}?id=${id}`);
+}
+
+function approveStudentApi(id: string) {
+  const baseUrl = "/enable_student";
+  return api.delete(`${baseUrl}?id=${id}`);
+}
+
+function deleteStudentPermanent(id: string) {
+  console.log(id);
+  
+  const baseUrl = "/remove_student";
   return api.delete(`${baseUrl}?id=${id}`);
 }
 
@@ -99,4 +116,7 @@ export {
   createStudentByCredStaff,
   getAssignedStudents,
   getStudentByConsultant,
+  getDeletedStudent,
+  approveStudentApi,
+  deleteStudentPermanent
 };

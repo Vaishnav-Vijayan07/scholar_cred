@@ -8674,11 +8674,6 @@ react-i18next@^11.11.1:
     "@babel/runtime" "^7.14.5"
     html-parse-stringify "^3.0.1"
 
-react-image-crop@^11.0.5:
-  version "11.0.5"
-  resolved "https://registry.npmjs.org/react-image-crop/-/react-image-crop-11.0.5.tgz"
-  integrity sha512-A/Y/kspOzki1zDL/bSgwWIY1X3CQ9F1QwpdnncWLBVAktnKfAZDIQnWmjXzuzEjZHDMsBlArytIcPBVi6DNklg==
-
 react-image-lightbox@^5.1.4:
   version "5.1.4"
   resolved "https://registry.npmjs.org/react-image-lightbox/-/react-image-lightbox-5.1.4.tgz"

@@ -53,6 +53,7 @@ const StudentAdminView = React.lazy(() => import("../pages/student/AdminStudentL
 const StudentAdminViewIntake = React.lazy(() => import("../pages/student/AdminStudentList/StudentAdminViewPending"));
 const DirectStudents = React.lazy(() => import("../pages/student/AdminStudentList/DirectStudents"));
 const RegisteredStudents = React.lazy(() => import("../pages/student/AdminStudentList/RegisteredStudents"));
+const DeletedStudents = React.lazy(() => import("../pages/student/AdminStudentList/DeletedStudents"));
 
 
 const StudentDetails = React.lazy(
@@ -264,6 +265,14 @@ const userRoutes = {
       name: "Students",
       element: (
         <PrivateRoute roles={["CRED_ADMIN"]} component={DirectStudents} />
+      ),
+      route: PrivateRoute,
+    },
+    {
+      path: "/cred-admin/deleted-students",
+      name: "Students",
+      element: (
+        <PrivateRoute roles={["CRED_ADMIN"]} component={DeletedStudents} />
       ),
       route: PrivateRoute,
     },

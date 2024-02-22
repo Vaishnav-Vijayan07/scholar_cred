@@ -15,7 +15,7 @@ import { StudentDataTypes, StudentInitialState, StudentValidationState, initialS
 import { useDispatch, useSelector } from "react-redux";
 import { getAdminStaff } from "../../../redux/adminStaffs/actions";
 import { RootState } from "../../../redux/store";
-import { createStudent, deleteStudent, editStudent, getStudent } from "../../../redux/actions";
+import { approveStudent, createStudent, deleteStudent, editStudent, getStudent } from "../../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -29,15 +29,13 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, credStaffData, initialLoading, sourceData } = props;
-  console.log("user-->", user);
-  
+  const { swal, loading, state, error, user, credStaffData, initialLoading, sourceData, path } = props;
+
   const dispatch = useDispatch();
 
   //Table data
   const [filteredItems, setFilteredItems] = useState(state);
 
-  console.log("filteredItems====>", filteredItems);
 
   const [isUpdate, setIsUpdate] = useState(false);
   const [passwordResetLoading, setPasswordResetLoading] = useState(false);
@@ -190,7 +188,7 @@ const BasicInputElements = withSwal((props: any) => {
     axios
       .post(`reset_student_password`, { email: email })
       .then((res: any) => {
-        console.log("res===>", res);
+
         showSuccessAlert("Password reset successfull");
         setPasswordResetLoading(false);
       })
@@ -223,6 +221,26 @@ const BasicInputElements = withSwal((props: any) => {
       </>
     );
   };
+
+  const handleApprove = (item: any) => {
+    dispatch(approveStudent(item.student_id))
+  }
+
+  const handlePermanent = (id: any) => {
+    Swal.fire({
+      title: "Are you sure!",
+      text: "You want to permanenetly delete this student?",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#55d94e",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteStudent(id, 1))
+      }
+    });
+  }
 
   const handleAssign = (student_id: number, staff_id: number) => {
     Swal.fire({
@@ -363,17 +381,48 @@ const BasicInputElements = withSwal((props: any) => {
           </div>
           {/* Edit Icon */}
           <FeatherIcons
-            icon="edit"
+            icon={path === '/cred-admin/deleted-students' ? "check-circle" : "edit"}
             size="15"
-            className="cursor-pointer text-secondary"
+            style={{cursor:"pointer"}}
+            className="text-success"
             onClick={() => {
-              handleUpdate(row.original);
-              toggleResponsiveModal();
+              if (path === '/cred-admin/deleted-students') {
+                handleApprove(row.original);
+              } else {
+                handleUpdate(row.original);
+                toggleResponsiveModal();
+              }
             }}
           />
 
           {/* Delete Icon */}
-          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.student_id)} />
+
+          {
+            path !== '/cred-admin/deleted-students' && (
+              <FeatherIcons
+                icon="trash-2"
+                size="15"
+                className="cursor-pointer text-secondary"
+                onClick={() =>
+                  handleDelete(row.original.student_id)
+                }
+              />
+
+            )
+          }
+          {/* <FeatherIcons
+            icon="trash-2"
+            size="15"
+            className="cursor-pointer text-secondary"
+            onClick={() => {
+              if (path === '/cred-admin/deleted-students') {
+                handlePermanent(row.original.student_id);
+              } else {
+                handleDelete(row.original.student_id);
+              }
+            }}
+          /> */}
+
         </div>
       ),
     },
@@ -509,7 +558,6 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleAssignUserBulk = (student_ids: Array<number>, assignedTo: number) => {
-    console.log("assignedTo", assignedTo, "student_ids", student_ids);
 
     axios
       .post("assign_staff_bulk", {
@@ -517,7 +565,6 @@ const BasicInputElements = withSwal((props: any) => {
         assignedTo,
       })
       .then((res) => {
-        console.log("res==>", res.data);
         showSuccessAlert(res.data.message);
         dispatch(getStudent());
       })
@@ -525,12 +572,10 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleFilter = (staff_id: any) => {
-    console.log("assignment_id====>", staff_id);
 
     // Filter the initial list based on the provided category
     const filteredList = state?.filter((item: any) => item.staff_id === staff_id);
 
-    console.log("filteredList===>", filteredList);
 
     // Update the state with the filtered list
     setFilteredItems(filteredList);
@@ -683,46 +728,51 @@ const BasicInputElements = withSwal((props: any) => {
           <Card className="bg-white">
             <Card.Body>
               <>
-                <div className="d-flex float-end gap-2">
-                  <Dropdown className="btn-group" align="end">
-                    <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
-                      <i className="mdi mdi-filter-variant"></i> {truncateText(selectedStaff, 13)}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                      <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
-                        <i className="mdi mdi-close"></i> Clear Selection
-                      </Dropdown.Item>
-                      {credStaffData?.map((item: any) => (
-                        <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
-                          {item.label}
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>
+                {
+                  path !== '/cred-admin/deleted-students' && (
 
-                  {user.role == 1 && (
-                    <Dropdown className="btn-group" align="end">
-                      <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
-                        <i className="mdi mdi-account-plus"></i> Assign Staff
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                        {credStaffData?.map((item: any) => (
-                          <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
-                            {item.label}
+                    <div className="d-flex float-end gap-2">
+                      <Dropdown className="btn-group" align="end">
+                        <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
+                          <i className="mdi mdi-filter-variant"></i> {truncateText(selectedStaff, 13)}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                          <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
+                            <i className="mdi mdi-close"></i> Clear Selection
                           </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )}
+                          {credStaffData?.map((item: any) => (
+                            <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
+                              {item.label}
+                            </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
 
-                  <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
-                    <i className="mdi mdi-upload"></i> Bulk Upload
-                  </Button>
+                      {user.role == 1 && (
+                        <Dropdown className="btn-group" align="end">
+                          <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
+                            <i className="mdi mdi-account-plus"></i> Assign Staff
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                            {credStaffData?.map((item: any) => (
+                              <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
+                                {item.label}
+                              </Dropdown.Item>
+                            ))}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      )}
 
-                  <Button className="btn-sm btn-success waves-effect waves-light " onClick={toggleResponsiveModal}>
-                    <i className="mdi mdi-plus-circle"></i> Add Student
-                  </Button>
-                </div>
+                      <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
+                        <i className="mdi mdi-upload"></i> Bulk Upload
+                      </Button>
+
+                      <Button className="btn-sm btn-success waves-effect waves-light " onClick={toggleResponsiveModal}>
+                        <i className="mdi mdi-plus-circle"></i> Add Student
+                      </Button>
+                    </div>
+                  )
+                }
                 <Table
                   columns={columns}
                   data={filteredItems}
