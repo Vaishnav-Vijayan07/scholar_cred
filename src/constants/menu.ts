@@ -4,6 +4,7 @@ export interface MenuItemTypes {
   isTitle?: boolean;
   icon?: string;
   roles?: string[];
+  sub?: string;
   url?: string;
   badge?: {
     variant: string;
@@ -58,7 +59,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
 
   {
     key: "student_management",
-    label: "Student Management",
+    label: "Students",
     isTitle: true,
     roles: [
       "CRED_ADMIN",
@@ -71,7 +72,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
 
   {
     key: "intake_students",
-    label: "Students Intake",
+    label: "Under loan processing",
     isTitle: false,
     icon: "users",
     url: "/users/intake-students",
@@ -87,7 +88,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
   },
   {
     key: "students-pending",
-    label: "Students (Pending)",
+    label: "Pending initiation",
     isTitle: false,
     icon: "users",
     url: "/users/students",
@@ -100,7 +101,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "users",
     url: "/cred-admin/direct-students",
-    roles: ["CRED_ADMIN"],
+    roles: ["CRED_ADMIN","CRED_STAFF"],
   },
   {
     key: "registered-students",
@@ -108,7 +109,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "smartphone",
     url: "/cred-admin/registered-students",
-    roles: ["CRED_ADMIN"],
+    roles: ["CRED_ADMIN","CRED_STAFF"],
   },
   {
     key: "deleted-students",

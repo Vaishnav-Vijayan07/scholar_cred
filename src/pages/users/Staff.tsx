@@ -536,7 +536,7 @@ const BasicInputElements = withSwal((props: any) => {
                     }
                   }}
                 >
-                  {!isUpdate ? "close" : "Cancel"}
+                  {!isUpdate ? "Close" : "Cancel"}
                 </Button>
 
                 <Button

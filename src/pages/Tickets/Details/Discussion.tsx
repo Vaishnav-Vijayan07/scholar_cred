@@ -6,7 +6,38 @@ import { useDispatch } from "react-redux";
 import { updateTicketComments } from "../../../redux/tickets/actions";
 import Avatar from "./Avatar";
 
-const Discussion = ({ comments, ticket_id }: any) => {
+type Comment = {
+  id: number;
+  comment: string;
+  tickets_id: number;
+  created_at: string;
+  updated_at: string;
+  user_id: number;
+  author: string;
+  author_avatar: string | null;
+}
+
+type User = {
+  user_id: number;
+  username: string;
+  password: string;
+  email: string;
+  full_name: string;
+  role: string;
+  role_name: string;
+  consultant_id: string | null;
+  image_url: string | null;
+  Avatar: string;
+  token: string;
+}
+
+type Props = {
+  comments: Comment[];
+  ticket_id: string;
+  user: User;
+}
+
+const Discussion = ({ comments, ticket_id, user }: Props) => {
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
 
@@ -20,17 +51,24 @@ const Discussion = ({ comments, ticket_id }: any) => {
       <Card>
         <Card.Body>
           <h4 className="mb-4 mt-0 font-16">Discussion ({comments?.length})</h4>
-
           <div className="clerfix"></div>
 
           {comments.map((item: any) => (
             <div className="d-flex gap-3" key={item.id}>
               <div>
-                <Avatar name={item.author} />
+                {
+                  item.author_avatar ?
+                    <Avatar name={item.author} image={item.author_avatar} />
+                    :
+                    <Avatar name={item.author} image={null}
+
+                    />
+                }
+
               </div>
               <div className="w-100">
                 <h5 className="mt-0 mb-1">
-                  {item.author}{" "}
+                  {item.user_id === user.user_id ? "You" : item.author}{" "}
                   <small className="text-muted float-end">
                     {calculateTimeAgo(item.created_at)}
                   </small>

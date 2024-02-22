@@ -156,13 +156,13 @@ const userRoutes = {
     {
       path: "/cred-admin/registered-students",
       name: "Students",
-      element: <PrivateRoute roles={["CRED_ADMIN"]} component={RegisteredStudents} />,
+      element: <PrivateRoute roles={["CRED_ADMIN","CRED_STAFF"]} component={RegisteredStudents} />,
       route: PrivateRoute,
     },
     {
       path: "/cred-admin/direct-students",
       name: "Students",
-      element: <PrivateRoute roles={["CRED_ADMIN"]} component={DirectStudents} />,
+      element: <PrivateRoute roles={["CRED_ADMIN","CRED_STAFF"]} component={DirectStudents} />,
       route: PrivateRoute,
     },
     {
