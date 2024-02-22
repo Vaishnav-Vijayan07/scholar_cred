@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": "build",
+    "site":"scholar-cred-staging",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -14,4 +15,3 @@
     ]
   }
 }
-

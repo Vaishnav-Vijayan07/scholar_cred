@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
@@ -8,12 +8,15 @@ import { BasicPortlet } from "./Portlet";
 
 import ChartStatistics from "./ChartStatistics";
 
-const UsersChart = () => {
+const UsersChart = ({ studentSummary }: any) => {
+  console.log("studentSummary", studentSummary && studentSummary[0]?.total_student);
+  const [chartKey, setChartKey] = useState<number>(0);
+
   const options: ApexOptions = {
     chart: {
       type: "pie",
     },
-    colors: ["#00acc1", "#4b88e4", "#e3eaef", "#fd7e14"],
+    colors: ["#00acc1", "#4b88e4"],
     legend: {
       show: false,
     },
@@ -38,26 +41,27 @@ const UsersChart = () => {
         show: false,
       },
     },
-    labels: ["Initiated", "Pending", "Pending", "Pending"],
+    labels: ["Last week", "Last month"],
   };
 
-  const series = [20, 40, 30, 10];
+  const series = [(studentSummary && parseInt(studentSummary[0]?.last_week_student)) || 0, (studentSummary && parseInt(studentSummary[0]?.last_month_student)) || 0];
 
+  console.log("series:=>", series);
   return (
     <>
       <BasicPortlet cardTitle="Total Users" titleClass="header-title">
         <div className="text-center">
-          <Chart options={options} series={series} height={270} type="pie" className="apex-charts mt-0" />
+          <Chart key={chartKey} options={options} series={series ? series : []} height={270} type="pie" className="apex-charts mt-0" />
 
           <Row className="row mt-3">
             <Col className="col-4">
-              <ChartStatistics title="Target" icon="fe-arrow-down" stats="18k" variant="danger" />
+              <ChartStatistics title="Total Students" icon="fe-arrow-up" stats={(studentSummary && studentSummary[0]?.total_student) || 0} variant="success" />
             </Col>
             <Col className="col-4">
-              <ChartStatistics title="Last week" icon="fe-arrow-up" stats="3.25k" variant="success" />
+              <ChartStatistics title="Last week" icon="fe-arrow-up" stats={(studentSummary && studentSummary[0]?.last_week_student) || 0} variant="success" />
             </Col>
             <Col className="col-4">
-              <ChartStatistics title="Last Month" icon="fe-arrow-up" stats="28k" variant="success" />
+              <ChartStatistics title="Last Month" icon="fe-arrow-up" stats={(studentSummary && studentSummary[0]?.last_month_student) || 0} variant="success" />
             </Col>
           </Row>
         </div>

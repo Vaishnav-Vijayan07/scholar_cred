@@ -137,7 +137,7 @@ const Dashboard4 = () => {
           <Statuses dashboardData={dashboardData?.statusWithCount} />
           <Row>
             <Col md={5} xl={4}>
-              <UsersChart />
+              <UsersChart studentSummary={dashboardData?.studentSummary} />
             </Col>
             <Col lg={7} xl={8}>
               <SalesAnalyticsChart summary={dashboardData?.summary} />
