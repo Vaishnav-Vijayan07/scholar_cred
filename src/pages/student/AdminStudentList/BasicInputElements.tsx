@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Row, Col, Card, Form, Button, Modal, Alert, Dropdown, Spinner, Badge } from "react-bootstrap";
 import Table from "../../../components/Table";
@@ -8,20 +8,14 @@ import FeatherIcons from "feather-icons-react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import FileUploader from "../../../components/FileUploader";
-
-// components
-import PageTitle from "../../../components/PageTitle";
 import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../../users/data";
-import { useDispatch, useSelector } from "react-redux";
-import { getAdminStaff } from "../../../redux/adminStaffs/actions";
-import { RootState } from "../../../redux/store";
+import { useDispatch } from "react-redux";
 import { approveStudent, createStudent, deleteStudent, editStudent, getStudent } from "../../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { truncateText } from "../../../constants/functons";
-import classNames from "classnames";
 
 interface FileType extends File {
   preview?: string;
@@ -35,7 +29,6 @@ const BasicInputElements = withSwal((props: any) => {
 
   //Table data
   const [filteredItems, setFilteredItems] = useState(state);
-
 
   const [isUpdate, setIsUpdate] = useState(false);
   const [passwordResetLoading, setPasswordResetLoading] = useState(false);
@@ -188,7 +181,6 @@ const BasicInputElements = withSwal((props: any) => {
     axios
       .post(`reset_student_password`, { email: email })
       .then((res: any) => {
-
         showSuccessAlert("Password reset successfull");
         setPasswordResetLoading(false);
       })
@@ -223,8 +215,8 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleApprove = (item: any) => {
-    dispatch(approveStudent(item.student_id))
-  }
+    dispatch(approveStudent(item.student_id));
+  };
 
   const handlePermanent = (id: any) => {
     Swal.fire({
@@ -237,10 +229,10 @@ const BasicInputElements = withSwal((props: any) => {
       confirmButtonText: "Yes, delete!",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteStudent(id, 1))
+        dispatch(deleteStudent(id, 1));
       }
     });
-  }
+  };
 
   const handleAssign = (student_id: number, staff_id: number) => {
     Swal.fire({
@@ -381,12 +373,12 @@ const BasicInputElements = withSwal((props: any) => {
           </div>
           {/* Edit Icon */}
           <FeatherIcons
-            icon={path === '/cred-admin/deleted-students' ? "check-circle" : "edit"}
+            icon={path === "/cred-admin/deleted-students" ? "check-circle" : "edit"}
             size="15"
-            style={{cursor:"pointer"}}
+            style={{ cursor: "pointer" }}
             className="text-success"
             onClick={() => {
-              if (path === '/cred-admin/deleted-students') {
+              if (path === "/cred-admin/deleted-students") {
                 handleApprove(row.original);
               } else {
                 handleUpdate(row.original);
@@ -397,19 +389,9 @@ const BasicInputElements = withSwal((props: any) => {
 
           {/* Delete Icon */}
 
-          {
-            path !== '/cred-admin/deleted-students' && (
-              <FeatherIcons
-                icon="trash-2"
-                size="15"
-                className="cursor-pointer text-secondary"
-                onClick={() =>
-                  handleDelete(row.original.student_id)
-                }
-              />
-
-            )
-          }
+          {path !== "/cred-admin/deleted-students" && (
+            <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.student_id)} />
+          )}
           {/* <FeatherIcons
             icon="trash-2"
             size="15"
@@ -422,7 +404,6 @@ const BasicInputElements = withSwal((props: any) => {
               }
             }}
           /> */}
-
         </div>
       ),
     },
@@ -453,19 +434,6 @@ const BasicInputElements = withSwal((props: any) => {
     if (isUpdate) {
       handleCancelUpdate();
     }
-  };
-
-  const setDemoData = () => {
-    setFormData((prev) => ({
-      ...prev,
-      first_name: "John",
-      last_name: "Doe",
-      email: "john.doe@example.com",
-      phone: "9876545678",
-      date_of_birth: "2023-12-05",
-      country_of_origin: "India",
-      application_status: "Pending",
-    }));
   };
 
   useEffect(() => {
@@ -558,7 +526,6 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleAssignUserBulk = (student_ids: Array<number>, assignedTo: number) => {
-
     axios
       .post("assign_staff_bulk", {
         student_ids,
@@ -572,10 +539,8 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleFilter = (staff_id: any) => {
-
     // Filter the initial list based on the provided category
     const filteredList = state?.filter((item: any) => item.staff_id === staff_id);
-
 
     // Update the state with the filtered list
     setFilteredItems(filteredList);
@@ -676,33 +641,28 @@ const BasicInputElements = withSwal((props: any) => {
             </Modal.Body>
 
             <Modal.Footer>
+              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
+                {isUpdate ? "Update" : "Submit"}
+              </Button>
+
               <Button
                 variant="danger"
                 id="button-addon2"
                 disabled={loading}
-                className="mt-1 waves-effect waves-light me-2"
+                className="mt-1 waves-effect waves-light"
                 onClick={() => {
                   if (isUpdate) {
                     handleCancelUpdate();
                     toggleResponsiveModal();
                   } else {
                     toggleResponsiveModal();
+                    handleCancelUpdate();
                   }
                 }}
               >
                 {!isUpdate ? "Close" : "Cancel"}
               </Button>
-
-              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
-                {isUpdate ? "Update" : "Submit"}
-              </Button>
-
-              {/* <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
-                Add test data
-              </Button> */}
             </Modal.Footer>
-
-            {/* )} */}
           </Form>
         </Modal>
 
@@ -728,51 +688,48 @@ const BasicInputElements = withSwal((props: any) => {
           <Card className="bg-white">
             <Card.Body>
               <>
-                {
-                  path !== '/cred-admin/deleted-students' && (
+                {path !== "/cred-admin/deleted-students" && (
+                  <div className="d-flex float-end gap-2">
+                    <Dropdown className="btn-group" align="end">
+                      <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
+                        <i className="mdi mdi-filter-variant"></i> {truncateText(selectedStaff, 13)}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                        <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
+                          <i className="mdi mdi-close"></i> Clear Selection
+                        </Dropdown.Item>
+                        {credStaffData?.map((item: any) => (
+                          <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
+                            {item.label}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
 
-                    <div className="d-flex float-end gap-2">
+                    {user.role == 1 && (
                       <Dropdown className="btn-group" align="end">
-                        <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
-                          <i className="mdi mdi-filter-variant"></i> {truncateText(selectedStaff, 13)}
+                        <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
+                          <i className="mdi mdi-account-plus"></i> Assign Staff
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                          <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
-                            <i className="mdi mdi-close"></i> Clear Selection
-                          </Dropdown.Item>
                           {credStaffData?.map((item: any) => (
-                            <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
+                            <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
                               {item.label}
                             </Dropdown.Item>
                           ))}
                         </Dropdown.Menu>
                       </Dropdown>
+                    )}
 
-                      {user.role == 1 && (
-                        <Dropdown className="btn-group" align="end">
-                          <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
-                            <i className="mdi mdi-account-plus"></i> Assign Staff
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                            {credStaffData?.map((item: any) => (
-                              <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
-                                {item.label}
-                              </Dropdown.Item>
-                            ))}
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      )}
+                    <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
+                      <i className="mdi mdi-upload"></i> Bulk Upload
+                    </Button>
 
-                      <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
-                        <i className="mdi mdi-upload"></i> Bulk Upload
-                      </Button>
-
-                      <Button className="btn-sm btn-success waves-effect waves-light " onClick={toggleResponsiveModal}>
-                        <i className="mdi mdi-plus-circle"></i> Add Student
-                      </Button>
-                    </div>
-                  )
-                }
+                    <Button className="btn-sm btn-success waves-effect waves-light " onClick={toggleResponsiveModal}>
+                      <i className="mdi mdi-plus-circle"></i> Add Student
+                    </Button>
+                  </div>
+                )}
                 <Table
                   columns={columns}
                   data={filteredItems}

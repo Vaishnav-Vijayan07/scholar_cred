@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 import MessageList from "../../../components/MessageList";
 import MessageItem from "../../../components/MessageItem";
 
-import profileImg from "../../../assets/images/users/user-2.jpg";
+// import profileImg from "../../../assets/images/users/user-2.jpg";
+import profileImg from "../../../assets/images/avatar-logo.png";
 import avatar1 from "../../../assets/images/users/user-3.jpg";
 import avatar2 from "../../../assets/images/users/user-4.jpg";
 import avatar3 from "../../../assets/images/users/user-5.jpg";

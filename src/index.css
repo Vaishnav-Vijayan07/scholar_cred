@@ -79,3 +79,9 @@
 .noBorderTable th, .noBorderTable td {
   border: none;
 }
+
+.modal-right {
+  height: max-content;
+  min-height: 100%;
+  top: 0;
+}
