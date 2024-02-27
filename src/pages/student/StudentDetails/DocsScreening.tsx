@@ -34,7 +34,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
   const [formData, setFormData] = useState<Array<{ titile: Section; rows: FormField[] }>>([]);
   const [ImageUrls, setImageUrls] = useState<any>({});
 
-  console.log("ImageUrls", ImageUrls);
+  // console.log("ImageUrls", ImageUrls);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -109,7 +109,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
           const response = await axios.get(`getUnSecuredDocumentsDataById/93`);
 
           const apiResponse = await response.data.data.sections;
-          console.log("apiResponse: ", apiResponse);
+          // console.log("apiResponse: ", apiResponse);
 
           setFormData(apiResponse);
 

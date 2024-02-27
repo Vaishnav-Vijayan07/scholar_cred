@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
+import { Badge, Dropdown } from "react-bootstrap";
 import SimpleBar from "simplebar-react";
 import classNames from "classnames";
 import FeatherIcons from "feather-icons-react";
@@ -9,6 +9,8 @@ import FeatherIcons from "feather-icons-react";
 import { NotificationItem } from "../layouts/Topbar";
 import Avatar from "../pages/Tickets/Details/Avatar";
 import { calculateTimeAgo } from "../constants/functons";
+import { readStatusNotification } from "../redux/notifications/actions";
+import { useDispatch } from "react-redux";
 
 // notifiaction continer styles
 const notificationContainerStyle = {
@@ -26,6 +28,7 @@ interface Notification {
   created_at: any;
   read_status: boolean;
   user_id: number;
+  action_type: string | null;
 }
 
 interface NotificationsResponse {
@@ -38,6 +41,8 @@ interface NotificationContainerStyle {
 }
 
 const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
+  const dispatch = useDispatch();
+
   console.log(notifications);
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -60,6 +65,10 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
     notifications.splice(index, 1);
   };
 
+  const handleRead = (id: string | number) => {
+    dispatch(readStatusNotification(id));
+  };
+
   return (
     <Dropdown show={dropdownOpen} onToggle={toggleDropdown}>
       <Dropdown.Toggle
@@ -74,7 +83,7 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
       >
         <i className="fe-bell noti-icon font-22"></i>
         <span className="badge bg-danger rounded-circle noti-icon-badge">
-          {notifications?.length}
+          {notifications.filter((item) => item.read_status !== true)?.length}
         </span>
       </Dropdown.Toggle>
       <Dropdown.Menu className="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
@@ -82,7 +91,9 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
           <div className="p-2 border-top-0 border-start-0 border-end-0 border-dashed border">
             <div className="row align-items-center">
               <div className="col">
-                <h6 className="m-0 font-16 fw-semibold">Notification</h6>
+                <h6 className="m-0 font-16 fw-semibold">
+                  {notifications.length <= 0 ? "No notification" : "Notification"}
+                </h6>
               </div>
               <div className="col-auto"></div>
             </div>
@@ -90,41 +101,53 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
           <SimpleBar className="px-1" style={notificationContentStyle}>
             {(notifications || []).map((item, i) => {
               return (
-                <div
-                  className="dropdown-item p-0 notify-item card unread-noti shadow-none mb-1"
-                  key={i + "-noti"}
+                <Link
+                  onClick={
+                    item.read_status
+                      ? undefined
+                      : ((() => handleRead(item.notification_id)) as any)
+                  }
+                  to={item.action_type ? item.action_type : ""}
                 >
-                  <div className="card-body">
-                    {/* <span
+                  <div
+                    className="dropdown-item p-0 notify-item card unread-noti shadow-none mb-1 "
+                    key={i + "-noti"}
+                  >
+                    <div className="card-body">
+                      {/* <span
                       className="float-end noti-close-btn text-muted"
                       onClick={() => handleClearNotification(i)}
                     >
                       <i className="mdi mdi-close"></i>
                     </span> */}
-                    <div className="d-flex align-items-center">
-                      <div className="flex-shrink-0">
-                        <div className="notify-icon">
-                          <Avatar name={""} />
+                      <div className="d-flex align-items-center">
+                        <div className="flex-shrink-0">
+                          <div className="notify-icon">
+                            <Avatar name={""} />
+                          </div>
+                        </div>
+                        <div className="flex-grow-1 text-truncate ms-2">
+                          <h5 className="noti-item-title fw-semibold font-14">
+                            {item.message}
+                          </h5>
+                          <div className="d-flex justify-content-between">
+                            <small className="noti-item-subtitle text-muted">
+                              {calculateTimeAgo(item.created_at)}
+                            </small>
+                            <small className="noti-item-subtitle">
+                              <Badge
+                                bg={item.read_status ? "success" : "danger"}
+                                as={"span"}
+                              >
+                                {item.read_status ? "read" : "new"}
+                              </Badge>
+                            </small>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex-grow-1 text-truncate ms-2">
-                        <h5 className="noti-item-title fw-semibold font-14">
-                          {item.message}
-                        </h5>
-                        <small className="noti-item-subtitle text-muted">
-                          {calculateTimeAgo(item.created_at)}
-                        </small>
-                      </div>
-                      <small className="noti-item-subtitle text-muted">
-                        <FeatherIcons
-                          icon="check-circle"
-                          size="15"
-                          className="cursor-pointer text-secondary"
-                        />
-                      </small>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </SimpleBar>

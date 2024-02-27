@@ -4,7 +4,8 @@ export interface NotificationsActionType {
   type:
     | NotificationsActionTypes.API_RESPONSE_SUCCESS
     | NotificationsActionTypes.API_RESPONSE_ERROR
-    | NotificationsActionTypes.GET_NOTIFICATIONS;
+    | NotificationsActionTypes.GET_NOTIFICATIONS
+    | NotificationsActionTypes.STATUS_NOTIFICATIONS;
   payload: {} | string;
 }
 
@@ -27,4 +28,11 @@ export const notificationsApiResponseError = (
 export const getNotifications = (): NotificationsActionType => ({
   type: NotificationsActionTypes.GET_NOTIFICATIONS,
   payload: {},
+});
+
+export const readStatusNotification = (
+  notification_id: string | number
+): NotificationsActionType => ({
+  type: NotificationsActionTypes.STATUS_NOTIFICATIONS,
+  payload: { notification_id },
 });

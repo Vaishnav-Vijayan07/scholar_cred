@@ -1,7 +1,18 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert, Dropdown, Spinner, Badge } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Modal,
+  Alert,
+  Dropdown,
+  Spinner,
+  Badge,
+} from "react-bootstrap";
 import Table from "../../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -11,11 +22,23 @@ import FileUploader from "../../../components/FileUploader";
 
 // components
 import PageTitle from "../../../components/PageTitle";
-import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../../users/data";
+import {
+  StudentDataTypes,
+  StudentInitialState,
+  StudentValidationState,
+  initialState,
+  sizePerPageList,
+} from "../../users/data";
 import { useDispatch, useSelector } from "react-redux";
 import { getAdminStaff } from "../../../redux/adminStaffs/actions";
 import { RootState } from "../../../redux/store";
-import { approveStudent, createStudent, deleteStudent, editStudent, getStudent } from "../../../redux/actions";
+import {
+  approveStudent,
+  createStudent,
+  deleteStudent,
+  editStudent,
+  getStudent,
+} from "../../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -29,26 +52,38 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, credStaffData, initialLoading, sourceData, path } = props;
+  const {
+    swal,
+    loading,
+    state,
+    error,
+    user,
+    credStaffData,
+    initialLoading,
+    sourceData,
+    path,
+  } = props;
 
   const dispatch = useDispatch();
 
   //Table data
   const [filteredItems, setFilteredItems] = useState(state);
 
-
   const [isUpdate, setIsUpdate] = useState(false);
   const [passwordResetLoading, setPasswordResetLoading] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState("Choose Staff");
   //Input data
-  const [formData, setFormData] = useState<StudentDataTypes>(StudentInitialState);
+  const [formData, setFormData] =
+    useState<StudentDataTypes>(StudentInitialState);
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   const [uploadModal, setUploadModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<FileType[]>([]);
   //validation errors
-  const [validationErrors, setValidationErrors] = useState(StudentValidationState);
+  const [validationErrors, setValidationErrors] = useState(
+    StudentValidationState
+  );
 
   //selected table values
   const [selectedValues, setSelectedValues] = useState([]);
@@ -56,7 +91,10 @@ const BasicInputElements = withSwal((props: any) => {
   const validationSchema = yup.object().shape({
     first_name: yup.string().required("First name is required"),
     last_name: yup.string().required("Last name is required"),
-    email: yup.string().required("Email is required").email("Invalid email format"),
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Invalid email format"),
     phone: yup
       .string()
       .required("Phone number is required")
@@ -188,7 +226,6 @@ const BasicInputElements = withSwal((props: any) => {
     axios
       .post(`reset_student_password`, { email: email })
       .then((res: any) => {
-
         showSuccessAlert("Password reset successfull");
         setPasswordResetLoading(false);
       })
@@ -207,12 +244,23 @@ const BasicInputElements = withSwal((props: any) => {
     return (
       <>
         <Dropdown className="btn-group" align="end">
-          <Dropdown.Toggle variant="light" className="table-action-btn btn-sm" disabled={!row.original.status}>
-            {row.original.assigned_cred_staff ? row.original.assigned_cred_staff : "Assign"}
+          <Dropdown.Toggle
+            variant="light"
+            className="table-action-btn btn-sm"
+            disabled={!row.original.status}
+          >
+            {row.original.assigned_cred_staff
+              ? row.original.assigned_cred_staff
+              : "Assign"}
           </Dropdown.Toggle>
           <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
             {credStaffData?.map((item: any) => (
-              <Dropdown.Item key={item.value} onClick={() => handleAssign(row.original.student_id, item.value)}>
+              <Dropdown.Item
+                key={item.value}
+                onClick={() =>
+                  handleAssign(row.original.student_id, item.value)
+                }
+              >
                 {item.label}
               </Dropdown.Item>
             ))}
@@ -223,8 +271,8 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleApprove = (item: any) => {
-    dispatch(approveStudent(item.student_id))
-  }
+    dispatch(approveStudent(item.student_id));
+  };
 
   const handlePermanent = (id: any) => {
     Swal.fire({
@@ -237,10 +285,10 @@ const BasicInputElements = withSwal((props: any) => {
       confirmButtonText: "Yes, delete!",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteStudent(id, 1))
+        dispatch(deleteStudent(id, 1));
       }
     });
-  }
+  };
 
   const handleAssign = (student_id: number, staff_id: number) => {
     Swal.fire({
@@ -273,7 +321,9 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Name",
       accessor: "first_name",
       sort: true,
-      Cell: ({ row }: any) => <div>{row.original.first_name + " " + row.original.last_name}</div>,
+      Cell: ({ row }: any) => (
+        <div>{row.original.first_name + " " + row.original.last_name}</div>
+      ),
     },
     // {
     //   Header: "Country",
@@ -284,7 +334,11 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Intake Month",
       accessor: "intake_month",
       sort: false,
-      Cell: ({ row }: any) => <span>{moment(row.original.created_at).format("LL")?.split(" ")[0]}</span>,
+      Cell: ({ row }: any) => (
+        <span>
+          {moment(row.original.created_at).format("LL")?.split(" ")[0]}
+        </span>
+      ),
     },
     {
       Header: "Application Status",
@@ -347,7 +401,11 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Created By",
       accessor: "created_user",
       sort: false,
-      Cell: ({ row }: any) => <div>{row.original.created_by == 0 ? "App" : row.original.created_user}</div>,
+      Cell: ({ row }: any) => (
+        <div>
+          {row.original.created_by == 0 ? "App" : row.original.created_user}
+        </div>
+      ),
     },
     {
       Header: "Loan Type",
@@ -359,7 +417,9 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Consultant Name",
       accessor: "consultant_name",
       sort: false,
-      Cell: ({ row }: any) => <div>{row.original.consultant_name || "Internal"}</div>,
+      Cell: ({ row }: any) => (
+        <div>{row.original.consultant_name || "Internal"}</div>
+      ),
     },
     {
       Header: "Assigned To",
@@ -375,18 +435,27 @@ const BasicInputElements = withSwal((props: any) => {
         <div className="d-flex justify-content-center align-items-center gap-2 p-2">
           <div className="d-flex justify-content-center align-items-center gap-2">
             {/* Delete Icon */}
-            <Link to={`/users/student-details/${row.original.student_id}`} state={row.original.student_id}>
-              <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
+            <Link
+              to={`/users/student-details/${row.original.student_id}`}
+              state={row.original.student_id}
+            >
+              <FeatherIcons
+                icon="eye"
+                size="15"
+                className="cursor-pointer text-secondary"
+              />
             </Link>
           </div>
           {/* Edit Icon */}
           <FeatherIcons
-            icon={path === '/cred-admin/deleted-students' ? "check-circle" : "edit"}
+            icon={
+              path === "/cred-admin/deleted-students" ? "check-circle" : "edit"
+            }
             size="15"
-            style={{cursor:"pointer"}}
+            style={{ cursor: "pointer" }}
             className="text-success"
             onClick={() => {
-              if (path === '/cred-admin/deleted-students') {
+              if (path === "/cred-admin/deleted-students") {
                 handleApprove(row.original);
               } else {
                 handleUpdate(row.original);
@@ -397,19 +466,14 @@ const BasicInputElements = withSwal((props: any) => {
 
           {/* Delete Icon */}
 
-          {
-            path !== '/cred-admin/deleted-students' && (
-              <FeatherIcons
-                icon="trash-2"
-                size="15"
-                className="cursor-pointer text-secondary"
-                onClick={() =>
-                  handleDelete(row.original.student_id)
-                }
-              />
-
-            )
-          }
+          {path !== "/cred-admin/deleted-students" && (
+            <FeatherIcons
+              icon="trash-2"
+              size="15"
+              className="cursor-pointer text-secondary"
+              onClick={() => handleDelete(row.original.student_id)}
+            />
+          )}
           {/* <FeatherIcons
             icon="trash-2"
             size="15"
@@ -422,7 +486,6 @@ const BasicInputElements = withSwal((props: any) => {
               }
             }}
           /> */}
-
         </div>
       ),
     },
@@ -547,6 +610,8 @@ const BasicInputElements = withSwal((props: any) => {
       confirmButtonText: "Yes, assign!",
     }).then((result) => {
       if (result.isConfirmed) {
+        console.log(student_ids);
+
         handleAssignUserBulk(student_ids, assignedTo);
         Swal.fire({
           title: "Assigned!",
@@ -557,8 +622,10 @@ const BasicInputElements = withSwal((props: any) => {
     });
   };
 
-  const handleAssignUserBulk = (student_ids: Array<number>, assignedTo: number) => {
-
+  const handleAssignUserBulk = (
+    student_ids: Array<number>,
+    assignedTo: number
+  ) => {
     axios
       .post("assign_staff_bulk", {
         student_ids,
@@ -572,10 +639,10 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleFilter = (staff_id: any) => {
-
     // Filter the initial list based on the provided category
-    const filteredList = state?.filter((item: any) => item.staff_id === staff_id);
-
+    const filteredList = state?.filter(
+      (item: any) => item.staff_id === staff_id
+    );
 
     // Update the state with the filtered list
     setFilteredItems(filteredList);
@@ -586,13 +653,22 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   if (initialLoading) {
-    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+    return (
+      <Spinner
+        animation="border"
+        style={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
   }
 
   return (
     <>
       <Row className="justify-content-between px-2">
-        <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
+        <Modal
+          show={responsiveModal}
+          onHide={toggleResponsiveModal}
+          dialogClassName="modal-dialog-centered"
+        >
           <Form onSubmit={onSubmit}>
             <Modal.Header closeButton>
               <h4 className="modal-title">Student Management</h4>
@@ -607,16 +683,36 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="first_name">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
-                    {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      name="first_name"
+                      placeholder="Enter First Name"
+                      value={formData.first_name}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.first_name && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.first_name}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
 
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="last_name">
                     <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Second Name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
-                    {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Second Name"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.last_name && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.last_name}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -625,15 +721,36 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="email">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
-                    {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      placeholder="Enter email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.email && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.email}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="phone">
                     <Form.Label>Phone</Form.Label>
-                    <Form.Control type="text" maxLength={10} name="phone" placeholder="Enter phone number" value={formData.phone} onChange={handleInputChange} />
-                    {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      maxLength={10}
+                      name="phone"
+                      placeholder="Enter phone number"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.phone && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.phone}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -659,7 +776,12 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="source">
                     <Form.Label>Source</Form.Label>
-                    <Form.Select name="source" value={formData.source} onChange={handleInputChange} aria-label="Default select example">
+                    <Form.Select
+                      name="source"
+                      value={formData.source}
+                      onChange={handleInputChange}
+                      aria-label="Default select example"
+                    >
                       <option disabled value="" selected>
                         Choose a source...{" "}
                       </option>
@@ -669,7 +791,11 @@ const BasicInputElements = withSwal((props: any) => {
                         </option>
                       ))}
                     </Form.Select>
-                    {validationErrors.source && <Form.Text className="text-danger">{validationErrors.source}</Form.Text>}
+                    {validationErrors.source && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.source}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -693,7 +819,13 @@ const BasicInputElements = withSwal((props: any) => {
                 {!isUpdate ? "Close" : "Cancel"}
               </Button>
 
-              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
+              <Button
+                type="submit"
+                variant="success"
+                id="button-addon2"
+                className="waves-effect waves-light mt-1 me-2"
+                disabled={loading}
+              >
                 {isUpdate ? "Update" : "Submit"}
               </Button>
 
@@ -708,16 +840,34 @@ const BasicInputElements = withSwal((props: any) => {
 
         {/* ----------- file upload modal ------ */}
 
-        <Modal show={uploadModal} onHide={toggleUploadModal} dialogClassName="modal-dialog-centered">
+        <Modal
+          show={uploadModal}
+          onHide={toggleUploadModal}
+          dialogClassName="modal-dialog-centered"
+        >
           <Modal.Header closeButton></Modal.Header>
           <Modal.Body>
-            <p className="text-muted mb-1 font-small">*Please upload the Excel file following the example format.</p>
-            <FileUploader onFileUpload={handleOnFileUpload} showPreview={true} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
+            <p className="text-muted mb-1 font-small">
+              *Please upload the Excel file following the example format.
+            </p>
+            <FileUploader
+              onFileUpload={handleOnFileUpload}
+              showPreview={true}
+              selectedFile={selectedFile}
+              setSelectedFile={setSelectedFile}
+            />
             <div className="d-flex gap-2 justify-content-end mb-2">
-              <Button className="btn-sm btn-blue waves-effect waves-light" onClick={handleDownloadClick}>
+              <Button
+                className="btn-sm btn-blue waves-effect waves-light"
+                onClick={handleDownloadClick}
+              >
                 <i className="mdi mdi-download-circle"></i> Download Sample
               </Button>
-              <Button className="btn-sm btn-success waves-effect waves-light" onClick={handleFileUpload} disabled={isLoading}>
+              <Button
+                className="btn-sm btn-success waves-effect waves-light"
+                onClick={handleFileUpload}
+                disabled={isLoading}
+              >
                 <i className="mdi mdi-upload"></i> Upload File
               </Button>
             </div>
@@ -728,51 +878,86 @@ const BasicInputElements = withSwal((props: any) => {
           <Card className="bg-white">
             <Card.Body>
               <>
-                {
-                  path !== '/cred-admin/deleted-students' && (
-
-                    <div className="d-flex float-end gap-2">
+                {path !== "/cred-admin/deleted-students" && (
+                  <div className="d-flex float-end gap-2">
+                    {user.role == 1 && (
                       <Dropdown className="btn-group" align="end">
-                        <Dropdown.Toggle variant="" className="btn-sm btn-outline-blue">
-                          <i className="mdi mdi-filter-variant"></i> {truncateText(selectedStaff, 13)}
+                        <Dropdown.Toggle
+                          variant=""
+                          className="btn-sm btn-outline-blue"
+                        >
+                          <i className="mdi mdi-filter-variant"></i>{" "}
+                          {truncateText(selectedStaff, 13)}
                         </Dropdown.Toggle>
-                        <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                          <Dropdown.Item key={"clear"} style={{ backgroundColor: "#fa9393" }} onClick={() => [handleClearFilter(), setSelectedStaff("Choose Staff")]}>
+                        <Dropdown.Menu
+                          style={{ maxHeight: "150px", overflow: "auto" }}
+                        >
+                          <Dropdown.Item
+                            key={"clear"}
+                            style={{ backgroundColor: "#fa9393" }}
+                            onClick={() => [
+                              handleClearFilter(),
+                              setSelectedStaff("Choose Staff"),
+                            ]}
+                          >
                             <i className="mdi mdi-close"></i> Clear Selection
                           </Dropdown.Item>
                           {credStaffData?.map((item: any) => (
-                            <Dropdown.Item key={item.value} onClick={() => [handleFilter(item.value), setSelectedStaff(item.label)]}>
+                            <Dropdown.Item
+                              key={item.value}
+                              onClick={() => [
+                                handleFilter(item.value),
+                                setSelectedStaff(item.label),
+                              ]}
+                            >
                               {item.label}
                             </Dropdown.Item>
                           ))}
                         </Dropdown.Menu>
                       </Dropdown>
+                    )}
 
-                      {user.role == 1 && (
-                        <Dropdown className="btn-group" align="end">
-                          <Dropdown.Toggle disabled={selectedValues?.length > 0 ? false : true} variant="light" className="table-action-btn btn-sm btn-blue">
-                            <i className="mdi mdi-account-plus"></i> Assign Staff
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-                            {credStaffData?.map((item: any) => (
-                              <Dropdown.Item key={item.value} onClick={() => handleAssignBulk(selectedValues, item.value)}>
-                                {item.label}
-                              </Dropdown.Item>
-                            ))}
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      )}
+                    {user.role == 1 && (
+                      <Dropdown className="btn-group" align="end">
+                        <Dropdown.Toggle
+                          disabled={selectedValues?.length > 0 ? false : true}
+                          variant="light"
+                          className="table-action-btn btn-sm btn-blue"
+                        >
+                          <i className="mdi mdi-account-plus"></i> Assign Staff
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu
+                          style={{ maxHeight: "150px", overflow: "auto" }}
+                        >
+                          {credStaffData?.map((item: any) => (
+                            <Dropdown.Item
+                              key={item.value}
+                              onClick={() =>
+                                handleAssignBulk(selectedValues, item.value)
+                              }
+                            >
+                              {item.label}
+                            </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )}
 
-                      <Button className="btn-sm btn-blue waves-effect waves-light " onClick={toggleUploadModal}>
-                        <i className="mdi mdi-upload"></i> Bulk Upload
-                      </Button>
+                    <Button
+                      className="btn-sm btn-blue waves-effect waves-light "
+                      onClick={toggleUploadModal}
+                    >
+                      <i className="mdi mdi-upload"></i> Bulk Upload
+                    </Button>
 
-                      <Button className="btn-sm btn-success waves-effect waves-light " onClick={toggleResponsiveModal}>
-                        <i className="mdi mdi-plus-circle"></i> Add Student
-                      </Button>
-                    </div>
-                  )
-                }
+                    <Button
+                      className="btn-sm btn-success waves-effect waves-light "
+                      onClick={toggleResponsiveModal}
+                    >
+                      <i className="mdi mdi-plus-circle"></i> Add Student
+                    </Button>
+                  </div>
+                )}
                 <Table
                   columns={columns}
                   data={filteredItems}

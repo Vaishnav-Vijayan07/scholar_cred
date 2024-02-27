@@ -212,7 +212,7 @@ const Table = (props: TableProps) => {
   let rows = pagination ? dataTable.page : dataTable.rows;
 
   const getSelectedValues = () => {
-    return dataTable?.selectedFlatRows.map((d) => d.original.student_id);
+    return dataTable?.selectedFlatRows.map((d:any) => d.original.student_id);
   };
 
   useEffect(() => {

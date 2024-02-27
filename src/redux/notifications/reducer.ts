@@ -24,7 +24,8 @@ export interface StatusActionType {
   type:
     | NotificationsActionTypes.API_RESPONSE_SUCCESS
     | NotificationsActionTypes.API_RESPONSE_ERROR
-    | NotificationsActionTypes.GET_NOTIFICATIONS;
+    | NotificationsActionTypes.GET_NOTIFICATIONS
+    | NotificationsActionTypes.STATUS_NOTIFICATIONS;
   payload: {
     actionType?: string;
     data?: any;
@@ -47,21 +48,34 @@ const Notifications = (
             initialLoading: false,
           };
         }
+        case NotificationsActionTypes.STATUS_NOTIFICATIONS: {
+          return {
+            ...state,
+            loading: false,
+            initialLoading: false,
+          };
+        }
         default:
           return { ...state };
       }
     }
     case NotificationsActionTypes.API_RESPONSE_ERROR: {
       switch (action.payload.actionType) {
-        case NotificationsActionTypes.GET_NOTIFICATIONS:
-          console.log(action.payload);
-          {
-            return {
-              ...state,
-              error: action.payload.error,
-              initialLoading: false,
-            };
-          }
+        case NotificationsActionTypes.GET_NOTIFICATIONS: {
+          return {
+            ...state,
+            error: action.payload.error,
+            initialLoading: false,
+          };
+        }
+        case NotificationsActionTypes.STATUS_NOTIFICATIONS: {
+          return {
+            ...state,
+            error: action.payload.error,
+            initialLoading: false,
+            loading: false,
+          };
+        }
         default:
           return { ...state };
       }
@@ -70,6 +84,13 @@ const Notifications = (
       return {
         ...state,
         initialLoading: true,
+      };
+    }
+    case NotificationsActionTypes.STATUS_NOTIFICATIONS: {
+      return {
+        ...state,
+        initialLoading: true,
+        loading: true,
       };
     }
     default:
