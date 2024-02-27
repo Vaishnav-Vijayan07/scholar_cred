@@ -77,7 +77,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
           const response = await axios.get(apiEndpoint);
 
           const apiResponse = await response.data.data;
-          console.log("apiResponse ========>", apiResponse);
+          // console.log("apiResponse ========>", apiResponse);
 
           setFormData(apiResponse);
 
@@ -96,7 +96,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
           const response = await axios.get(`getSecuredScreeningData/${student_id}`);
 
           const apiResponse = await response.data.data;
-          console.log("apiResponse ========>", apiResponse);
+          // console.log("apiResponse ========>", apiResponse);
 
           setFormData(apiResponse);
 

@@ -8,8 +8,8 @@ import axios from "axios";
 import { showErrorAlert, showSuccessAlert, showWarningAlert } from "../../../constants/alerts";
 
 const Attachments = ({ attachments, studentId, getAttachments }: any) => {
-  console.log("attachments", attachments);
-  console.log("studentId", studentId);
+  // console.log("attachments", attachments);
+  // console.log("studentId", studentId);
   const [selectedFile, setSelectedFile] = useState([]);
 
   const handleSubmit = async () => {
@@ -41,7 +41,7 @@ const Attachments = ({ attachments, studentId, getAttachments }: any) => {
       if (response.status === 200) {
         showSuccessAlert("File uploaded successfully!");
         // You may want to update the state or perform additional actions after successful upload
-        console.log("response--->", response);
+        // console.log("response--->", response);
         setSelectedFile([]);
         getAttachments();
       } else {

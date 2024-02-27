@@ -94,6 +94,8 @@ function* getStudents(action: any): SagaIterator {
 
     if (action.payload.status) {
       const response = yield call(getDeletedStudent)
+      console.log(response);
+      
       const data = response.data.data
       yield put(studentApiResponseSuccess(StudentActionTypes.GET_DELETED_STUDENT, data))
     } else {

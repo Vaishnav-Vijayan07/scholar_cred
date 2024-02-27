@@ -6,7 +6,7 @@ import profileImg from "../../../assets/images/avatar-logo.png";
 import moment from "moment";
 
 const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
-  console.log("StudentData=====>", StudentData);
+  // console.log("StudentData=====>", StudentData);
 
   return (
     <Card className="text-center">

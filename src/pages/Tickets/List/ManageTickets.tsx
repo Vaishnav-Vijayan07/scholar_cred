@@ -215,6 +215,9 @@ const ManageTickets = () => {
     })
   );
 
+  console.log(state);
+  
+
   const handleGetTicket = (id: any) => {
     navigate(`/apps/Tickets-details/${id}`);
   };

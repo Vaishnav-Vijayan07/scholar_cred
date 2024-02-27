@@ -4,14 +4,16 @@ import { NotificationsActionTypes } from "./constants";
 import {
   notificationsApiResponseError,
   notificationsApiResponseSuccess,
+  getNotifications as getNotificationsAction,
 } from "./actions";
-import { getNotificationsApi } from "../../helpers/api/notifications";
+import {
+  getNotificationsApi,
+  notificationStatusApi,
+} from "../../helpers/api/notifications";
 
 function* getNotifications(): SagaIterator {
   try {
     const response = yield call(getNotificationsApi);
-    console.log(response.data);
-    
     const data = response.data.data;
     yield put(
       notificationsApiResponseSuccess(
@@ -29,12 +31,42 @@ function* getNotifications(): SagaIterator {
   }
 }
 
+function* notificationStatus({
+  payload: { notification_id },
+}: any): SagaIterator {
+  try {
+    const response = yield call(notificationStatusApi, notification_id);
+    const data = response.data.message; 
+    yield put(
+      notificationsApiResponseSuccess(
+        NotificationsActionTypes.STATUS_NOTIFICATIONS,
+        data
+      )
+    );
+    yield put(getNotificationsAction());
+  } catch (error: any) {
+    yield put(
+      notificationsApiResponseError(
+        NotificationsActionTypes.STATUS_NOTIFICATIONS,
+        error
+      )
+    );
+  }
+}
+
 export function* watchGetNotifications(): any {
   yield takeEvery(NotificationsActionTypes.GET_NOTIFICATIONS, getNotifications);
 }
 
+export function* watchNotificationStatus(): any {
+  yield takeEvery(
+    NotificationsActionTypes.STATUS_NOTIFICATIONS,
+    notificationStatus
+  );
+}
+
 function* notificationSaga() {
-  yield all([fork(watchGetNotifications)]);
+  yield all([fork(watchGetNotifications), fork(watchNotificationStatus)]);
 }
 
 export default notificationSaga;
