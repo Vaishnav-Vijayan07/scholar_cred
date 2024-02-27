@@ -44,7 +44,6 @@ const Login2 = () => {
   const next = query.get("next");
 
   useEffect(() => {
-    
     dispatch(resetAuth());
   }, [dispatch]);
 
@@ -95,7 +94,7 @@ const Login2 = () => {
             </Link>
           </FormInput>
 
-          <FormInput label="Remember me" type="checkbox" name="checkbox" containerClass={"mb-3"} />
+          {/* <FormInput label="Remember me" type="checkbox" name="checkbox" containerClass={"mb-3"} /> */}
 
           <div className="d-grid mb-3 text-center">
             <Button variant="primary" type="submit" disabled={loading}>

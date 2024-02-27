@@ -306,25 +306,26 @@ const Profile = () => {
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
+                <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2">
+                  {isUpdate ? "Update" : "Submit"}
+                </Button>
+
                 <Button
                   variant="danger"
                   id="button-addon2"
                   // disabled={loading}
-                  className="mt-1 waves-effect waves-light me-2"
+                  className="mt-1 waves-effect waves-light"
                   onClick={() => {
                     if (isUpdate) {
                       handleCancelUpdate();
                       toggleResponsiveModal();
                     } else {
                       toggleResponsiveModal();
+                      handleCancelUpdate();
                     }
                   }}
                 >
                   {!isUpdate ? "close" : "Cancel"}
-                </Button>
-
-                <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1">
-                  {isUpdate ? "Update" : "Submit"}
                 </Button>
               </Modal.Footer>
             </Form>

@@ -88,13 +88,10 @@ const Dashboard4 = () => {
 
   return (
     <>
-      <PageTitle
-        breadCrumbItems={[
-          { label: "Dashboards", path: "/dashboard" },
-          { label: "Dashboard", path: "/dashboard", active: true },
-        ]}
-        title={"Dashboard"}
-      />
+      {/* <PageTitle breadCrumbItems={[]} title={"Dashboard"} /> */}
+      <div className="page-title-box">
+        <h4 className="page-title">Dashboard</h4>
+      </div>
 
       {user.role == "7" || user.role == "4" ? (
         <Row>

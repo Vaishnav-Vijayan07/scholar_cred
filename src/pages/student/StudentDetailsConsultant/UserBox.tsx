@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import profileImg from "../../../assets/images/users/user-1.jpg";
+import profileImg from "../../../assets/images/avatar-logo.png";
 import moment from "moment";
 
 const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {

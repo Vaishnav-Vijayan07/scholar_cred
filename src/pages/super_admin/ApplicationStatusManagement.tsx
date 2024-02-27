@@ -289,16 +289,17 @@ const BasicInputElements = withSwal((props: any) => {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
+              <Button type="submit" variant="success" id="button-addon2" className="mt-1 me-2">
+                {isUpdate ? "Update" : "Submit"}
+              </Button>
+
               <Button
                 variant="danger"
                 id="button-addon2"
-                className="mt-1 ms-2"
-                onClick={() => (isUpdate ? [handleCancelUpdate(), toggleResponsiveModal()] : toggleResponsiveModal())}
+                className="mt-1"
+                onClick={() => (isUpdate ? [handleCancelUpdate(), toggleResponsiveModal()] : toggleResponsiveModal(), handleCancelUpdate())}
               >
                 {isUpdate ? "Cancel" : "Close"}
-              </Button>
-              <Button type="submit" variant="success" id="button-addon2" className="mt-1">
-                {isUpdate ? "Update" : "Submit"}
               </Button>
             </Modal.Footer>
             {/* </Col> */}

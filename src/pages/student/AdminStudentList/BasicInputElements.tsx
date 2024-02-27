@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Row,
@@ -19,9 +19,6 @@ import FeatherIcons from "feather-icons-react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import moment from "moment";
 import FileUploader from "../../../components/FileUploader";
-
-// components
-import PageTitle from "../../../components/PageTitle";
 import {
   StudentDataTypes,
   StudentInitialState,
@@ -29,9 +26,7 @@ import {
   initialState,
   sizePerPageList,
 } from "../../users/data";
-import { useDispatch, useSelector } from "react-redux";
-import { getAdminStaff } from "../../../redux/adminStaffs/actions";
-import { RootState } from "../../../redux/store";
+import { useDispatch } from "react-redux";
 import {
   approveStudent,
   createStudent,
@@ -44,7 +39,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { truncateText } from "../../../constants/functons";
-import classNames from "classnames";
 
 interface FileType extends File {
   preview?: string;
@@ -451,6 +445,9 @@ const BasicInputElements = withSwal((props: any) => {
             icon={
               path === "/cred-admin/deleted-students" ? "check-circle" : "edit"
             }
+            icon={
+              path === "/cred-admin/deleted-students" ? "check-circle" : "edit"
+            }
             size="15"
             style={{ cursor: "pointer" }}
             className="text-success"
@@ -516,19 +513,6 @@ const BasicInputElements = withSwal((props: any) => {
     if (isUpdate) {
       handleCancelUpdate();
     }
-  };
-
-  const setDemoData = () => {
-    setFormData((prev) => ({
-      ...prev,
-      first_name: "John",
-      last_name: "Doe",
-      email: "john.doe@example.com",
-      phone: "9876545678",
-      date_of_birth: "2023-12-05",
-      country_of_origin: "India",
-      application_status: "Pending",
-    }));
   };
 
   useEffect(() => {
@@ -803,23 +787,6 @@ const BasicInputElements = withSwal((props: any) => {
 
             <Modal.Footer>
               <Button
-                variant="danger"
-                id="button-addon2"
-                disabled={loading}
-                className="mt-1 waves-effect waves-light me-2"
-                onClick={() => {
-                  if (isUpdate) {
-                    handleCancelUpdate();
-                    toggleResponsiveModal();
-                  } else {
-                    toggleResponsiveModal();
-                  }
-                }}
-              >
-                {!isUpdate ? "Close" : "Cancel"}
-              </Button>
-
-              <Button
                 type="submit"
                 variant="success"
                 id="button-addon2"
@@ -829,12 +796,24 @@ const BasicInputElements = withSwal((props: any) => {
                 {isUpdate ? "Update" : "Submit"}
               </Button>
 
-              {/* <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
-                Add test data
-              </Button> */}
+              <Button
+                variant="danger"
+                id="button-addon2"
+                disabled={loading}
+                className="mt-1 waves-effect waves-light"
+                onClick={() => {
+                  if (isUpdate) {
+                    handleCancelUpdate();
+                    toggleResponsiveModal();
+                  } else {
+                    toggleResponsiveModal();
+                    handleCancelUpdate();
+                  }
+                }}
+              >
+                {!isUpdate ? "Close" : "Cancel"}
+              </Button>
             </Modal.Footer>
-
-            {/* )} */}
           </Form>
         </Modal>
 
@@ -880,42 +859,40 @@ const BasicInputElements = withSwal((props: any) => {
               <>
                 {path !== "/cred-admin/deleted-students" && (
                   <div className="d-flex float-end gap-2">
-                    {user.role == 1 && (
-                      <Dropdown className="btn-group" align="end">
-                        <Dropdown.Toggle
-                          variant=""
-                          className="btn-sm btn-outline-blue"
+                    <Dropdown className="btn-group" align="end">
+                      <Dropdown.Toggle
+                        variant=""
+                        className="btn-sm btn-outline-blue"
+                      >
+                        <i className="mdi mdi-filter-variant"></i>{" "}
+                        {truncateText(selectedStaff, 13)}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu
+                        style={{ maxHeight: "150px", overflow: "auto" }}
+                      >
+                        <Dropdown.Item
+                          key={"clear"}
+                          style={{ backgroundColor: "#fa9393" }}
+                          onClick={() => [
+                            handleClearFilter(),
+                            setSelectedStaff("Choose Staff"),
+                          ]}
                         >
-                          <i className="mdi mdi-filter-variant"></i>{" "}
-                          {truncateText(selectedStaff, 13)}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu
-                          style={{ maxHeight: "150px", overflow: "auto" }}
-                        >
+                          <i className="mdi mdi-close"></i> Clear Selection
+                        </Dropdown.Item>
+                        {credStaffData?.map((item: any) => (
                           <Dropdown.Item
-                            key={"clear"}
-                            style={{ backgroundColor: "#fa9393" }}
+                            key={item.value}
                             onClick={() => [
-                              handleClearFilter(),
-                              setSelectedStaff("Choose Staff"),
+                              handleFilter(item.value),
+                              setSelectedStaff(item.label),
                             ]}
                           >
-                            <i className="mdi mdi-close"></i> Clear Selection
+                            {item.label}
                           </Dropdown.Item>
-                          {credStaffData?.map((item: any) => (
-                            <Dropdown.Item
-                              key={item.value}
-                              onClick={() => [
-                                handleFilter(item.value),
-                                setSelectedStaff(item.label),
-                              ]}
-                            >
-                              {item.label}
-                            </Dropdown.Item>
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
 
                     {user.role == 1 && (
                       <Dropdown className="btn-group" align="end">
