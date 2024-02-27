@@ -445,9 +445,6 @@ const BasicInputElements = withSwal((props: any) => {
             icon={
               path === "/cred-admin/deleted-students" ? "check-circle" : "edit"
             }
-            icon={
-              path === "/cred-admin/deleted-students" ? "check-circle" : "edit"
-            }
             size="15"
             style={{ cursor: "pointer" }}
             className="text-success"
