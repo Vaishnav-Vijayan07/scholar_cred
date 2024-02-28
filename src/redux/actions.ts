@@ -9,5 +9,5 @@ export * from "./consultantStaff/actions";
 export * from "./statusManagement/actions";
 export * from "./comments/actions";
 export * from "./loanStatus/actions";
-export * from './adminTickets/actions'
-
+export * from "./adminTickets/actions";
+export * from "./studentDetails/actions";

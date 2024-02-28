@@ -2,6 +2,8 @@ import axios from "axios";
 import moment from "moment";
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { saveSecuredDetailedScreeningData } from "../../../redux/actions";
 
 interface Option {
   label: string;
@@ -34,6 +36,9 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
     // Add more fields as needed
   });
   const [formData, setFormData] = useState<Array<{ section: Section; fields: FormField[] }>>([]);
+  const disptach = useDispatch();
+
+  console.log("formData, DetailedScreening ----->", formValues);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -53,6 +58,26 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission here with formValues
+    disptach(
+      saveSecuredDetailedScreeningData(
+        student_id || "",
+        formValues.scored_below_60,
+        formValues.univerist_rank,
+        formValues.program_types,
+        formValues.exsiting_loans,
+        formValues.late_payment_history,
+        "", //know_the_current_cibil
+        formValues.cibil_score,
+        formValues.relationship_with_student,
+        formValues.place_of_recidence,
+        formValues.pan_aadhar_availability,
+        formValues.professional_background,
+        formValues.income_range,
+        formValues.proof_of_income,
+        "", //know_the_current_cibil_co_applicant
+        formValues.cibil_score
+      )
+    );
   };
 
   useEffect(() => {
@@ -134,9 +159,22 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
             <Col key={field.name} xl={6} xxl={4} className="p-2">
               <Form.Group controlId={field.name}>
                 <Form.Label>
-                  {field.label} {field?.priority == "High" && <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>{field?.priority}</span>}
-                  {field?.priority == "Medium" && <span className="badge bg-warning float-right" style={{fontSize:"9px"}}>{field?.priority}</span>}
-                  {field?.priority == "Low" && <span className="badge bg-success float-right" style={{fontSize:"9px"}}>{field?.priority}</span>}
+                  {field.label}{" "}
+                  {field?.priority == "High" && (
+                    <span className="badge bg-danger float-right" style={{ fontSize: "9px" }}>
+                      {field?.priority}
+                    </span>
+                  )}
+                  {field?.priority == "Medium" && (
+                    <span className="badge bg-warning float-right" style={{ fontSize: "9px" }}>
+                      {field?.priority}
+                    </span>
+                  )}
+                  {field?.priority == "Low" && (
+                    <span className="badge bg-success float-right" style={{ fontSize: "9px" }}>
+                      {field?.priority}
+                    </span>
+                  )}
                 </Form.Label>
 
                 {field.type === "text" || field.type === "email" || field.type === "number" ? (

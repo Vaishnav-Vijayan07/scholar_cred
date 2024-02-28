@@ -15,6 +15,7 @@ import AdminTicketsSaga from "./adminTickets/saga";
 import internalStatusSaga from "./internalStatus/saga";
 import TicketsSaga from "./tickets/saga";
 import notificationSaga from "./notifications/saga";
+import studentDetailsSaga from "./studentDetails/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -32,6 +33,7 @@ export default function* rootSaga() {
     internalStatusSaga(),
     AdminTicketsSaga(),
     TicketsSaga(),
-    notificationSaga()
+    notificationSaga(),
+    studentDetailsSaga(),
   ]);
 }
