@@ -82,7 +82,7 @@ function* deleteComment({ payload: { id, student_id } }: ConsultantData): SagaIt
   }
 }
 
-export function* watchGetAllConsultant() {
+export function* watchGetAllComment() {
   yield takeEvery(CommentActionTypes.GET_COMMENTS, getComments);
 }
 
@@ -99,7 +99,7 @@ export function* watchDeleteComment() {
 }
 
 function* commentsSaga() {
-  yield all([fork(watchGetAllConsultant), fork(watchEditConsultant), fork(watchCreateComment), fork(watchGetAllConsultant), fork(watchDeleteComment)]);
+  yield all([fork(watchEditConsultant), fork(watchCreateComment), fork(watchGetAllComment), fork(watchDeleteComment)]);
 }
 
 export default commentsSaga;

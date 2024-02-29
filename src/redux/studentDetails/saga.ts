@@ -5,7 +5,11 @@ import { SagaIterator } from "@redux-saga/core";
 import { APICore } from "../../helpers/api/apiCore";
 
 // helpers
-import { savePreliminaryDetails as savePreliminaryDetailsApi, saveSecuredDetailedScreeningData as saveSecuredDetailedScreeningDataApi } from "../../helpers/";
+import {
+  savePreliminaryDetails as savePreliminaryDetailsApi,
+  saveSecuredDetailedScreeningData as saveSecuredDetailedScreeningDataApi,
+  saveUnSecuredDetailedScreeningData as saveUnSecuredDetailedScreeningDataApi,
+} from "../../helpers/";
 
 // actions
 import { studentDetailsApiResponseSuccess, studentDetailsApiResponseError } from "./actions";
@@ -44,6 +48,26 @@ interface ConsultantData {
     proof_of_income: string;
     know_the_current_cibil_co_applicant: string;
     cibil_co_applicant: string;
+
+    academic_scores_10th: string;
+    academic_scores_12th: string;
+    academic_scores_ug: string;
+    marital_status: string;
+    age: string;
+    country: string;
+    rank: string;
+    loan_amount_required: string;
+    any_existing_loans: string;
+    any_history_of_defaults: string;
+    do_you_know_current_cibil: string;
+    current_cibil: string;
+    relationship_with_student: string;
+    coapplicant_place: string;
+    know_cibil_score: string;
+    father_cibil: string;
+    any_loan_exisiting: string;
+    history_of_defaults: string;
+    current_cibil_score: string;
   };
   type: string;
 }
@@ -146,6 +170,75 @@ function* saveSecuredDetailedScreeningData({
   }
 }
 
+function* saveUnSecuredDetailedScreeningData({
+  payload: {
+    student_id,
+    academic_scores_10th,
+    academic_scores_12th,
+    academic_scores_ug,
+    marital_status,
+    age,
+    program_type,
+    country,
+    rank,
+    loan_amount_required,
+    any_existing_loans,
+    any_history_of_defaults,
+    do_you_know_current_cibil,
+    current_cibil,
+    relationship_with_student,
+    coapplicant_place,
+    pan_and_aadhar_available,
+    professional_background,
+    salary_range,
+    proof_of_income,
+    know_cibil_score,
+    father_cibil,
+    any_loan_exisiting,
+    history_of_defaults,
+    current_cibil_score,
+  },
+  type,
+}: ConsultantData): SagaIterator {
+  try {
+    const response = yield call(saveUnSecuredDetailedScreeningDataApi, {
+      student_id,
+      academic_scores_10th,
+      academic_scores_12th,
+      academic_scores_ug,
+      marital_status,
+      age,
+      program_type,
+      country,
+      rank,
+      loan_amount_required,
+      any_existing_loans,
+      any_history_of_defaults,
+      do_you_know_current_cibil,
+      current_cibil,
+      relationship_with_student,
+      coapplicant_place,
+      pan_and_aadhar_available,
+      professional_background,
+      salary_range,
+      proof_of_income,
+      know_cibil_score,
+      father_cibil,
+      any_loan_exisiting,
+      history_of_defaults,
+      current_cibil_score,
+    });
+
+    const data = response.data.message;
+
+    yield put(studentDetailsApiResponseSuccess(StudentDetailsActionTypes.SAVE_UN_SECURED_DETAILS, data));
+    //calling get method after successfull api creation
+    // yield put(getComment(student_id));
+  } catch (error: any) {
+    yield put(studentDetailsApiResponseError(StudentDetailsActionTypes.SAVE_UN_SECURED_DETAILS, error));
+  }
+}
+
 export function* watchSavePreliminaryDetails() {
   yield takeEvery(StudentDetailsActionTypes.SAVE_PRELIMINARY_DETAILS, savePreliminaryDetails);
 }
@@ -154,8 +247,12 @@ export function* watchSaveSecuredDetailedScreeningData() {
   yield takeEvery(StudentDetailsActionTypes.SAVE_SECURED_DETAILS, saveSecuredDetailedScreeningData);
 }
 
+export function* watchSaveUnSecuredDetailedScreeningData() {
+  yield takeEvery(StudentDetailsActionTypes.SAVE_UN_SECURED_DETAILS, saveUnSecuredDetailedScreeningData);
+}
+
 function* studentDetailsSaga() {
-  yield all([fork(watchSavePreliminaryDetails), fork(watchSaveSecuredDetailedScreeningData)]);
+  yield all([fork(watchSavePreliminaryDetails), fork(watchSaveSecuredDetailedScreeningData), fork(watchSaveUnSecuredDetailedScreeningData)]);
 }
 
 export default studentDetailsSaga;

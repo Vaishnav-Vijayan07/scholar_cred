@@ -3,7 +3,7 @@ import moment from "moment";
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { saveSecuredDetailedScreeningData } from "../../../redux/actions";
+import { saveSecuredDetailedScreeningData, saveUnSecuredDetailedScreeningData } from "../../../redux/actions";
 
 interface Option {
   label: string;
@@ -75,7 +75,37 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
         formValues.income_range,
         formValues.proof_of_income,
         "", //know_the_current_cibil_co_applicant
-        formValues.cibil_score
+        formValues.cibil_score_co_applicant
+      )
+    );
+
+    disptach(
+      saveUnSecuredDetailedScreeningData(
+        student_id || "",
+        formValues.academic_scores_10th,
+        formValues.academic_scores_12th,
+        formValues.academic_scores_ug,
+        formValues.marital_status,
+        formValues.age,
+        formValues.program_type,
+        formValues.country,
+        formValues.rank,
+        formValues.loan_amount_required,
+        formValues.any_existing_loans,
+        formValues.any_history_of_defaults,
+        formValues.do_you_know_current_cibil,
+        formValues.current_cibil,
+        formValues.relationship_with_student,
+        formValues.coapplicant_place,
+        formValues.pan_and_aadhar_available,
+        formValues.professional_background,
+        formValues.salary_range,
+        formValues.proof_of_income,
+        formValues.know_cibil_score,
+        formValues.father_cibil,
+        formValues.any_loan_exisiting,
+        formValues.history_of_defaults,
+        formValues.current_cibil_score
       )
     );
   };
@@ -91,7 +121,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
 
           // Determine the API endpoint based on the loan type
           if (loanType === "SECURE") {
-            apiEndpoint = `getSecuredScreeningData/${student_id}`;
+            apiEndpoint = `getUnSecuredScreeningData/${student_id}`;
           } else {
             apiEndpoint = `getUnSecuredScreeningData/${student_id}`;
           }
@@ -118,7 +148,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
           setFormValues(extractedData);
         } else {
           // const response = await axios.get(`getSecuredScreeningData/${student_id}`);
-          const response = await axios.get(`getSecuredScreeningData/${student_id}`);
+          const response = await axios.get(`getUnSecuredScreeningData/${student_id}`);
 
           const apiResponse = await response.data.data;
           // console.log("apiResponse ========>", apiResponse);
