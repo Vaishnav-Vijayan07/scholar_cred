@@ -65,6 +65,14 @@ const StudentDetailsReducer = (state: State = INIT_STATE, action: StudentDetails
             error: null,
           };
         }
+        case StudentDetailsActionTypes.SAVE_UN_SECURED_DETAILS: {
+          showSuccessAlert(action.payload.data);
+          return {
+            ...state,
+            loading: false,
+            error: null,
+          };
+        }
         default:
           return { ...state };
       }
@@ -80,6 +88,14 @@ const StudentDetailsReducer = (state: State = INIT_STATE, action: StudentDetails
         }
 
         case StudentDetailsActionTypes.SAVE_SECURED_DETAILS: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+          };
+        }
+
+        case StudentDetailsActionTypes.SAVE_UN_SECURED_DETAILS: {
           return {
             ...state,
             error: action.payload.error,

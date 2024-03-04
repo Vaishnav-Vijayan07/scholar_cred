@@ -37,6 +37,8 @@ const Profile = () => {
     CommentsData: state.Comments.comments.data,
   }));
 
+  console.log("StudentData--------->", StudentData);
+
   // console.log("StudentData---->", StudentData);
 
   const methods = useForm();
@@ -174,7 +176,7 @@ const Profile = () => {
                 </Row>
                 <div className="mt-3">
                   <Dropdown className="float-end" align="end">
-                    <Dropdown.Toggle className="cursor-pointer" variant="light">
+                    <Dropdown.Toggle className="cursor-pointer" variant="light" disabled={!StudentData?.status}>
                       Change status
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
@@ -207,13 +209,23 @@ const Profile = () => {
                   </Nav.Item>
 
                   <Nav.Item as="li" className="nav-item">
-                    <Nav.Link href="#" eventKey="detail_screening" className="nav-link cursor-pointer">
+                    <Nav.Link
+                      href="#"
+                      eventKey="detail_screening"
+                      className="nav-link cursor-pointer"
+                      //  disabled={StudentData?.loan_type ? false : true}
+                    >
                       Detail Screening
                     </Nav.Link>
                   </Nav.Item>
 
                   <Nav.Item as="li" className="nav-item">
-                    <Nav.Link href="#" eventKey="document_screening" className="nav-link cursor-pointer">
+                    <Nav.Link
+                      href="#"
+                      eventKey="document_screening"
+                      className="nav-link cursor-pointer"
+                      //  disabled={StudentData?.loan_type ? false : true}
+                    >
                       Docs screening
                     </Nav.Link>
                   </Nav.Item>

@@ -8,7 +8,7 @@ import { createConsultantAdmin, deleteConsultantAdmin, getConsultantAdmin, getCo
 import { addStatus, deleteStatus, getAllStatus, updateStatus } from "./status";
 import { createComment, deleteComment, getComments, updateComment } from "./comments";
 import { addLoanStatus, deleteLoanStatus, getLoanStatus, updateLoanStatus } from "./loan_status";
-import { savePreliminaryDetails, saveSecuredDetailedScreeningData, saveUnSecuredDetailedScreeningData } from "./student_details";
+import { savePreliminaryDetails, saveSecuredDetailedScreeningData, saveUnSecuredDetailedScreeningData, checkLoanType } from "./student_details";
 
 import { getUserTypes } from "./user_types";
 import {
@@ -83,5 +83,6 @@ export {
   getConsultantStaffByAdmin,
   savePreliminaryDetails,
   saveSecuredDetailedScreeningData,
-  saveUnSecuredDetailedScreeningData
+  saveUnSecuredDetailedScreeningData,
+  checkLoanType,
 };

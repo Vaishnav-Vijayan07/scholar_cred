@@ -9,6 +9,7 @@ import {
   savePreliminaryDetails as savePreliminaryDetailsApi,
   saveSecuredDetailedScreeningData as saveSecuredDetailedScreeningDataApi,
   saveUnSecuredDetailedScreeningData as saveUnSecuredDetailedScreeningDataApi,
+  checkLoanType as checkLoanTypeApi,
 } from "../../helpers/";
 
 // actions
@@ -108,8 +109,11 @@ function* savePreliminaryDetails({
       collateral_item,
       remark,
     });
-
     const consultant_data = response.data.message;
+
+    const checkAvailability = yield call(checkLoanTypeApi, {
+      student_id,
+    });
 
     yield put(studentDetailsApiResponseSuccess(StudentDetailsActionTypes.SAVE_PRELIMINARY_DETAILS, consultant_data));
     //calling get method after successfull api creation
@@ -230,6 +234,7 @@ function* saveUnSecuredDetailedScreeningData({
     });
 
     const data = response.data.message;
+    console.log("res data---->", data);
 
     yield put(studentDetailsApiResponseSuccess(StudentDetailsActionTypes.SAVE_UN_SECURED_DETAILS, data));
     //calling get method after successfull api creation
