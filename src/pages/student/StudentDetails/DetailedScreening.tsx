@@ -2,6 +2,9 @@ import axios from "axios";
 import moment from "moment";
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { saveSecuredDetailedScreeningData, saveUnSecuredDetailedScreeningData } from "../../../redux/actions";
+import { showWarningAlert } from "../../../constants/alerts";
 
 interface Option {
   label: string;
@@ -34,6 +37,9 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
     // Add more fields as needed
   });
   const [formData, setFormData] = useState<Array<{ section: Section; fields: FormField[] }>>([]);
+  const disptach = useDispatch();
+
+  console.log("formData, DetailedScreening ----->", formValues);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -53,6 +59,60 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission here with formValues
+    if (StudentData?.loan_type === "SECURE") {
+      disptach(
+        saveSecuredDetailedScreeningData(
+          student_id || "",
+          formValues.scored_below_60,
+          formValues.univerist_rank,
+          formValues.program_types,
+          formValues.exsiting_loans,
+          formValues.late_payment_history,
+          "", //know_the_current_cibil
+          formValues.cibil_score,
+          formValues.relationship_with_student,
+          formValues.place_of_recidence,
+          formValues.pan_aadhar_availability,
+          formValues.professional_background,
+          formValues.income_range,
+          formValues.proof_of_income,
+          "", //know_the_current_cibil_co_applicant
+          formValues.cibil_score_co_applicant
+        )
+      );
+    } else if (StudentData?.loan_type === "UNSECURE") {
+      disptach(
+        saveUnSecuredDetailedScreeningData(
+          student_id || "",
+          formValues.academic_scores_10th,
+          formValues.academic_scores_12th,
+          formValues.academic_scores_ug,
+          formValues.marital_status,
+          formValues.age,
+          formValues.program_type,
+          formValues.country,
+          formValues.rank,
+          formValues.loan_amount_required,
+          formValues.any_existing_loans,
+          formValues.any_history_of_defaults,
+          formValues.do_you_know_current_cibil,
+          formValues.current_cibil,
+          formValues.relationship_with_student,
+          formValues.coapplicant_place,
+          formValues.pan_and_aadhar_available,
+          formValues.professional_background,
+          formValues.salary_range,
+          formValues.proof_of_income,
+          formValues.know_cibil_score,
+          formValues.father_cibil,
+          formValues.any_loan_exisiting,
+          formValues.history_of_defaults,
+          formValues.current_cibil_score
+        )
+      );
+    } else {
+      showWarningAlert("Please complete preliminary screening...");
+    }
   };
 
   useEffect(() => {
@@ -93,7 +153,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
           setFormValues(extractedData);
         } else {
           // const response = await axios.get(`getSecuredScreeningData/${student_id}`);
-          const response = await axios.get(`getSecuredScreeningData/${student_id}`);
+          const response = await axios.get(`getUnSecuredScreeningData/${student_id}`);
 
           const apiResponse = await response.data.data;
           // console.log("apiResponse ========>", apiResponse);
@@ -134,9 +194,22 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
             <Col key={field.name} xl={6} xxl={4} className="p-2">
               <Form.Group controlId={field.name}>
                 <Form.Label>
-                  {field.label} {field?.priority == "High" && <span className="badge bg-danger float-right" style={{fontSize:"9px"}}>{field?.priority}</span>}
-                  {field?.priority == "Medium" && <span className="badge bg-warning float-right" style={{fontSize:"9px"}}>{field?.priority}</span>}
-                  {field?.priority == "Low" && <span className="badge bg-success float-right" style={{fontSize:"9px"}}>{field?.priority}</span>}
+                  {field.label}{" "}
+                  {field?.priority == "High" && (
+                    <span className="badge bg-danger float-right" style={{ fontSize: "9px" }}>
+                      {field?.priority}
+                    </span>
+                  )}
+                  {field?.priority == "Medium" && (
+                    <span className="badge bg-warning float-right" style={{ fontSize: "9px" }}>
+                      {field?.priority}
+                    </span>
+                  )}
+                  {field?.priority == "Low" && (
+                    <span className="badge bg-success float-right" style={{ fontSize: "9px" }}>
+                      {field?.priority}
+                    </span>
+                  )}
                 </Form.Label>
 
                 {field.type === "text" || field.type === "email" || field.type === "number" ? (
@@ -167,7 +240,13 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
                     ))}
                   </div>
                 ) : field.type === "date" ? (
-                  <Form.Control type="date" name={field.name} value={moment(formValues[field.name]).format("YYYY-MM-DD") || ""} onChange={handleInputChange} />
+                  <Form.Control
+                    type="date"
+                    name={field.name}
+                    value={moment(formValues[field.name]).format("YYYY-MM-DD") || ""}
+                    onChange={handleInputChange}
+                    disabled={!StudentData?.loan_type}
+                  />
                 ) : null}
               </Form.Group>
             </Col>
@@ -180,9 +259,11 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
   return (
     <Form onSubmit={handleSubmit}>
       {renderFormItems()}
-      <Button variant="primary" className="mt-2" type="submit">
-        Submit
-      </Button>
+      <Row>
+        <Button variant="primary" className="mt-2" type="submit">
+          Submit
+        </Button>
+      </Row>
     </Form>
   );
 };

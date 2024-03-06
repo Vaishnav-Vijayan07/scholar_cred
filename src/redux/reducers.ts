@@ -13,8 +13,9 @@ import Comments from "./comments/reducer";
 import LoanStatus from "./loanStatus/reducer";
 import AdminTickets from "./adminTickets/reducer";
 import InternalStatus from "./internalStatus/reducer";
-import Tickets from './tickets/reducer'
+import Tickets from "./tickets/reducer";
 import Notifications from "./notifications/reducer";
+import StudentDetailsReducer from "./studentDetails/reducer";
 
 export default combineReducers({
   Auth,
@@ -32,4 +33,5 @@ export default combineReducers({
   AdminTickets,
   Tickets,
   Notifications,
+  StudentDetailsReducer,
 });
