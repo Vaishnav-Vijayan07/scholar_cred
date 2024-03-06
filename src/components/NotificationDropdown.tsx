@@ -44,10 +44,6 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
   const dispatch = useDispatch();
 
   console.log(notifications);
-  
-
-
-
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [notificationContentStyle, setNotificationContentStyles] =
@@ -87,7 +83,7 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
       >
         <i className="fe-bell noti-icon font-22"></i>
         <span className="badge bg-danger rounded-circle noti-icon-badge">
-          {notifications.filter((item) => item.read_status !== true)?.length}
+          {notifications?.filter((item) => item.read_status !== true)?.length}
         </span>
       </Dropdown.Toggle>
       <Dropdown.Menu className="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
@@ -96,7 +92,9 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
             <div className="row align-items-center">
               <div className="col">
                 <h6 className="m-0 font-16 fw-semibold">
-                  {notifications.length <= 0 ? "No notification" : "Notification"}
+                  {notifications?.length <= 0
+                    ? "No notification"
+                    : "Notification"}
                 </h6>
               </div>
               <div className="col-auto"></div>
