@@ -241,6 +241,7 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
   // };
 
   useEffect(() => {
+    
     dispatch(getNotifications());
   }, []);
 

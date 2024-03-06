@@ -6,7 +6,8 @@ import { getNotificationsApi, notificationStatusApi } from "../../helpers/api/no
 
 function* getNotifications(): SagaIterator {
   try {
-    const response = yield call(getNotificationsApi);
+    
+    const response = yield call(getNotificationsApi); 
     const data = response.data.data;
     console.log("response.data---------->", response.data);
 
