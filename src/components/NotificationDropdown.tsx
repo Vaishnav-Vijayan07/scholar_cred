@@ -43,8 +43,6 @@ interface NotificationContainerStyle {
 const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
   const dispatch = useDispatch();
 
-  console.log("notifications------------->", notifications);
-
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [notificationContentStyle, setNotificationContentStyles] = useState<NotificationContainerStyle>(notificationContainerStyle);
 
