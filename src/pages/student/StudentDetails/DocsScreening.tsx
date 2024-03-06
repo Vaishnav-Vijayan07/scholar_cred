@@ -78,38 +78,91 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
     setSelectedFile((prevFiles: any) => ({ ...prevFiles, [key]: file }));
   };
 
+  // const onClick = useCallback(async () => {
+  //   var zip = new JSZip();
+
+  //   zip.file("ReadMe.txt", "Open the documents folder to see all files.\n");
+
+  //   const documentsFolder = zip.folder("documents");
+
+  //   const downloadPromises = Object.entries(ImageUrls).map(async ([key, value]: any) => {
+  //     if (value) {
+  //       try {
+  //         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}${value}`, {
+  //           responseType: "blob",
+  //         });
+
+  //         console.log("response ===>", response);
+
+  //         const extension = getFileExtension(value);
+  //         console.log("extension ==>", extension);
+
+  //         const blobData = response.data;
+
+  //         // Handle different file types
+  //         if (["pdf", "txt", "png", "jpeg", "jpg", "xlsx"].includes(extension.toLowerCase())) {
+  //           documentsFolder?.file(`${key.replace("_url", "")}.${extension}`, blobData);
+  //         } else {
+  //           // Handle other file types if needed
+  //         }
+
+  //         await Promise.all(downloadPromises);
+
+  //         zip.generateAsync({ type: "blob" }).then(function (content) {
+  //           saveAs(content, "Documents.zip");
+  //         });
+  //       } catch (error) {
+  //         console.error("Error fetching data:", error);
+  //         // Handle errors here
+  //       }
+  //     }
+  //   });
+  // }, [ImageUrls]);
+
   const onClick = useCallback(async () => {
-    var zip = new JSZip();
+    try {
+      var zip = new JSZip();
+      zip.file("ReadMe.txt", "Open the documents folder to see all files.\n");
+      const documentsFolder = zip.folder("documents");
 
-    zip.file("ReadMe.txt", "Open the documents folder to see all files.\n");
+      // Use Promise.all to wait for all file downloads
+      await Promise.all(
+        Object.entries(ImageUrls).map(async ([key, value]: any) => {
+          if (value) {
+            try {
+              const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}${value}`, {
+                responseType: "blob",
+              });
 
-    const documentsFolder = zip.folder("documents");
+              console.log("response ===>", response);
 
-    const downloadPromises = Object.entries(ImageUrls).map(async ([key, value]: any) => {
-      if (value) {
-        const res = await fetch(`http://localhost:3002/${value}`, {
-          method: "GET",
-          mode: "no-cors",
-        });
-        console.log("res===>", res);
-        const extension = getFileExtension(value);
-        console.log("extension==>", extension);
-        const blobData = await res.blob();
+              const extension = getFileExtension(value);
+              console.log("extension ==>", extension);
 
-        // Handle different file types
-        if (["pdf", "txt", "png", "jpeg", "jpg", "xlsx"].includes(extension.toLowerCase())) {
-          documentsFolder?.file(`${key.replace("_url", "")}.${extension}`, blobData);
-        } else {
-          // Handle other file types if needed
-        }
-      }
-    });
+              const blobData = response.data;
 
-    await Promise.all(downloadPromises);
+              // Handle different file types
+              if (["pdf", "txt", "png", "jpeg", "jpg", "xlsx"].includes(extension.toLowerCase())) {
+                documentsFolder?.file(`${key.replace("_url", "")}.${extension}`, blobData);
+              } else {
+                // Handle other file types if needed
+              }
+            } catch (error) {
+              console.error("Error fetching data:", error);
+              // Handle errors here
+            }
+          }
+        })
+      );
 
-    zip.generateAsync({ type: "blob" }).then(function (content) {
-      saveAs(content, "Documents.zip");
-    });
+      // Generate and save the ZIP file after all files are downloaded
+      zip.generateAsync({ type: "blob" }).then(function (content) {
+        saveAs(content, "Documents.zip");
+      });
+    } catch (error) {
+      console.error("Error in onClick:", error);
+      // Handle errors here
+    }
   }, [ImageUrls]);
 
   const fetchDataFromAPI = async () => {

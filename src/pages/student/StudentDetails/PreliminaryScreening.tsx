@@ -23,6 +23,7 @@ interface FormInputProps {
   preliminaryDetails: any;
   preliminaryLoading: boolean;
   studentId: string;
+  getStudentDataById: any;
 }
 
 export interface FormDataTypes {
@@ -41,7 +42,7 @@ const StaffInitialState = {
   university_details: "",
 };
 
-const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, preliminaryLoading, studentId }: FormInputProps) => {
+const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, preliminaryLoading, studentId, getStudentDataById }: FormInputProps) => {
   const [applicationStatus, setApplicationStatus] = useState("");
   const [programType, setProgramType] = useState("");
   const [primaryApplicant, setPrimaryApplicant] = useState("");
@@ -90,23 +91,28 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
   };
 
   const handleSubmit = () => {
-    dispatch(
-      savePreliminaryDetails(
-        studentId,
-        formData.name,
-        formData.email,
-        formData.whatsapp_number,
-        formData.destination_country,
-        applicationStatus,
-        programType,
-        formData.university_details,
-        primaryApplicant,
-        typeOfProfossion,
-        salaryRange,
-        collatralItem,
-        ""
-      )
-    );
+    try {
+      dispatch(
+        savePreliminaryDetails(
+          studentId,
+          formData.name,
+          formData.email,
+          formData.whatsapp_number,
+          formData.destination_country,
+          applicationStatus,
+          programType,
+          formData.university_details,
+          primaryApplicant,
+          typeOfProfossion,
+          salaryRange,
+          collatralItem,
+          ""
+        )
+      );
+      getStudentDataById();
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <>

@@ -100,6 +100,10 @@ const Profile = () => {
       });
   };
 
+  const getStudentDataById = () => {
+    dispatch(getStudentById(id ? id : ""));
+  };
+
   const handleAppprove = () => {
     setIsLoading(true);
     axios
@@ -247,6 +251,7 @@ const Profile = () => {
                       preliminaryDetails={preliminaryDetails}
                       preliminaryLoading={preliminaryLoading}
                       studentId={id || ""}
+                      getStudentDataById={getStudentDataById}
                     />
                   </Tab.Pane>
 
