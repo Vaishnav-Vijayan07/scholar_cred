@@ -22,6 +22,9 @@ const DirectStudents = () => {
     initialLoading: state?.Students.initialLoading,
   }));
 
+  console.log(state);
+  
+
   const { user, Authloading, credStaff } = useSelector((state: RootState) => ({
     user: state.Auth.user,
     credStaff: state.AdminStaff.adminStaff.data,
