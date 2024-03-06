@@ -85,7 +85,7 @@ function deleteStudent(id: string) {
 
 function approveStudentApi(id: string) {
   const baseUrl = "/enable_student";
-  return api.delete(`${baseUrl}?id=${id}`);
+  return api.create(`${baseUrl}?id=${id}`,{});
 }
 
 function deleteStudentPermanent(id: string) {

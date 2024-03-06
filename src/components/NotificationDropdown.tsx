@@ -44,6 +44,10 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
   const dispatch = useDispatch();
 
   console.log(notifications);
+  
+
+
+
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [notificationContentStyle, setNotificationContentStyles] =

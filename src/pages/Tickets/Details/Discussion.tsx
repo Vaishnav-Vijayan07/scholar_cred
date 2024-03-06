@@ -15,7 +15,7 @@ type Comment = {
   user_id: number;
   author: string;
   author_avatar: string | null;
-}
+};
 
 type User = {
   user_id: number;
@@ -29,15 +29,19 @@ type User = {
   image_url: string | null;
   Avatar: string;
   token: string;
-}
+};
 
 type Props = {
   comments: Comment[];
   ticket_id: string;
   user: User;
-}
+};
 
 const Discussion = ({ comments, ticket_id, user }: Props) => {
+  console.log(user);
+
+  const roles = ["CRED_ADMIN", "CRED_STAFF"];
+
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
 
@@ -56,15 +60,11 @@ const Discussion = ({ comments, ticket_id, user }: Props) => {
           {comments.map((item: any) => (
             <div className="d-flex gap-3" key={item.id}>
               <div>
-                {
-                  item.author_avatar ?
-                    <Avatar name={item.author} image={item.author_avatar} />
-                    :
-                    <Avatar name={item.author} image={null}
-
-                    />
-                }
-
+                {item.author_avatar ? (
+                  <Avatar name={item.author} image={item.author_avatar} />
+                ) : (
+                  <Avatar name={item.author} image={null} />
+                )}
               </div>
               <div className="w-100">
                 <h5 className="mt-0 mb-1">
@@ -83,28 +83,30 @@ const Discussion = ({ comments, ticket_id, user }: Props) => {
             </div>
           ))}
 
-          <div className="border rounded mt-4">
-            <form className="comment-area-box">
-              <textarea
-                rows={3}
-                className="form-control border-0 resize-none"
-                placeholder="Your comment..."
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-              <div className="p-2 bg-light d-flex justify-content-between align-items-center">
-                <button
-                  onClick={handleCommentSubmit}
-                  disabled={comment === ""}
-                  type="button"
-                  className="btn btn-sm btn-success"
-                >
-                  <i className="mdi mdi-send me-1"></i>
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
+          {roles.includes(user.role_name) && (
+            <div className="border rounded mt-4">
+              <form className="comment-area-box">
+                <textarea
+                  rows={3}
+                  className="form-control border-0 resize-none"
+                  placeholder="Your comment..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                />
+                <div className="p-2 bg-light d-flex justify-content-between align-items-center">
+                  <button
+                    onClick={handleCommentSubmit}
+                    disabled={comment === ""}
+                    type="button"
+                    className="btn btn-sm btn-success"
+                  >
+                    <i className="mdi mdi-send me-1"></i>
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
         </Card.Body>
       </Card>
     </>

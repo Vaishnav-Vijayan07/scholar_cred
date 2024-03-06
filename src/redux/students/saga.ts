@@ -180,6 +180,9 @@ function* getStudentByConsultants({ payload: { consultant_id } }: ConsultantStaf
 function* approveStudent({ payload: { student_id } }: any): SagaIterator {
   try {
     const response = yield call(approveStudentApi, student_id)
+
+    console.log(response);
+    
     const message = response.data.message
     yield put(studentApiResponseSuccess(StudentActionTypes.APPROVE_STUDENT, message))
     yield put(getStudent(1))
