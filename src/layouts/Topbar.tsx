@@ -258,6 +258,7 @@ const Topbar = ({
   // };
 
   useEffect(() => {
+    
     dispatch(getNotifications());
   }, []);
 
