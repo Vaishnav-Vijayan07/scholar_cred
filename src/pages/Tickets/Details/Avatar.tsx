@@ -2,10 +2,10 @@ import React from "react";
 
 type Props = {
   name: string;
+  image?: string | null;
 };
 
-function Avatar({ name }: Props) {
-  const firstLetter = name ? name.charAt(0).toUpperCase() : "A";
+function Avatar({ name, image }: Props) {
   return (
     <div
       className="rounded-circle avatar-xs"
@@ -20,7 +20,18 @@ function Avatar({ name }: Props) {
         fontWeight: "bold",
       }}
     >
-      {firstLetter}
+      {image ? (
+        <img
+          className="rounded-circle"
+          src={`${process.env.REACT_APP_BACKEND_URL}${image}`}
+          alt="Image not loaded"
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      ) : name ? (
+        name.charAt(0).toUpperCase()
+      ) : (
+        "A"
+      )}
     </div>
   );
 }

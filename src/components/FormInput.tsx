@@ -15,16 +15,8 @@ interface PasswordInputProps {
 }
 
 /* Password Input */
-const PasswordInput = ({
-  name,
-  placeholder,
-  refCallback,
-  errors,
-  control,
-  register,
-  className,
-}: PasswordInputProps) => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+const PasswordInput = ({ name, placeholder, refCallback, errors, control, register, className }: PasswordInputProps) => {
+  const [showPassword, setShowPassword] = useState<boolean>(true);
 
   return (
     <>
@@ -45,7 +37,7 @@ const PasswordInput = ({
         />
         <div
           className={classNames("input-group-text", "input-group-password", {
-            "show-password": showPassword,
+            "show-password": !showPassword,
           })}
           data-password={showPassword ? "true" : "false"}
         >
@@ -94,18 +86,12 @@ const FormInput = ({
   ...otherProps
 }: FormInputProps) => {
   // handle input type
-  const comp =
-    type === "textarea" ? "textarea" : type === "select" ? "select" : "input";
+  const comp = type === "textarea" ? "textarea" : type === "select" ? "select" : "input";
 
   return (
     <>
       {type === "hidden" ? (
-        <input
-          type={type}
-          name={name}
-          {...(register ? register(name) : {})}
-          {...otherProps}
-        />
+        <input type={type} name={name} {...(register ? register(name) : {})} {...otherProps} />
       ) : (
         <>
           {type === "password" ? (
@@ -114,20 +100,10 @@ const FormInput = ({
                 {label ? (
                   <>
                     {" "}
-                    <Form.Label className={labelClassName}>
-                      {label}
-                    </Form.Label>{" "}
-                    {children}{" "}
+                    <Form.Label className={labelClassName}>{label}</Form.Label> {children}{" "}
                   </>
                 ) : null}
-                <PasswordInput
-                  name={name}
-                  placeholder={placeholder}
-                  refCallback={refCallback}
-                  errors={errors!}
-                  register={register}
-                  className={className}
-                />
+                <PasswordInput name={name} placeholder={placeholder} refCallback={refCallback} errors={errors!} register={register} className={className} />
 
                 {errors && errors[name] ? (
                   <Form.Control.Feedback type="invalid" className="d-block">
@@ -155,18 +131,12 @@ const FormInput = ({
                       {...otherProps}
                     />
 
-                    {errors && errors[name] ? (
-                      <Form.Control.Feedback type="invalid">
-                        {errors[name]["message"]}
-                      </Form.Control.Feedback>
-                    ) : null}
+                    {errors && errors[name] ? <Form.Control.Feedback type="invalid">{errors[name]["message"]}</Form.Control.Feedback> : null}
                   </Form.Group>
                 </>
               ) : (
                 <Form.Group className={containerClass}>
-                  {label ? (
-                    <Form.Label className={labelClassName}>{label}</Form.Label>
-                  ) : null}
+                  {label ? <Form.Label className={labelClassName}>{label}</Form.Label> : null}
 
                   <Form.Control
                     type={type}
@@ -187,11 +157,7 @@ const FormInput = ({
                     {children ? children : null}
                   </Form.Control>
 
-                  {errors && errors[name] ? (
-                    <Form.Control.Feedback type="invalid">
-                      {errors[name]["message"]}
-                    </Form.Control.Feedback>
-                  ) : null}
+                  {errors && errors[name] ? <Form.Control.Feedback type="invalid">{errors[name]["message"]}</Form.Control.Feedback> : null}
                 </Form.Group>
               )}
             </>

@@ -22,6 +22,9 @@ const DirectStudents = () => {
     initialLoading: state?.Students.initialLoading,
   }));
 
+  console.log(state);
+  
+
   const { user, Authloading, credStaff } = useSelector((state: RootState) => ({
     user: state.Auth.user,
     credStaff: state.AdminStaff.adminStaff.data,
@@ -57,10 +60,10 @@ const DirectStudents = () => {
     <React.Fragment>
       <PageTitle
         breadCrumbItems={[
-          { label: "Student Management", path: "/users/students" },
+          { label: "Student Management", path: "/cred-admin/direct-students" },
           {
             label: "Direct Students",
-            path: "/users/direct-students",
+            path: "/cred-admin/direct-students",
             active: true,
           },
         ]}

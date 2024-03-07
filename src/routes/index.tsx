@@ -9,12 +9,12 @@ import PrivateRoute from "./PrivateRoute";
 
 // auth2
 const Login2 = React.lazy(() => import("../pages/auth2/Login2"));
+const StudentLogin = React.lazy(() => import("../pages/studentAuth/StudentLogin"));
 const Logout2 = React.lazy(() => import("../pages/auth2/Logout2"));
 const Register2 = React.lazy(() => import("../pages/auth2/Register2"));
 const Confirm2 = React.lazy(() => import("../pages/auth2/Confirm2"));
-const ForgetPassword2 = React.lazy(
-  () => import("../pages/auth2/ForgetPassword2")
-);
+const ForgetPassword2 = React.lazy(() => import("../pages/auth2/ForgetPassword2"));
+const NotFound = React.lazy(() => import("../pages/errors/Error404"));
 const LockScreen2 = React.lazy(() => import("../pages/auth2/LockScreen2"));
 const SignInSignUp2 = React.lazy(() => import("../pages/auth2/SignInSignUp2"));
 // dashboard
@@ -23,27 +23,17 @@ const ProfilePage = React.lazy(() => import("../pages/profile"));
 
 // user pages
 const Consultant = React.lazy(() => import("../pages/users/Consultant"));
-const ConsultantStaff = React.lazy(
-  () => import("../pages/users/ConsultantStaff")
-);
-const ConsultantDetails = React.lazy(
-  () => import("../pages/users/ConsultantDetails")
-);
+const ConsultantStaff = React.lazy(() => import("../pages/users/ConsultantStaff"));
+const ConsultantDetails = React.lazy(() => import("../pages/users/ConsultantDetails"));
 const Staff = React.lazy(() => import("../pages/users/Staff"));
 const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
 const Tickets = React.lazy(() => import("../pages/Tickets/List/ManageTickets"));
-const TicketDetails = React.lazy(()=>import("../pages/Tickets/Details"))
-const ClosedTickets = React.lazy(
-  () => import("../pages/Tickets/List/ManageClosedTickets")
-);
-const ApplicationStatusManagement = React.lazy(
-  () => import("../pages/super_admin/ApplicationStatusManagement")
-);
+const TicketDetails = React.lazy(() => import("../pages/Tickets/Details"));
+const ClosedTickets = React.lazy(() => import("../pages/Tickets/List/ManageClosedTickets"));
+const ApplicationStatusManagement = React.lazy(() => import("../pages/super_admin/ApplicationStatusManagement"));
 const LoanStatus = React.lazy(() => import("../pages/super_admin/LoanStatus"));
-const InternalStatus = React.lazy(
-  () => import("../pages/super_admin/InternalStatus")
-);
+const InternalStatus = React.lazy(() => import("../pages/super_admin/InternalStatus"));
 
 // Students
 const AllStudents = React.lazy(() => import("../pages/student/AllStudents"));
@@ -53,14 +43,10 @@ const StudentAdminView = React.lazy(() => import("../pages/student/AdminStudentL
 const StudentAdminViewIntake = React.lazy(() => import("../pages/student/AdminStudentList/StudentAdminViewPending"));
 const DirectStudents = React.lazy(() => import("../pages/student/AdminStudentList/DirectStudents"));
 const RegisteredStudents = React.lazy(() => import("../pages/student/AdminStudentList/RegisteredStudents"));
+const DeletedStudents = React.lazy(() => import("../pages/student/AdminStudentList/DeletedStudents"));
 
-
-const StudentDetails = React.lazy(
-  () => import("../pages/student/StudentDetails")
-);
-const StudentDetailsConsultant = React.lazy(
-  () => import("../pages/student/StudentDetailsConsultant")
-);
+const StudentDetails = React.lazy(() => import("../pages/student/StudentDetails"));
+const StudentDetailsConsultant = React.lazy(() => import("../pages/student/StudentDetailsConsultant"));
 
 export interface RoutesProps {
   path: RouteProps["path"];
@@ -84,32 +70,13 @@ const dashboardRoutes: RoutesProps = {
       path: "/",
       name: "Root",
       element: <Navigate to="/dashboard" />,
-      roles: [
-        "CRED_ADMIN",
-        "CONSULTANT_ADMIN",
-        "SUPER_USER",
-        "CRED_STAFF",
-        "CONSULTANT",
-        "CONSULTANT_STAFF",
-      ],
+      roles: ["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF"],
       route: PrivateRoute,
     },
     {
       path: "/dashboard",
       name: "Dashboard",
-      element: (
-        <PrivateRoute
-          roles={[
-            "CRED_ADMIN",
-            "CONSULTANT_ADMIN",
-            "SUPER_USER",
-            "CRED_STAFF",
-            "CONSULTANT",
-            "CONSULTANT_STAFF",
-          ]}
-          component={Dashboard4}
-        />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF"]} component={Dashboard4} />,
       route: PrivateRoute,
     },
   ],
@@ -125,39 +92,15 @@ const crmAppRoutes = {
     {
       path: "/apps/Tickets",
       name: "Tickets",
-      element: (
-        <PrivateRoute
-          roles={[
-            "CRED_ADMIN",
-            "CONSULTANT_ADMIN",
-            "SUPER_USER",
-            "CRED_STAFF",
-            "CONSULTANT",
-            "CONSULTANT_STAFF",
-          ]}
-          component={Tickets}
-        />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF"]} component={Tickets} />,
       route: PrivateRoute,
     },
     {
       path: "/apps/Tickets-details/:id",
       name: "Ticket Details",
-      element: (
-        <PrivateRoute
-          roles={[
-            "CRED_ADMIN",
-            "CONSULTANT_ADMIN",
-            "SUPER_USER",
-            "CRED_STAFF",
-            "CONSULTANT",
-            "CONSULTANT_STAFF",
-          ]}
-          component={TicketDetails}
-        />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN", "CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF"]} component={TicketDetails} />,
       route: PrivateRoute,
-    }
+    },
   ],
 };
 
@@ -171,136 +114,73 @@ const userRoutes = {
     {
       path: "/users/consultant",
       name: "Consultant",
-      element: (
-        <PrivateRoute
-          roles={["CRED_ADMIN", "SUPER_USER"]}
-          component={Consultant}
-        />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER"]} component={Consultant} />,
       route: PrivateRoute,
     },
     {
       path: "/users/staff",
       name: "Staff",
-      element: (
-        <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER"]} component={Staff} />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER"]} component={Staff} />,
       route: PrivateRoute,
     },
     {
       path: "/users/consultant/:id",
       name: "Consultant details",
-      element: (
-        <PrivateRoute
-          roles={["CRED_ADMIN", "SUPER_USER"]}
-          component={ConsultantDetails}
-        />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER"]} component={ConsultantDetails} />,
       route: PrivateRoute,
     },
     {
       path: "/users/students",
       name: "Students",
-      element: (
-        <PrivateRoute
-          roles={[
-            "SUPER_USER",
-            "CONSULTANT_ADMIN",
-            "CONSULTANT_STAFF",
-            "CRED_STAFF",
-            "CONSULTANT_STAFF",
-          ]}
-          component={AllStudents}
-        />
-      ),
+      element: <PrivateRoute roles={["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={AllStudents} />,
       route: PrivateRoute,
     },
     {
       path: "/users/intake-students",
       name: "Students",
-      element: (
-        <PrivateRoute
-          roles={[
-            "SUPER_USER",
-            "CONSULTANT_ADMIN",
-            "CONSULTANT_STAFF",
-            "CRED_STAFF",
-            "CONSULTANT_STAFF",
-          ]}
-          component={IntakeStudents}
-        />
-      ),
+      element: <PrivateRoute roles={["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={IntakeStudents} />,
       route: PrivateRoute,
     },
     {
       path: "/cred-admin/students",
       name: "Students",
-      element: (
-        <PrivateRoute roles={["CRED_ADMIN"]} component={StudentAdminView} />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN"]} component={StudentAdminView} />,
       route: PrivateRoute,
     },
     {
       path: "/cred-admin/pending-students",
       name: "Students",
-      element: (
-        <PrivateRoute
-          roles={["CRED_ADMIN"]}
-          component={StudentAdminViewIntake}
-        />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN"]} component={StudentAdminViewIntake} />,
       route: PrivateRoute,
     },
     {
       path: "/cred-admin/registered-students",
       name: "Students",
-      element: (
-        <PrivateRoute roles={["CRED_ADMIN"]} component={RegisteredStudents} />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN","CRED_STAFF"]} component={RegisteredStudents} />,
       route: PrivateRoute,
     },
     {
       path: "/cred-admin/direct-students",
       name: "Students",
-      element: (
-        <PrivateRoute roles={["CRED_ADMIN"]} component={DirectStudents} />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN","CRED_STAFF"]} component={DirectStudents} />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/cred-admin/deleted-students",
+      name: "Students",
+      element: <PrivateRoute roles={["CRED_ADMIN"]} component={DeletedStudents} />,
       route: PrivateRoute,
     },
     {
       path: "/users/student-details/:id",
       name: "Student Details",
-      element: (
-        <PrivateRoute
-          roles={[
-            "CRED_ADMIN",
-            "SUPER_USER",
-            "CONSULTANT_ADMIN",
-            "CONSULTANT_STAFF",
-            "CRED_STAFF",
-            "CONSULTANT_STAFF",
-          ]}
-          component={StudentDetails}
-        />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={StudentDetails} />,
       route: PrivateRoute,
     },
     {
       path: "/users/student-details-consultant/:id",
       name: "Student Details Consultant",
-      element: (
-        <PrivateRoute
-          roles={[
-            "CRED_ADMIN",
-            "SUPER_USER",
-            "CONSULTANT_ADMIN",
-            "CONSULTANT_STAFF",
-            "CRED_STAFF",
-            "CONSULTANT_STAFF",
-          ]}
-          component={StudentDetailsConsultant}
-        />
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF", "CONSULTANT_STAFF"]} component={StudentDetailsConsultant} />,
       route: PrivateRoute,
     },
   ],
@@ -316,12 +196,7 @@ const credadminRoutes = {
     {
       path: "/cred_admin/cred_user_management",
       name: "AdminUsers",
-      element: (
-        <PrivateRoute
-          roles={["SUPER_USER", "CRED_STAFF", "CONSULTANT"]}
-          component={AdminUsers}
-        />
-      ),
+      element: <PrivateRoute roles={["SUPER_USER", "CRED_STAFF", "CONSULTANT"]} component={AdminUsers} />,
       route: PrivateRoute,
     },
   ],
@@ -337,12 +212,7 @@ const consultantRoutes = {
     {
       path: "/consultant-users/staff",
       name: "Staff",
-      element: (
-        <PrivateRoute
-          roles={["CONSULTANT_ADMIN"]}
-          component={ConsultantStaff}
-        />
-      ),
+      element: <PrivateRoute roles={["CONSULTANT_ADMIN"]} component={ConsultantStaff} />,
       route: PrivateRoute,
     },
   ],
@@ -352,34 +222,13 @@ const profileRoutes = {
   path: "/profile",
   name: "Profile",
   route: PrivateRoute,
-  roles: [
-    "CONSULTANT_ADMIN",
-    "SUPER_USER",
-    "CRED_STAFF",
-    "CONSULTANT",
-    "CONSULTANT_STAFF",
-    "STUDENT",
-    "CRED_ADMIN",
-  ],
+  roles: ["CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF", "STUDENT", "CRED_ADMIN"],
   icon: "users",
   children: [
     {
       path: "/profile/details",
       name: "Profile",
-      element: (
-        <PrivateRoute
-          roles={[
-            "CONSULTANT_ADMIN",
-            "SUPER_USER",
-            "CRED_STAFF",
-            "CONSULTANT",
-            "CONSULTANT_STAFF",
-            "STUDENT",
-            "CRED_ADMIN",
-          ]}
-          component={ProfilePage}
-        />
-      ),
+      element: <PrivateRoute roles={["CONSULTANT_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT", "CONSULTANT_STAFF", "STUDENT", "CRED_ADMIN"]} component={ProfilePage} />,
       route: PrivateRoute,
     },
   ],
@@ -395,51 +244,25 @@ const superAdminRoutes = {
     {
       path: "/status/status_management",
       name: "Status",
-      element: (
-        <PrivateRoute
-          roles={["SUPER_USER", "CRED_ADMIN"]}
-          component={ApplicationStatusManagement}
-        />
-      ),
+      element: <PrivateRoute roles={["SUPER_USER", "CRED_ADMIN"]} component={ApplicationStatusManagement} />,
       route: PrivateRoute,
     },
     {
       path: "/status/loan_status",
       name: "Loan Status",
-      element: (
-        <PrivateRoute
-          roles={["SUPER_USER", "CRED_ADMIN"]}
-          component={LoanStatus}
-        />
-      ),
+      element: <PrivateRoute roles={["SUPER_USER", "CRED_ADMIN"]} component={LoanStatus} />,
       route: PrivateRoute,
     },
     {
       path: "/status/internal_status",
       name: "Internal Status",
-      element: (
-        <PrivateRoute
-          roles={["SUPER_USER", "CRED_ADMIN"]}
-          component={InternalStatus}
-        />
-      ),
+      element: <PrivateRoute roles={["SUPER_USER", "CRED_ADMIN"]} component={InternalStatus} />,
       route: PrivateRoute,
     },
     {
       path: "/apps/closed-tickets",
       name: "Loan Status",
-      element: (
-        <PrivateRoute
-          roles={[
-            "CRED_ADMIN",
-            "SUPER_USER",
-            "CONSULTANT_ADMIN",
-            "CONSULTANT_STAFF",
-            "CRED_STAFF",
-          ]}
-          component={ClosedTickets}
-        /> 
-      ),
+      element: <PrivateRoute roles={["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"]} component={ClosedTickets} />,
       route: PrivateRoute,
     },
   ],
@@ -503,6 +326,18 @@ const otherPublicRoutes = [
     element: <ForbiddenPage />,
     route: Route,
   },
+  {
+    path: "/student/delete-data",
+    name: "forbidden",
+    element: <StudentLogin />,
+    route: Route,
+  },
+  {
+    path: "*",
+    name: "not-found",
+    element: <NotFound />,
+    route: Route,
+  },
 ];
 
 // flatten the list of all nested routes
@@ -521,21 +356,9 @@ const flattenRoutes = (routes: RoutesProps[]) => {
 };
 
 // All routes
-const authProtectedRoutes = [
-  dashboardRoutes,
-  ...appRoutes,
-  userRoutes,
-  consultantRoutes,
-  credadminRoutes,
-  superAdminRoutes,
-];
+const authProtectedRoutes = [dashboardRoutes, ...appRoutes, userRoutes, consultantRoutes, credadminRoutes, superAdminRoutes];
 const publicRoutes = [...authRoutes, ...otherPublicRoutes];
 
 const authProtectedFlattenRoutes = flattenRoutes([...authProtectedRoutes]);
 const publicProtectedFlattenRoutes = flattenRoutes([...publicRoutes]);
-export {
-  publicRoutes,
-  authProtectedRoutes,
-  authProtectedFlattenRoutes,
-  publicProtectedFlattenRoutes,
-};
+export { publicRoutes, authProtectedRoutes, authProtectedFlattenRoutes, publicProtectedFlattenRoutes };

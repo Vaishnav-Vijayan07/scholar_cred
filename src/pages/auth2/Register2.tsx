@@ -93,7 +93,7 @@ const Register2 = () => {
 
   /*
    * form validation schema
-  */
+   */
   const schemaResolver = yupResolver(
     yup.object().shape({
       fullname: yup.string().required(t("Please enter Fullname")),

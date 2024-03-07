@@ -152,12 +152,7 @@ interface TopbarProps {
   topbarDark?: boolean;
 }
 
-const Topbar = ({
-  hideLogo,
-  navCssClasses,
-  openLeftMenuCallBack,
-  topbarDark,
-}: TopbarProps) => {
+const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: TopbarProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { width } = useViewport();
 
@@ -168,17 +163,11 @@ const Topbar = ({
   const navbarCssClasses: string = navCssClasses || "";
   const containerCssClasses: string = !hideLogo ? "container-fluid" : "";
 
-  const { layoutType, leftSideBarType, notifications } = useSelector(
-    (state: RootState) => ({
-      layoutType: state.Layout.layoutType,
-      leftSideBarType: state.Layout.leftSideBarType,
-      notifications: state.Notifications.notifications,
-    })
-  );
-
-
-  console.log(notifications);
-  
+  const { layoutType, leftSideBarType, notifications } = useSelector((state: RootState) => ({
+    layoutType: state.Layout.layoutType,
+    leftSideBarType: state.Layout.leftSideBarType,
+    notifications: state.Notifications.notifications,
+  }));
 
   /**
    * Toggle the leftmenu when having mobile screen
@@ -187,9 +176,7 @@ const Topbar = ({
     if (width < 1140) {
       if (leftSideBarType === "full") {
         showLeftSideBarBackdrop();
-        document
-          .getElementsByTagName("html")[0]
-          .classList.add("sidebar-enable");
+        document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
       } else {
         dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       }
@@ -215,9 +202,7 @@ const Topbar = ({
     // backdrop.style.zIndex = '999'
     document.body.appendChild(backdrop);
 
-    if (
-      document.getElementsByTagName("html")[0]?.getAttribute("dir") !== "rtl"
-    ) {
+    if (document.getElementsByTagName("html")[0]?.getAttribute("dir") !== "rtl") {
       document.body.style.overflow = "hidden";
       if (width > 1140) {
         document.body.style.paddingRight = "15px";
@@ -225,9 +210,7 @@ const Topbar = ({
     }
 
     backdrop.addEventListener("click", function (e) {
-      document
-        .getElementsByTagName("html")[0]
-        .classList.remove("sidebar-enable");
+      document.getElementsByTagName("html")[0].classList.remove("sidebar-enable");
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       hideLeftSideBarBackdrop();
     });
@@ -258,6 +241,7 @@ const Topbar = ({
   // };
 
   useEffect(() => {
+    
     dispatch(getNotifications());
   }, []);
 
@@ -273,15 +257,7 @@ const Topbar = ({
                     <img src={logoSm} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img
-                      src={
-                        layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                          ? logoDark2
-                          : logoDark
-                      }
-                      alt=""
-                      height="30"
-                    />
+                    <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoDark2 : logoDark} alt="" height="30" />
                   </span>
                 </Link>
                 <Link to="/" className="logo logo-light text-center">
@@ -289,24 +265,13 @@ const Topbar = ({
                     <img src={logoSm} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img
-                      src={
-                        layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
-                          ? logoSm
-                          : logoSm
-                      }
-                      alt=""
-                      height="30"
-                    />
+                    <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoSm : logoSm} alt="" height="30" />
                   </span>
                 </Link>
               </div>
             )}
 
-            <button
-              className="button-toggle-menu"
-              onClick={handleLeftMenuCallBack}
-            >
+            <button className="button-toggle-menu" onClick={handleLeftMenuCallBack}>
               <i className="mdi mdi-menu" />
             </button>
           </div>
@@ -325,15 +290,11 @@ const Topbar = ({
               <ProfileDropdown
                 profilePic={
                   user?.Avatar !== "null"
-                    ? `${process.env.REACT_APP_BACKEND_URL}/${user?.Avatar}`
+                    ? `${process.env.REACT_APP_BACKEND_URL}${user?.Avatar}`
                     : AvatarLogo
                 }
                 menuItems={ProfileMenus}
-                username={
-                  user?.role_name == "ADMIN"
-                    ? user?.full_name
-                    : user?.full_name?.split(" ")[0]
-                }
+                username={user?.role_name == "ADMIN" ? user?.full_name : user?.full_name?.split(" ")[0]}
                 userTitle={user?.role_name?.split("_")?.join(" ")}
               />
             </li>

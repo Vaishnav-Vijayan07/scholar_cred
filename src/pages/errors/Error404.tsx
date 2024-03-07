@@ -4,14 +4,13 @@ import { Row, Col, Card } from "react-bootstrap";
 
 import logoDark from "../../assets/images/logo-dark.png";
 import logoLight from "../../assets/images/logo-light.png";
-import Banner from "../../assets/images/bg-auth.png";
 
 const Error404Svg = () => {
   return (
     <svg viewBox="0 0 600 200">
       <symbol id="s-text">
         <text textAnchor="middle" x="50%" y="50%" dy=".35em">
-          403!
+          404!
         </text>
       </symbol>
       <use className="text" href="#s-text"></use>
@@ -23,13 +22,18 @@ const Error404Svg = () => {
   );
 };
 
-const ForbiddenPage = () => {
+const Error404 = () => {
   useEffect(() => {
-    if (document.body) document.body.classList.remove("authentication-bg", "authentication-bg-pattern");
+    if (document.body)
+      document.body.classList.remove(
+        "authentication-bg",
+        "authentication-bg-pattern"
+      );
     if (document.body) document.body.classList.add("auth-fluid-pages", "pb-0");
 
     return () => {
-      if (document.body) document.body.classList.remove("auth-fluid-pages", "pb-0");
+      if (document.body)
+        document.body.classList.remove("auth-fluid-pages", "pb-0");
     };
   }, []);
 
@@ -43,7 +47,10 @@ const ForbiddenPage = () => {
               {/* logo */}
               <div className="auth-brand text-center text-lg-start">
                 <div className="auth-logo">
-                  <Link to="/" className="logo logo-dark text-center outline-none">
+                  <Link
+                    to="/"
+                    className="logo logo-dark text-center outline-none"
+                  >
                     <span className="logo-lg">
                       <img src={logoDark} alt="" height="22" />
                     </span>
@@ -64,23 +71,38 @@ const ForbiddenPage = () => {
                   </div>
 
                   <div className="text-center">
-                    <h3 className="mt-0 mb-2">Whoops! Access Denied </h3>
-                    <p className="text-muted mb-3">You do not have access to access this page or resource.</p>
-                    <Link to="/" className="btn btn-success waves-effect waves-light">
+                    <h3 className="mt-0 mb-2">Whoops! Page not found </h3>
+                    <p className="text-muted mb-3">
+                      It's looking like you may have taken a wrong turn. Don't
+                      worry... it happens to the best of us. You might want to
+                      check your internet connection. Here's a little tip that
+                      might help you get back on track.
+                    </p>
+                    <Link
+                      to="/"
+                      className="btn btn-success waves-effect waves-light"
+                    >
                       Back to Dashboard
                     </Link>
                   </div>
                 </Col>
               </Row>
+
+              <footer className="footer footer-alt">
+                <p className="text-muted">
+                  2015 - {new Date().getFullYear()} &copy; UBold theme by{" "}
+                  <Link to="#" className="text-muted">
+                    Coderthemes
+                  </Link>
+                </p>
+              </footer>
             </Card.Body>
           </div>
         </div>
-        <div className="auth-fluid-right text-center">
-          {/* <img src={Banner} alt="Logo" className="auth__banner" width={100} /> */}
-        </div>
+        <div className="auth-fluid-right text-center"></div>
       </div>
     </React.Fragment>
   );
 };
 
-export default ForbiddenPage;
+export default Error404;

@@ -14,12 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 // import { addStatus, deleteStatus, getStatus, updateStatus } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
-import {
-  addLoanStatus,
-  deleteLoanStatus,
-  getLoanStatus,
-  updateLoanStatus,
-} from "../../redux/actions";
+import { addLoanStatus, deleteLoanStatus, getLoanStatus, updateLoanStatus } from "../../redux/actions";
 import { FormDataTypes, statusTypes } from "./data";
 
 interface TableRecords {
@@ -76,19 +71,11 @@ const BasicInputElements = withSwal((props: any) => {
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
 
   //validation errors
-  const [validationErrors, setValidationErrors] = useState(
-    initialValidationState
-  );
+  const [validationErrors, setValidationErrors] = useState(initialValidationState);
 
   const validationSchema = yup.object().shape({
-    status_name: yup
-      .string()
-      .required("Status name is required")
-      .min(3, "Status name must be at least 3 characters long"),
-    status_description: yup
-      .string()
-      .required("Status description is required")
-      .min(3, "Status description must be at least 3 characters long"),
+    status_name: yup.string().required("Status name is required").min(3, "Status name must be at least 3 characters long"),
+    status_description: yup.string().required("Status description is required").min(3, "Status description must be at least 3 characters long"),
   });
 
   /*
@@ -150,26 +137,11 @@ const BasicInputElements = withSwal((props: any) => {
       await validationSchema.validate(formData, { abortEarly: false });
 
       if (isUpdate) {
-        dispatch(
-          updateLoanStatus(
-            formData.id,
-            formData.status_name.trim(),
-            formData.status_description.trim(),
-            formData.is_visible,
-            formData.status_type
-          )
-        );
+        dispatch(updateLoanStatus(formData.id, formData.status_name.trim(), formData.status_description.trim(), formData.is_visible, formData.status_type));
       } else {
         console.log(formData);
 
-        dispatch(
-          addLoanStatus(
-            formData.status_name.trim(),
-            formData.status_description.trim(),
-            formData.is_visible,
-            formData.status_type
-          )
-        );
+        dispatch(addLoanStatus(formData.status_name.trim(), formData.status_description.trim(), formData.is_visible, formData.status_type));
       }
 
       // Clear validation errors
@@ -218,9 +190,7 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Visibility",
       accessor: "is_visible",
       sort: false,
-      Cell: ({ row }: any) => (
-        <span>{row.original.is_visible ? "Yes" : " No"}</span>
-      ),
+      Cell: ({ row }: any) => <span>{row.original.is_visible ? "Yes" : " No"}</span>,
     },
     {
       Header: "Actions",
@@ -241,12 +211,7 @@ const BasicInputElements = withSwal((props: any) => {
           />
 
           {/* Delete Icon */}
-          <FeatherIcons
-            icon="trash-2"
-            size="15"
-            className="cursor-pointer text-secondary"
-            onClick={() => handleDelete(row.original.id)}
-          />
+          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.id)} />
         </div>
       ),
     },
@@ -279,22 +244,13 @@ const BasicInputElements = withSwal((props: any) => {
   console.log("error=====>", error);
 
   if (initialLoading) {
-    return (
-      <Spinner
-        animation="border"
-        style={{ position: "absolute", top: "50%", left: "50%" }}
-      />
-    );
+    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
   }
 
   return (
     <>
       <Row className="justify-content-between px-2">
-        <Modal
-          show={responsiveModal}
-          onHide={toggleResponsiveModal}
-          dialogClassName="modal-dialog-centered"
-        >
+        <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
           {/* <Col lg={5} className="bg-white p-3 mr-2"> */}
           <Form onSubmit={onSubmit}>
             <Modal.Header closeButton>
@@ -303,18 +259,8 @@ const BasicInputElements = withSwal((props: any) => {
             <Modal.Body>
               <Form.Group className="mb-3" controlId="status_name">
                 <Form.Label>Status Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter status name"
-                  name="status_name"
-                  value={formData.status_name}
-                  onChange={handleInputChange}
-                />
-                {validationErrors.status_name && (
-                  <Form.Text className="text-danger">
-                    {validationErrors.status_name}
-                  </Form.Text>
-                )}
+                <Form.Control type="text" placeholder="Enter status name" name="status_name" value={formData.status_name} onChange={handleInputChange} />
+                {validationErrors.status_name && <Form.Text className="text-danger">{validationErrors.status_name}</Form.Text>}
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="status_description">
@@ -327,22 +273,13 @@ const BasicInputElements = withSwal((props: any) => {
                   value={formData.status_description}
                   onChange={handleInputChange}
                 />
-                {validationErrors.status_description && (
-                  <Form.Text className="text-danger">
-                    {validationErrors.status_description}
-                  </Form.Text>
-                )}
+                {validationErrors.status_description && <Form.Text className="text-danger">{validationErrors.status_description}</Form.Text>}
               </Form.Group>
               <Row className="d-flex align-items-center ">
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="source">
                     <Form.Label>Status Types</Form.Label>
-                    <Form.Select
-                      name="status_type"
-                      value={formData.status_type}
-                      onChange={handleInputChange}
-                      aria-label="Default select example"
-                    >
+                    <Form.Select name="status_type" value={formData.status_type} onChange={handleInputChange} aria-label="Default select example">
                       <option disabled value="" selected>
                         Choose a value
                       </option>
@@ -355,49 +292,25 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Group className="mb-3" controlId="source">
                     <Form.Label>Visibility</Form.Label>
                     <div className="d-flex gap-3 align-items-center">
-                      <Form.Check
-                        type="radio"
-                        label="Yes"
-                        name="is_visible"
-                        id="yes"
-                        value="1"
-                        onChange={handleInputChange}
-                        checked={formData.is_visible == true}
-                      />
-                      <Form.Check
-                        type="radio"
-                        label="No"
-                        name="is_visible"
-                        id="no"
-                        value="0"
-                        onChange={handleInputChange}
-                        checked={formData.is_visible == false}
-                      />
+                      <Form.Check type="radio" label="Yes" name="is_visible" id="yes" value="1" onChange={handleInputChange} checked={formData.is_visible == true} />
+                      <Form.Check type="radio" label="No" name="is_visible" id="no" value="0" onChange={handleInputChange} checked={formData.is_visible == false} />
                     </div>
                   </Form.Group>
                 </Col>
               </Row>
             </Modal.Body>
             <Modal.Footer>
+              <Button type="submit" variant="success" id="button-addon2" className="mt-1 me-2">
+                {isUpdate ? "Update" : "Submit"}
+              </Button>
+
               <Button
                 variant="danger"
                 id="button-addon2"
-                className="mt-1 ms-2"
-                onClick={() =>
-                  isUpdate
-                    ? [handleCancelUpdate(), toggleResponsiveModal()]
-                    : toggleResponsiveModal()
-                }
+                className="mt-1"
+                onClick={() => (isUpdate ? [handleCancelUpdate(), toggleResponsiveModal()] : toggleResponsiveModal(), handleCancelUpdate())}
               >
                 {isUpdate ? "Cancel" : "Close"}
-              </Button>
-              <Button
-                type="submit"
-                variant="success"
-                id="button-addon2"
-                className="mt-1"
-              >
-                {isUpdate ? "Update" : "Submit"}
               </Button>
             </Modal.Footer>
             {/* </Col> */}
@@ -407,10 +320,7 @@ const BasicInputElements = withSwal((props: any) => {
         <Col className="form__card p-0">
           <Card className="bg-white">
             <Card.Body>
-              <Button
-                className="btn-sm btn-blue waves-effect waves-light float-end"
-                onClick={toggleResponsiveModal}
-              >
+              <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
                 <i className="mdi mdi-plus-circle"></i> Add Loan Status
               </Button>
               <h4 className="header-title mb-4">Manage Loan Status</h4>
@@ -436,14 +346,12 @@ const BasicInputElements = withSwal((props: any) => {
 const LoanStatusManagement = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { LoanStatus, loading, error, initialLoading } = useSelector(
-    (state: RootState) => ({
-      LoanStatus: state.LoanStatus.status.data,
-      loading: state.LoanStatus.loading,
-      error: state.LoanStatus.error,
-      initialLoading: state.LoanStatus.initialLoading,
-    })
-  );
+  const { LoanStatus, loading, error, initialLoading } = useSelector((state: RootState) => ({
+    LoanStatus: state.LoanStatus.status.data,
+    loading: state.LoanStatus.loading,
+    error: state.LoanStatus.error,
+    initialLoading: state.LoanStatus.initialLoading,
+  }));
 
   useEffect(() => {
     dispatch(getLoanStatus());
@@ -460,12 +368,7 @@ const LoanStatusManagement = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements
-            state={LoanStatus}
-            loading={loading}
-            error={error}
-            initialLoading={initialLoading}
-          />
+          <BasicInputElements state={LoanStatus} loading={loading} error={error} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>

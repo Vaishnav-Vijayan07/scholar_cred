@@ -3,12 +3,7 @@ import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { withSwal } from "react-sweetalert2";
 import { RootState } from "../../redux/store";
-import {
-  addInternalStatus,
-  deleteInternalStatus,
-  getInternalStatus,
-  updateInternalStatus,
-} from "../../redux/internalStatus/actions";
+import { addInternalStatus, deleteInternalStatus, getInternalStatus, updateInternalStatus } from "../../redux/internalStatus/actions";
 import FeatherIcons from "feather-icons-react";
 import PageTitle from "../../components/PageTitle";
 import { Button, Card, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
@@ -37,9 +32,7 @@ const BasicInputElements = withSwal((props: any) => {
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [formData, setFormData] = useState(internalInitialState);
-  const [validationErrors, setValidationErrors] = useState(
-    internalValidationState
-  );
+  const [validationErrors, setValidationErrors] = useState(internalValidationState);
 
   const handleCancelUpdate = () => {
     setIsUpdate(false);
@@ -48,7 +41,7 @@ const BasicInputElements = withSwal((props: any) => {
 
   const toggleResponsiveModal = () => {
     console.log(formData);
-    
+
     setResponsiveModal(!responsiveModal);
     setValidationErrors(internalValidationState);
     if (isUpdate) {
@@ -113,15 +106,8 @@ const BasicInputElements = withSwal((props: any) => {
       await validation.validate(formData, { abortEarly: false });
 
       const actionTodispatch = isUpdate
-        ? updateInternalStatus(
-            formData.id,
-            formData.status_name,
-            formData.status_description,
-          )
-        : addInternalStatus(
-            formData.status_name.trim(),
-            formData.status_description.trim(),
-          );
+        ? updateInternalStatus(formData.id, formData.status_name, formData.status_description)
+        : addInternalStatus(formData.status_name.trim(), formData.status_description.trim());
 
       dispatch(actionTodispatch);
 
@@ -176,34 +162,20 @@ const BasicInputElements = withSwal((props: any) => {
           />
 
           {/* Delete Icon */}
-          <FeatherIcons
-            icon="trash-2"
-            size="15"
-            className="cursor-pointer text-secondary"
-            onClick={() => handleDelete(row.original.id)}
-          />
+          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.id)} />
         </div>
       ),
     },
   ];
 
   if (initialLoading) {
-    return (
-      <Spinner
-        animation="border"
-        style={{ position: "absolute", top: "50%", left: "50%" }}
-      />
-    );
+    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
   }
 
   return (
     <>
       <Row className="justify-content-between px-2">
-        <Modal
-          show={responsiveModal}
-          onHide={toggleResponsiveModal}
-          dialogClassName="modal-dialog-centered"
-        >
+        <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
           {/* <Col lg={5} className="bg-white p-3 mr-2"> */}
           <Form onSubmit={onSubmit}>
             <Modal.Header closeButton>
@@ -212,18 +184,8 @@ const BasicInputElements = withSwal((props: any) => {
             <Modal.Body>
               <Form.Group className="mb-3" controlId="status_name">
                 <Form.Label>Status Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter status name"
-                  name="status_name"
-                  value={formData.status_name}
-                  onChange={handleInputChange}
-                />
-                {validationErrors.status_name && (
-                  <Form.Text className="text-danger">
-                    {validationErrors.status_name}
-                  </Form.Text>
-                )}
+                <Form.Control type="text" placeholder="Enter status name" name="status_name" value={formData.status_name} onChange={handleInputChange} />
+                {validationErrors.status_name && <Form.Text className="text-danger">{validationErrors.status_name}</Form.Text>}
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="status_description">
@@ -236,33 +198,21 @@ const BasicInputElements = withSwal((props: any) => {
                   value={formData.status_description}
                   onChange={handleInputChange}
                 />
-                {validationErrors.status_description && (
-                  <Form.Text className="text-danger">
-                    {validationErrors.status_description}
-                  </Form.Text>
-                )}
+                {validationErrors.status_description && <Form.Text className="text-danger">{validationErrors.status_description}</Form.Text>}
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
+              <Button type="submit" variant="success" id="button-addon2" className="mt-1 me-2">
+                {isUpdate ? "Update" : "Submit"}
+              </Button>
+
               <Button
                 variant="danger"
                 id="button-addon2"
-                className="mt-1 ms-2"
-                onClick={() =>
-                  isUpdate
-                    ? [handleCancelUpdate(), toggleResponsiveModal()]
-                    : toggleResponsiveModal()
-                }
+                className="mt-1"
+                onClick={() => (isUpdate ? [handleCancelUpdate(), toggleResponsiveModal()] : toggleResponsiveModal(), handleCancelUpdate())}
               >
                 {isUpdate ? "Cancel" : "Close"}
-              </Button>
-              <Button
-                type="submit"
-                variant="success"
-                id="button-addon2"
-                className="mt-1"
-              >
-                {isUpdate ? "Update" : "Submit"}
               </Button>
             </Modal.Footer>
             {/* </Col> */}
@@ -272,10 +222,7 @@ const BasicInputElements = withSwal((props: any) => {
         <Col className="form__card p-0">
           <Card className="bg-white">
             <Card.Body>
-              <Button
-                className="btn-sm btn-blue waves-effect waves-light float-end"
-                onClick={toggleResponsiveModal}
-              >
+              <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
                 <i className="mdi mdi-plus-circle"></i> Add Internal Status
               </Button>
               <h4 className="header-title mb-4">Manage Loan Status</h4>
@@ -300,14 +247,12 @@ const BasicInputElements = withSwal((props: any) => {
 
 const InternalStatus = () => {
   const dispatch = useDispatch();
-  const { InternalStatus, loading, error, initialLoading } = useSelector(
-    (state: RootState) => ({
-      InternalStatus: state.InternalStatus.status.data,
-      loading: state.InternalStatus.loading,
-      error: state.InternalStatus.error,
-      initialLoading: state.InternalStatus.initialLoading,
-    })
-  );
+  const { InternalStatus, loading, error, initialLoading } = useSelector((state: RootState) => ({
+    InternalStatus: state.InternalStatus.status.data,
+    loading: state.InternalStatus.loading,
+    error: state.InternalStatus.error,
+    initialLoading: state.InternalStatus.initialLoading,
+  }));
 
   useEffect(() => {
     dispatch(getInternalStatus());
@@ -328,12 +273,7 @@ const InternalStatus = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements
-            state={InternalStatus}
-            loading={loading}
-            error={error}
-            initialLoading={initialLoading}
-          />
+          <BasicInputElements state={InternalStatus} loading={loading} error={error} initialLoading={initialLoading} />
         </Col>
       </Row>
     </React.Fragment>

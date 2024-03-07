@@ -263,7 +263,7 @@ const BasicInputElements = withSwal((props: any) => {
   const handleCancelUpdate = () => {
     setIsUpdate(false);
     setFormData(ConsultantStaffInitialState);
-    setSelectedFile(null)
+    setSelectedFile(null);
   };
 
   const toggleResponsiveModal = () => {
@@ -272,20 +272,6 @@ const BasicInputElements = withSwal((props: any) => {
     if (isUpdate) {
       handleCancelUpdate();
     }
-  };
-
-  const setDemoData = () => {
-    setFormData((prev) => ({
-      ...prev,
-      first_name: "John",
-      last_name: "Doe",
-      username: "johndoe",
-      email: "john.doe@example.com",
-      phone: "9876545678",
-      image: "https://example.com/john-doe.jpg",
-      employee_id: "EMP001",
-      created_by: 1,
-    }));
   };
 
   useEffect(() => {
@@ -387,30 +373,27 @@ const BasicInputElements = withSwal((props: any) => {
               </Form.Group> */}
             </Modal.Body>
             <Modal.Footer>
+              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
+                {isUpdate ? "Update" : "Submit"}
+              </Button>
+
               <Button
                 variant="danger"
                 id="button-addon2"
                 disabled={loading}
-                className="mt-1 waves-effect waves-light me-2"
+                className="mt-1 waves-effect waves-light"
                 onClick={() => {
                   if (isUpdate) {
                     handleCancelUpdate();
                     toggleResponsiveModal();
                   } else {
                     toggleResponsiveModal();
+                    handleCancelUpdate();
                   }
                 }}
               >
                 {!isUpdate ? "close" : "Cancel"}
               </Button>
-
-              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
-                {isUpdate ? "Update" : "Submit"}
-              </Button>
-
-              {/* <Button variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading} onClick={() => setDemoData()}>
-                Add test data
-              </Button> */}
             </Modal.Footer>
 
             {/* )} */}

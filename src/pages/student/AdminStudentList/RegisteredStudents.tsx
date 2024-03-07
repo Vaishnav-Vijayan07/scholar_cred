@@ -62,10 +62,10 @@ const RegisteredStudents = () => {
     <React.Fragment>
       <PageTitle
         breadCrumbItems={[
-          { label: "Student Management", path: "/users/registered-students" },
+          { label: "Student Management", path: "/cred-admin/registered-students" },
           {
             label: "Direct Students",
-            path: "/users/registered-students",
+            path: "/cred-admin/registered-students",
             active: true,
           },
         ]}

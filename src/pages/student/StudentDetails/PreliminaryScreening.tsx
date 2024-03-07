@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { Control, FieldErrors } from "react-hook-form";
 import { FormInput } from "../../../components";
+import { useDispatch } from "react-redux";
+import { savePreliminaryDetails } from "../../../redux/actions";
 
 interface AboutProps {
   projectDetails: {
@@ -20,15 +22,39 @@ interface FormInputProps {
   control: Control<any>;
   preliminaryDetails: any;
   preliminaryLoading: boolean;
+  studentId: string;
+  getStudentDataById: any;
 }
 
-const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, preliminaryLoading }: FormInputProps) => {
+export interface FormDataTypes {
+  name: string;
+  email: string;
+  whatsapp_number: string;
+  destination_country: string;
+  university_details: string;
+}
+
+const StaffInitialState = {
+  name: "",
+  email: "",
+  whatsapp_number: "",
+  destination_country: "",
+  university_details: "",
+};
+
+const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, preliminaryLoading, studentId, getStudentDataById }: FormInputProps) => {
   const [applicationStatus, setApplicationStatus] = useState("");
   const [programType, setProgramType] = useState("");
   const [primaryApplicant, setPrimaryApplicant] = useState("");
   const [typeOfProfossion, setTypeOfProfossion] = useState("");
   const [salaryRange, setSalaryRange] = useState("");
   const [collatralItem, setCollatralItem] = useState("");
+  const [formData, setFormData] = useState<FormDataTypes>(StaffInitialState);
+
+  const dispatch = useDispatch();
+
+  console.log("formData", formData);
+  console.log("preliminaryDetails===>", preliminaryDetails);
 
   useEffect(() => {
     setApplicationStatus(preliminaryDetails?.application_status);
@@ -37,8 +63,57 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
     setTypeOfProfossion(preliminaryDetails?.type_of_profossion);
     setSalaryRange(preliminaryDetails?.salary_range);
     setCollatralItem(preliminaryDetails?.collatral_item);
+    setFormData({
+      name: preliminaryDetails?.name || "",
+      email: preliminaryDetails?.email || "",
+      whatsapp_number: preliminaryDetails?.whatsapp_number || "",
+      destination_country: preliminaryDetails?.destination_country || "",
+      university_details: preliminaryDetails?.university_details || "",
+    });
   }, [preliminaryDetails]);
 
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    // Limit the length to 10 characters
+    if (name == "whatsapp_number") {
+      const numericValue = value.replace(/\D/g, "");
+      const truncatedValue = numericValue.slice(0, 10);
+      setFormData({
+        ...formData,
+        [name]: truncatedValue,
+      });
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleSubmit = () => {
+    try {
+      dispatch(
+        savePreliminaryDetails(
+          studentId,
+          formData.name,
+          formData.email,
+          formData.whatsapp_number,
+          formData.destination_country,
+          applicationStatus,
+          programType,
+          formData.university_details,
+          primaryApplicant,
+          typeOfProfossion,
+          salaryRange,
+          collatralItem,
+          ""
+        )
+      );
+      getStudentDataById();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       <>
@@ -50,12 +125,14 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             <Form.Label>Full Name</Form.Label>
             <FormInput
               type="text"
-              name="fullname"
+              name="name"
               placeholder="Enter full name"
               containerClass={"mb-3"}
               register={register}
               key="firstname"
               errors={errors}
+              value={formData.name}
+              onChange={handleInputChange}
               control={control}
               defaultValue={preliminaryDetails?.name}
             />
@@ -70,9 +147,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
               containerClass={"mb-3"}
               register={register}
               key="email"
+              value={formData.email}
+              onChange={handleInputChange}
               errors={errors}
               control={control}
-              defaultValue={preliminaryDetails?.email}
             />
           </Col>
 
@@ -81,14 +159,15 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
 
             <FormInput
               type="number"
-              name="phone"
+              name="whatsapp_number"
               placeholder="Enter phone number"
               containerClass={"mb-3"}
               register={register}
-              key="phone"
+              key="whatsapp_number"
+              value={formData.whatsapp_number}
+              onChange={handleInputChange}
               errors={errors}
               control={control}
-              defaultValue={preliminaryDetails?.whatsapp_number}
             />
           </Col>
 
@@ -102,9 +181,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
               containerClass={"mb-3"}
               register={register}
               key="destination_country"
+              value={formData.destination_country}
+              onChange={handleInputChange}
               errors={errors}
               control={control}
-              defaultValue={preliminaryDetails?.destination_country}
             />
           </Col>
 
@@ -156,13 +236,14 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             <FormInput
               type="text"
               name="university_details"
-              placeholder="Enter phone number"
+              placeholder="Enter university details"
               containerClass={"mb-3"}
               register={register}
               key="university_details"
+              value={formData.university_details}
+              onChange={handleInputChange}
               errors={errors}
               control={control}
-              defaultValue={preliminaryDetails?.university_details}
             />
           </Col>
         </Row>
@@ -228,20 +309,6 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
               <option value=">40000/month">&gt;40000/month</option>
             </Form.Select>
           </Col>
-
-          {/* <Col xl={6} xxl={4}>
-            <Form.Label>
-               Salary Range
-            </Form.Label>
-            <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
-              <option value="" disabled>
-                Open this select menu
-              </option>
-              <option value="<30000/month">&lt;30000/month</option>
-              <option value="30-40000/month">30-40000/month</option>
-              <option value=">40000/month">&gt;40000/month</option>
-            </Form.Select>
-          </Col> */}
         </Row>
 
         <h5 className="mb-3 text-uppercase bg-light p-2 mt-3">
@@ -270,7 +337,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             </Form.Select>
           </Col>
 
-          <Button variant="primary" className="mt-4" type="submit">
+          <Button variant="primary" className="mt-4" type="submit" onClick={handleSubmit}>
             Submit
           </Button>
         </Row>

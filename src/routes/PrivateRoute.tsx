@@ -16,10 +16,6 @@ interface PrivateRouteProps {
 const PrivateRoute = ({ component: Component, roles, ...rest }: PrivateRouteProps) => {
   const api = new APICore();
 
-  // return (
-  //   <Route
-  //     {...rest}
-  //     render={(props: RouteProps) => {
   if (api.isUserAuthenticated() === false) {
     // not logged in so redirect to login page with the return url
     return (
@@ -35,20 +31,12 @@ const PrivateRoute = ({ component: Component, roles, ...rest }: PrivateRouteProp
 
   const loggedInUser = api.getLoggedInUser();
 
-  // check if route is restricted by role
-  // if (roles && roles.indexOf(loggedInUser.role) === -1) {
-  //   // role not authorised so redirect to login page
-  //   return <Navigate to={{ pathname: "/" }} />;
-  // }
   if (roles && !roles?.includes(loggedInUser?.role_name)) {
     // No matching role found, so redirect to the unauthorized page
     return <Navigate to={{ pathname: "/unauthorized" }} />;
   }
   // authorised so return component
   return <Component />;
-  // }}
-  // />
-  // );
 };
 
 export default PrivateRoute;

@@ -26,3 +26,24 @@ export function calculateTimeAgo(createdAt: number): string {
     }
   }
 }
+
+export const getFileExtension = (key: string) => {
+  const fileName = key.split("\\").pop(); // Extract the file name from the path
+  if (!fileName) return "txt"; // Default to txt extension if file name is not present
+
+  const fileParts = fileName.split("."); // Split file name into parts using the dot (.) separator
+  if (fileParts.length < 2) return "txt"; // If there is no file extension, default to txt
+
+  const fileExtension = fileParts.pop()!.toLowerCase(); // Get the last part as the file extension
+  switch (fileExtension) {
+    case "jpg":
+    case "jpeg":
+      return "jpeg"; // You can choose to handle jpg and jpeg as the same extension
+    case "pdf":
+    case "xlsx":
+    case "png":
+      return fileExtension;
+    default:
+      return "txt"; // Default to txt extension for unknown file types
+  }
+};

@@ -57,10 +57,10 @@ const PendingStudents = () => {
     <React.Fragment>
       <PageTitle
         breadCrumbItems={[
-          { label: "Student Management", path: "/users/students" },
+          { label: "Student Management", path: "/cred-admin/students" },
           {
-            label: "Students",
-            path: "/users/students",
+            label: "Students Intake",
+            path: "/cred-admin/students",
             active: true,
           },
         ]}

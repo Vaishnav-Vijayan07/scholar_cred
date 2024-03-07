@@ -37,7 +37,9 @@ const Profile = () => {
     CommentsData: state.Comments.comments.data,
   }));
 
-  console.log("StudentData---->", StudentData);
+  console.log("StudentData--------->", StudentData);
+
+  // console.log("StudentData---->", StudentData);
 
   const methods = useForm();
   const {
@@ -64,7 +66,7 @@ const Profile = () => {
     axios
       .get("loanStatus")
       .then((res) => {
-        console.log("res ==>", res.data);
+        // console.log("res ==>", res.data);
         setLoanStatus(res.data);
       })
       .catch((err) => console.log(err));
@@ -76,7 +78,7 @@ const Profile = () => {
     if (id) dispatch(getComment(parseInt(id)));
     if (id) getAttachments();
     getLoanStatus();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (!id) {
@@ -88,7 +90,7 @@ const Profile = () => {
     axios
       .post(`update_status/${id}`, { loan_status_id: status_id })
       .then((res) => {
-        console.log("res", res);
+        // console.log("res", res);
         showSuccessAlert("Status changed successfully");
         dispatch(getStudentById(id ? id : ""));
       })
@@ -96,6 +98,10 @@ const Profile = () => {
         console.log(err);
         showErrorAlert("Something went wrong..");
       });
+  };
+
+  const getStudentDataById = () => {
+    dispatch(getStudentById(id ? id : ""));
   };
 
   const handleAppprove = () => {
@@ -174,7 +180,7 @@ const Profile = () => {
                 </Row>
                 <div className="mt-3">
                   <Dropdown className="float-end" align="end">
-                    <Dropdown.Toggle className="cursor-pointer" variant="light">
+                    <Dropdown.Toggle className="cursor-pointer" variant="light" disabled={!StudentData?.status}>
                       Change status
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
@@ -207,13 +213,23 @@ const Profile = () => {
                   </Nav.Item>
 
                   <Nav.Item as="li" className="nav-item">
-                    <Nav.Link href="#" eventKey="detail_screening" className="nav-link cursor-pointer">
+                    <Nav.Link
+                      href="#"
+                      eventKey="detail_screening"
+                      className="nav-link cursor-pointer"
+                      //  disabled={StudentData?.loan_type ? false : true}
+                    >
                       Detail Screening
                     </Nav.Link>
                   </Nav.Item>
 
                   <Nav.Item as="li" className="nav-item">
-                    <Nav.Link href="#" eventKey="document_screening" className="nav-link cursor-pointer">
+                    <Nav.Link
+                      href="#"
+                      eventKey="document_screening"
+                      className="nav-link cursor-pointer"
+                      //  disabled={StudentData?.loan_type ? false : true}
+                    >
                       Docs screening
                     </Nav.Link>
                   </Nav.Item>
@@ -228,7 +244,15 @@ const Profile = () => {
                 <Tab.Content>
                   <Tab.Pane eventKey="preliminary_screening">
                     {/* <About projectDetails={projectDetails} /> */}
-                    <PreliminaryScreening register={register} errors={errors} control={control} preliminaryDetails={preliminaryDetails} preliminaryLoading={preliminaryLoading} />
+                    <PreliminaryScreening
+                      register={register}
+                      errors={errors}
+                      control={control}
+                      preliminaryDetails={preliminaryDetails}
+                      preliminaryLoading={preliminaryLoading}
+                      studentId={id || ""}
+                      getStudentDataById={getStudentDataById}
+                    />
                   </Tab.Pane>
 
                   <Tab.Pane eventKey="detail_screening">
