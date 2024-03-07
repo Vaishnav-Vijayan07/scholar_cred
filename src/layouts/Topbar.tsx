@@ -326,7 +326,7 @@ const Topbar = ({
               <ProfileDropdown
                 profilePic={
                   user?.Avatar !== "null"
-                    ? `${process.env.REACT_APP_BACKEND_URL}/${user?.Avatar}`
+                    ? `${process.env.REACT_APP_BACKEND_URL}${user?.Avatar}`
                     : AvatarLogo
                 }
                 menuItems={ProfileMenus}

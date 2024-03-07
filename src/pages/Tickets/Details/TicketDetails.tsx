@@ -60,9 +60,9 @@ const TicketDetails = ({ state, ticket_id }: any) => {
             <Col md={6}>
               <label className="mt-2 mb-1">Reported By :</label>
               <div className="d-flex align-items-start gap-2">
-                <Avatar name={state[0]?.assigned_by_user_name} />
+                <Avatar name={state[0]?.student_first_name} />
                 <div className="w-100">
-                  <p>{state[0]?.assigned_by_user_name}</p>
+                  <p>{`${state[0]?.student_first_name} ${state[0]?.student_last_name}`}</p>
                 </div>
               </div>
             </Col>
