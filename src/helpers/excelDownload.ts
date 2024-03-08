@@ -59,8 +59,8 @@ const excelDownload = (data: any, colom: any) => {
     worksheet.addRow(values);
   });
 
-  worksheet.eachRow(function (row, rowNumber) {
-    row.eachCell(function (cell, colNumber) {
+  worksheet.eachRow(function (row: any, rowNumber: any) {
+    row.eachCell(function (cell: any, colNumber: any) {
       const cellValue = cell.value ? cell.value.toString() : "";
       const cellLength = cellValue.length;
       const column = worksheet.getColumn(colNumber);
@@ -79,7 +79,7 @@ const excelDownload = (data: any, colom: any) => {
     });
   });
 
-  workbook.xlsx.writeBuffer().then((buffer) => {
+  workbook.xlsx.writeBuffer().then((buffer: any) => {
     saveAsExcelFile(buffer, "data.xlsx");
   });
 };
