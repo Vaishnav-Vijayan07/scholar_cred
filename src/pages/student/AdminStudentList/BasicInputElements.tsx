@@ -16,6 +16,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { truncateText } from "../../../constants/functons";
+import excelDownload from "../../../helpers/excelDownload";
 
 interface FileType extends File {
   preview?: string;
@@ -258,7 +259,7 @@ const BasicInputElements = withSwal((props: any) => {
   const columns = [
     {
       Header: "ID",
-      accessor: "student_id",
+      accessor: "",
       sort: true,
     },
     {
@@ -274,7 +275,7 @@ const BasicInputElements = withSwal((props: any) => {
     // },
     {
       Header: "Intake Month",
-      accessor: "intake_month",
+      accessor: "",
       sort: false,
       Cell: ({ row }: any) => <span>{moment(row.original.created_at).format("LL")?.split(" ")[0]}</span>,
     },
@@ -343,7 +344,7 @@ const BasicInputElements = withSwal((props: any) => {
     },
     {
       Header: "Loan Type",
-      accessor: "loan_type",
+      accessor: "",
       sort: false,
       Cell: ({ row }: any) => <div>{row.original.loan_type || "Pending"}</div>,
     },
@@ -376,7 +377,7 @@ const BasicInputElements = withSwal((props: any) => {
     },
     {
       Header: "Assigned To",
-      accessor: "",
+      accessor: "assigned_cred_staff",
       sort: false,
       Cell: UserColumn,
     },
@@ -588,6 +589,12 @@ const BasicInputElements = withSwal((props: any) => {
     setFilteredItems(state);
   };
 
+  const handleDownload = () => {
+    console.log("hai");
+    
+    excelDownload(filteredItems, columns);
+  };
+
   if (initialLoading) {
     return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
   }
@@ -765,6 +772,12 @@ const BasicInputElements = withSwal((props: any) => {
 
                     <Button className="btn-sm btn-success waves-effect waves-light " onClick={toggleResponsiveModal}>
                       <i className="mdi mdi-plus-circle"></i> Add Student
+                    </Button>
+                    <Button
+                      className="btn-sm btn-warning waves-effect waves-light "
+                      onClick={handleDownload}
+                    >
+                      <i className="mdi mdi-download"></i> {"Download data"}
                     </Button>
                   </div>
                 )}

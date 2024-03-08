@@ -212,15 +212,15 @@ const Table = (props: TableProps) => {
   let rows = pagination ? dataTable.page : dataTable.rows;
 
   const getSelectedValues = () => {
-    return dataTable?.selectedFlatRows.map((d:any) => d.original.student_id);
+    return dataTable?.selectedFlatRows.map((d: any) => d.original.student_id);
   };
 
   useEffect(() => {
-    
     if (props.onSelect) {
       props.onSelect(getSelectedValues());
     }
   }, [dataTable?.state?.selectedRowIds]);
+
 
   return (
     <>
@@ -286,6 +286,7 @@ const Table = (props: TableProps) => {
         </table>
       </div>
       {/* Display a custom "No Data" message */}
+
       {rows.length === 0 && (
         <div className="text-center">
           <p>No data found...</p>
