@@ -103,7 +103,7 @@ const Login2 = () => {
           </div>
         </VerticalForm>
 
-        <div className="d-flex mt-2 justify-content-between">
+        {/* <div className="d-flex mt-2 justify-content-between">
           <Button onClick={() => dispatch(loginUser("cred_admin", "cred_admin"))} className="custom_btn">
             Cred Admin
           </Button>
@@ -116,7 +116,7 @@ const Login2 = () => {
           <Button onClick={() => dispatch(loginUser("dedis21060@tospage.com", "UADPcZ"))} className="custom_btn">
             Con. Staff
           </Button>
-        </div>
+        </div> */}
       </AuthLayout>
     </>
   );
