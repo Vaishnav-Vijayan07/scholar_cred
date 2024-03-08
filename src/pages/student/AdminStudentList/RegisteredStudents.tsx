@@ -6,7 +6,7 @@ import PageTitle from "../../../components/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
 import { getAdminStaff } from "../../../redux/adminStaffs/actions";
 import { RootState } from "../../../redux/store";
-import { getStudent } from "../../../redux/actions";
+import { getConsultants, getStudent } from "../../../redux/actions";
 import axios from "axios";
 import BasicInputElements from "./BasicInputElements";
 
@@ -19,6 +19,7 @@ const RegisteredStudents = () => {
   const dispatch = useDispatch();
   const [credStaffData, setCredStaffData] = useState([]);
   const [sourceData, setSourceData] = useState([]);
+  const [consultantData, setConsultantData] = useState([]);
 
   const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
     state: state.Students.students,
@@ -27,9 +28,10 @@ const RegisteredStudents = () => {
     initialLoading: state?.Students.initialLoading,
   }));
 
-  const { user, Authloading, credStaff } = useSelector((state: RootState) => ({
+  const { user, Authloading, credStaff, consultants } = useSelector((state: RootState) => ({
     user: state.Auth.user,
     credStaff: state.AdminStaff.adminStaff.data,
+    consultants: state.ConsultantReducer?.consultant?.data,
     Authloading: state.Auth.loading,
   }));
 
@@ -45,6 +47,7 @@ const RegisteredStudents = () => {
   useEffect(() => {
     dispatch(getStudent());
     dispatch(getAdminStaff());
+    dispatch(getConsultants());
     getSourceData();
   }, []);
 
@@ -56,7 +59,14 @@ const RegisteredStudents = () => {
       }));
       setCredStaffData(CredStaffArray);
     }
-  }, [credStaff]);
+    if (consultants) {
+      const ConsultantsArray = consultants?.map((consultant: any) => ({
+        value: consultant.id,
+        label: consultant.company_name,
+      }));
+      setConsultantData(ConsultantsArray);
+    }
+  }, [credStaff, consultants]);
 
   return (
     <React.Fragment>
@@ -81,6 +91,7 @@ const RegisteredStudents = () => {
             credStaffData={credStaffData}
             initialLoading={initialLoading}
             sourceData={sourceData}
+            consultantData={consultantData}
           />
         </Col>
       </Row>
