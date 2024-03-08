@@ -9,7 +9,9 @@ const excelDownload = (data: any, colom: any) => {
   }
 
   const headers = colom
-    .filter((item: any) => item.accessor !== "")
+    .filter(
+      (item: any) => item.accessor !== "" && item.accessor !== "intake_month"
+    )
     .map((item: any) => item.accessor);
 
 
@@ -44,7 +46,6 @@ const excelDownload = (data: any, colom: any) => {
     width: 15,
     style: {
       alignment: { horizontal: "center", wrapText: true },
-      font: { bold: true },
     },
   }));
 
@@ -66,6 +67,15 @@ const excelDownload = (data: any, colom: any) => {
       const currentWidth = column.width || 0;
       const newWidth = Math.max(currentWidth, cellLength + 10);
       column.width = newWidth;
+
+      if (rowNumber === 1) {
+        cell.style.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "CCCCCC" }, // Disabled color (light gray)
+        };
+        cell.style.font = { bold: true }; // Bold font
+      }
     });
   });
 

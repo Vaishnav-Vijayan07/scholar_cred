@@ -476,6 +476,13 @@ const BasicInputElements = withSwal((props: any) => {
                   <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleResponsiveModal}>
                     <i className="mdi mdi-plus-circle"></i> Add Student
                   </Button> 
+
+                  <Button
+                      className="btn-sm btn-warning waves-effect waves-light "
+                      // onClick={handleDownload}
+                    >
+                      <i className="mdi mdi-download"></i> {"Download Excel"}
+                    </Button>
                 </div>
                 {/* <h4 className="header-title mb-4">Manage Student</h4> */}
 
