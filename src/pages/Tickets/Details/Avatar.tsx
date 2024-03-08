@@ -12,8 +12,8 @@ function Avatar({ name, image }: Props) {
       style={{
         width: "30px",
         height: "30px",
-        backgroundColor: "#FFA500",
-        color: "#fff",
+        backgroundColor: image ? "" : "#FFA500",
+        color: image ? "" : "#fff",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
