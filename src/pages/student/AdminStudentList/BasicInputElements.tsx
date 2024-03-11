@@ -258,9 +258,10 @@ const BasicInputElements = withSwal((props: any) => {
 
   const columns = [
     {
-      Header: "ID",
-      accessor: "",
-      sort: true,
+      Header: "Sl No",
+      accessor: "slNo",
+      Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
+      sort: false,
     },
     {
       Header: "Name",

@@ -10,9 +10,10 @@ export const getColumns = (handleUpdate: any, toggleResponsiveModal: any, handle
 
   return [
     {
-      Header: "ID",
-      accessor: "student_id",
-      sort: true,
+      Header: "Sl No",
+      accessor: "slNo",
+      Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
+      sort: false,
     },
     {
       Header: "Name",
@@ -135,9 +136,10 @@ export const getColumns = (handleUpdate: any, toggleResponsiveModal: any, handle
 export const getConsultantStaffColumns = (handleResetPassword: any, resetPassword: any, handleUpdate: any, toggleResponsiveModal: any, handleDelete: any) => {
   return [
     {
-      Header: "ID",
-      accessor: "student_id",
-      sort: true,
+      Header: "Sl No",
+      accessor: "slNo",
+      Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
+      sort: false,
     },
     {
       Header: "Name",
@@ -268,9 +270,10 @@ export const getConsultantStaffColumns = (handleResetPassword: any, resetPasswor
 export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: any, handleDelete: any) => {
   return [
     {
-      Header: "ID",
-      accessor: "student_id",
-      sort: true,
+      Header: "Sl No",
+      accessor: "slNo",
+      Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
+      sort: false,
     },
     {
       Header: "Name",
