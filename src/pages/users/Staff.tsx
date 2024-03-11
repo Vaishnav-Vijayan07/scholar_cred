@@ -217,7 +217,7 @@ const BasicInputElements = withSwal((props: any) => {
     },
     {
       Header: "Image",
-      accessor: "image",
+      accessor: "",
       sort: false,
       Cell: ({ row }: any) => (
         <>
@@ -326,10 +326,7 @@ const BasicInputElements = withSwal((props: any) => {
     setSelectedFile(event.target.files[0]);
   };
 
-  const handleDownload = () => {
-    excelDownload(state, columns);
-  };
-
+ 
   if (initialLoading) {
     return (
       <Spinner
@@ -549,13 +546,6 @@ const BasicInputElements = withSwal((props: any) => {
                     onClick={toggleResponsiveModal}
                   >
                     <i className="mdi mdi-plus-circle"></i> Add Staff
-                  </Button>
-
-                  <Button
-                    className="btn-sm btn-warning waves-effect waves-light "
-                    onClick={handleDownload}
-                  >
-                    <i className="mdi mdi-download"></i> {"Download Excel"}
                   </Button>
                 </div>
                 {/* <h4 className="header-title mb-4">Manage Staff</h4> */}

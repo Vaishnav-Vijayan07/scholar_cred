@@ -412,7 +412,13 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleDownload = () => {
-    excelDownload(filteredItems, consultantStaffColumns);
+    if (user.role_name === "CRED_STAFF") {
+      excelDownload(filteredItems, credStaffColumns);
+    } else if (user.role_name === "CONSULTANT_ADMIN") {
+      excelDownload(filteredItems, consultantStaffColumns);
+    } else if (user.role_name === "CONSULTANT_STAFF") {
+      excelDownload(filteredItems, columns1);
+    }
   };
 
   return (

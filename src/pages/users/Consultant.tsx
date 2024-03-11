@@ -407,10 +407,6 @@ const BasicInputElements = withSwal((props: any) => {
     toggle();
   };
 
-  const handleDownload = () => {
-    excelDownload(state, columns);
-  };
-
   if (initialLoading) {
     return (
       <Spinner
@@ -827,13 +823,6 @@ const BasicInputElements = withSwal((props: any) => {
                     onClick={() => openModalWithClass("modal-right")}
                   >
                     <i className="mdi mdi-plus-circle"></i> Add Consultant
-                  </Button>
-
-                  <Button
-                    className="btn-sm btn-warning waves-effect waves-light "
-                    onClick={handleDownload}
-                  >
-                    <i className="mdi mdi-download"></i> {"Download Excel"}
                   </Button>
                 </div>
                 {/* <h4 className="header-title mb-4">Manage Consultant</h4> */}

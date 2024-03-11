@@ -590,8 +590,6 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleDownload = () => {
-    console.log("hai");
-    
     excelDownload(filteredItems, columns);
   };
 
