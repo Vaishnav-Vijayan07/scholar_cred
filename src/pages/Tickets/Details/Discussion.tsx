@@ -38,8 +38,6 @@ type Props = {
 };
 
 const Discussion = ({ comments, ticket_id, user }: Props) => {
-  console.log(user);
-
   const roles = ["CRED_ADMIN", "CRED_STAFF"];
 
   const [comment, setComment] = useState("");

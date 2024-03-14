@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import React, { useEffect, useState } from "react";
+import { Drawer, Button as AntBtn } from "antd";
 import { useForm } from "react-hook-form";
 import {
   Row,
@@ -39,6 +40,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { truncateText } from "../../../constants/functons";
+import excelDownload from "../../../helpers/excelDownload";
+import FilterModal from "../../../components/FilterModal";
 
 interface FileType extends File {
   preview?: string;
@@ -56,9 +59,12 @@ const BasicInputElements = withSwal((props: any) => {
     initialLoading,
     sourceData,
     path,
+    consultantData,
   } = props;
 
   const dispatch = useDispatch();
+
+  console.log(state);
 
   //Table data
   const [filteredItems, setFilteredItems] = useState(state);
@@ -307,9 +313,10 @@ const BasicInputElements = withSwal((props: any) => {
 
   const columns = [
     {
-      Header: "ID",
-      accessor: "student_id",
-      sort: true,
+      Header: "Sl No",
+      accessor: "slNo",
+      Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
+      sort: false,
     },
     {
       Header: "Name",
@@ -326,7 +333,7 @@ const BasicInputElements = withSwal((props: any) => {
     // },
     {
       Header: "Intake Month",
-      accessor: "intake_month",
+      accessor: "",
       sort: false,
       Cell: ({ row }: any) => (
         <span>
@@ -403,7 +410,7 @@ const BasicInputElements = withSwal((props: any) => {
     },
     {
       Header: "Loan Type",
-      accessor: "loan_type",
+      accessor: "",
       sort: false,
       Cell: ({ row }: any) => <div>{row.original.loan_type || "Pending"}</div>,
     },
@@ -412,12 +419,42 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "consultant_name",
       sort: false,
       Cell: ({ row }: any) => (
-        <div>{row.original.consultant_name || "Internal"}</div>
+        <div>
+          {row.original.consultant_name ? (
+            <>{row.original.consultant_name}</>
+          ) : (
+            <>
+              <Dropdown className="btn-group" align="end">
+                <Dropdown.Toggle
+                  variant="light"
+                  className="table-action-btn btn-sm btn-blue"
+                >
+                  <i className="mdi mdi-account-plus"></i> Assign
+                </Dropdown.Toggle>
+                <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
+                  {consultantData?.map((item: any) => (
+                    <Dropdown.Item
+                      key={item.value}
+                      onClick={() =>
+                        handleAssignConsultant(
+                          row.original.student_id,
+                          item.value
+                        )
+                      }
+                    >
+                      {item.label}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </>
+          )}
+        </div>
       ),
     },
     {
       Header: "Assigned To",
-      accessor: "",
+      accessor: "assigned_cred_staff",
       sort: false,
       Cell: UserColumn,
     },
@@ -580,6 +617,21 @@ const BasicInputElements = withSwal((props: any) => {
     setSelectedValues(values);
   };
 
+  const handleAssignConsultant = (studentId: string, consultantId: string) => {
+    console.log(studentId, consultantId);
+    axios
+      .post(`assign_consultant/${studentId}`, { consultant_id: consultantId })
+      .then((res) => {
+        console.log("res-->", res.data);
+        showSuccessAlert(res.data.message);
+        dispatch(getStudent());
+      })
+      .catch((err) => {
+        console.error(err);
+        showErrorAlert("Internal server error..");
+      });
+  };
+
   const handleAssignBulk = (student_ids: Array<number>, assignedTo: number) => {
     Swal.fire({
       title: "Are you sure!",
@@ -631,6 +683,25 @@ const BasicInputElements = withSwal((props: any) => {
 
   const handleClearFilter = () => {
     setFilteredItems(state);
+  };
+
+  const [filterModal, setFilterModal] = useState<boolean>(false);
+
+  const toggleFilterModal = () => {
+    setFilterModal(!filterModal);
+  };
+  const handleDownload = () => {
+    excelDownload(filteredItems, columns);
+  };
+
+  const [visible, setVisible] = useState(false);
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
   };
 
   if (initialLoading) {
@@ -850,87 +921,76 @@ const BasicInputElements = withSwal((props: any) => {
           </Modal.Body>
         </Modal>
 
+        <FilterModal
+          filterModal={visible}
+          setFilterModal={onClose}
+          data={state}
+          setfilteredData={setFilteredItems}
+        />
+
         <Col className="p-0 form__card">
           <Card className="bg-white">
             <Card.Body>
               <>
                 {path !== "/cred-admin/deleted-students" && (
-                  <div className="d-flex float-end gap-2">
-                    <Dropdown className="btn-group" align="end">
-                      <Dropdown.Toggle
-                        variant=""
-                        className="btn-sm btn-outline-blue"
+                  <Row className="d-flex flex-column-reverse flex-md-row">
+                    <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
+                      <Button
+                        className="btn-sm  waves-effect waves-light"
+                        onClick={showDrawer}
+                        disabled={state.length === 0}
                       >
-                        <i className="mdi mdi-filter-variant"></i>{" "}
-                        {truncateText(selectedStaff, 13)}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu
-                        style={{ maxHeight: "150px", overflow: "auto" }}
-                      >
-                        <Dropdown.Item
-                          key={"clear"}
-                          style={{ backgroundColor: "#fa9393" }}
-                          onClick={() => [
-                            handleClearFilter(),
-                            setSelectedStaff("Choose Staff"),
-                          ]}
-                        >
-                          <i className="mdi mdi-close"></i> Clear Selection
-                        </Dropdown.Item>
-                        {credStaffData?.map((item: any) => (
-                          <Dropdown.Item
-                            key={item.value}
-                            onClick={() => [
-                              handleFilter(item.value),
-                              setSelectedStaff(item.label),
-                            ]}
+                        <i className="mdi mdi-filter"></i> Filters
+                      </Button>
+
+                      {user.role == 1 && (
+                        <Dropdown className="btn-group">
+                          <Dropdown.Toggle
+                            disabled={selectedValues?.length > 0 ? false : true}
+                            variant="light"
+                            className="table-action-btn btn-sm btn-blue"
                           >
-                            {item.label}
-                          </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
+                            <i className="mdi mdi-account-plus"></i> Assign
+                            Staff
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu
+                            style={{ maxHeight: "150px", overflow: "auto" }}
+                          >
+                            {credStaffData?.map((item: any) => (
+                              <Dropdown.Item
+                                key={item.value}
+                                onClick={() =>
+                                  handleAssignBulk(selectedValues, item.value)
+                                }
+                              >
+                                {item.label}
+                              </Dropdown.Item>
+                            ))}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      )}
 
-                    {user.role == 1 && (
-                      <Dropdown className="btn-group" align="end">
-                        <Dropdown.Toggle
-                          disabled={selectedValues?.length > 0 ? false : true}
-                          variant="light"
-                          className="table-action-btn btn-sm btn-blue"
-                        >
-                          <i className="mdi mdi-account-plus"></i> Assign Staff
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu
-                          style={{ maxHeight: "150px", overflow: "auto" }}
-                        >
-                          {credStaffData?.map((item: any) => (
-                            <Dropdown.Item
-                              key={item.value}
-                              onClick={() =>
-                                handleAssignBulk(selectedValues, item.value)
-                              }
-                            >
-                              {item.label}
-                            </Dropdown.Item>
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
+                      <Button
+                        className="btn-sm btn-blue waves-effect waves-light"
+                        onClick={toggleUploadModal}
+                      >
+                        <i className="mdi mdi-upload"></i> Bulk Upload
+                      </Button>
 
-                    <Button
-                      className="btn-sm btn-blue waves-effect waves-light "
-                      onClick={toggleUploadModal}
-                    >
-                      <i className="mdi mdi-upload"></i> Bulk Upload
-                    </Button>
-
-                    <Button
-                      className="btn-sm btn-success waves-effect waves-light "
-                      onClick={toggleResponsiveModal}
-                    >
-                      <i className="mdi mdi-plus-circle"></i> Add Student
-                    </Button>
-                  </div>
+                      <Button
+                        className="btn-sm btn-success waves-effect waves-light"
+                        onClick={toggleResponsiveModal}
+                      >
+                        <i className="mdi mdi-plus-circle"></i> Add Student
+                      </Button>
+                      <Button
+                        className="btn-sm btn-warning waves-effect waves-light"
+                        onClick={handleDownload}
+                      >
+                        <i className="mdi mdi-download"></i> Download data
+                      </Button>
+                    </div>
+                  </Row>
                 )}
                 <Table
                   columns={columns}

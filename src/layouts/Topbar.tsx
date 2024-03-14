@@ -288,7 +288,11 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
             </li>
             <li className="dropdown d-flex flex-column">
               <ProfileDropdown
-                profilePic={user?.Avatar !== "null" ? `${process.env.REACT_APP_BACKEND_URL}/${user?.Avatar}` : AvatarLogo}
+                profilePic={
+                  user?.Avatar !== "null"
+                    ? `${process.env.REACT_APP_BACKEND_URL}${user?.Avatar}`
+                    : AvatarLogo
+                }
                 menuItems={ProfileMenus}
                 username={user?.role_name == "ADMIN" ? user?.full_name : user?.full_name?.split(" ")[0]}
                 userTitle={user?.role_name?.split("_")?.join(" ")}

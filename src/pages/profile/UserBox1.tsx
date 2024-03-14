@@ -5,11 +5,12 @@ import { Link } from "react-router-dom";
 import profileImg from "../../assets/images/avatar-logo.png";
 
 const UserBox1 = ({ user }: any) => {
+
   return (
     <Card className="text-center">
       <Card.Body>
         <img
-          src={user?.Avatar == "null" ? profileImg : `${process.env.REACT_APP_BACKEND_URL}/${user.Avatar}`}
+          src={user?.Avatar == "null" ? profileImg : `${process.env.REACT_APP_BACKEND_URL}${user.Avatar}`}
           className="rounded-circle avatar-lg img-thumbnail"
           alt="avatar"
           style={{ objectFit: "cover" }}

@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import SimpleBar from "simplebar-react";
-
 import { getMenuItems } from "../helpers/menu";
-
 // store
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
@@ -83,7 +80,7 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
               </span>
               <span className="logo-lg">
                 {user?.role == "7" || user?.role == "4" ? (
-                  <img src={`${process.env.REACT_APP_BACKEND_URL}${user?.image_url}`} alt="" height="50" />
+                  <img src={`${process.env.REACT_APP_BACKEND_URL}${user?.image_url}`} alt="" height="50" style={{ maxWidth: "150px" }} />
                 ) : (
                   <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoDark2 : logoDark} alt="" height="34" />
                 )}

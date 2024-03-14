@@ -6,15 +6,14 @@ type Props = {
 };
 
 function Avatar({ name, image }: Props) {
-  
   return (
     <div
       className="rounded-circle avatar-xs"
       style={{
         width: "30px",
         height: "30px",
-        backgroundColor: "#FFA500",
-        color: "#fff",
+        backgroundColor: image ? "" : "#FFA500",
+        color: image ? "" : "#fff",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -24,12 +23,14 @@ function Avatar({ name, image }: Props) {
       {image ? (
         <img
           className="rounded-circle"
-          src={`${process.env.REACT_APP_BACKEND_URL}/${image}`}
+          src={`${process.env.REACT_APP_BACKEND_URL}${image}`}
           alt="Image not loaded"
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
+      ) : name ? (
+        name.charAt(0).toUpperCase()
       ) : (
-        name ? name.charAt(0).toUpperCase() : "A"
+        "A"
       )}
     </div>
   );

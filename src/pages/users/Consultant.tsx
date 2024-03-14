@@ -1,7 +1,16 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert, Spinner } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Modal,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -9,12 +18,24 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 // components
 import PageTitle from "../../components/PageTitle";
-import { MyInitialState, initialState, initialValidationState, sizePerPageList } from "./data";
+import {
+  MyInitialState,
+  initialState,
+  initialValidationState,
+  sizePerPageList,
+} from "./data";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createConsultant, deleteConsultant, editConsultant, getConsultants, getCredAdminUsers } from "../../redux/actions";
+import {
+  createConsultant,
+  deleteConsultant,
+  editConsultant,
+  getConsultants,
+  getCredAdminUsers,
+} from "../../redux/actions";
 import { RootState } from "../../redux/store";
 import { CustomCropper } from "./CustomCropper";
+import excelDownload from "../../helpers/excelDownload";
 
 const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();
@@ -52,12 +73,20 @@ const BasicInputElements = withSwal((props: any) => {
   const [showModal, setShowModal] = useState(false);
 
   //validation errors
-  const [validationErrors, setValidationErrors] = useState(initialValidationState);
+  const [validationErrors, setValidationErrors] = useState(
+    initialValidationState
+  );
 
   const validationSchema = yup.object().shape({
     company_name: yup.string().required("Company name is required"),
-    business_address: yup.string().required("Business address is required").min(2, "Address must be at least 2 characters long"),
-    email: yup.string().required("Email is required").email("Invalid email format"),
+    business_address: yup
+      .string()
+      .required("Business address is required")
+      .min(2, "Address must be at least 2 characters long"),
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Invalid email format"),
     phone: yup
       .string()
       .required("Phone number is required")
@@ -67,7 +96,10 @@ const BasicInputElements = withSwal((props: any) => {
       .required("Alternative phone number is required")
       .matches(/^\d{10}$/, "Phone number must be a valid 10-digit number"),
     gst: yup.string().required("GST is required"),
-    location: yup.string().required("Location is required").min(3, "Location must be at least 3 characters long"),
+    location: yup
+      .string()
+      .required("Location is required")
+      .min(3, "Location must be at least 3 characters long"),
     pin_code: yup
       .string()
       .nullable()
@@ -241,19 +273,39 @@ const BasicInputElements = withSwal((props: any) => {
   const columns = [
     {
       Header: "Sl No",
-      accessor: "slNo",
+      accessor: "",
       Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
       sort: false,
     },
     {
       Header: "Image",
       accessor: "",
-      Cell: ({ row }: any) => <div>{row.original.image_url && <img src={`${process.env.REACT_APP_BACKEND_URL}${row.original.image_url}`} alt="comapny logo" width="50" />}</div>,
+      Cell: ({ row }: any) => (
+        <div>
+          {row.original.image_url && (
+            <img
+              src={`${process.env.REACT_APP_BACKEND_URL}${row.original.image_url}`}
+              alt="comapny logo"
+              width="50"
+            />
+          )}
+        </div>
+      ),
     },
     {
       Header: "Alt Image",
       accessor: "",
-      Cell: ({ row }: any) => <div>{row.original.second_image_url && <img src={`${process.env.REACT_APP_BACKEND_URL}${row.original.second_image_url}`} alt="comapny logo" width="50" />}</div>,
+      Cell: ({ row }: any) => (
+        <div>
+          {row.original.second_image_url && (
+            <img
+              src={`${process.env.REACT_APP_BACKEND_URL}${row.original.second_image_url}`}
+              alt="comapny logo"
+              width="50"
+            />
+          )}
+        </div>
+      ),
     },
     {
       Header: "Company Name",
@@ -304,7 +356,11 @@ const BasicInputElements = withSwal((props: any) => {
         <div className="d-flex justify-content-center align-items-center gap-2">
           {/* Edit Icon */}
           <Link to={`/users/consultant/${row.original.id}`}>
-            <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
+            <FeatherIcons
+              icon="eye"
+              size="15"
+              className="cursor-pointer text-secondary"
+            />
           </Link>
           <FeatherIcons
             icon="edit"
@@ -317,7 +373,12 @@ const BasicInputElements = withSwal((props: any) => {
           />
 
           {/* Delete Icon */}
-          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.id)} />
+          <FeatherIcons
+            icon="trash-2"
+            size="15"
+            className="cursor-pointer text-secondary"
+            onClick={() => handleDelete(row.original.id)}
+          />
         </div>
       ),
     },
@@ -347,7 +408,12 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   if (initialLoading) {
-    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+    return (
+      <Spinner
+        animation="border"
+        style={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
   }
 
   return (
@@ -371,15 +437,35 @@ const BasicInputElements = withSwal((props: any) => {
                       <Col md={6}>
                         <Form.Group className="mb-3" controlId="company_name">
                           <Form.Label>Company Name</Form.Label>
-                          <Form.Control type="text" name="company_name" placeholder="Enter company name" value={formData.company_name} onChange={handleInputChange} />
-                          {validationErrors.company_name && <Form.Text className="text-danger">{validationErrors.company_name}</Form.Text>}
+                          <Form.Control
+                            type="text"
+                            name="company_name"
+                            placeholder="Enter company name"
+                            value={formData.company_name}
+                            onChange={handleInputChange}
+                          />
+                          {validationErrors.company_name && (
+                            <Form.Text className="text-danger">
+                              {validationErrors.company_name}
+                            </Form.Text>
+                          )}
                         </Form.Group>
                       </Col>
                       <Col md={6}>
                         <Form.Group className="mb-3" controlId="email">
                           <Form.Label>Email Address</Form.Label>
-                          <Form.Control type="text" placeholder="Enter email" name="email" value={formData.email} onChange={handleInputChange} />
-                          {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                          />
+                          {validationErrors.email && (
+                            <Form.Text className="text-danger">
+                              {validationErrors.email}
+                            </Form.Text>
+                          )}
                         </Form.Group>
                       </Col>
                     </Row>
@@ -388,13 +474,27 @@ const BasicInputElements = withSwal((props: any) => {
                       <Col md={6}>
                         <Form.Group className="mb-3" controlId="phone">
                           <Form.Label>Phone</Form.Label>
-                          <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
-                          {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
+                          <Form.Control
+                            type="text"
+                            name="phone"
+                            placeholder="Enter phone number"
+                            maxLength={10}
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                          />
+                          {validationErrors.phone && (
+                            <Form.Text className="text-danger">
+                              {validationErrors.phone}
+                            </Form.Text>
+                          )}
                         </Form.Group>
                       </Col>
 
                       <Col md={6}>
-                        <Form.Group className="mb-3" controlId="alternative_phone">
+                        <Form.Group
+                          className="mb-3"
+                          controlId="alternative_phone"
+                        >
                           <Form.Label>Alternative Phone</Form.Label>
                           <Form.Control
                             type="text"
@@ -404,7 +504,11 @@ const BasicInputElements = withSwal((props: any) => {
                             value={formData.alternative_phone}
                             onChange={handleInputChange}
                           />
-                          {validationErrors.alternative_phone && <Form.Text className="text-danger">{validationErrors.alternative_phone}</Form.Text>}
+                          {validationErrors.alternative_phone && (
+                            <Form.Text className="text-danger">
+                              {validationErrors.alternative_phone}
+                            </Form.Text>
+                          )}
                         </Form.Group>
                       </Col>
                     </Row>
@@ -422,7 +526,11 @@ const BasicInputElements = withSwal((props: any) => {
                           value={formData.business_address}
                           onChange={handleInputChange}
                         />
-                        {validationErrors.business_address && <Form.Text className="text-danger">{validationErrors.business_address}</Form.Text>}
+                        {validationErrors.business_address && (
+                          <Form.Text className="text-danger">
+                            {validationErrors.business_address}
+                          </Form.Text>
+                        )}
                       </Form.Group>
                       {/* </Col> */}
                     </Row>
@@ -448,15 +556,29 @@ const BasicInputElements = withSwal((props: any) => {
                               });
                             }}
                           />
-                          {validationErrors.gst && <Form.Text className="text-danger">{validationErrors.gst}</Form.Text>}
+                          {validationErrors.gst && (
+                            <Form.Text className="text-danger">
+                              {validationErrors.gst}
+                            </Form.Text>
+                          )}
                         </Form.Group>
                       </Col>
 
                       <Col md={6}>
                         <Form.Group className="mb-3" controlId="location">
                           <Form.Label>Location</Form.Label>
-                          <Form.Control type="text" name="location" placeholder="Enter location" value={formData.location} onChange={handleInputChange} />
-                          {validationErrors.location && <Form.Text className="text-danger">{validationErrors.location}</Form.Text>}
+                          <Form.Control
+                            type="text"
+                            name="location"
+                            placeholder="Enter location"
+                            value={formData.location}
+                            onChange={handleInputChange}
+                          />
+                          {validationErrors.location && (
+                            <Form.Text className="text-danger">
+                              {validationErrors.location}
+                            </Form.Text>
+                          )}
                         </Form.Group>
                       </Col>
                     </Row>
@@ -464,8 +586,18 @@ const BasicInputElements = withSwal((props: any) => {
                       <Col md={6}>
                         <Form.Group className="mb-3" controlId="pin_code">
                           <Form.Label>Pin code</Form.Label>
-                          <Form.Control type="number" name="pin_code" placeholder="Enter pin code" value={formData.pin_code} onChange={handleInputChange} />
-                          {validationErrors.pin_code && <Form.Text className="text-danger">{validationErrors.pin_code}</Form.Text>}
+                          <Form.Control
+                            type="number"
+                            name="pin_code"
+                            placeholder="Enter pin code"
+                            value={formData.pin_code}
+                            onChange={handleInputChange}
+                          />
+                          {validationErrors.pin_code && (
+                            <Form.Text className="text-danger">
+                              {validationErrors.pin_code}
+                            </Form.Text>
+                          )}
                         </Form.Group>
                       </Col>
                       <Col md={6}>
@@ -490,7 +622,11 @@ const BasicInputElements = withSwal((props: any) => {
                             }}
                             maxLength={10} // Adjust the maxLength based on the actual PAN number length
                           />
-                          {validationErrors.pan_no && <Form.Text className="text-danger">{validationErrors.pan_no}</Form.Text>}
+                          {validationErrors.pan_no && (
+                            <Form.Text className="text-danger">
+                              {validationErrors.pan_no}
+                            </Form.Text>
+                          )}
                         </Form.Group>
                       </Col>
                     </Row>
@@ -506,7 +642,9 @@ const BasicInputElements = withSwal((props: any) => {
                             name="file"
                             placeholder="Enter pin code"
                             onClick={() => handleClear("image")}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
                               const file: any = e.target.files?.[0];
                               // Check if the file type starts with "image/"
                               if (file.type && file.type.startsWith("image/")) {
@@ -540,8 +678,19 @@ const BasicInputElements = withSwal((props: any) => {
                               }
                             }}
                           />
-                          {fileErrors?.image && <Form.Text className="text-danger">{fileErrors?.image}</Form.Text>}
-                          {croppedFile?.croppedImage && <img src={croppedFile?.croppedImage} className="mt-2" alt="selected image" width={150} />}
+                          {fileErrors?.image && (
+                            <Form.Text className="text-danger">
+                              {fileErrors?.image}
+                            </Form.Text>
+                          )}
+                          {croppedFile?.croppedImage && (
+                            <img
+                              src={croppedFile?.croppedImage}
+                              className="mt-2"
+                              alt="selected image"
+                              width={150}
+                            />
+                          )}
                         </Form.Group>
                       </Col>
                       <Col md={6}>
@@ -554,10 +703,15 @@ const BasicInputElements = withSwal((props: any) => {
                             type="file"
                             name="file"
                             placeholder="Enter pin code"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
                               const file: any = e.target.files?.[0];
                               if (file) {
-                                if (file.type && file.type.startsWith("image/")) {
+                                if (
+                                  file.type &&
+                                  file.type.startsWith("image/")
+                                ) {
                                   setImages((prev: any) => ({
                                     ...prev,
                                     altImage: {
@@ -588,8 +742,19 @@ const BasicInputElements = withSwal((props: any) => {
                               }
                             }}
                           />
-                          {fileErrors.alt && <Form.Text className="text-danger">{fileErrors.alt}</Form.Text>}
-                          {croppedFile.croppedAltImage && <img src={croppedFile.croppedAltImage} className="mt-2" alt="selected image" width={50} />}
+                          {fileErrors.alt && (
+                            <Form.Text className="text-danger">
+                              {fileErrors.alt}
+                            </Form.Text>
+                          )}
+                          {croppedFile.croppedAltImage && (
+                            <img
+                              src={croppedFile.croppedAltImage}
+                              className="mt-2"
+                              alt="selected image"
+                              width={50}
+                            />
+                          )}
                         </Form.Group>
                       </Col>
                     </Row>
@@ -613,7 +778,13 @@ const BasicInputElements = withSwal((props: any) => {
                         {!isUpdate ? "Close" : "Cancel"}
                       </Button>
 
-                      <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1" disabled={loading}>
+                      <Button
+                        type="submit"
+                        variant="success"
+                        id="button-addon2"
+                        className="waves-effect waves-light mt-1"
+                        disabled={loading}
+                      >
                         {isUpdate ? "Update" : "Submit"}
                       </Button>
                     </div>
@@ -646,9 +817,14 @@ const BasicInputElements = withSwal((props: any) => {
           <Col className="p-0 form__card">
             <Card className="bg-white">
               <Card.Body>
-                <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={() => openModalWithClass("modal-right")}>
-                  <i className="mdi mdi-plus-circle"></i> Add Consultant
-                </Button>
+                <div className="d-flex float-end gap-2">
+                  <Button
+                    className="btn-sm btn-blue waves-effect waves-light"
+                    onClick={() => openModalWithClass("modal-right")}
+                  >
+                    <i className="mdi mdi-plus-circle"></i> Add Consultant
+                  </Button>
+                </div>
                 {/* <h4 className="header-title mb-4">Manage Consultant</h4> */}
                 <Table
                   columns={columns}
@@ -673,13 +849,15 @@ const BasicInputElements = withSwal((props: any) => {
 const Consultants = () => {
   const dispatch = useDispatch();
 
-  const { state, loading, error, success, initialLoading } = useSelector((state: RootState) => ({
-    state: state?.ConsultantReducer.consultant.data,
-    loading: state?.ConsultantReducer.loading,
-    error: state?.ConsultantReducer.error,
-    success: state?.ConsultantReducer.success,
-    initialLoading: state?.ConsultantReducer.initialLoading,
-  }));
+  const { state, loading, error, success, initialLoading } = useSelector(
+    (state: RootState) => ({
+      state: state?.ConsultantReducer.consultant.data,
+      loading: state?.ConsultantReducer.loading,
+      error: state?.ConsultantReducer.error,
+      success: state?.ConsultantReducer.success,
+      initialLoading: state?.ConsultantReducer.initialLoading,
+    })
+  );
 
   useEffect(() => {
     dispatch(getConsultants());
@@ -700,7 +878,13 @@ const Consultants = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} success={success} initialLoading={initialLoading} />
+          <BasicInputElements
+            state={state}
+            loading={loading}
+            error={error}
+            success={success}
+            initialLoading={initialLoading}
+          />
         </Col>
       </Row>
     </React.Fragment>

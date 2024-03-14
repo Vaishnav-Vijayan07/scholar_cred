@@ -101,7 +101,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "users",
     url: "/cred-admin/direct-students",
-    roles: ["CRED_ADMIN","CRED_STAFF"],
+    roles: ["CRED_ADMIN"],
   },
   {
     key: "registered-students",
@@ -109,7 +109,23 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "smartphone",
     url: "/cred-admin/registered-students",
-    roles: ["CRED_ADMIN","CRED_STAFF"],
+    roles: ["CRED_ADMIN"],
+  },
+  {
+    key: "cred_staff_direct-students",
+    label: "Direct Admissions",
+    isTitle: false,
+    icon: "users",
+    url: "/users/direct-students",
+    roles: ["CRED_STAFF"],
+  },
+  {
+    key: "cred_staff_registered-students",
+    label: "Registered Students",
+    isTitle: false,
+    icon: "smartphone",
+    url: "/users/registered-students",
+    roles: ["CRED_STAFF"],
   },
   {
     key: "deleted-students",
