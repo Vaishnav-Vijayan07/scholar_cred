@@ -13,9 +13,10 @@ import {
 } from "../redux/actions";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { Drawer } from "antd";
 
 type Props = {
-  setFilterModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setFilterModal: any;
   filterModal: boolean;
   data: any;
   setfilteredData: any;
@@ -26,8 +27,6 @@ const animatedComponents = makeAnimated();
 
 const FilterModal = (props: Props) => {
   const dispatch = useDispatch();
-
-  const [defaultvalue, setDefault] = useState("Choose");
 
   const location = useLocation();
   const { pathname } = location;
@@ -111,101 +110,39 @@ const FilterModal = (props: Props) => {
   }, []);
 
   return (
-    <Modal
-      show={props.filterModal}
-      onHide={props.setFilterModal}
-      // dialogClassName="modal-right modal-right-filter"
+    <Drawer
+      title="Filters"
+      placement="right"
+      onClose={props.setFilterModal}
+      open={props.filterModal}
     >
-      <Modal.Header closeButton>
-        <Modal.Title>Filters</Modal.Title>
-      </Modal.Header>
-
-      <Modal.Body className="">
-        <Row className="mb-1">
-          <Col>
-            <Form>
-              <Row>
-                <Col className="mb-1">
-                  <Select
-                    isMulti
-                    components={animatedComponents}
-                    name="colors"
-                    options={internalStatus?.map((status: any) => ({
-                      label: status?.status_name,
-                      value: status?.id,
-                    }))}
-                    placeholder="Internal status"
-                    value={selectedOptions.internal_status_id.map((id) => ({
-                      value: id,
-                      label: internalStatus.filter(
-                        (item: any) => item.id === id
-                      )[0].status_name,
-                    }))}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    onChange={(selectedValues) =>
-                      handleStatusChange(selectedValues, "internal_status_id")
-                    }
-                  />
-                </Col>
-              </Row>
-            </Form>
-          </Col>
-        </Row>
-        <Row className="mb-1">
-          <Col>
-            <Form>
-              <Row>
-                <Col className="mb-1">
-                  <Select
-                    isMulti
-                    components={animatedComponents}
-                    name="colors"
-                    options={loanStatus?.map((status: any) => ({
-                      label: status?.status_name,
-                      value: status?.id,
-                    }))}
-                    placeholder="Loan status"
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    value={selectedOptions.loan_status_id.map((id) => ({
-                      value: id,
-                      label: loanStatus.filter((item: any) => item.id === id)[0]
-                        .status_name,
-                    }))}
-                    onChange={(selectedValues) =>
-                      handleStatusChange(selectedValues, "loan_status_id")
-                    }
-                  />
-                </Col>
-              </Row>
-            </Form>
-          </Col>
-        </Row>
-
-        {roles.includes(user?.role_name) && (
-          <Row className="mb-1-">
+      <div className=" h-100 d-flex flex-column align-items-center justify-content-center">
+        <div className="d-flex flex-column w-100">
+          <Row className="mb-1">
             <Col>
               <Form>
                 <Row>
                   <Col className="mb-1">
+                  <Form.Label>Filter by internal status</Form.Label>
                     <Select
                       isMulti
                       components={animatedComponents}
                       name="colors"
-                      options={consultants?.map((status: any) => ({
-                        label: status?.company_name,
-                        value: status?.company_name,
+                      options={internalStatus?.map((status: any) => ({
+                        label: status?.status_name,
+                        value: status?.id,
                       }))}
-                      placeholder="Consultants"
+                      placeholder="Internal status"
+                      value={selectedOptions.internal_status_id.map((id) => ({
+                        value: id,
+                        label: internalStatus.filter(
+                          (item: any) => item.id === id
+                        )[0].status_name,
+                      }))}
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      value={selectedOptions.consultant_name.map((id) => ({
-                        value: id,
-                        label: `${id}`,
-                      }))}
                       onChange={(selectedValues) =>
-                        handleStatusChange(selectedValues, "consultant_name")
+                        handleStatusChange(selectedValues, "internal_status_id")
                       }
                     />
                   </Col>
@@ -213,33 +150,31 @@ const FilterModal = (props: Props) => {
               </Form>
             </Col>
           </Row>
-        )}
-        {user?.role_name === "CRED_ADMIN" && (
-          <Row className="mb-1-">
+          <Row className="mb-1">
             <Col>
               <Form>
                 <Row>
                   <Col className="mb-1">
+                  <Form.Label>Filter by loan status</Form.Label>
                     <Select
                       isMulti
                       components={animatedComponents}
                       name="colors"
-                      options={staffs?.map((status: any) => ({
-                        label: `${status?.first_name} ${status?.last_name}`,
-                        value: `${status?.first_name} ${status?.last_name}`,
+                      options={loanStatus?.map((status: any) => ({
+                        label: status?.status_name,
+                        value: status?.id,
                       }))}
-                      placeholder="Staffs"
+                      placeholder="Loan status"
                       className="basic-multi-select"
                       classNamePrefix="select"
-                      value={selectedOptions.assigned_cred_staff.map((id) => ({
+                      value={selectedOptions.loan_status_id.map((id) => ({
                         value: id,
-                        label: `${id}`,
+                        label: loanStatus.filter(
+                          (item: any) => item.id === id
+                        )[0].status_name,
                       }))}
                       onChange={(selectedValues) =>
-                        handleStatusChange(
-                          selectedValues,
-                          "assigned_cred_staff"
-                        )
+                        handleStatusChange(selectedValues, "loan_status_id")
                       }
                     />
                   </Col>
@@ -247,30 +182,98 @@ const FilterModal = (props: Props) => {
               </Form>
             </Col>
           </Row>
-        )}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          variant="danger"
-          id="button-addon2"
-          className="mt-1 waves-effect waves-light"
-          onClick={handleClear}
-        >
-          Clear
-        </Button>
-        <Button
-          variant={isEmpty() ? "light" : "success"}
-          id="button-addon2"
-          className="mt-1 waves-effect waves-light"
-          onClick={applyFilter}
-          disabled={isEmpty()}
-        >
-          {"Apply"}
-        </Button>
-      </Modal.Footer>
+          {roles.includes(user?.role_name) && (
+            <Row className="mb-1-">
+              <Col>
+                <Form>
+                  <Row>
+                    <Col className="mb-1">
+                    <Form.Label>Filter by consultants</Form.Label>
+                      <Select
+                        isMulti
+                        components={animatedComponents}
+                        name="colors"
+                        options={consultants?.map((status: any) => ({
+                          label: status?.company_name,
+                          value: status?.company_name,
+                        }))}
+                        placeholder="Consultants"
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        value={selectedOptions.consultant_name.map((id) => ({
+                          value: id,
+                          label: `${id}`,
+                        }))}
+                        onChange={(selectedValues) =>
+                          handleStatusChange(selectedValues, "consultant_name")
+                        }
+                      />
+                    </Col>
+                  </Row>
+                </Form>
+              </Col>
+            </Row>
+          )}
+          {user?.role_name === "CRED_ADMIN" && (
+            <Row className="mb-1-">
+              <Col>
+                <Form>
+                  <Row>
+                    <Col className="mb-1">
+                    <Form.Label>Filter by staffs</Form.Label>
+                      <Select
+                        isMulti
+                        components={animatedComponents}
+                        name="colors"
+                        options={staffs?.map((status: any) => ({
+                          label: `${status?.first_name} ${status?.last_name}`,
+                          value: `${status?.first_name} ${status?.last_name}`,
+                        }))}
+                        placeholder="Staffs"
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        value={selectedOptions.assigned_cred_staff.map(
+                          (id) => ({
+                            value: id,
+                            label: `${id}`,
+                          })
+                        )}
+                        onChange={(selectedValues) =>
+                          handleStatusChange(
+                            selectedValues,
+                            "assigned_cred_staff"
+                          )
+                        }
+                      />
+                    </Col>
+                  </Row>
+                </Form>
+              </Col>
+            </Row>
+          )}
+        </div>
 
-      {/* )} */}
-    </Modal>
+        <div className="d-flex gap-2 justify-content-end w-100">
+          <Button
+            variant="danger"
+            id="button-addon2"
+            className="mt-1 waves-effect waves-light"
+            onClick={handleClear}
+          >
+            Clear
+          </Button>
+          <Button
+            variant={isEmpty() ? "light" : "success"}
+            id="button-addon2"
+            className="mt-1 waves-effect waves-light"
+            onClick={applyFilter}
+            disabled={isEmpty()}
+          >
+            {"Apply"}
+          </Button>
+        </div>
+      </div>
+    </Drawer>
   );
 };
 

@@ -80,17 +80,16 @@
   border: none;
 }
 
-.modal-right-filter {
+.ant-drawer-content-wrapper {
+  position: absolute;
+  right: 0;
   width: 30% !important;
-  max-width: 30% !important;
 }
 
-
-
-@media (max-width: 650px) {
-  .modal-right-filter {
-    width: 50% !important;
-    max-width: 50% !important;
+/* Apply media query for smaller screens */
+@media screen and (max-width: 768px) {
+  .ant-drawer-content-wrapper {
+    width: 60% !important; 
   }
 }
 

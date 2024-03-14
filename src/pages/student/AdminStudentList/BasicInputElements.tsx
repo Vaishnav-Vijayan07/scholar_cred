@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import React, { useEffect, useState } from "react";
+import { Drawer, Button as AntBtn } from "antd";
 import { useForm } from "react-hook-form";
 import {
   Row,
@@ -693,6 +694,16 @@ const BasicInputElements = withSwal((props: any) => {
     excelDownload(filteredItems, columns);
   };
 
+  const [visible, setVisible] = useState(false);
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
+
   if (initialLoading) {
     return (
       <Spinner
@@ -911,8 +922,8 @@ const BasicInputElements = withSwal((props: any) => {
         </Modal>
 
         <FilterModal
-          filterModal={filterModal}
-          setFilterModal={setFilterModal}
+          filterModal={visible}
+          setFilterModal={onClose}
           data={state}
           setfilteredData={setFilteredItems}
         />
@@ -926,7 +937,7 @@ const BasicInputElements = withSwal((props: any) => {
                     <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
                       <Button
                         className="btn-sm  waves-effect waves-light"
-                        onClick={() => setFilterModal(!filterModal)}
+                        onClick={showDrawer}
                         disabled={state.length === 0}
                       >
                         <i className="mdi mdi-filter"></i> Filters
