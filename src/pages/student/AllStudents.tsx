@@ -49,6 +49,7 @@ import {
 } from "./ColumnsConfig";
 import { truncateText } from "../../constants/functons";
 import excelDownload from "../../helpers/excelDownload";
+import FilterModal from "../../components/FilterModal";
 
 interface FileType extends File {
   preview?: string;
@@ -69,7 +70,6 @@ const BasicInputElements = withSwal((props: any) => {
     consultant_id,
     ConsultantStaff,
   } = props;
-  console.log("sourceData==>", sourceData);
 
   const dispatch = useDispatch();
 
@@ -85,6 +85,7 @@ const BasicInputElements = withSwal((props: any) => {
   const [uploadModal, setUploadModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<FileType[]>([]);
+  const [filterModal, setFilterModal] = useState<boolean>(false);
   //validation errors
   const [validationErrors, setValidationErrors] = useState(
     StudentValidationState
@@ -341,8 +342,6 @@ const BasicInputElements = withSwal((props: any) => {
     );
   }
 
-  console.log("ConsultantStaff", ConsultantStaff);
-
   const columns1 = getColumns(
     handleUpdate,
     toggleResponsiveModal,
@@ -590,12 +589,20 @@ const BasicInputElements = withSwal((props: any) => {
           </Modal.Body>
         </Modal>
 
+        <FilterModal
+          filterModal={filterModal}
+          setFilterModal={setFilterModal}
+          data={state}
+          setfilteredData={setFilteredItems}
+        />
+
         <Col className="p-0 form__card">
           <Card className="bg-white">
             <Card.Body>
               <>
-                <div className="d-flex float-end gap-2">
-                  {user.role == "7" && (
+                <Row className="d-flex flex-column-reverse flex-md-row">
+                  <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
+                    {/* {user.role == "7" && (
                     <Dropdown className="btn-group" align="end">
                       <Dropdown.Toggle
                         variant=""
@@ -630,29 +637,38 @@ const BasicInputElements = withSwal((props: any) => {
                         ))}
                       </Dropdown.Menu>
                     </Dropdown>
-                  )}
+                  )} */}
 
-                  <Button
-                    className="btn-sm btn-blue waves-effect waves-light"
-                    onClick={toggleUploadModal}
-                  >
-                    <i className="mdi mdi-upload"></i> Bulk Upload
-                  </Button>
+                    <Button
+                      className="btn-sm  waves-effect waves-light "
+                      onClick={() => setFilterModal(!filterModal)}
+                      disabled={state.length === 0}
+                    >
+                      <i className="mdi mdi-filter"></i> {"Filters"}
+                    </Button>
 
-                  <Button
-                    className="btn-sm btn-blue waves-effect waves-light"
-                    onClick={toggleResponsiveModal}
-                  >
-                    <i className="mdi mdi-plus-circle"></i> Add Student
-                  </Button>
+                    <Button
+                      className="btn-sm btn-blue waves-effect waves-light"
+                      onClick={toggleUploadModal}
+                    >
+                      <i className="mdi mdi-upload"></i> Bulk Upload
+                    </Button>
 
-                  <Button
-                    className="btn-sm btn-warning waves-effect waves-light "
-                    onClick={handleDownload}
-                  >
-                    <i className="mdi mdi-download"></i> {"Download data"}
-                  </Button>
-                </div>
+                    <Button
+                      className="btn-sm btn-blue waves-effect waves-light"
+                      onClick={toggleResponsiveModal}
+                    >
+                      <i className="mdi mdi-plus-circle"></i> Add Student
+                    </Button>
+
+                    <Button
+                      className="btn-sm btn-warning waves-effect waves-light "
+                      onClick={handleDownload}
+                    >
+                      <i className="mdi mdi-download"></i> {"Download data"}
+                    </Button>
+                  </div>
+                </Row>
                 {/* <h4 className="header-title mb-4">Manage Student</h4> */}
 
                 <Table
@@ -694,6 +710,9 @@ const Students = () => {
       error: state?.Students.error,
     })
   );
+
+  console.log(state);
+
   const { user, Authloading, credStaff, ConsultantStaff } = useSelector(
     (state: RootState) => ({
       user: state.Auth.user,

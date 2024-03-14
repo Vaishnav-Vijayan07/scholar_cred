@@ -80,8 +80,19 @@
   border: none;
 }
 
-.modal-right {
-  height: max-content;
-  min-height: 100%;
-  top: 0;
+.modal-right-filter {
+  width: 30% !important;
+  max-width: 30% !important;
 }
+
+
+
+@media (max-width: 650px) {
+  .modal-right-filter {
+    width: 50% !important;
+    max-width: 50% !important;
+  }
+}
+
+
+

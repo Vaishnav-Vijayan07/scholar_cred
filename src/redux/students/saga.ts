@@ -125,7 +125,6 @@ function* getStudentsByStaff(): SagaIterator {
 
 function* getStudentsByCreated(): SagaIterator {
   const user = yield select((state) => state.Auth.user)
-  console.log(user);
   try {
     const response = yield call(getStudentByCreatedApi);
     const data = response.data.data;
