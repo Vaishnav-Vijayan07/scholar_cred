@@ -205,7 +205,7 @@ const Profile = () => {
           <Tab.Container defaultActiveKey="preliminary_screening">
             <Card>
               <Card.Body>
-                <Nav variant="pills" as="ul" className="nav nav-pills nav-fill navtab-bg">
+                <Nav variant="pills" as="ul" className="nav nav-pills nav-fill navtab-bg row-gap-1">
                   <Nav.Item as="li" className="nav-item">
                     <Nav.Link href="#" eventKey="preliminary_screening" className="nav-link cursor-pointer">
                       Preliminary screening
