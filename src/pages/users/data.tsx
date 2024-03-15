@@ -183,5 +183,3 @@ export const ConsultantStaffInitialValidationState = {
   file: "",
   employee_id: "",
 };
-
-

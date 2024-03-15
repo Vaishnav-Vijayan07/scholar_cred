@@ -69,6 +69,23 @@ interface ConsultantData {
     any_loan_exisiting: string;
     history_of_defaults: string;
     current_cibil_score: string;
+
+    rc_house: string;
+    four_wheel_entry: string;
+    nilam_or_purayidam: string;
+    bought_within_last_3_years: string;
+    existing_housing_loan: string;
+    bank_name: string;
+    total_land_area: string;
+    boundary_wall_area: string;
+    four_wheel_entry_land_only: string;
+    property_registration_type: string;
+    any_agricultural_activities: string;
+    bought_within_last_3_years_land_only: string;
+    value_of_the_property: string;
+    value_of_fd: string;
+    gold_weight: string;
+    gov_bonds: string;
   };
   type: string;
 }
@@ -141,6 +158,22 @@ function* saveSecuredDetailedScreeningData({
     proof_of_income,
     know_the_current_cibil_co_applicant,
     cibil_co_applicant,
+    rc_house,
+    four_wheel_entry,
+    nilam_or_purayidam,
+    bought_within_last_3_years,
+    existing_housing_loan,
+    bank_name,
+    total_land_area,
+    boundary_wall_area,
+    four_wheel_entry_land_only,
+    property_registration_type,
+    any_agricultural_activities,
+    bought_within_last_3_years_land_only,
+    value_of_the_property,
+    value_of_fd,
+    gold_weight,
+    gov_bonds,
   },
   type,
 }: ConsultantData): SagaIterator {
@@ -162,6 +195,22 @@ function* saveSecuredDetailedScreeningData({
       proof_of_income,
       know_the_current_cibil_co_applicant,
       cibil_co_applicant,
+      rc_house,
+      four_wheel_entry,
+      nilam_or_purayidam,
+      bought_within_last_3_years,
+      existing_housing_loan,
+      bank_name,
+      total_land_area,
+      boundary_wall_area,
+      four_wheel_entry_land_only,
+      property_registration_type,
+      any_agricultural_activities,
+      bought_within_last_3_years_land_only,
+      value_of_the_property,
+      value_of_fd,
+      gold_weight,
+      gov_bonds,
     });
 
     const data = response.data.message;

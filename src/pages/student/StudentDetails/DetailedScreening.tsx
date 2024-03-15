@@ -76,8 +76,24 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
           formValues.professional_background,
           formValues.income_range,
           formValues.proof_of_income,
-          "", //know_the_current_cibil_co_applicant
-          formValues.cibil_score_co_applicant
+          "", //formValues.know_the_current_cibil_co_applicant
+          formValues.cibil_score_co_applicant,
+          formValues.rc_house,
+          formValues.four_wheel_entry,
+          formValues.nilam_or_purayidam,
+          formValues.bought_within_last_3_years,
+          formValues.existing_housing_loan,
+          formValues.bank_name,
+          formValues.total_land_area,
+          formValues.boundary_wall_area,
+          formValues.four_wheel_entry_land_only,
+          formValues.property_registration_type,
+          formValues.any_agricultural_activities,
+          formValues.bought_within_last_3_years_land_only,
+          formValues.value_of_the_property,
+          formValues.value_of_fd,
+          formValues.gold_weight,
+          formValues.gov_bonds
         )
       );
     } else if (StudentData?.loan_type === "UNSECURE") {
@@ -179,7 +195,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
     };
 
     fetchDataFromAPI();
-  }, [StudentData?.loan_type]);
+  }, [StudentData]);
 
   const itemsPerRow = 2;
 
