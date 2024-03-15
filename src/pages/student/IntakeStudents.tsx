@@ -46,6 +46,7 @@ import {
 import { truncateText } from "../../constants/functons";
 import Swal from "sweetalert2";
 import excelDownload from "../../helpers/excelDownload";
+import FilterModal from "../../components/FilterModal";
 
 interface FileType extends File {
   preview?: string;
@@ -71,7 +72,7 @@ const BasicInputElements = withSwal((props: any) => {
 
   const [filteredItems, setFilteredItems] = useState(state);
 
-  useEffect(() => {}, []);
+  const [filterModal, setFilterModal] = useState<boolean>(false);
 
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
@@ -395,9 +396,6 @@ const BasicInputElements = withSwal((props: any) => {
     student_ids: Array<number>,
     assigned_staff_id: number
   ) => {
-    console.log("student_ids", student_ids);
-    console.log("assigned_staff_id", assigned_staff_id);
-
     axios
       .post("bulk_assign_consultant_staff", {
         student_ids,
@@ -412,7 +410,13 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleDownload = () => {
-    excelDownload(filteredItems, consultantStaffColumns);
+    if (user.role_name === "CRED_STAFF") {
+      excelDownload(filteredItems, credStaffColumns);
+    } else if (user.role_name === "CONSULTANT_ADMIN") {
+      excelDownload(filteredItems, consultantStaffColumns);
+    } else if (user.role_name === "CONSULTANT_STAFF") {
+      excelDownload(filteredItems, columns1);
+    }
   };
 
   return (
@@ -623,12 +627,21 @@ const BasicInputElements = withSwal((props: any) => {
           </Modal.Body>
         </Modal>
 
+        <FilterModal
+          filterModal={filterModal}
+          setFilterModal={setFilterModal}
+          data={state}
+          setfilteredData={setFilteredItems}
+          user={user}
+        />
+
         <Col className="p-0 form__card">
           <Card className="bg-white">
             <Card.Body>
               <>
-                <div className="d-flex float-end gap-2">
-                  {user.role == "7" && (
+                <Row className="d-flex flex-column-reverse flex-md-row">
+                <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
+                  {/* {user.role == "7" && (
                     <Dropdown className="btn-group" align="end">
                       <Dropdown.Toggle
                         variant=""
@@ -663,7 +676,7 @@ const BasicInputElements = withSwal((props: any) => {
                         ))}
                       </Dropdown.Menu>
                     </Dropdown>
-                  )}
+                  )} */}
 
                   {user.role == "7" && (
                     <Dropdown className="btn-group" align="end">
@@ -693,6 +706,13 @@ const BasicInputElements = withSwal((props: any) => {
 
                   <Button
                     className="btn-sm btn-blue waves-effect waves-light"
+                    onClick={() => setFilterModal(!filterModal)}
+                  >
+                    <i className="mdi mdi-filter"></i> Filters
+                  </Button>
+
+                  <Button
+                    className="btn-sm btn-blue waves-effect waves-light"
                     onClick={toggleUploadModal}
                   >
                     <i className="mdi mdi-upload"></i> Bulk Upload
@@ -711,6 +731,7 @@ const BasicInputElements = withSwal((props: any) => {
                     <i className="mdi mdi-download"></i> {"Download data"}
                   </Button>
                 </div>
+                </Row>
                 {/* <h4 className="header-title mb-4">Manage Student</h4> */}
 
                 <Table
@@ -762,6 +783,12 @@ const IntakeStudents = () => {
     })
   );
 
+  console.log(state);
+  
+
+
+
+
   const getSourceData = () => {
     axios
       .get("sourceOptions")
@@ -797,6 +824,8 @@ const IntakeStudents = () => {
     //   dispatch(getStudent());
     // }
   };
+
+  
 
   useEffect(() => {
     if (credStaff) {

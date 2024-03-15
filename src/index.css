@@ -80,8 +80,18 @@
   border: none;
 }
 
-.modal-right {
-  height: max-content;
-  min-height: 100%;
-  top: 0;
+.ant-drawer-content-wrapper {
+  position: absolute;
+  right: 0;
+  width: 30% !important;
 }
+
+/* Apply media query for smaller screens */
+@media screen and (max-width: 768px) {
+  .ant-drawer-content-wrapper {
+    width: 60% !important; 
+  }
+}
+
+
+
