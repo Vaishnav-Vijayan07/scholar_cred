@@ -79,13 +79,13 @@ const BasicInputElements = withSwal((props: any) => {
   //Input data
   const [formData, setFormData] =
     useState<StudentDataTypes>(StudentInitialState);
-  const [selectedStaff, setSelectedStaff] = useState("Choose Staff");
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   const [uploadModal, setUploadModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<FileType[]>([]);
-  const [filterModal, setFilterModal] = useState<boolean>(false);
+  const [visible, setVisible] = useState(false);
+
   //validation errors
   const [validationErrors, setValidationErrors] = useState(
     StudentValidationState
@@ -333,6 +333,14 @@ const BasicInputElements = withSwal((props: any) => {
       });
   };
 
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
+
   if (initialLoading) {
     return (
       <Spinner
@@ -361,20 +369,6 @@ const BasicInputElements = withSwal((props: any) => {
     toggleResponsiveModal,
     handleDelete
   );
-
-  const handleFilter = (staff_id: any) => {
-    // Filter the initial list based on the provided category
-    const filteredList = state?.filter(
-      (item: any) => item.staff_id === staff_id
-    );
-
-    // Update the state with the filtered list
-    setFilteredItems(filteredList);
-  };
-
-  const handleClearFilter = () => {
-    setFilteredItems(state);
-  };
 
   const handleDownload = () => {
     excelDownload(state, credStaffColumns);
@@ -473,23 +467,6 @@ const BasicInputElements = withSwal((props: any) => {
                   </Form.Group>
                 </Col>
               </Row>
-
-              {/* <Row>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="country_of_origin">
-                    <Form.Label>Country</Form.Label>
-                    <Form.Control type="text" name="country_of_origin" placeholder="Enter country name" value={formData.country_of_origin} onChange={handleInputChange} />
-                    {validationErrors.country_of_origin && <Form.Text className="text-danger">{validationErrors.country_of_origin}</Form.Text>}
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="date_of_birth">
-                    <Form.Label>DOB</Form.Label>
-                    <Form.Control type="date" name="date_of_birth" placeholder="Enter DOB" value={formData.date_of_birth} onChange={handleInputChange} />
-                    {validationErrors.date_of_birth && <Form.Text className="text-danger">{validationErrors.date_of_birth}</Form.Text>}
-                  </Form.Group>
-                </Col>
-              </Row> */}
 
               <Row>
                 <Col md={6}>
@@ -590,108 +567,89 @@ const BasicInputElements = withSwal((props: any) => {
         </Modal>
 
         <FilterModal
-          filterModal={filterModal}
-          setFilterModal={setFilterModal}
+          filterModal={visible}
+          setFilterModal={onClose}
           data={state}
           setfilteredData={setFilteredItems}
+          setIsLoading={setIsLoading}
         />
-
-        <Col className="p-0 form__card">
-          <Card className="bg-white">
-            <Card.Body>
-              <>
-                <Row className="d-flex flex-column-reverse flex-md-row">
-                  <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
-                    {/* {user.role == "7" && (
-                    <Dropdown className="btn-group" align="end">
-                      <Dropdown.Toggle
-                        variant=""
-                        className="btn-sm btn-outline-blue"
+        {isLoading ? (
+          <Spinner
+            animation="border"
+            style={{ position: "absolute", top: "50%", left: "50%" }}
+          />
+        ) : (
+          <Col className="p-0 form__card">
+            <Card className="bg-white">
+              <Card.Body>
+                <>
+                  <Row className="d-flex flex-column-reverse flex-md-row">
+                    <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
+                      {/* <Button
+                        className="btn-sm  waves-effect waves-light d-flex gap-2"
+                        onClick={showDrawer}
+                        // disabled={state.length === 0}
                       >
-                        <i className="mdi mdi-filter-variant"></i>{" "}
-                        {truncateText(selectedStaff, 13)}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu
-                        style={{ maxHeight: "150px", overflow: "auto" }}
+                        <div className="d-flex gap-1">
+                          <i className="mdi mdi-filter"></i>
+                          <span>Filters</span>
+                        </div>
+                        <i
+                          className="mdi mdi-close cursor-pointer"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleClear();
+                          }}
+                        ></i>
+                      </Button> */}
+
+                      <Button
+                        className="btn-sm btn-blue waves-effect waves-light"
+                        onClick={toggleUploadModal}
                       >
-                        <Dropdown.Item
-                          key={"clear"}
-                          style={{ backgroundColor: "#fa9393" }}
-                          onClick={() => [
-                            handleClearFilter(),
-                            setSelectedStaff("Choose Staff"),
-                          ]}
-                        >
-                          <i className="mdi mdi-close"></i> Clear Selection
-                        </Dropdown.Item>
-                        {credStaffData?.map((item: any) => (
-                          <Dropdown.Item
-                            key={item.value}
-                            onClick={() => [
-                              handleFilter(item.value),
-                              setSelectedStaff(item.label),
-                            ]}
-                          >
-                            {item.label}
-                          </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )} */}
+                        <i className="mdi mdi-upload"></i> Bulk Upload
+                      </Button>
 
-                    <Button
-                      className="btn-sm  waves-effect waves-light "
-                      onClick={() => setFilterModal(!filterModal)}
-                      disabled={state.length === 0}
-                    >
-                      <i className="mdi mdi-filter"></i> {"Filters"}
-                    </Button>
+                      <Button
+                        className="btn-sm btn-blue waves-effect waves-light"
+                        onClick={toggleResponsiveModal}
+                      >
+                        <i className="mdi mdi-plus-circle"></i> Add Student
+                      </Button>
 
-                    <Button
-                      className="btn-sm btn-blue waves-effect waves-light"
-                      onClick={toggleUploadModal}
-                    >
-                      <i className="mdi mdi-upload"></i> Bulk Upload
-                    </Button>
+                      <Button
+                        className="btn-sm btn-warning waves-effect waves-light "
+                        onClick={handleDownload}
+                        disabled={state.length === 0}
+                      >
+                        <i className="mdi mdi-download"></i> {"Download data"}
+                      </Button>
+                    </div>
+                  </Row>
+                  {/* <h4 className="header-title mb-4">Manage Student</h4> */}
 
-                    <Button
-                      className="btn-sm btn-blue waves-effect waves-light"
-                      onClick={toggleResponsiveModal}
-                    >
-                      <i className="mdi mdi-plus-circle"></i> Add Student
-                    </Button>
-
-                    <Button
-                      className="btn-sm btn-warning waves-effect waves-light "
-                      onClick={handleDownload}
-                    >
-                      <i className="mdi mdi-download"></i> {"Download data"}
-                    </Button>
-                  </div>
-                </Row>
-                {/* <h4 className="header-title mb-4">Manage Student</h4> */}
-
-                <Table
-                  columns={
-                    user.role == "2"
-                      ? credStaffColumns
-                      : user.role == "4"
-                      ? consultantStaffColumns
-                      : columns1
-                  }
-                  data={filteredItems}
-                  pageSize={5}
-                  sizePerPageList={sizePerPageList}
-                  isSortable={true}
-                  pagination={true}
-                  isSearchable={true}
-                  theadClass="table-light mt-2"
-                  searchBoxClass="mt-2 mb-3"
-                />
-              </>
-            </Card.Body>
-          </Card>
-        </Col>
+                  <Table
+                    columns={
+                      user.role == "2"
+                        ? credStaffColumns
+                        : user.role == "4"
+                        ? consultantStaffColumns
+                        : columns1
+                    }
+                    data={filteredItems}
+                    pageSize={5}
+                    sizePerPageList={sizePerPageList}
+                    isSortable={true}
+                    pagination={true}
+                    isSearchable={true}
+                    theadClass="table-light mt-2"
+                    searchBoxClass="mt-2 mb-3"
+                  />
+                </>
+              </Card.Body>
+            </Card>
+          </Col>
+        )}
       </Row>
     </>
   );
@@ -710,8 +668,6 @@ const Students = () => {
       error: state?.Students.error,
     })
   );
-
-  console.log(state);
 
   const { user, Authloading, credStaff, ConsultantStaff } = useSelector(
     (state: RootState) => ({
