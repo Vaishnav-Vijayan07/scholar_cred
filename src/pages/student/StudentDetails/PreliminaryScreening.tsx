@@ -327,11 +327,11 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
               <option value="" disabled>
                 Open this select menu
               </option>
-              <option value="House">House</option>
-              <option value="House With Housing Loan">House With Housing Loan</option>
+              <option value="House with Land">House with Land</option>
+              <option value="House with housing loan">House With Housing Loan</option>
               <option value="FD">FD</option>
               <option value="Gold">Gold</option>
-              <option value="Land Without House">Land Without House</option>
+              <option value="Land without House">Land Without House</option>
               <option value="Government Bonds">Government Bonds</option>
               <option value="No collateral security available">No collateral security available</option>
             </Form.Select>
