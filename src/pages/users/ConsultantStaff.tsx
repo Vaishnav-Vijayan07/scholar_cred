@@ -33,8 +33,8 @@ const BasicInputElements = withSwal((props: any) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const validationSchema = yup.object().shape({
-    first_name: yup.string().required("First name is required").nullable(),
-    last_name: yup.string().required("Last name is required"),
+    first_name: yup.string().trim().required("First name is required").nullable(),
+    last_name: yup.string().trim().required("Last name is required"),
     email: yup.string().required("Email is required").email("Invalid email format").nullable(),
     username: yup.string().required("Username is required").nullable(),
     employee_id: yup.string().required("Employee id is required").nullable(),
@@ -112,6 +112,7 @@ const BasicInputElements = withSwal((props: any) => {
     try {
       await validationSchema.validate(formData, { abortEarly: false });
       // Validation passed, handle form submission
+
       if (isUpdate) {
         // Handle update logic
         dispatch(
@@ -392,7 +393,7 @@ const BasicInputElements = withSwal((props: any) => {
                   }
                 }}
               >
-                {!isUpdate ? "close" : "Cancel"}
+                {!isUpdate ? "Close" : "Cancel"}
               </Button>
             </Modal.Footer>
 

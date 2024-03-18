@@ -73,6 +73,8 @@ const BasicInputElements = withSwal((props: any) => {
 
   const dispatch = useDispatch();
 
+
+
   const [filteredItems, setFilteredItems] = useState(state);
 
   const [isUpdate, setIsUpdate] = useState(false);
@@ -585,23 +587,14 @@ const BasicInputElements = withSwal((props: any) => {
                 <>
                   <Row className="d-flex flex-column-reverse flex-md-row">
                     <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
-                      {/* <Button
-                        className="btn-sm  waves-effect waves-light d-flex gap-2"
+                      <Button
+                        className="btn-sm  waves-effect waves-light "
                         onClick={showDrawer}
-                        // disabled={state.length === 0}
+                        disabled={state.length === 0}
                       >
-                        <div className="d-flex gap-1">
-                          <i className="mdi mdi-filter"></i>
-                          <span>Filters</span>
-                        </div>
-                        <i
-                          className="mdi mdi-close cursor-pointer"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleClear();
-                          }}
-                        ></i>
-                      </Button> */}
+                        <i className="mdi mdi-filter"></i>
+                        {"Filters"}
+                      </Button>
 
                       <Button
                         className="btn-sm btn-blue waves-effect waves-light"

@@ -34,7 +34,6 @@ import {
 } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
 import { resetPassword } from "../../redux/actions";
-import excelDownload from "../../helpers/excelDownload";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, initialLoading } = props;
@@ -55,13 +54,13 @@ const BasicInputElements = withSwal((props: any) => {
   );
 
   const validationSchema = yup.object().shape({
-    first_name: yup.string().required("First name is required"),
-    last_name: yup.string().required("Last name is required"),
+    first_name: yup.string().trim().required("First name is required"),
+    last_name: yup.string().trim().required("Last name is required"),
     email: yup
       .string()
       .required("Email is required")
       .email("Invalid email format"),
-    username: yup.string().required("Username is required"),
+    username: yup.string().trim().required("Username is required"),
     employee_id: yup.string().required("Employee id is required"),
     phone: yup
       .string()
@@ -326,7 +325,6 @@ const BasicInputElements = withSwal((props: any) => {
     setSelectedFile(event.target.files[0]);
   };
 
- 
   if (initialLoading) {
     return (
       <Spinner

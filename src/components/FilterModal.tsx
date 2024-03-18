@@ -18,7 +18,6 @@ import { Drawer } from "antd";
 const animatedComponents = makeAnimated();
 
 const FilterModal = (props: any) => {
-
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -55,13 +54,21 @@ const FilterModal = (props: any) => {
         (item: any) => item.created_by != 0 && item.consultant_id == 0
       );
       props.setfilteredData(modifiedData);
-    } else if (pathname === "/cred-admin/registered-students") {
+    } else if (
+      pathname === "/cred-admin/registered-students" ||
+      pathname === "/users/registered-students"
+    ) {
       const modifiedData = data.data.filter(
         (item: any) => item.created_by == 0
       );
       props.setfilteredData(modifiedData);
     } else if (pathname === "/users/intake-students") {
       const modifiedData = data.data.filter((item: any) => item.status == true);
+      props.setfilteredData(modifiedData);
+    } else if (pathname === "/users/direct-students") {
+      const modifiedData = data.data.filter(
+        (item: any) => item.created_by != 0 && item.consultant_id == 0
+      );
       props.setfilteredData(modifiedData);
     } else {
       props.setfilteredData(data.data);
