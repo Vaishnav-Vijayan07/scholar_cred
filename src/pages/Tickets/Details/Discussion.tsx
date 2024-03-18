@@ -4,6 +4,7 @@ import { Card } from "react-bootstrap";
 import { calculateTimeAgo } from "../../../constants/functons";
 import { useDispatch } from "react-redux";
 import { updateTicketComments } from "../../../redux/tickets/actions";
+import avatar3 from "../../../assets/images/logo-sm.png";
 import Avatar from "./Avatar";
 
 type Comment = {
@@ -40,6 +41,8 @@ type Props = {
 const Discussion = ({ comments, ticket_id, user }: Props) => {
   const roles = ["CRED_ADMIN", "CRED_STAFF"];
 
+  console.log(comments);
+
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
 
@@ -58,10 +61,13 @@ const Discussion = ({ comments, ticket_id, user }: Props) => {
           {comments.map((item: any) => (
             <div className="d-flex gap-3" key={item.id}>
               <div>
-                {item.author_avatar ? (
-                  <Avatar name={item.author} image={item.author_avatar} />
-                ) : (
-                  <Avatar name={item.author} image={null} />
+                {roles.includes(item?.role) && (
+                  <img
+                    className="me-2 rounded-circle"
+                    src={avatar3}
+                    alt=""
+                    height="32"
+                  />
                 )}
               </div>
               <div className="w-100">

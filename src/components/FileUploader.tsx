@@ -157,10 +157,14 @@ const FileUploader = (props: FileUploaderProps) => {
 
     if (file && props.showPreview) {
       Object.assign(file, {
-        preview: file["type"].split("/")[0] === "image" ? URL.createObjectURL(file) : null,
+        preview:
+          file["type"].split("/")[0] === "image"
+            ? URL.createObjectURL(file)
+            : null,
         formattedSize: formatBytes(file.size),
       });
 
+  
       setSelectedFile([file]);
       if (props.onFileUpload) props.onFileUpload([file]);
     }
@@ -189,7 +193,10 @@ const FileUploader = (props: FileUploaderProps) => {
 
   return (
     <>
-      <Dropzone {...props} onDrop={(acceptedFiles) => handleAcceptedFiles(acceptedFiles)}>
+      <Dropzone
+        {...props}
+        onDrop={(acceptedFiles) => handleAcceptedFiles(acceptedFiles)}
+      >
         {({ getRootProps, getInputProps }) => (
           <div className="dropzone">
             <div className="dz-message needsclick" {...getRootProps()}>
@@ -210,13 +217,20 @@ const FileUploader = (props: FileUploaderProps) => {
                   <Row className="align-items-center">
                     {f.preview && (
                       <Col className="col-auto">
-                        <img data-dz-thumbnail="" className="avatar-sm rounded bg-light" alt={f.name} src={f.preview} />
+                        <img
+                          data-dz-thumbnail=""
+                          className="avatar-sm rounded bg-light"
+                          alt={f.name}
+                          src={f.preview}
+                        />
                       </Col>
                     )}
                     {!f.preview && (
                       <Col className="col-auto">
                         <div className="avatar-sm">
-                          <span className="avatar-title bg-primary rounded">{f.type.split("/")[0]}</span>
+                          <span className="avatar-title bg-primary rounded">
+                            {f.type.split("/")[0]}
+                          </span>
                         </div>
                       </Col>
                     )}
@@ -229,7 +243,10 @@ const FileUploader = (props: FileUploaderProps) => {
                       </p>
                     </Col>
                     <Col className="text-end">
-                      <Link to="#" className="btn btn-link btn-lg text-muted shadow-none">
+                      <Link
+                        to="#"
+                        className="btn btn-link btn-lg text-muted shadow-none"
+                      >
                         <i className="dripicons-cross" onClick={removeFile}></i>
                       </Link>
                     </Col>
