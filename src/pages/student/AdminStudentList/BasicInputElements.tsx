@@ -64,8 +64,6 @@ const BasicInputElements = withSwal((props: any) => {
 
   const dispatch = useDispatch();
 
-  console.log(state);
-
   //Table data
   const [filteredItems, setFilteredItems] = useState(state);
 
@@ -77,7 +75,16 @@ const BasicInputElements = withSwal((props: any) => {
     useState<StudentDataTypes>(StudentInitialState);
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
+
+  const [clearStates, setClearStates] = useState({
+    internal_status_id: [],
+    loan_status_id: [],
+    assigned_cred_staff: [],
+    consultant_name: [],
+  });
+
   const [uploadModal, setUploadModal] = useState<boolean>(false);
+  const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<FileType[]>([]);
   //validation errors
@@ -681,10 +688,6 @@ const BasicInputElements = withSwal((props: any) => {
     setFilteredItems(filteredList);
   };
 
-  const handleClearFilter = () => {
-    setFilteredItems(state);
-  };
-
   const [filterModal, setFilterModal] = useState<boolean>(false);
 
   const toggleFilterModal = () => {
@@ -694,13 +697,16 @@ const BasicInputElements = withSwal((props: any) => {
     excelDownload(filteredItems, columns);
   };
 
-  const [visible, setVisible] = useState(false);
-
   const showDrawer = () => {
     setVisible(true);
   };
 
   const onClose = () => {
+    setVisible(false);
+  };
+
+  const handleClear = () => {
+    setFilteredItems(state);
     setVisible(false);
   };
 
@@ -712,7 +718,6 @@ const BasicInputElements = withSwal((props: any) => {
       />
     );
   }
-
   return (
     <>
       <Row className="justify-content-between px-2">
@@ -920,95 +925,103 @@ const BasicInputElements = withSwal((props: any) => {
             </div>
           </Modal.Body>
         </Modal>
-
         <FilterModal
           filterModal={visible}
           setFilterModal={onClose}
           data={state}
           setfilteredData={setFilteredItems}
+          setIsLoading={setIsLoading}
         />
+        {isLoading ? (
+          <Spinner
+            animation="border"
+            style={{ position: "absolute", top: "50%", left: "50%" }}
+          />
+        ) : (
+          <Col className="p-0 form__card">
+            <Card className="bg-white">
+              <Card.Body>
+                <>
+                  {path !== "/cred-admin/deleted-students" && (
+                    <Row className="d-flex flex-column-reverse flex-md-row">
+                      <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
+                        <Button
+                          className="btn-sm  waves-effect waves-light"
+                          onClick={showDrawer}
+                          disabled={state.length === 0}
+                        >
+                          <i className="mdi mdi-filter"></i>{"Filters"}
+                        </Button>
 
-        <Col className="p-0 form__card">
-          <Card className="bg-white">
-            <Card.Body>
-              <>
-                {path !== "/cred-admin/deleted-students" && (
-                  <Row className="d-flex flex-column-reverse flex-md-row">
-                    <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
-                      <Button
-                        className="btn-sm  waves-effect waves-light"
-                        onClick={showDrawer}
-                        disabled={state.length === 0}
-                      >
-                        <i className="mdi mdi-filter"></i> Filters
-                      </Button>
+                        {user.role == 1 && (
+                          <Dropdown className="btn-group">
+                            <Dropdown.Toggle
+                              disabled={
+                                selectedValues?.length > 0 ? false : true
+                              }
+                              variant="light"
+                              className="table-action-btn btn-sm btn-blue"
+                            >
+                              <i className="mdi mdi-account-plus"></i> Assign
+                              Staff
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu
+                              style={{ maxHeight: "150px", overflow: "auto" }}
+                            >
+                              {credStaffData?.map((item: any) => (
+                                <Dropdown.Item
+                                  key={item.value}
+                                  onClick={() =>
+                                    handleAssignBulk(selectedValues, item.value)
+                                  }
+                                >
+                                  {item.label}
+                                </Dropdown.Item>
+                              ))}
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        )}
 
-                      {user.role == 1 && (
-                        <Dropdown className="btn-group">
-                          <Dropdown.Toggle
-                            disabled={selectedValues?.length > 0 ? false : true}
-                            variant="light"
-                            className="table-action-btn btn-sm btn-blue"
-                          >
-                            <i className="mdi mdi-account-plus"></i> Assign
-                            Staff
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu
-                            style={{ maxHeight: "150px", overflow: "auto" }}
-                          >
-                            {credStaffData?.map((item: any) => (
-                              <Dropdown.Item
-                                key={item.value}
-                                onClick={() =>
-                                  handleAssignBulk(selectedValues, item.value)
-                                }
-                              >
-                                {item.label}
-                              </Dropdown.Item>
-                            ))}
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      )}
+                        <Button
+                          className="btn-sm btn-blue waves-effect waves-light"
+                          onClick={toggleUploadModal}
+                        >
+                          <i className="mdi mdi-upload"></i> Bulk Upload
+                        </Button>
 
-                      <Button
-                        className="btn-sm btn-blue waves-effect waves-light"
-                        onClick={toggleUploadModal}
-                      >
-                        <i className="mdi mdi-upload"></i> Bulk Upload
-                      </Button>
-
-                      <Button
-                        className="btn-sm btn-success waves-effect waves-light"
-                        onClick={toggleResponsiveModal}
-                      >
-                        <i className="mdi mdi-plus-circle"></i> Add Student
-                      </Button>
-                      <Button
-                        className="btn-sm btn-warning waves-effect waves-light"
-                        onClick={handleDownload}
-                      >
-                        <i className="mdi mdi-download"></i> Download data
-                      </Button>
-                    </div>
-                  </Row>
-                )}
-                <Table
-                  columns={columns}
-                  data={filteredItems}
-                  pageSize={5}
-                  sizePerPageList={sizePerPageList}
-                  isSortable={true}
-                  pagination={true}
-                  isSearchable={true}
-                  isSelectable={true}
-                  theadClass="table-light mt-2"
-                  searchBoxClass="mt-4 mb-3"
-                  onSelect={handleSelectedValues}
-                />
-              </>
-            </Card.Body>
-          </Card>
-        </Col>
+                        <Button
+                          className="btn-sm btn-success waves-effect waves-light"
+                          onClick={toggleResponsiveModal}
+                        >
+                          <i className="mdi mdi-plus-circle"></i> Add Student
+                        </Button>
+                        <Button
+                          className="btn-sm btn-warning waves-effect waves-light"
+                          onClick={handleDownload}
+                        >
+                          <i className="mdi mdi-download"></i> Download data
+                        </Button>
+                      </div>
+                    </Row>
+                  )}
+                  <Table
+                    columns={columns}
+                    data={filteredItems}
+                    pageSize={5}
+                    sizePerPageList={sizePerPageList}
+                    isSortable={true}
+                    pagination={true}
+                    isSearchable={true}
+                    isSelectable={true}
+                    theadClass="table-light mt-2"
+                    searchBoxClass="mt-4 mb-3"
+                    onSelect={handleSelectedValues}
+                  />
+                </>
+              </Card.Body>
+            </Card>
+          </Col>
+        )}
       </Row>
     </>
   );

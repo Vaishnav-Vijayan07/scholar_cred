@@ -71,14 +71,11 @@ const BasicInputElements = withSwal((props: any) => {
   const [selectedValues, setSelectedValues] = useState([]);
 
   const [filteredItems, setFilteredItems] = useState(state);
-
-  const [filterModal, setFilterModal] = useState<boolean>(false);
-
+  const [visible, setVisible] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
   const [formData, setFormData] =
     useState<StudentDataTypes>(StudentInitialState);
-  const [selectedStaff, setSelectedStaff] = useState("Choose Staff");
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   const [uploadModal, setUploadModal] = useState<boolean>(false);
@@ -357,19 +354,6 @@ const BasicInputElements = withSwal((props: any) => {
     handleDelete
   );
 
-  const handleFilter = (staff_id: any) => {
-    // Filter the initial list based on the provided category
-    const filteredList = state?.filter(
-      (item: any) => item.assigned_staff_id === staff_id
-    );
-    // Update the state with the filtered list
-    setFilteredItems(filteredList);
-  };
-
-  const handleClearFilter = () => {
-    setFilteredItems(state);
-  };
-
   const handleSelectedValues = (values: any) => {
     setSelectedValues(values);
   };
@@ -417,6 +401,14 @@ const BasicInputElements = withSwal((props: any) => {
     } else if (user.role_name === "CONSULTANT_STAFF") {
       excelDownload(filteredItems, columns1);
     }
+  };
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
   };
 
   return (
@@ -628,135 +620,107 @@ const BasicInputElements = withSwal((props: any) => {
         </Modal>
 
         <FilterModal
-          filterModal={filterModal}
-          setFilterModal={setFilterModal}
+          filterModal={visible}
+          setFilterModal={onClose}
           data={state}
           setfilteredData={setFilteredItems}
           user={user}
+          setIsLoading={setIsLoading}
         />
-
-        <Col className="p-0 form__card">
-          <Card className="bg-white">
-            <Card.Body>
-              <>
-                <Row className="d-flex flex-column-reverse flex-md-row">
-                <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
-                  {/* {user.role == "7" && (
-                    <Dropdown className="btn-group" align="end">
-                      <Dropdown.Toggle
-                        variant=""
-                        className="btn-sm btn-outline-blue"
-                      >
-                        <i className="mdi mdi-filter-variant"></i>{" "}
-                        {truncateText(selectedStaff, 13)}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu
-                        style={{ maxHeight: "150px", overflow: "auto" }}
-                      >
-                        <Dropdown.Item
-                          key={"clear"}
-                          style={{ backgroundColor: "#fa9393" }}
-                          onClick={() => [
-                            handleClearFilter(),
-                            setSelectedStaff("Choose Staff"),
-                          ]}
-                        >
-                          <i className="mdi mdi-close"></i> Clear Selection
-                        </Dropdown.Item>
-                        {ConsultantStaff?.map((item: any) => (
-                          <Dropdown.Item
-                            key={item.id}
-                            onClick={() => [
-                              handleFilter(item.id),
-                              setSelectedStaff(item.full_name),
-                            ]}
+        {isLoading ? (
+          <Spinner
+            animation="border"
+            style={{ position: "absolute", top: "50%", left: "50%" }}
+          />
+        ) : (
+          <Col className="p-0 form__card">
+            <Card className="bg-white">
+              <Card.Body>
+                <>
+                  <Row className="d-flex flex-column-reverse flex-md-row">
+                    <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
+                      {user.role == "7" && (
+                        <Dropdown className="btn-group" align="end">
+                          <Dropdown.Toggle
+                            disabled={selectedValues?.length > 0 ? false : true}
+                            variant="light"
+                            className="table-action-btn btn-sm btn-blue"
                           >
-                            {item.full_name}
-                          </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )} */}
-
-                  {user.role == "7" && (
-                    <Dropdown className="btn-group" align="end">
-                      <Dropdown.Toggle
-                        disabled={selectedValues?.length > 0 ? false : true}
-                        variant="light"
-                        className="table-action-btn btn-sm btn-blue"
-                      >
-                        <i className="mdi mdi-account-plus"></i> Assign Staff
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu
-                        style={{ maxHeight: "150px", overflow: "auto" }}
-                      >
-                        {ConsultantStaff?.map((item: any) => (
-                          <Dropdown.Item
-                            key={item.id}
-                            onClick={() =>
-                              handleAssignBulk(selectedValues, item.id)
-                            }
+                            <i className="mdi mdi-account-plus"></i> Assign
+                            Staff
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu
+                            style={{ maxHeight: "150px", overflow: "auto" }}
                           >
-                            {item.full_name}
-                          </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )}
+                            {ConsultantStaff?.map((item: any) => (
+                              <Dropdown.Item
+                                key={item.id}
+                                onClick={() =>
+                                  handleAssignBulk(selectedValues, item.id)
+                                }
+                              >
+                                {item.full_name}
+                              </Dropdown.Item>
+                            ))}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      )}
 
-                  <Button
-                    className="btn-sm btn-blue waves-effect waves-light"
-                    onClick={() => setFilterModal(!filterModal)}
-                  >
-                    <i className="mdi mdi-filter"></i> Filters
-                  </Button>
+                      <Button
+                        className="btn-sm btn-blue waves-effect waves-light"
+                        onClick={showDrawer}
+                        disabled={state.length === 0}
+                      >
+                        <i className="mdi mdi-filter"></i> Filters
+                      </Button>
 
-                  <Button
-                    className="btn-sm btn-blue waves-effect waves-light"
-                    onClick={toggleUploadModal}
-                  >
-                    <i className="mdi mdi-upload"></i> Bulk Upload
-                  </Button>
+                      <Button
+                        className="btn-sm btn-blue waves-effect waves-light"
+                        onClick={toggleUploadModal}
+                      >
+                        <i className="mdi mdi-upload"></i> Bulk Upload
+                      </Button>
 
-                  <Button
-                    className="btn-sm btn-blue waves-effect waves-light"
-                    onClick={toggleResponsiveModal}
-                  >
-                    <i className="mdi mdi-plus-circle"></i> Add Student
-                  </Button>
-                  <Button
-                    className="btn-sm btn-warning waves-effect waves-light "
-                    onClick={handleDownload}
-                  >
-                    <i className="mdi mdi-download"></i> {"Download data"}
-                  </Button>
-                </div>
-                </Row>
-                {/* <h4 className="header-title mb-4">Manage Student</h4> */}
+                      <Button
+                        className="btn-sm btn-blue waves-effect waves-light"
+                        onClick={toggleResponsiveModal}
+                      >
+                        <i className="mdi mdi-plus-circle"></i> Add Student
+                      </Button>
+                      <Button
+                        className="btn-sm btn-warning waves-effect waves-light "
+                        onClick={handleDownload}
+                      >
+                        <i className="mdi mdi-download"></i> {"Download data"}
+                      </Button>
+                    </div>
+                  </Row>
+                  {/* <h4 className="header-title mb-4">Manage Student</h4> */}
 
-                <Table
-                  columns={
-                    user.role == "2"
-                      ? credStaffColumns
-                      : user.role == "4"
-                      ? consultantStaffColumns
-                      : columns1
-                  }
-                  data={filteredItems}
-                  pageSize={5}
-                  sizePerPageList={sizePerPageList}
-                  isSortable={true}
-                  pagination={true}
-                  isSelectable={true}
-                  isSearchable={true}
-                  theadClass="table-light mt-2"
-                  searchBoxClass="mt-2 mb-3"
-                  onSelect={handleSelectedValues}
-                />
-              </>
-            </Card.Body>
-          </Card>
-        </Col>
+                  <Table
+                    columns={
+                      user.role == "2"
+                        ? credStaffColumns
+                        : user.role == "4"
+                        ? consultantStaffColumns
+                        : columns1
+                    }
+                    data={filteredItems}
+                    pageSize={5}
+                    sizePerPageList={sizePerPageList}
+                    isSortable={true}
+                    pagination={true}
+                    isSelectable={true}
+                    isSearchable={true}
+                    theadClass="table-light mt-2"
+                    searchBoxClass="mt-2 mb-3"
+                    onSelect={handleSelectedValues}
+                  />
+                </>
+              </Card.Body>
+            </Card>
+          </Col>
+        )}
       </Row>
     </>
   );
@@ -782,12 +746,6 @@ const IntakeStudents = () => {
       ConsultantStaff: state.ConsultantStaff.ConsultantStaffByAdmin.data,
     })
   );
-
-  console.log(state);
-  
-
-
-
 
   const getSourceData = () => {
     axios
@@ -824,8 +782,6 @@ const IntakeStudents = () => {
     //   dispatch(getStudent());
     // }
   };
-
-  
 
   useEffect(() => {
     if (credStaff) {

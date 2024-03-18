@@ -15,17 +15,10 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { Drawer } from "antd";
 
-type Props = {
-  setFilterModal: any;
-  filterModal: boolean;
-  data: any;
-  setfilteredData: any;
-  user?: any;
-};
-
 const animatedComponents = makeAnimated();
 
-const FilterModal = (props: Props) => {
+const FilterModal = (props: any) => {
+
   const dispatch = useDispatch();
 
   const location = useLocation();
@@ -50,6 +43,7 @@ const FilterModal = (props: Props) => {
   };
 
   const applyFilter = async () => {
+    props.setIsLoading(true);
     let id = user?.role_name === "CONSULTANT_ADMIN" ? user.consultant_id : null;
     const { data } = await axios.post(
       "/cred_admin_user_students",
@@ -72,6 +66,7 @@ const FilterModal = (props: Props) => {
     } else {
       props.setfilteredData(data.data);
     }
+    props.setIsLoading(false);
   };
 
   const handleStatusChange = (selectedValues: any, fieldName: any) => {
@@ -116,14 +111,14 @@ const FilterModal = (props: Props) => {
       onClose={props.setFilterModal}
       open={props.filterModal}
     >
-      <div className=" h-100 d-flex flex-column align-items-center justify-content-center">
+      <div className=" h-100 d-flex flex-column">
         <div className="d-flex flex-column w-100">
           <Row className="mb-1">
             <Col>
               <Form>
                 <Row>
                   <Col className="mb-1">
-                  <Form.Label>Filter by internal status</Form.Label>
+                    <Form.Label>Filter by internal status</Form.Label>
                     <Select
                       isMulti
                       components={animatedComponents}
@@ -155,7 +150,7 @@ const FilterModal = (props: Props) => {
               <Form>
                 <Row>
                   <Col className="mb-1">
-                  <Form.Label>Filter by loan status</Form.Label>
+                    <Form.Label>Filter by loan status</Form.Label>
                     <Select
                       isMulti
                       components={animatedComponents}
@@ -188,7 +183,7 @@ const FilterModal = (props: Props) => {
                 <Form>
                   <Row>
                     <Col className="mb-1">
-                    <Form.Label>Filter by consultants</Form.Label>
+                      <Form.Label>Filter by consultants</Form.Label>
                       <Select
                         isMulti
                         components={animatedComponents}
@@ -220,7 +215,7 @@ const FilterModal = (props: Props) => {
                 <Form>
                   <Row>
                     <Col className="mb-1">
-                    <Form.Label>Filter by staffs</Form.Label>
+                      <Form.Label>Filter by staffs</Form.Label>
                       <Select
                         isMulti
                         components={animatedComponents}

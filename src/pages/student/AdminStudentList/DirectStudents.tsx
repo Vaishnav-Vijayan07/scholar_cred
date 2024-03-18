@@ -33,7 +33,6 @@ const DirectStudents = () => {
     Authloading: state.Auth.loading,
   }));
 
-  console.log("consultants=======>", consultants);
 
   const getSourceData = () => {
     axios
