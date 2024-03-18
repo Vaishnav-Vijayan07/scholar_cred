@@ -14,15 +14,13 @@ const excelDownload = (data: any, colom: any) => {
     )
     .map((item: any) => item.accessor);
 
-
-
   let count = 1;
   const filteredData = data.map((item: any) => {
     const filteredItem: any = {};
 
     headers.forEach((header: string) => {
       if (item.hasOwnProperty(header)) {
-        filteredItem.id = count;
+        filteredItem.Sl_No = count;
         if (header === "first_name") {
           filteredItem.name = `${item.first_name} ${item.last_name}`;
         } else {
