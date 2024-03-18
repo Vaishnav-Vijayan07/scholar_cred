@@ -3,7 +3,7 @@ import * as yup from "yup";
 import { Link } from "react-router-dom";
 import { Card, Form } from "react-bootstrap";
 
-import avatar3 from "../../../assets/images/users/user-3.jpg";
+import avatar3 from "../../../assets/images/logo-sm.png";
 import { useDispatch } from "react-redux";
 import { createComment } from "../../../redux/actions";
 import { calculateTimeAgo } from "../../../constants/functons";
@@ -51,15 +51,13 @@ const Comments = ({ CommentsData, studentId }: any) => {
 
       {CommentsData?.map((item: any) => (
         <div className="d-flex align-items-start mb-3">
-          {/* {item?.author_avatar ? (
-              <img className="me-2 rounded-circle" src={`${process.env.REACT_APP_BACKEND_URL}${item?.author_avatar}`} alt="" height="32" />
-            ) : (
-              <img className="me-2 rounded-circle" src={avatar3} alt="" height="32" />
-            )} */}
-          {/* <img className="me-2 rounded-circle" src={avatar3} alt="" height="32" /> */}
-          <div className="circle">
-            <p className="circle-inner onject-fit-contain">{item?.author[0]}</p>
-          </div>
+          {item?.role == 1 || item?.role == 2 ? (
+            <img className="me-2 rounded-circle" src={avatar3} alt="" height="32" />
+          ) : (
+            <div className="circle">
+              <p className="circle-inner onject-fit-contain">{item?.author[0]}</p>
+            </div>
+          )}
 
           <div className="w-100">
             <h5 className="mt-0">
