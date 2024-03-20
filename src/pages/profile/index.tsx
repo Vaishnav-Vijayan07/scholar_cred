@@ -6,20 +6,19 @@ import PageTitle from "../../components/PageTitle";
 import UserBox from "./UserBox1";
 import ChangePassword from "./ChangePassword";
 import Settings from "./Settings1";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { getLatestData } from "../../redux/actions";
+import {useSelector } from "react-redux";
 import axios from "axios";
 import { getUserFromCookie } from "../../helpers/api/apiCore";
 
 const Profile = () => {
-  const dispatch = useDispatch();
   const refreshing = useSelector(
     (state: any) => state.refreshReducer.refreshing
   );
   const [user, setUser] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const { user_id } = getUserFromCookie();
     (async () => {
       try {
@@ -29,10 +28,10 @@ const Profile = () => {
       } catch (error) {
         console.error("Error fetching personal info:", error);
       }
+      setLoading(false);
     })();
   }, [refreshing]);
 
-  console.log("user==>", user);
 
   return (
     <>
@@ -46,7 +45,7 @@ const Profile = () => {
       <Row>
         <Col xl={4} lg={4}>
           {/* User information */}
-          <UserBox user={user || []} />
+          <UserBox user={user || []} loading={loading} />
         </Col>
         <Col xl={8} lg={8}>
           <Tab.Container defaultActiveKey="change_password">

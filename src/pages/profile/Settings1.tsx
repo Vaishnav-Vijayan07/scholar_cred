@@ -5,8 +5,8 @@ import { Row, Col, InputGroup, Form } from "react-bootstrap";
 // components
 import { FormInput } from "../../components/";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { editProfile, getLatestData } from "../../redux/actions";
+
+import { editProfile } from "../../redux/actions";
 import axios from "axios";
 import { getUserFromCookie } from "../../helpers/api/apiCore";
 
@@ -39,7 +39,7 @@ const PersonalInfo = () => {
           lastname: result?.username?.split(" ")[1],
         });
       } catch (error) {
-        console.error("Error fetching personal info:", error);
+        console.error("Error fetching info:", error);
       }
     })();
   }, [refreshing]);
@@ -84,7 +84,6 @@ const PersonalInfo = () => {
   const handle = async () => {
     try {
       await schema.validate(state, { abortEarly: false });
-      console.log(state);
       dispatch(editProfile(state));
       setIsImage(false);
     } catch (validationError) {

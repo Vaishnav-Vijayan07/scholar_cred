@@ -186,7 +186,6 @@ const Topbar = ({
   }, [refreshing]);
 
   console.log(user);
-  
 
   const navbarCssClasses: string = navCssClasses || "";
   const containerCssClasses: string = !hideLogo ? "container-fluid" : "";
@@ -343,9 +342,22 @@ const Topbar = ({
             <li className="dropdown d-flex flex-column">
               <ProfileDropdown
                 profilePic={
-                  user?.image 
-                    ? `${process.env.REACT_APP_BACKEND_URL}${user?.Avatar || user?.image || user?.image_url}`
-                    : AvatarLogo
+                  user?.user_type_id === 1
+                    ? AvatarLogo ||
+                      (user?.image
+                        ? `${process.env.REACT_APP_BACKEND_URL}${
+                            user?.Avatar || user?.image
+                          }`
+                        : `${process.env.REACT_APP_BACKEND_URL}${
+                            user?.Avatar || user?.image_url
+                          }`)
+                    : user?.image
+                    ? `${process.env.REACT_APP_BACKEND_URL}${
+                        user?.Avatar || user?.image
+                      }`
+                    : `${process.env.REACT_APP_BACKEND_URL}${
+                        user?.Avatar || user?.image_url
+                      }`
                 }
                 menuItems={ProfileMenus}
                 username={

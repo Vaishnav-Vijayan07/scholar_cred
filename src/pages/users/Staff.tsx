@@ -325,6 +325,10 @@ const BasicInputElements = withSwal((props: any) => {
     setSelectedFile(event.target.files[0]);
   };
 
+
+  console.log(formData);
+  
+
   if (initialLoading) {
     return (
       <Spinner
@@ -491,7 +495,7 @@ const BasicInputElements = withSwal((props: any) => {
                       {/* {isUpdate && <img src={selectedFile && URL.createObjectURL(selectedFile) || formData.file} alt="selected file" width={100} />} */}
                       {!selectedFile && isUpdate && (
                         <img
-                          src={`${process.env.REACT_APP_BACKEND_URL}/${formData.file}`}
+                          src={`${process.env.REACT_APP_BACKEND_URL}${formData.file}`}
                           alt="selected file"
                           width={100}
                           className="mt-2"
@@ -543,7 +547,7 @@ const BasicInputElements = withSwal((props: any) => {
                     className="btn-sm btn-blue waves-effect waves-light"
                     onClick={toggleResponsiveModal}
                   >
-                    <i className="mdi mdi-plus-circle"></i> Add Staff
+                    <i className="mdi mdi-plus-circle"></i> Add staff
                   </Button>
                 </div>
                 {/* <h4 className="header-title mb-4">Manage Staff</h4> */}
