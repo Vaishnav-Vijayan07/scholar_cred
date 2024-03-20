@@ -29,10 +29,12 @@ interface AuthActionType {
     | AuthActionTypes.LOGIN_USER
     | AuthActionTypes.LOGOUT_USER
     | AuthActionTypes.RESET
+    | AuthActionTypes.EDIT_PROFILE
+    | AuthActionTypes.GET_LATEST
     | AuthActionTypes.CHANGE_PASSWORD;
   payload: {
     actionType?: string;
-    data?: UserData | {};
+    data?: any;
     error?: string;
   };
 }
@@ -92,6 +94,22 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             error: null,
           };
         }
+        case AuthActionTypes.EDIT_PROFILE: {
+          showSuccessAlert(action.payload.data.message);
+          return {
+            ...state,
+            loading: false,
+            error: null,
+          };
+        }
+        // case AuthActionTypes.GET_LATEST: {
+        //   return {
+        //     ...state,
+        //     loading: false,
+        //     user: action.payload.data,
+        //     error: null,
+        //   };
+        // }
         default:
           return { ...state };
       }
@@ -129,6 +147,21 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
             loading: false,
           };
         }
+        case AuthActionTypes.EDIT_PROFILE: {
+          showSuccessAlert(action.payload.data.message);
+          return {
+            ...state,
+            loading: false,
+            error: action.payload.error,
+          };
+        }
+        // case AuthActionTypes.GET_LATEST: {
+        //   return {
+        //     ...state,
+        //     loading: false,
+        //     error: action.payload.error,
+        //   };
+        // }
         default:
           return { ...state };
       }
@@ -137,6 +170,8 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
       return { ...state, loading: true, userLoggedIn: false };
     case AuthActionTypes.CHANGE_PASSWORD:
       return { ...state, loading: true, message: null };
+    // case AuthActionTypes.GET_LATEST:
+    //   return { ...state, loading: true, message: null };
     case AuthActionTypes.LOGOUT_USER:
       return { ...state, loading: true, userLogout: false };
     case AuthActionTypes.RESET:

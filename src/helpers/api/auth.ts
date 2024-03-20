@@ -25,9 +25,31 @@ function forgotPassword(params: { username: string }) {
   return api.create(`${baseUrl}`, params);
 }
 
-function changePassword(params: { old_passowrd: string; new_password: string; user_id: string }) {
+function changePassword(params: {
+  old_passowrd: string;
+  new_password: string;
+  user_id: string;
+}) {
   const baseUrl = "/change_password";
   return api.create(`${baseUrl}`, params);
 }
 
-export { login, logout, signup, forgotPassword, changePassword };
+function editProfileApi(params: {
+  id: any;
+  firstname: any;
+  lastname: any;
+  image: any;
+}) {
+  const baseUrl = "/edit_profile";
+  return api.updateWithFile(`${baseUrl}?id=${params.id}`, params);
+}
+
+
+export {
+  login,
+  logout,
+  signup,
+  forgotPassword,
+  changePassword,
+  editProfileApi,
+};

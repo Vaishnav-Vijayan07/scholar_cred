@@ -5,13 +5,21 @@ import { SagaIterator } from "@redux-saga/core";
 import { APICore, setAuthorization } from "../../helpers/api/apiCore";
 
 // helpers
-import { login as loginApi, logout as logoutApi, signup as signupApi, forgotPassword as forgotPasswordApi, changePassword as changePasswordApi } from "../../helpers/";
+import {
+  login as loginApi,
+  logout as logoutApi,
+  signup as signupApi,
+  forgotPassword as forgotPasswordApi,
+  changePassword as changePasswordApi,
+} from "../../helpers/";
 
 // actions
 import { authApiResponseSuccess, authApiResponseError } from "./actions";
 
 // constants
 import { AuthActionTypes } from "./constants";
+import { editProfileApi} from "../../helpers/api/auth";
+import { refreshData } from "../../reducer/refreshReducer";
 
 interface UserData {
   payload: {
@@ -32,7 +40,10 @@ const api = new APICore();
  * Login the user
  * @param {*} payload - username and password
  */
-function* login({ payload: { username, password }, type }: UserData): SagaIterator {
+function* login({
+  payload: { username, password },
+  type,
+}: UserData): SagaIterator {
   try {
     const response = yield call(loginApi, { username, password });
     const user = response?.data;
@@ -61,7 +72,9 @@ function* logout(): SagaIterator {
   }
 }
 
-function* signup({ payload: { fullname, email, password } }: UserData): SagaIterator {
+function* signup({
+  payload: { fullname, email, password },
+}: UserData): SagaIterator {
   try {
     const response = yield call(signupApi, { fullname, email, password });
     const user = response.data;
@@ -78,19 +91,43 @@ function* signup({ payload: { fullname, email, password } }: UserData): SagaIter
 function* forgotPassword({ payload: { username } }: UserData): SagaIterator {
   try {
     const response = yield call(forgotPasswordApi, { username });
-    yield put(authApiResponseSuccess(AuthActionTypes.FORGOT_PASSWORD, response.data));
+    yield put(
+      authApiResponseSuccess(AuthActionTypes.FORGOT_PASSWORD, response.data)
+    );
   } catch (error: any) {
     yield put(authApiResponseError(AuthActionTypes.FORGOT_PASSWORD, error));
   }
 }
 
-function* changePassword({ payload: { old_passowrd, new_password, user_id } }: UserData): SagaIterator {
+function* changePassword({
+  payload: { old_passowrd, new_password, user_id },
+}: UserData): SagaIterator {
   try {
-    const response = yield call(changePasswordApi, { old_passowrd, new_password, user_id });
+    const response = yield call(changePasswordApi, {
+      old_passowrd,
+      new_password,
+      user_id,
+    });
 
-    yield put(authApiResponseSuccess(AuthActionTypes.CHANGE_PASSWORD, response.data.message));
+    yield put(
+      authApiResponseSuccess(
+        AuthActionTypes.CHANGE_PASSWORD,
+        response.data.message
+      )
+    );
   } catch (error: any) {
     yield put(authApiResponseError(AuthActionTypes.CHANGE_PASSWORD, error));
+  }
+}
+
+function* editProfile({ payload: { data } }: any): SagaIterator {
+  try {
+    const response = yield call(editProfileApi, data);
+    const message = response.data;
+    yield put(authApiResponseSuccess(AuthActionTypes.EDIT_PROFILE, message));
+    yield put(refreshData())
+  } catch (error: any) {
+    yield put(authApiResponseError(AuthActionTypes.EDIT_PROFILE, error));
   }
 }
 
@@ -114,8 +151,20 @@ export function* watchChangePassword(): any {
   yield takeEvery(AuthActionTypes.CHANGE_PASSWORD, changePassword);
 }
 
+export function* watchEditProfile(): any {
+  yield takeEvery(AuthActionTypes.EDIT_PROFILE, editProfile);
+}
+
+
 function* authSaga() {
-  yield all([fork(watchLoginUser), fork(watchLogout), fork(watchSignup), fork(watchForgotPassword), fork(watchChangePassword)]);
+  yield all([
+    fork(watchLoginUser),
+    fork(watchLogout),
+    fork(watchSignup),
+    fork(watchForgotPassword),
+    fork(watchChangePassword),
+    fork(watchEditProfile),
+  ]);
 }
 
 export default authSaga;

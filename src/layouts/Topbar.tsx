@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 // import classNames from 'classnames';
 
 // actions
-import { showRightSidebar, changeSidebarType } from "../redux/actions";
+import {
+  showRightSidebar,
+  changeSidebarType,
+  getLatestData,
+} from "../redux/actions";
 
 // store
 import { RootState, AppDispatch } from "../redux/store";
@@ -27,6 +31,8 @@ import logoDark2 from "../assets/images/logo-dark-2.png";
 import AvatarLogo from "../assets/images/avatar-logo.png";
 import { useViewport } from "../hooks/useViewPort";
 import { getNotifications } from "../redux/notifications/actions";
+import { getUserFromCookie } from "../helpers/api/apiCore";
+import axios from "axios";
 
 export interface NotificationItem {
   id: number;
@@ -152,22 +158,46 @@ interface TopbarProps {
   topbarDark?: boolean;
 }
 
-const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: TopbarProps) => {
+const Topbar = ({
+  hideLogo,
+  navCssClasses,
+  openLeftMenuCallBack,
+  topbarDark,
+}: TopbarProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { width } = useViewport();
 
-  const { user } = useSelector((state: RootState) => ({
-    user: state.Auth.user,
-  }));
+  const refreshing = useSelector(
+    (state: any) => state.refreshReducer.refreshing
+  );
+  const [user, setUser] = useState<any>([]);
+
+  useEffect(() => {
+    const { user_id } = getUserFromCookie();
+    (async () => {
+      try {
+        const response = await axios.get(`admin_users_by_userid?id=${user_id}`);
+        const result = response.data.data;
+        setUser(result);
+      } catch (error) {
+        console.error("Error fetching personal info:", error);
+      }
+    })();
+  }, [refreshing]);
+
+  console.log(user);
+  
 
   const navbarCssClasses: string = navCssClasses || "";
   const containerCssClasses: string = !hideLogo ? "container-fluid" : "";
 
-  const { layoutType, leftSideBarType, notifications } = useSelector((state: RootState) => ({
-    layoutType: state.Layout.layoutType,
-    leftSideBarType: state.Layout.leftSideBarType,
-    notifications: state.Notifications.notifications,
-  }));
+  const { layoutType, leftSideBarType, notifications } = useSelector(
+    (state: RootState) => ({
+      layoutType: state.Layout.layoutType,
+      leftSideBarType: state.Layout.leftSideBarType,
+      notifications: state.Notifications.notifications,
+    })
+  );
 
   /**
    * Toggle the leftmenu when having mobile screen
@@ -176,7 +206,9 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
     if (width < 1140) {
       if (leftSideBarType === "full") {
         showLeftSideBarBackdrop();
-        document.getElementsByTagName("html")[0].classList.add("sidebar-enable");
+        document
+          .getElementsByTagName("html")[0]
+          .classList.add("sidebar-enable");
       } else {
         dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       }
@@ -202,7 +234,9 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
     // backdrop.style.zIndex = '999'
     document.body.appendChild(backdrop);
 
-    if (document.getElementsByTagName("html")[0]?.getAttribute("dir") !== "rtl") {
+    if (
+      document.getElementsByTagName("html")[0]?.getAttribute("dir") !== "rtl"
+    ) {
       document.body.style.overflow = "hidden";
       if (width > 1140) {
         document.body.style.paddingRight = "15px";
@@ -210,7 +244,9 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
     }
 
     backdrop.addEventListener("click", function (e) {
-      document.getElementsByTagName("html")[0].classList.remove("sidebar-enable");
+      document
+        .getElementsByTagName("html")[0]
+        .classList.remove("sidebar-enable");
       dispatch(changeSidebarType(SideBarTypes.LEFT_SIDEBAR_TYPE_FULL));
       hideLeftSideBarBackdrop();
     });
@@ -241,7 +277,6 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
   // };
 
   useEffect(() => {
-    
     dispatch(getNotifications());
   }, []);
 
@@ -257,7 +292,15 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
                     <img src={logoSm} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoDark2 : logoDark} alt="" height="30" />
+                    <img
+                      src={
+                        layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
+                          ? logoDark2
+                          : logoDark
+                      }
+                      alt=""
+                      height="30"
+                    />
                   </span>
                 </Link>
                 <Link to="/" className="logo logo-light text-center">
@@ -265,13 +308,24 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
                     <img src={logoSm} alt="" height="22" />
                   </span>
                   <span className="logo-lg">
-                    <img src={layoutType === LayoutTypes.LAYOUT_TWO_COLUMN ? logoSm : logoSm} alt="" height="30" />
+                    <img
+                      src={
+                        layoutType === LayoutTypes.LAYOUT_TWO_COLUMN
+                          ? logoSm
+                          : logoSm
+                      }
+                      alt=""
+                      height="30"
+                    />
                   </span>
                 </Link>
               </div>
             )}
 
-            <button className="button-toggle-menu" onClick={handleLeftMenuCallBack}>
+            <button
+              className="button-toggle-menu"
+              onClick={handleLeftMenuCallBack}
+            >
               <i className="mdi mdi-menu" />
             </button>
           </div>
@@ -289,13 +343,17 @@ const Topbar = ({ hideLogo, navCssClasses, openLeftMenuCallBack, topbarDark }: T
             <li className="dropdown d-flex flex-column">
               <ProfileDropdown
                 profilePic={
-                  user?.Avatar !== "null"
-                    ? `${process.env.REACT_APP_BACKEND_URL}${user?.Avatar}`
+                  user?.image 
+                    ? `${process.env.REACT_APP_BACKEND_URL}${user?.Avatar || user?.image || user?.image_url}`
                     : AvatarLogo
                 }
                 menuItems={ProfileMenus}
-                username={user?.role_name == "ADMIN" ? user?.full_name : user?.full_name?.split(" ")[0]}
-                userTitle={user?.role_name?.split("_")?.join(" ")}
+                username={
+                  user?.role_name == "ADMIN"
+                    ? user?.full_name
+                    : user?.full_name?.split(" ")[0]
+                }
+                userTitle={user?.type_name}
               />
             </li>
             {/* <li>
