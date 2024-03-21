@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
-import { Card, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 import avatar3 from "../../../assets/images/logo-sm.png";
 import { useDispatch } from "react-redux";

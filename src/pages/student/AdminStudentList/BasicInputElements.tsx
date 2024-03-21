@@ -100,7 +100,6 @@ const BasicInputElements = withSwal((props: any) => {
     last_name: yup.string().trim().required("Last name is required"),
     email: yup
       .string()
-      .required("Email is required")
       .email("Invalid email format"),
     phone: yup
       .string()
