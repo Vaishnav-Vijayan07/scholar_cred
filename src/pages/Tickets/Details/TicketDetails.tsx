@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Spinner } from "react-bootstrap";
+import avatarImg from "../../../assets/images/avatar-logo.png";
 import { Link } from "react-router-dom";
 
 // dummy data
@@ -59,8 +60,12 @@ const TicketDetails = ({ state, ticket_id }: any) => {
           <Row>
             <Col md={6}>
               <label className="mt-2 mb-1">Reported By :</label>
-              <div className="d-flex align-items-start gap-2">
-                <Avatar name={state[0]?.student_first_name} />
+              <div className="d-flex align-items-start">
+                <div className="circle">
+                  <p className="circle-inner object-fit-contain">
+                    {state[0]?.student_first_name[0].toUpperCase()}
+                  </p>
+                </div>
                 <div className="w-100">
                   <p>{`${state[0]?.student_first_name} ${state[0]?.student_last_name}`}</p>
                 </div>
@@ -68,8 +73,12 @@ const TicketDetails = ({ state, ticket_id }: any) => {
             </Col>
             <Col md={6}>
               <label className="mt-2 mb-1">Assigned To :</label>
-              <div className="d-flex align-items-start gap-2">
-                <Avatar name={state[0]?.assigned_to_user_name} />
+              <div className="d-flex align-items-start ">
+                <div className="circle">
+                  <p className="circle-inner object-fit-contain">
+                    {state[0]?.assigned_to_user_name[0].toUpperCase()}
+                  </p>
+                </div>
                 <div className="w-100">
                   <p> {state[0]?.assigned_to_user_name} </p>
                 </div>

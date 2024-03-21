@@ -25,7 +25,7 @@ const Details = () => {
   const { state, initialLoading, comments, user } = useSelector(
     (state: RootState) => ({
       state: state.Tickets.Ticket,
-      user  : state.Auth.user,
+      user: state.Auth.user,
       initialLoading: state.Tickets.initialLoading,
       comments: state.Tickets.TicketComments,
     })
@@ -59,9 +59,17 @@ const Details = () => {
         title={"Ticket Detail"}
       />
       <Row>
+        {/* <Col md={6} >
+        </Col>
+        <Col md={6} >
+      </Col> */}
         <Col>
           <TicketDetails state={state || []} ticket_id={id} />
-          <Discussion comments={comments || []} ticket_id={id || ""} user={user} />
+          <Discussion
+            comments={comments || []}
+            ticket_id={id || ""}
+            user={user}
+          />
         </Col>
       </Row>
     </>

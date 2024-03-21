@@ -1,5 +1,6 @@
 import React from "react";
 
+
 type Props = {
   name: string;
   image?: string | null;

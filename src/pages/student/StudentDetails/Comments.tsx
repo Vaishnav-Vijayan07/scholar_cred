@@ -16,6 +16,11 @@ const Comments = ({ CommentsData, studentId }: any) => {
   const dispatch = useDispatch();
   const [commentText, setCommentText] = useState<string>("");
 
+
+
+  console.log(CommentsData);
+  
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -54,7 +59,7 @@ const Comments = ({ CommentsData, studentId }: any) => {
             <img className="me-2 rounded-circle" src={avatar3} alt="" height="32" />
           ) : (
             <div className="circle">
-              <p className="circle-inner onject-fit-contain">{item?.author[0]}</p>
+              <p className="circle-inner object-fit-contain">{item?.author[0]}</p>
             </div>
           )}
 

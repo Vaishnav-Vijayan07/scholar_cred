@@ -8,7 +8,7 @@ import UserBox from "./UserBox";
 import PreliminaryScreening from "./PreliminaryScreening";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getComment, getStudentById } from "../../../redux/actions";
 import { RootState } from "../../../redux/store";
@@ -21,7 +21,10 @@ import Comments from "./Comments";
 import Attachments from "./Attachments";
 
 const Profile = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
+  const { search } = useLocation();
+
+  const searchParam = search?.split('?')[1]
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,11 +34,13 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [attachments, setAttachments] = useState([]);
 
-  const { StudentData, loading, CommentsData } = useSelector((state: RootState) => ({
-    StudentData: state.Students.studentById,
-    loading: state.Students.loading,
-    CommentsData: state.Comments.comments.data,
-  }));
+  const { StudentData, loading, CommentsData } = useSelector(
+    (state: RootState) => ({
+      StudentData: state.Students.studentById,
+      loading: state.Students.loading,
+      CommentsData: state.Comments.comments.data,
+    })
+  );
 
   console.log("StudentData--------->", StudentData);
 
@@ -85,6 +90,16 @@ const Profile = () => {
       navigate("/cred-admin/students");
     }
   }, []);
+
+  useEffect(() => {
+    if (searchParam) {
+      const scrollToElement = document.getElementById(searchParam ? searchParam : "");
+      if (scrollToElement) {
+        scrollToElement.scrollIntoView({ behavior: "smooth" });
+        navigate(`/users/student-details/${id}`, { replace: true });
+      }
+    }
+  }, [id,searchParam]);
 
   const handleChangeStatus = (status_id: string) => {
     axios
@@ -144,7 +159,12 @@ const Profile = () => {
       <Row>
         <Col xl={4} lg={4}>
           {/* User information */}
-          <UserBox StudentData={StudentData} loading={loading} handleAppprove={handleAppprove} isLoading={isLoading} />
+          <UserBox
+            StudentData={StudentData}
+            loading={loading}
+            handleAppprove={handleAppprove}
+            isLoading={isLoading}
+          />
 
           <Col>
             <StatisticsWidget2
@@ -152,7 +172,13 @@ const Profile = () => {
               description="Application status"
               stats={StudentData?.application_status_name || "Pending"}
               icon="fe-aperture"
-              progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
+              progress={
+                StudentData?.current_stage == "0"
+                  ? 0
+                  : StudentData?.current_stage == "1"
+                  ? 50
+                  : 100
+              }
               counterOptions={{
                 prefix: "$",
               }}
@@ -160,27 +186,46 @@ const Profile = () => {
           </Col>
 
           {/* Loan status */}
-          <Col>
+          <Col id={search?.split("?")[1]}>
             <Card>
               <Card.Body>
                 <Row>
                   <Col className="col-2">
-                    <div className={classNames("avatar-sm", "rounded", "bg-" + "success")}>
-                      <i className={classNames("fe-refresh-cw", "avatar-title font-22 text-white")}></i>
+                    <div
+                      className={classNames(
+                        "avatar-sm",
+                        "rounded",
+                        "bg-" + "success"
+                      )}
+                    >
+                      <i
+                        className={classNames(
+                          "fe-refresh-cw",
+                          "avatar-title font-22 text-white"
+                        )}
+                      ></i>
                     </div>
                   </Col>
                   <Col className="col-10">
                     <div className="text-end">
                       <h4 className="text-dark my-1">
-                        <span>{StudentData?.loan_status_name || "Pending"}</span>
+                        <span>
+                          {StudentData?.loan_status_name || "Pending"}
+                        </span>
                       </h4>
-                      <p className="text-muted mb-1 text-truncate">{"Loan status"}</p>
+                      <p className="text-muted mb-1 text-truncate">
+                        {"Loan status"}
+                      </p>
                     </div>
                   </Col>
                 </Row>
                 <div className="mt-3">
                   <Dropdown className="float-end" align="end">
-                    <Dropdown.Toggle className="cursor-pointer" variant="light" disabled={!StudentData?.status}>
+                    <Dropdown.Toggle
+                      className="cursor-pointer"
+                      variant="light"
+                      disabled={!StudentData?.status}
+                    >
                       Change status
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
@@ -188,7 +233,11 @@ const Profile = () => {
                         (item: any) =>
                           // Check if the item is visible before rendering the Dropdown.Item
                           item.is_visible && (
-                            <Dropdown.Item eventKey={item.id} key={item.id} onClick={() => handleChangeStatus(item?.id)}>
+                            <Dropdown.Item
+                              eventKey={item.id}
+                              key={item.id}
+                              onClick={() => handleChangeStatus(item?.id)}
+                            >
                               {item.status_name}
                             </Dropdown.Item>
                           )
@@ -205,9 +254,17 @@ const Profile = () => {
           <Tab.Container defaultActiveKey="preliminary_screening">
             <Card>
               <Card.Body>
-                <Nav variant="pills" as="ul" className="nav nav-pills nav-fill navtab-bg row-gap-1">
+                <Nav
+                  variant="pills"
+                  as="ul"
+                  className="nav nav-pills nav-fill navtab-bg row-gap-1"
+                >
                   <Nav.Item as="li" className="nav-item">
-                    <Nav.Link href="#" eventKey="preliminary_screening" className="nav-link cursor-pointer">
+                    <Nav.Link
+                      href="#"
+                      eventKey="preliminary_screening"
+                      className="nav-link cursor-pointer"
+                    >
                       Preliminary screening
                     </Nav.Link>
                   </Nav.Item>
@@ -235,7 +292,11 @@ const Profile = () => {
                   </Nav.Item>
 
                   <Nav.Item as="li" className="nav-item">
-                    <Nav.Link href="#" eventKey="history" className="nav-link cursor-pointer">
+                    <Nav.Link
+                      href="#"
+                      eventKey="history"
+                      className="nav-link cursor-pointer"
+                    >
                       History
                     </Nav.Link>
                   </Nav.Item>
@@ -256,7 +317,10 @@ const Profile = () => {
                   </Tab.Pane>
 
                   <Tab.Pane eventKey="detail_screening">
-                    <DetailedScreening student_id={id} StudentData={StudentData} />
+                    <DetailedScreening
+                      student_id={id}
+                      StudentData={StudentData}
+                    />
                   </Tab.Pane>
 
                   <Tab.Pane eventKey="document_screening">
@@ -265,7 +329,11 @@ const Profile = () => {
 
                   <Tab.Pane eventKey="history">
                     <Comments CommentsData={CommentsData} studentId={id} />
-                    <Attachments attachments={attachments} studentId={id} getAttachments={getAttachments} />
+                    <Attachments
+                      attachments={attachments}
+                      studentId={id}
+                      getAttachments={getAttachments}
+                    />
                   </Tab.Pane>
                 </Tab.Content>
               </Card.Body>

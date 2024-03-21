@@ -34,7 +34,6 @@ import {
 } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../redux/store";
 import { resetPassword } from "../../redux/actions";
-import excelDownload from "../../helpers/excelDownload";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, initialLoading } = props;
@@ -55,13 +54,13 @@ const BasicInputElements = withSwal((props: any) => {
   );
 
   const validationSchema = yup.object().shape({
-    first_name: yup.string().required("First name is required"),
-    last_name: yup.string().required("Last name is required"),
+    first_name: yup.string().trim().required("First name is required"),
+    last_name: yup.string().trim().required("Last name is required"),
     email: yup
       .string()
       .required("Email is required")
       .email("Invalid email format"),
-    username: yup.string().required("Username is required"),
+    username: yup.string().trim().required("Username is required"),
     employee_id: yup.string().required("Employee id is required"),
     phone: yup
       .string()
@@ -326,7 +325,10 @@ const BasicInputElements = withSwal((props: any) => {
     setSelectedFile(event.target.files[0]);
   };
 
- 
+
+  console.log(formData);
+  
+
   if (initialLoading) {
     return (
       <Spinner
@@ -493,7 +495,7 @@ const BasicInputElements = withSwal((props: any) => {
                       {/* {isUpdate && <img src={selectedFile && URL.createObjectURL(selectedFile) || formData.file} alt="selected file" width={100} />} */}
                       {!selectedFile && isUpdate && (
                         <img
-                          src={`${process.env.REACT_APP_BACKEND_URL}/${formData.file}`}
+                          src={`${process.env.REACT_APP_BACKEND_URL}${formData.file}`}
                           alt="selected file"
                           width={100}
                           className="mt-2"
@@ -545,7 +547,7 @@ const BasicInputElements = withSwal((props: any) => {
                     className="btn-sm btn-blue waves-effect waves-light"
                     onClick={toggleResponsiveModal}
                   >
-                    <i className="mdi mdi-plus-circle"></i> Add Staff
+                    <i className="mdi mdi-plus-circle"></i> Add staff
                   </Button>
                 </div>
                 {/* <h4 className="header-title mb-4">Manage Staff</h4> */}

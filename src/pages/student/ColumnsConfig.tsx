@@ -11,7 +11,7 @@ export const getColumns = (handleUpdate: any, toggleResponsiveModal: any, handle
   return [
     {
       Header: "Sl No",
-      accessor: "slNo",
+      accessor: "",
       Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
       sort: false,
     },
@@ -136,7 +136,7 @@ export const getConsultantStaffColumns = (handleResetPassword: any, resetPasswor
   return [
     {
       Header: "Sl No",
-      accessor: "slNo",
+      accessor: "",
       Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
       sort: false,
     },
@@ -270,7 +270,7 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
   return [
     {
       Header: "Sl No",
-      accessor: "slNo",
+      accessor: "",
       Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
       sort: false,
     },

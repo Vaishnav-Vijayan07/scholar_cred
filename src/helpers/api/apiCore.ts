@@ -4,7 +4,8 @@ import axios from "axios";
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
 // axios.defaults.baseURL = "https://crm.intersmarthosting.in/cred/api/v1/api";
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
+axios.defaults.baseURL =
+  process.env.REACT_APP_BASE_URL || "http://localhost:3000";
 
 console.log("process.env.BASE_URL =======>", process.env.REACT_APP_BASE_URL);
 
@@ -33,7 +34,10 @@ axios.interceptors.response.use(
           message = "Sorry! the data you are looking for could not be found";
           break;
         default: {
-          message = error.response && error.response.data ? error.response.data["message"] : error.message || error;
+          message =
+            error.response && error.response.data
+              ? error.response.data["message"]
+              : error.message || error;
         }
       }
       return Promise.reject(message);
@@ -54,7 +58,7 @@ const setAuthorization = (token: string | null) => {
 };
 
 const getUserFromCookie = () => {
-  const user = sessionStorage.getItem(AUTH_SESSION_KEY);
+  const user = sessionStorage.getItem(AUTH_SESSION_KEY);  
   return user ? (typeof user == "object" ? user : JSON.parse(user)) : null;
 };
 
@@ -161,6 +165,8 @@ class APICore {
    * post given data to url with file
    */
   updateWithFile = (url: string, data: any) => {
+    console.log(data);
+
     const formData = new FormData();
     for (const k in data) {
       formData.append(k, data[k]);
@@ -193,7 +199,8 @@ class APICore {
   };
 
   setLoggedInUser = (session: any) => {
-    if (session) sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
+    if (session)
+      sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
     else {
       sessionStorage.removeItem(AUTH_SESSION_KEY);
     }
@@ -225,4 +232,4 @@ if (user) {
   }
 }
 
-export { APICore, setAuthorization };
+export { APICore, setAuthorization ,getUserFromCookie};

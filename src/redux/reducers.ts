@@ -16,6 +16,7 @@ import InternalStatus from "./internalStatus/reducer";
 import Tickets from "./tickets/reducer";
 import Notifications from "./notifications/reducer";
 import StudentDetailsReducer from "./studentDetails/reducer";
+import refreshReducer from "../reducer/refreshReducer";
 
 export default combineReducers({
   Auth,
@@ -34,4 +35,5 @@ export default combineReducers({
   Tickets,
   Notifications,
   StudentDetailsReducer,
+  refreshReducer
 });
