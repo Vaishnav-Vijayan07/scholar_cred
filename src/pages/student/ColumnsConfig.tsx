@@ -101,7 +101,6 @@ export const getColumns = (handleUpdate: any, toggleResponsiveModal: any, handle
       sort: false,
       Cell: ({ row }: any) => <div>{row.original.created_by == 0 ? "App" : row.original.created_user}</div>,
     },
-
     {
       Header: "Actions",
       accessor: "",
