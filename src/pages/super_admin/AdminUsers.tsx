@@ -29,10 +29,10 @@ const BasicInputElements = withSwal((props: any) => {
   const [validationErrors, setValidationErrors] = useState(AdminValidationState);
 
   const validationSchema = yup.object().shape({
-    username: yup.string().required("Username is required"),
+    username: yup.string().trim().required("Username is required"),
     email: yup.string().required("Email is required").email("Invalid email format"),
-    first_name: yup.string().required("First name is required"),
-    last_name: yup.string().required("Last name is required"),
+    first_name: yup.string().trim().required("First name is required"),
+    last_name: yup.string().trim().required("Last name is required"),
   });
 
   //handling update logic

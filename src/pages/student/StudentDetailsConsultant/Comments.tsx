@@ -40,7 +40,7 @@ const Comments = ({ CommentsData, studentId }: any) => {
   const [validationErrors, setValidationErrors] = useState(commentValidationState);
 
   const validationSchema = yup.object().shape({
-    commentText: yup.string().required("Comment name is required").min(4, "Comment must be at least 4 characters"),
+    commentText: yup.string().trim().required("Cant be empty").min(4, "Comment must be at least 4 characters"),
   });
   return (
     <div className="p-3">

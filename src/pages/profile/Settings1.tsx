@@ -78,7 +78,6 @@ const PersonalInfo = () => {
       .string()
       .trim()
       .required("Last name is required")
-      .min(3, "Last name must be at least 3 characters"),
   });
 
   const handle = async () => {

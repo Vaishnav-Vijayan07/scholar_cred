@@ -74,8 +74,8 @@ const BasicInputElements = withSwal((props: any) => {
   const [validationErrors, setValidationErrors] = useState(initialValidationState);
 
   const validationSchema = yup.object().shape({
-    status_name: yup.string().required("Status name is required").min(3, "Status name must be at least 3 characters long"),
-    status_description: yup.string().required("Status description is required").min(3, "Status description must be at least 3 characters long"),
+    status_name: yup.string().trim().required("Status name is required").min(3, "Status name must be at least 3 characters long"),
+    status_description: yup.string().trim().required("Status description is required").min(3, "Status description must be at least 3 characters long"),
   });
 
   /*

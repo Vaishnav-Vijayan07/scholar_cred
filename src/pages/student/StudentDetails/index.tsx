@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Card, Tab, Nav, Dropdown, Button } from "react-bootstrap";
 
 // components
@@ -23,26 +23,28 @@ import Attachments from "./Attachments";
 const Profile = () => {
   const { id } = useParams<{ id: string }>();
   const { search } = useLocation();
-
-  const searchParam = search?.split('?')[1]
+  const searchParam = search?.split("?")[1];
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loanDivRef = useRef<HTMLDivElement>(null);
   const [preliminaryDetails, setPreliminaryDetails] = useState({});
   const [preliminaryLoading, setPreliminaryLoading] = useState(false);
   const [loanStatus, setLoanStatus] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [attachments, setAttachments] = useState([]);
 
-  const { StudentData, loading, CommentsData } = useSelector(
+  const { StudentData, loading, CommentsData,user } = useSelector(
     (state: RootState) => ({
       StudentData: state.Students.studentById,
       loading: state.Students.loading,
       CommentsData: state.Comments.comments.data,
+      user:state.Auth.user
     })
   );
 
   console.log("StudentData--------->", StudentData);
+  console.log("User--------->", user);
 
   // console.log("StudentData---->", StudentData);
 
@@ -92,14 +94,11 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (searchParam) {
-      const scrollToElement = document.getElementById(searchParam ? searchParam : "");
-      if (scrollToElement) {
-        scrollToElement.scrollIntoView({ behavior: "smooth" });
-        navigate(`/users/student-details/${id}`, { replace: true });
-      }
+    if (searchParam && loanDivRef.current) {
+      loanDivRef.current.scrollIntoView({ behavior: "smooth" });
+      navigate(`/users/student-details/${id}`, { replace: true });
     }
-  }, [id,searchParam]);
+  }, [id, searchParam]);
 
   const handleChangeStatus = (status_id: string) => {
     axios
@@ -151,8 +150,8 @@ const Profile = () => {
     <>
       <PageTitle
         breadCrumbItems={[
-          { label: "Contacts", path: "/apps/contacts/profile" },
-          { label: "Profile", path: "/apps/contacts/profile", active: true },
+          { label: "Students", path: user?.role == '1' ? "/cred-admin/students" :"/users/intake-students"  },
+          { label: "Details", path: "", active: true },
         ]}
         title={"Profile"}
       />
@@ -186,7 +185,7 @@ const Profile = () => {
           </Col>
 
           {/* Loan status */}
-          <Col id={search?.split("?")[1]}>
+          <Col ref={loanDivRef}>
             <Card>
               <Card.Body>
                 <Row>
