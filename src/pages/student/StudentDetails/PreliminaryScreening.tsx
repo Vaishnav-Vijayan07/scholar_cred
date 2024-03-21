@@ -64,15 +64,12 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
   const dispatch = useDispatch();
 
   const validationSchema = yup.object().shape({
-    name: yup.string().required("Name is required"),
+    name: yup.string().trim().required("Name is required"),
     email: yup.string().email("Invalid email format").required("Email is required"),
     whatsapp_number: yup.string().required("WhatsApp number is required"),
-    destination_country: yup.string().required("Destination country is required"),
-    university_details: yup.string().required("University details are required"),
+    destination_country: yup.string().trim().required("Destination country is required"),
+    university_details: yup.string().trim().required("University details are required"),
   });
-
-  console.log("formData", formData);
-  console.log("preliminaryDetails===>", preliminaryDetails);
 
   useEffect(() => {
     setApplicationStatus(preliminaryDetails?.application_status);
@@ -158,7 +155,6 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 type="text"
                 name="name"
                 placeholder="Enter full name"
-                containerClass={"mb-3"}
                 register={register}
                 key="name"
                 errors={errors}
@@ -178,7 +174,6 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 type="email"
                 name="email"
                 placeholder="Enter email id"
-                containerClass={"mb-3"}
                 register={register}
                 key="email"
                 value={formData.email}
@@ -197,7 +192,6 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 type="number"
                 name="whatsapp_number"
                 placeholder="Enter phone number"
-                containerClass={"mb-3"}
                 register={register}
                 key="whatsapp_number"
                 value={formData.whatsapp_number}
@@ -205,8 +199,8 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 errors={errors}
                 control={control}
               />
-            </Form.Group>
             {validationErrors.whatsapp_number && <Form.Text className="text-danger">{validationErrors.whatsapp_number}</Form.Text>}
+            </Form.Group>
           </Col>
 
           <Col xl={6} xxl={4}>
@@ -216,7 +210,6 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 type="text"
                 name="destination_country"
                 placeholder="Enter Destination Country"
-                containerClass={"mb-3"}
                 register={register}
                 key="destination_country"
                 value={formData.destination_country}
@@ -287,7 +280,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 type="text"
                 name="university_details"
                 placeholder="Enter university details"
-                containerClass={"mb-3"}
+                // containerClass={"mb-3"}
                 register={register}
                 key="university_details"
                 value={formData.university_details}

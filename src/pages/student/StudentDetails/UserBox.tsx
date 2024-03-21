@@ -6,7 +6,7 @@ import profileImg from "../../../assets/images/avatar-logo.png";
 import moment from "moment";
 
 const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
-  // console.log("StudentData=====>", StudentData);
+  console.log("StudentData=====>", StudentData);
 
   return (
     <Card className="text-center">
@@ -103,10 +103,12 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
                 <span className="ms-2">{StudentData?.current_stage}</span>
               </p>
 
-              <p className="text-muted mb-2 font-13">
-                <strong>Loan Type :</strong>
-                <span className="ms-2">{StudentData?.loan_type}</span>
-              </p>
+              {StudentData?.loan_type && (
+                <p className="text-muted mb-2 font-13">
+                  <strong>Loan Type :</strong>
+                  <span className="ms-2">{StudentData?.loan_type}</span>
+                </p>
+              )}
             </div>
           </>
         )}

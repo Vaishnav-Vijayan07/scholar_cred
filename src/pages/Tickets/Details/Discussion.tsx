@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import { calculateTimeAgo } from "../../../constants/functons";
 import { useDispatch } from "react-redux";
@@ -40,16 +40,26 @@ type Props = {
 
 const Discussion = ({ comments, ticket_id, user }: Props) => {
   const roles = ["CRED_ADMIN", "CRED_STAFF"];
-
-  console.log(comments);
-
   const [comment, setComment] = useState("");
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const searchParam = search?.split("?")[1];
+
+
   const dispatch = useDispatch();
 
   const handleCommentSubmit = () => {
     dispatch(updateTicketComments(ticket_id, comment));
     setComment("");
   };
+
+  useEffect(() => {
+    if (searchParam) {
+      const elem: any = document.getElementById(searchParam);
+      elem.scrollIntoView({ behavior: "smooth" });
+      navigate(`/apps/Tickets-details/${ticket_id}`, { replace: true });
+    }
+  }, [ticket_id, searchParam]);
 
   return (
     <>
@@ -97,7 +107,10 @@ const Discussion = ({ comments, ticket_id, user }: Props) => {
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
-                <div className="p-2 bg-light d-flex justify-content-between align-items-center">
+                <div
+                  className="p-2 bg-light d-flex justify-content-between align-items-center"
+                  id={searchParam}
+                >
                   <button
                     onClick={handleCommentSubmit}
                     disabled={comment === ""}

@@ -78,9 +78,10 @@ const BasicInputElements = withSwal((props: any) => {
   );
 
   const validationSchema = yup.object().shape({
-    company_name: yup.string().required("Company name is required"),
+    company_name: yup.string().trim().required("Company name is required"),
     business_address: yup
       .string()
+      .trim()
       .required("Business address is required")
       .min(2, "Address must be at least 2 characters long"),
     email: yup
@@ -98,6 +99,7 @@ const BasicInputElements = withSwal((props: any) => {
     gst: yup.string().required("GST is required"),
     location: yup
       .string()
+      .trim()
       .required("Location is required")
       .min(3, "Location must be at least 3 characters long"),
     pin_code: yup
@@ -394,6 +396,7 @@ const BasicInputElements = withSwal((props: any) => {
   const toggle = () => {
     setModal(!modal);
     setCroppedFile({ croppedAltImage: "", croppedImage: "" });
+    setValidationErrors(initialValidationState)
   };
 
   const toggleImageModal = () => {

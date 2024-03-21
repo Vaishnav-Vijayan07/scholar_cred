@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Row, Col, Spinner } from "react-bootstrap";
 
 // components
@@ -6,11 +6,11 @@ import PageTitle from "../../../components/PageTitle";
 
 import TicketDetails from "./TicketDetails";
 import Discussion from "./Discussion";
-import Attachments from "./Attachments";
+
 
 // dummy data
-import { ticketDetails } from "./data";
-import { useParams } from "react-router-dom";
+
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getTicketComments,
@@ -21,6 +21,7 @@ import { RootState } from "../../../redux/store";
 const Details = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
+
 
   const { state, initialLoading, comments, user } = useSelector(
     (state: RootState) => ({
@@ -35,6 +36,7 @@ const Details = () => {
     dispatch(getTicketDetails(id));
     dispatch(getTicketComments(id));
   }, [id, dispatch]);
+
 
   if (initialLoading) {
     return (
@@ -65,11 +67,12 @@ const Details = () => {
       </Col> */}
         <Col>
           <TicketDetails state={state || []} ticket_id={id} />
-          <Discussion
-            comments={comments || []}
-            ticket_id={id || ""}
-            user={user}
-          />
+          
+            <Discussion
+              comments={comments || []}
+              ticket_id={id || ""}
+              user={user}
+            />
         </Col>
       </Row>
     </>

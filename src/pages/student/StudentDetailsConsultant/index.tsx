@@ -123,8 +123,8 @@ const Profile = () => {
     <>
       <PageTitle
         breadCrumbItems={[
-          { label: "Contacts", path: "/apps/contacts/profile" },
-          { label: "Profile", path: "/apps/contacts/profile", active: true },
+          { label: "Students", path: "/users/intake-students" },
+          { label: "Details", path: "", active: true },
         ]}
         title={"Profile"}
       />
