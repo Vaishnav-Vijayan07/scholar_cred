@@ -35,7 +35,6 @@ import {
 } from "../../redux/actions";
 import { RootState } from "../../redux/store";
 import { CustomCropper } from "./CustomCropper";
-import excelDownload from "../../helpers/excelDownload";
 
 const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();
@@ -121,10 +120,6 @@ const BasicInputElements = withSwal((props: any) => {
 
   //handling update logic
   const handleUpdate = (item: any) => {
-    setCroppedFile((prev) => ({
-      ...prev,
-      croppedImage: `${process.env.REACT_APP_BACKEND_URL}/${item?.image_url}`,
-    }));
     setFormData((prev) => ({
       ...prev,
       id: item?.id,
@@ -138,7 +133,6 @@ const BasicInputElements = withSwal((props: any) => {
       pin_code: item.pin_code,
       pan_no: item.pan_no,
     }));
-
     setIsUpdate(true);
   };
 
@@ -396,7 +390,7 @@ const BasicInputElements = withSwal((props: any) => {
   const toggle = () => {
     setModal(!modal);
     setCroppedFile({ croppedAltImage: "", croppedImage: "" });
-    setValidationErrors(initialValidationState)
+    setValidationErrors(initialValidationState);
   };
 
   const toggleImageModal = () => {
@@ -704,7 +698,7 @@ const BasicInputElements = withSwal((props: any) => {
                             itemRef={fileInputAltRef}
                             onClick={() => handleClear("alt")}
                             type="file"
-                            name="file"
+                            name="second_file"
                             placeholder="Enter pin code"
                             onChange={(
                               e: React.ChangeEvent<HTMLInputElement>

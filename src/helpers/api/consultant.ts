@@ -40,8 +40,6 @@ function updateConsultant(
     created_by: number;
   }
 ) {
-  // console.log(params.file);
-
   const baseUrl = "/edit_consultant_details";
   return api.updateWithFile(`${baseUrl}?id=${id}`, params);
 }
