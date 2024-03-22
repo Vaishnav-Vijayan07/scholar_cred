@@ -45,6 +45,9 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
     user: state.Auth.user,
   }));
 
+  console.log(user);
+  
+
   const { layoutType } = useSelector((state: RootState) => ({
     layoutType: state.Layout.layoutType,
     leftSideBarType: state.Layout.leftSideBarType,
@@ -76,7 +79,11 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
           <div className="logo-box">
             <Link to="/" className="logo logo-dark text-center">
               <span className="logo-sm">
+              {user?.role == "7" || user?.role == "4" ? (
+                  <img src={`${process.env.REACT_APP_BACKEND_URL}${user?.small_avatar}`} alt="" height="50" style={{ maxWidth: "150px" }} />
+                ) : (
                 <img src={logoSm} alt="" height="30" />
+                )}
               </span>
               <span className="logo-lg">
                 {user?.role == "7" || user?.role == "4" ? (

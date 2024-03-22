@@ -47,32 +47,31 @@ const FilterModal = (props: any) => {
     const { data } = await axios.post(
       "/cred_admin_user_students",
       id ? { selectedOptions, id } : selectedOptions
-    );
+    );  
 
-    if (pathname === "/cred-admin/direct-students") {
-      const modifiedData = data.data.filter(
+    let modifiedData = [];
+
+    if (
+      pathname === "/cred-admin/students" ||
+      pathname === "/users/intake-students"
+    ) {
+      modifiedData = data.data.filter((item: any) => item.status == true);
+    } else if (
+      pathname === "/cred-admin/direct-students" ||
+      pathname === "/users/direct-students"
+    ) {
+      modifiedData = data.data.filter(
         (item: any) => item.created_by != 0 && item.consultant_id == 0
       );
-      props.setfilteredData(modifiedData);
     } else if (
       pathname === "/cred-admin/registered-students" ||
       pathname === "/users/registered-students"
     ) {
-      const modifiedData = data.data.filter(
-        (item: any) => item.created_by == 0
-      );
-      props.setfilteredData(modifiedData);
-    } else if (pathname === "/users/intake-students") {
-      const modifiedData = data.data.filter((item: any) => item.status == true);
-      props.setfilteredData(modifiedData);
-    } else if (pathname === "/users/direct-students") {
-      const modifiedData = data.data.filter(
-        (item: any) => item.created_by != 0 && item.consultant_id == 0
-      );
-      props.setfilteredData(modifiedData);
+      modifiedData = data.data.filter((item: any) => item.created_by == 0);
     } else {
-      props.setfilteredData(data.data);
+      modifiedData = data.data;
     }
+    props.setfilteredData(modifiedData);
     props.setIsLoading(false);
   };
 

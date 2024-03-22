@@ -35,7 +35,6 @@ import {
 } from "../../redux/actions";
 import { RootState } from "../../redux/store";
 import { CustomCropper } from "./CustomCropper";
-import excelDownload from "../../helpers/excelDownload";
 
 const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();
@@ -78,9 +77,10 @@ const BasicInputElements = withSwal((props: any) => {
   );
 
   const validationSchema = yup.object().shape({
-    company_name: yup.string().required("Company name is required"),
+    company_name: yup.string().trim().required("Company name is required"),
     business_address: yup
       .string()
+      .trim()
       .required("Business address is required")
       .min(2, "Address must be at least 2 characters long"),
     email: yup
@@ -98,6 +98,7 @@ const BasicInputElements = withSwal((props: any) => {
     gst: yup.string().required("GST is required"),
     location: yup
       .string()
+      .trim()
       .required("Location is required")
       .min(3, "Location must be at least 3 characters long"),
     pin_code: yup
@@ -119,10 +120,6 @@ const BasicInputElements = withSwal((props: any) => {
 
   //handling update logic
   const handleUpdate = (item: any) => {
-    setCroppedFile((prev) => ({
-      ...prev,
-      croppedImage: `${process.env.REACT_APP_BACKEND_URL}/${item?.image_url}`,
-    }));
     setFormData((prev) => ({
       ...prev,
       id: item?.id,
@@ -136,7 +133,6 @@ const BasicInputElements = withSwal((props: any) => {
       pin_code: item.pin_code,
       pan_no: item.pan_no,
     }));
-
     setIsUpdate(true);
   };
 
@@ -394,6 +390,7 @@ const BasicInputElements = withSwal((props: any) => {
   const toggle = () => {
     setModal(!modal);
     setCroppedFile({ croppedAltImage: "", croppedImage: "" });
+    setValidationErrors(initialValidationState);
   };
 
   const toggleImageModal = () => {
@@ -701,7 +698,7 @@ const BasicInputElements = withSwal((props: any) => {
                             itemRef={fileInputAltRef}
                             onClick={() => handleClear("alt")}
                             type="file"
-                            name="file"
+                            name="second_file"
                             placeholder="Enter pin code"
                             onChange={(
                               e: React.ChangeEvent<HTMLInputElement>

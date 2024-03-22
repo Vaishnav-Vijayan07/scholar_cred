@@ -67,6 +67,9 @@ const DirectStudents = () => {
     }
   }, [credStaff, consultants]);
 
+  console.log(state.length);
+  
+
   return (
     <React.Fragment>
       <PageTitle

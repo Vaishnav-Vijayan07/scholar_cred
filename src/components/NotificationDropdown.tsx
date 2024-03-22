@@ -78,10 +78,12 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
         <div onClick={toggleDropdown}>
           <div className="p-2 border-top-0 border-start-0 border-end-0 border-dashed border">
             <div className="row align-items-center">
-              <div className="col">
-                <h6 className="m-0 font-16 fw-semibold">{notifications?.length <= 0 ? "No notification" : "Notification"}</h6>
+              <div className="col d-flex">
+                <h6 className="my-0 font-16 fw-semibold">{notifications?.length <= 0 ? "No notification" : "Notification"}</h6>
               </div>
-              <div className="col-auto"></div>
+              <div className="col d-flex justify-content-end">
+               
+              </div>
             </div>
           </div>
           <SimpleBar className="px-1" style={notificationContentStyle}>

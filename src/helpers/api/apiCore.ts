@@ -165,8 +165,6 @@ class APICore {
    * post given data to url with file
    */
   updateWithFile = (url: string, data: any) => {
-    console.log(data);
-
     const formData = new FormData();
     for (const k in data) {
       formData.append(k, data[k]);

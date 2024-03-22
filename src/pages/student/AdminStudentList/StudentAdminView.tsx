@@ -64,6 +64,12 @@ const PendingStudents = () => {
     }
   }, [credStaff, consultants]);
 
+  console.log(state);
+  
+  console.log(state.filter((item: any) => item.status == true).length);
+  
+
+
   return (
     <React.Fragment>
       <PageTitle
