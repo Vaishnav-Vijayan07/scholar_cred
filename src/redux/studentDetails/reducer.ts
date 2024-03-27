@@ -1,11 +1,12 @@
 // apicore
-import { showSuccessAlert } from "../../constants/alerts";
+import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 
 // constants
 import { StudentDetailsActionTypes } from "./constants";
 
 const INIT_STATE = {
   comments: [],
+  loanType: {},
   loading: false,
   initialLoading: false,
 };
@@ -31,6 +32,9 @@ interface StudentDetailsActionType {
     | StudentDetailsActionTypes.API_RESPONSE_SUCCESS
     | StudentDetailsActionTypes.API_RESPONSE_ERROR
     | StudentDetailsActionTypes.SAVE_PRELIMINARY_DETAILS
+    | StudentDetailsActionTypes.CHECK_LOAN_TYPE
+    | StudentDetailsActionTypes.SAVE_LOAN_TYPE
+    | StudentDetailsActionTypes.CLEAR_LOAN_TYPE_STATE
     | StudentDetailsActionTypes.SAVE_SECURED_DETAILS;
   payload: {
     actionType?: string;
@@ -73,6 +77,25 @@ const StudentDetailsReducer = (state: State = INIT_STATE, action: StudentDetails
             error: null,
           };
         }
+        case StudentDetailsActionTypes.CHECK_LOAN_TYPE: {
+          // showSuccessAlert(action.payload.data);
+          return {
+            ...state,
+            loanType: action.payload.data,
+            loading: false,
+            error: null,
+          };
+        }
+
+        case StudentDetailsActionTypes.SAVE_LOAN_TYPE: {
+          showSuccessAlert(action.payload.data);
+          return {
+            ...state,
+            loading: false,
+            error: null,
+          };
+        }
+
         default:
           return { ...state };
       }
@@ -103,6 +126,25 @@ const StudentDetailsReducer = (state: State = INIT_STATE, action: StudentDetails
           };
         }
 
+        case StudentDetailsActionTypes.CHECK_LOAN_TYPE: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            loanType: null,
+          };
+        }
+
+        case StudentDetailsActionTypes.SAVE_LOAN_TYPE: {
+          showErrorAlert(action.payload.data);
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            loanType: null,
+          };
+        }
+
         default:
           return { ...state };
       }
@@ -112,6 +154,15 @@ const StudentDetailsReducer = (state: State = INIT_STATE, action: StudentDetails
 
     case StudentDetailsActionTypes.SAVE_SECURED_DETAILS:
       return { ...state, loading: true };
+
+    case StudentDetailsActionTypes.CHECK_LOAN_TYPE:
+      return { ...state, loading: true };
+
+    case StudentDetailsActionTypes.SAVE_LOAN_TYPE:
+      return { ...state, loading: true };
+
+    case StudentDetailsActionTypes.CLEAR_LOAN_TYPE_STATE:
+      return { ...state, loading: true, loanType: null };
 
     default:
       return { ...state };
