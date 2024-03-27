@@ -2,11 +2,14 @@ import axios from "axios";
 import React, { useState, useEffect, useCallback } from "react";
 import { Form, Button, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useDownload } from "../../../hooks/useDownload";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { getFileExtension, truncateText } from "../../../constants/functons";
-import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
+import {
+  showErrorAlert,
+  showSuccessAlert,
+  showWarningAlert,
+} from "../../../constants/alerts";
 
 interface Option {
   label: string;
@@ -33,106 +36,103 @@ interface SectionedDynamicFormProps {
   StudentData?: any;
 }
 
-const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, StudentData }) => {
-  const [formData, setFormData] = useState<Array<{ titile: Section; rows: FormField[] }>>([]);
+const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
+  student_id,
+  StudentData,
+}) => {
+  const [formData, setFormData] = useState<
+    Array<{ titile: Section; rows: FormField[] }>
+  >([]);
   const [ImageUrls, setImageUrls] = useState<any>({});
   const [selectedFile, setSelectedFile] = useState<any>([]);
+  const [disables, setDisabled] = useState<any>(true);
 
   console.log("ImageUrls===>", ImageUrls);
 
-  const handleUpload = (index: any, childIndex: any, documentType: string, documentName: string) => {
-    console.log(`${index}-${childIndex}`);
-
-    console.log("documentType", documentType);
-    console.log("documentName", documentName);
-
+  const handleUpload = async (
+    index: any,
+    childIndex: any,
+    documentType: string,
+    documentName: string
+  ) => {
     const key = `${index}-${childIndex}`;
     const file = selectedFile[key];
-    if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("documentType", documentType);
-      formData.append("documentName", documentName);
-      formData.append("student_id", student_id || "");
-      // You can replace the URL with your server endpoint
-      axios
-        .post("uploadAllDocuments", formData)
-        .then((data) => {
-          // Handle the response from the server
-          console.log("File uploaded successfully", data);
-          showSuccessAlert("File uploaded successfully..");
-          fetchDataFromAPI();
-        })
-        .catch((error) => {
-          console.error("Error uploading file", error);
-          showErrorAlert("Error uploading file..");
-        });
-    } else {
+
+    if (!file) {
       console.error("No file selected for index", index);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("documentType", documentType);
+    formData.append("documentName", documentName);
+    formData.append("student_id", student_id || "");
+
+    let url;
+
+    try {
+      const fireBaseResponse = await axios.post("docUpload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (fireBaseResponse.data.success) {
+        url = fireBaseResponse.data.url;
+
+        formData.append("url", url);
+        formData.delete("file");
+
+        const uploadAllResponse = await axios.post(
+          "uploadAllDocuments",
+          formData
+        );
+
+        if (uploadAllResponse.data.success) {
+          showSuccessAlert("All files uploaded successfully");
+          fetchDataFromAPI();
+        } else {
+          showErrorAlert(uploadAllResponse.data.error);
+        }
+      } else {
+        showErrorAlert(fireBaseResponse.data.error);
+      }
+    } catch (error) {
+      console.error("Error uploading file", error);
+      showErrorAlert("Error uploading file");
     }
   };
 
   const handleFileChange = (event: any, parentIndex: any, childIndex: any) => {
     const file = event.target.files[0];
+
+    if (file.type !== "application/pdf") {
+      showErrorAlert("Please select a PDF file");
+      return;
+    }
     const key = `${parentIndex}-${childIndex}`;
     setSelectedFile((prevFiles: any) => ({ ...prevFiles, [key]: file }));
   };
-
-  // const onClick = useCallback(async () => {
-  //   var zip = new JSZip();
-
-  //   zip.file("ReadMe.txt", "Open the documents folder to see all files.\n");
-
-  //   const documentsFolder = zip.folder("documents");
-
-  //   const downloadPromises = Object.entries(ImageUrls).map(async ([key, value]: any) => {
-  //     if (value) {
-  //       try {
-  //         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}${value}`, {
-  //           responseType: "blob",
-  //         });
-
-  //         console.log("response ===>", response);
-
-  //         const extension = getFileExtension(value);
-  //         console.log("extension ==>", extension);
-
-  //         const blobData = response.data;
-
-  //         // Handle different file types
-  //         if (["pdf", "txt", "png", "jpeg", "jpg", "xlsx"].includes(extension.toLowerCase())) {
-  //           documentsFolder?.file(`${key.replace("_url", "")}.${extension}`, blobData);
-  //         } else {
-  //           // Handle other file types if needed
-  //         }
-
-  //         await Promise.all(downloadPromises);
-
-  //         zip.generateAsync({ type: "blob" }).then(function (content) {
-  //           saveAs(content, "Documents.zip");
-  //         });
-  //       } catch (error) {
-  //         console.error("Error fetching data:", error);
-  //         // Handle errors here
-  //       }
-  //     }
-  //   });
-  // }, [ImageUrls]);
 
   const onClick = useCallback(async () => {
     try {
       var zip = new JSZip();
       zip.file("ReadMe.txt", "Open the documents folder to see all files.\n");
       const documentsFolder = zip.folder("documents");
+      console.log(ImageUrls);
 
       // Use Promise.all to wait for all file downloads
       await Promise.all(
         Object.entries(ImageUrls).map(async ([key, value]: any) => {
           if (value) {
             try {
-              const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}${value}`, {
-                responseType: "blob",
-              });
+              const response = await axios.get(
+                `${process.env.REACT_APP_BACKEND_URL}${value}`,
+                {
+                  responseType: "blob",
+                }
+              );
 
               console.log("response ===>", response);
 
@@ -142,8 +142,15 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
               const blobData = response.data;
 
               // Handle different file types
-              if (["pdf", "txt", "png", "jpeg", "jpg", "xlsx"].includes(extension.toLowerCase())) {
-                documentsFolder?.file(`${key.replace("_url", "")}.${extension}`, blobData);
+              if (
+                ["pdf", "txt", "png", "jpeg", "jpg", "xlsx"].includes(
+                  extension.toLowerCase()
+                )
+              ) {
+                documentsFolder?.file(
+                  `${key.replace("_url", "")}.${extension}`,
+                  blobData
+                );
               } else {
                 // Handle other file types if needed
               }
@@ -167,7 +174,6 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
 
   const fetchDataFromAPI = async () => {
     try {
-      // Replace 'API_ENDPOINT' with the actual endpoint of your API
       if (StudentData?.loan_type) {
         const loanType = StudentData?.loan_type;
 
@@ -184,6 +190,8 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
         const response = await axios.get(apiEndpoint);
 
         const apiResponse = await response.data.data.sections;
+
+        console.log(apiResponse);
 
         setFormData(apiResponse);
 
@@ -246,7 +254,10 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
                         {/* {!f.preview && ( */}
                         <Col className="col-auto">
                           <div className="avatar-sm">
-                            <span className="avatar-title bg-primary rounded">{field.value?.split(".")?.pop()?.toLowerCase() || "nil"}</span>
+                            <span className="avatar-title bg-primary rounded">
+                              {field.value?.split(".")?.pop()?.toLowerCase() ||
+                                "nil"}
+                            </span>
                           </div>
                         </Col>
                         {/* )} */}
@@ -254,7 +265,10 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
                         <Col className="ps-0" lg={7}>
                           {field.value ? (
                             <Link to="#" className="text-muted fw-bold">
-                              {truncateText(field.value?.replace("uploads\\", ""), 20)}
+                              {truncateText(
+                                field.value?.replace("uploads\\", ""),
+                                20
+                              )}
                             </Link>
                           ) : (
                             <Form.Control type="file" size="sm" />
@@ -266,7 +280,9 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
                             <Link
                               to={`${process.env.REACT_APP_BACKEND_URL}${field.value}`}
                               target="_blank"
-                              className={`btn btn-link btn-lg shadow-none ${!field.value && "text-muted"}`}
+                              className={`btn btn-link btn-lg shadow-none ${
+                                !field.value && "text-muted"
+                              }`}
                             >
                               <i className="dripicons-download"></i>
                             </Link>
@@ -275,21 +291,43 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
                       </Row>
                     </div>
                   ) : (
-                    <div className="input-group" key={`${index}-${childIndex}`}>
-                      <input type="file" className="form-control" id={`customFile-${index}-${childIndex}`} onChange={(e) => handleFileChange(e, index, childIndex)} />
-                      <button
-                        className="btn btn-secondary"
-                        type="button"
-                        onClick={() => handleUpload(index, childIndex, field.type, field.id)}
-                        disabled={!selectedFile[`${index}-${childIndex}`]}
+                    <>
+                      <div
+                        className="input-group"
+                        key={`${index}-${childIndex}`}
+                        id={`${index}-${childIndex}`}
                       >
-                        <i className="dripicons-upload"></i>
-                      </button>
-                    </div>
+                        <input
+                          type="file"
+                          className="form-control"
+                          name={field.id}
+                          id={`customFile-${index}-${childIndex}`}
+                          onChange={(e) =>
+                            handleFileChange(e, index, childIndex)
+                          }
+                        />
+                        <button
+                          className="btn btn-secondary"
+                          type="button"
+                          onClick={() =>
+                            handleUpload(
+                              index,
+                              childIndex,
+                              field.type,
+                              field.id
+                            )
+                          }
+                          disabled={!selectedFile[`${index}-${childIndex}`]}
+                        >
+                          <i className="dripicons-upload"></i>
+                        </button>
+                      </div>
+                    </>
                   )}
                 </Card>
               </Form.Group>
             </Col>
+            // <p>Error</p>
           ))}
         </Row>
       </div>
@@ -298,7 +336,12 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({ student_id, St
 
   return (
     <>
-      <Button variant="success" className="btn-xs waves-effect waves-light float-end" onClick={onClick}>
+      <Button
+        variant="success"
+        className="btn-xs waves-effect waves-light float-end"
+        onClick={onClick}
+        disabled={selectedFile.length === 0}
+      >
         Download all
       </Button>
       <Form className="pt-3">{renderFormItems()}</Form>{" "}
