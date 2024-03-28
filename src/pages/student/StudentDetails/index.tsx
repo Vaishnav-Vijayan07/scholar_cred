@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getComment, getStudentById } from "../../../redux/actions";
+import { checkLoanType, clearLoanTypeState, getComment, getStudentById, saveLoanType } from "../../../redux/actions";
 import { RootState } from "../../../redux/store";
 import StatisticsWidget2 from "../../../components/StatisticsWidget2";
 import DetailedScreening from "./DetailedScreening";
@@ -34,17 +34,14 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [attachments, setAttachments] = useState([]);
 
-  const { StudentData, loading, CommentsData,user } = useSelector(
-    (state: RootState) => ({
-      StudentData: state.Students.studentById,
-      loading: state.Students.loading,
-      CommentsData: state.Comments.comments.data,
-      user:state.Auth.user
-    })
-  );
-
-  console.log("StudentData--------->", StudentData);
-  console.log("User--------->", user);
+  const { StudentData, loading, CommentsData, user, loanTypeMessage, loanTypeData } = useSelector((state: RootState) => ({
+    StudentData: state.Students.studentById,
+    loading: state.Students.loading,
+    CommentsData: state.Comments.comments.data,
+    user: state.Auth.user,
+    loanTypeMessage: state.StudentDetailsReducer.loanType?.message,
+    loanTypeData: state.StudentDetailsReducer.loanType?.loan_type,
+  }));
 
   // console.log("StudentData---->", StudentData);
 
@@ -146,11 +143,25 @@ const Profile = () => {
     }
   };
 
+  const handleCheckEligibility = () => {
+    console.log("handleCheckEligibility...");
+    dispatch(checkLoanType(id ? id : ""));
+  };
+
+  const handleSetLoanType = (value: string) => {
+    console.log("handleSetLoanType");
+    if (id) dispatch(saveLoanType(id, value));
+  };
+
+  useEffect(() => {
+    dispatch(clearLoanTypeState());
+  }, [StudentData]);
+
   return (
     <>
       <PageTitle
         breadCrumbItems={[
-          { label: "Students", path: user?.role == '1' ? "/cred-admin/students" :"/users/intake-students"  },
+          { label: "Students", path: user?.role == "1" ? "/cred-admin/students" : "/users/intake-students" },
           { label: "Details", path: "", active: true },
         ]}
         title={"Profile"}
@@ -158,12 +169,7 @@ const Profile = () => {
       <Row>
         <Col xl={4} lg={4}>
           {/* User information */}
-          <UserBox
-            StudentData={StudentData}
-            loading={loading}
-            handleAppprove={handleAppprove}
-            isLoading={isLoading}
-          />
+          <UserBox StudentData={StudentData} loading={loading} handleAppprove={handleAppprove} isLoading={isLoading} />
 
           <Col>
             <StatisticsWidget2
@@ -171,13 +177,7 @@ const Profile = () => {
               description="Application status"
               stats={StudentData?.application_status_name || "Pending"}
               icon="fe-aperture"
-              progress={
-                StudentData?.current_stage == "0"
-                  ? 0
-                  : StudentData?.current_stage == "1"
-                  ? 50
-                  : 100
-              }
+              progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
               counterOptions={{
                 prefix: "$",
               }}
@@ -190,41 +190,22 @@ const Profile = () => {
               <Card.Body>
                 <Row>
                   <Col className="col-2">
-                    <div
-                      className={classNames(
-                        "avatar-sm",
-                        "rounded",
-                        "bg-" + "success"
-                      )}
-                    >
-                      <i
-                        className={classNames(
-                          "fe-refresh-cw",
-                          "avatar-title font-22 text-white"
-                        )}
-                      ></i>
+                    <div className={classNames("avatar-sm", "rounded", "bg-" + "success")}>
+                      <i className={classNames("fe-refresh-cw", "avatar-title font-22 text-white")}></i>
                     </div>
                   </Col>
                   <Col className="col-10">
                     <div className="text-end">
                       <h4 className="text-dark my-1">
-                        <span>
-                          {StudentData?.loan_status_name || "Pending"}
-                        </span>
+                        <span>{StudentData?.loan_status_name || "Pending"}</span>
                       </h4>
-                      <p className="text-muted mb-1 text-truncate">
-                        {"Loan status"}
-                      </p>
+                      <p className="text-muted mb-1 text-truncate">{"Loan status"}</p>
                     </div>
                   </Col>
                 </Row>
                 <div className="mt-3">
                   <Dropdown className="float-end" align="end">
-                    <Dropdown.Toggle
-                      className="cursor-pointer"
-                      variant="light"
-                      disabled={!StudentData?.status}
-                    >
+                    <Dropdown.Toggle className="cursor-pointer" variant="light" disabled={!StudentData?.status}>
                       Change status
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
@@ -232,11 +213,7 @@ const Profile = () => {
                         (item: any) =>
                           // Check if the item is visible before rendering the Dropdown.Item
                           item.is_visible && (
-                            <Dropdown.Item
-                              eventKey={item.id}
-                              key={item.id}
-                              onClick={() => handleChangeStatus(item?.id)}
-                            >
+                            <Dropdown.Item eventKey={item.id} key={item.id} onClick={() => handleChangeStatus(item?.id)}>
                               {item.status_name}
                             </Dropdown.Item>
                           )
@@ -247,97 +224,120 @@ const Profile = () => {
               </Card.Body>
             </Card>
           </Col>
+
+          <Col className="ps-0">
+            <Col ref={loanDivRef}>
+              <Card>
+                <Card.Body>
+                  <Row>
+                    <Col className="col-2">
+                      <div className={classNames("avatar-sm", "rounded", "bg-" + "success")}>
+                        <i className={classNames("fe-repeat", "avatar-title font-22 text-white")}></i>
+                      </div>
+                    </Col>
+                    <Col className="col-10">
+                      <div className="text-end">
+                        <h4 className="text-dark my-1">
+                          <span>{"Check loan eligibility"}</span>
+                        </h4>
+                        <p className="text-muted mb-1 text-truncate">{"if eligible choose the loan type."}</p>
+                      </div>
+                    </Col>
+                  </Row>
+                  <div className="mt-3">
+                    {loanTypeMessage ? (
+                      <div style={{ display: "flex", flexDirection: "column", width: "100%", alignItems: "end", justifyContent: "end" }}>
+                        <h5 className="text-dark my-1">
+                          <span className="float-end">{loanTypeMessage}</span>
+                        </h5>
+
+                        <Dropdown className="float-end mt-1" style={{ float: "inline-end" }}>
+                          <Dropdown.Toggle className="cursor-pointer" variant="light" disabled={!loanTypeData}>
+                            {StudentData?.loan_type || "choose loan type"}
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {loanTypeData?.map((item: any) => (
+                              <Dropdown.Item eventKey={item.value} key={item.value} onClick={() => handleSetLoanType(item.value)}>
+                                {item.label}
+                              </Dropdown.Item>
+                            ))}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </div>
+                    ) : (
+                      <Button className="float-end btn-success" onClick={handleCheckEligibility}>
+                        Check eligibility
+                      </Button>
+                    )}
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Col>
         </Col>
 
         <Col xl={8} lg={8}>
-          <Tab.Container defaultActiveKey="preliminary_screening">
-            <Card>
-              <Card.Body>
-                <Nav
-                  variant="pills"
-                  as="ul"
-                  className="nav nav-pills nav-fill navtab-bg row-gap-1"
-                >
-                  <Nav.Item as="li" className="nav-item">
-                    <Nav.Link
-                      href="#"
-                      eventKey="preliminary_screening"
-                      className="nav-link cursor-pointer"
-                    >
-                      Preliminary screening
-                    </Nav.Link>
-                  </Nav.Item>
+          <Row>
+            <Tab.Container defaultActiveKey="preliminary_screening">
+              <Card>
+                <Card.Body>
+                  <Nav variant="pills" as="ul" className="nav nav-pills nav-fill navtab-bg row-gap-1">
+                    <Nav.Item as="li" className="nav-item">
+                      <Nav.Link href="#" eventKey="preliminary_screening" className="nav-link cursor-pointer">
+                        Preliminary screening
+                      </Nav.Link>
+                    </Nav.Item>
 
-                  <Nav.Item as="li" className="nav-item">
-                    <Nav.Link
-                      href="#"
-                      eventKey="detail_screening"
-                      className="nav-link cursor-pointer"
-                      //  disabled={StudentData?.loan_type ? false : true}
-                    >
-                      Detail Screening
-                    </Nav.Link>
-                  </Nav.Item>
+                    <Nav.Item as="li" className="nav-item">
+                      <Nav.Link href="#" eventKey="detail_screening" className="nav-link cursor-pointer" disabled={StudentData?.loan_type ? false : true}>
+                        Detail Screening
+                      </Nav.Link>
+                    </Nav.Item>
 
-                  <Nav.Item as="li" className="nav-item">
-                    <Nav.Link
-                      href="#"
-                      eventKey="document_screening"
-                      className="nav-link cursor-pointer"
-                      //  disabled={StudentData?.loan_type ? false : true}
-                    >
-                      Docs screening
-                    </Nav.Link>
-                  </Nav.Item>
+                    <Nav.Item as="li" className="nav-item">
+                      <Nav.Link href="#" eventKey="document_screening" className="nav-link cursor-pointer" disabled={StudentData?.loan_type ? false : true}>
+                        Docs screening
+                      </Nav.Link>
+                    </Nav.Item>
 
-                  <Nav.Item as="li" className="nav-item">
-                    <Nav.Link
-                      href="#"
-                      eventKey="history"
-                      className="nav-link cursor-pointer"
-                    >
-                      History
-                    </Nav.Link>
-                  </Nav.Item>
-                </Nav>
+                    <Nav.Item as="li" className="nav-item">
+                      <Nav.Link href="#" eventKey="history" className="nav-link cursor-pointer">
+                        History
+                      </Nav.Link>
+                    </Nav.Item>
+                  </Nav>
 
-                <Tab.Content>
-                  <Tab.Pane eventKey="preliminary_screening">
-                    {/* <About projectDetails={projectDetails} /> */}
-                    <PreliminaryScreening
-                      register={register}
-                      errors={errors}
-                      control={control}
-                      preliminaryDetails={preliminaryDetails}
-                      preliminaryLoading={preliminaryLoading}
-                      studentId={id || ""}
-                      getStudentDataById={getStudentDataById}
-                    />
-                  </Tab.Pane>
+                  <Tab.Content>
+                    <Tab.Pane eventKey="preliminary_screening">
+                      {/* <About projectDetails={projectDetails} /> */}
+                      <PreliminaryScreening
+                        register={register}
+                        errors={errors}
+                        control={control}
+                        preliminaryDetails={preliminaryDetails}
+                        preliminaryLoading={preliminaryLoading}
+                        studentId={id || ""}
+                        getStudentDataById={getStudentDataById}
+                      />
+                    </Tab.Pane>
 
-                  <Tab.Pane eventKey="detail_screening">
-                    <DetailedScreening
-                      student_id={id}
-                      StudentData={StudentData}
-                    />
-                  </Tab.Pane>
+                    <Tab.Pane eventKey="detail_screening">
+                      <DetailedScreening student_id={id} StudentData={StudentData} />
+                    </Tab.Pane>
 
-                  <Tab.Pane eventKey="document_screening">
-                    <DocsScreening StudentData={StudentData} student_id={id} />
-                  </Tab.Pane>
+                    <Tab.Pane eventKey="document_screening">
+                      <DocsScreening StudentData={StudentData} student_id={id} />
+                    </Tab.Pane>
 
-                  <Tab.Pane eventKey="history">
-                    <Comments CommentsData={CommentsData} studentId={id} />
-                    <Attachments
-                      attachments={attachments}
-                      studentId={id}
-                      getAttachments={getAttachments}
-                    />
-                  </Tab.Pane>
-                </Tab.Content>
-              </Card.Body>
-            </Card>
-          </Tab.Container>
+                    <Tab.Pane eventKey="history">
+                      <Comments CommentsData={CommentsData} studentId={id} />
+                      <Attachments attachments={attachments} studentId={id} getAttachments={getAttachments} />
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Card.Body>
+              </Card>
+            </Tab.Container>
+          </Row>
         </Col>
       </Row>
     </>

@@ -29,6 +29,12 @@ function checkLoanType(params: { student_id: string }) {
   return api.create(`${baseUrl}`, params);
 }
 
+function saveLoanType(params: { student_id: string; loan_type: string }) {
+  const baseUrl = "/saveLoanTypeAdmin";
+
+  return api.create(`${baseUrl}`, params);
+}
+
 function saveSecuredDetailedScreeningData(params: {
   student_id: string;
   scored_below_60: string;
@@ -100,4 +106,4 @@ function saveUnSecuredDetailedScreeningData(params: {
   return api.create(`${baseUrl}`, params);
 }
 
-export { savePreliminaryDetails, saveSecuredDetailedScreeningData, saveUnSecuredDetailedScreeningData, checkLoanType };
+export { savePreliminaryDetails, saveSecuredDetailedScreeningData, saveUnSecuredDetailedScreeningData, checkLoanType, saveLoanType };

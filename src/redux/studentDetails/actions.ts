@@ -7,6 +7,8 @@ export interface StudentDetailsActionType {
     | StudentDetailsActionTypes.API_RESPONSE_ERROR
     | StudentDetailsActionTypes.SAVE_PRELIMINARY_DETAILS
     | StudentDetailsActionTypes.SAVE_UN_SECURED_DETAILS
+    | StudentDetailsActionTypes.CHECK_LOAN_TYPE
+    | StudentDetailsActionTypes.SAVE_LOAN_TYPE
     | StudentDetailsActionTypes.SAVE_SECURED_DETAILS;
   payload: {} | string;
 }
@@ -197,4 +199,24 @@ export const saveUnSecuredDetailedScreeningData = (
     history_of_defaults,
     current_cibil_score,
   },
+});
+
+export const checkLoanType = (student_id: string): StudentDetailsActionType => ({
+  type: StudentDetailsActionTypes.CHECK_LOAN_TYPE,
+  payload: {
+    student_id,
+  },
+});
+
+export const saveLoanType = (student_id: string, loan_type: string): StudentDetailsActionType => ({
+  type: StudentDetailsActionTypes.SAVE_LOAN_TYPE,
+  payload: {
+    student_id,
+    loan_type,
+  },
+});
+
+export const clearLoanTypeState = () => ({
+  type: StudentDetailsActionTypes.CLEAR_LOAN_TYPE_STATE,
+  payload: {},
 });

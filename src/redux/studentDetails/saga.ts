@@ -10,6 +10,7 @@ import {
   saveSecuredDetailedScreeningData as saveSecuredDetailedScreeningDataApi,
   saveUnSecuredDetailedScreeningData as saveUnSecuredDetailedScreeningDataApi,
   checkLoanType as checkLoanTypeApi,
+  saveLoanType as saveLoanTypeApi,
 } from "../../helpers/";
 
 // actions
@@ -17,6 +18,7 @@ import { studentDetailsApiResponseSuccess, studentDetailsApiResponseError } from
 
 // constants
 import { StudentDetailsActionTypes } from "./constants";
+import { getStudentById } from "../actions";
 
 interface ConsultantData {
   payload: {
@@ -86,6 +88,7 @@ interface ConsultantData {
     value_of_fd: string;
     gold_weight: string;
     gov_bonds: string;
+    loan_type: string;
   };
   type: string;
 }
@@ -127,10 +130,6 @@ function* savePreliminaryDetails({
       remark,
     });
     const consultant_data = response.data.message;
-
-    const checkAvailability = yield call(checkLoanTypeApi, {
-      student_id,
-    });
 
     yield put(studentDetailsApiResponseSuccess(StudentDetailsActionTypes.SAVE_PRELIMINARY_DETAILS, consultant_data));
     //calling get method after successfull api creation
@@ -293,6 +292,44 @@ function* saveUnSecuredDetailedScreeningData({
   }
 }
 
+function* checkLoanType({ payload: { student_id }, type }: ConsultantData): SagaIterator {
+  try {
+    const response = yield call(checkLoanTypeApi, {
+      student_id,
+    });
+
+    const data = response.data;
+    console.log("res data checkLoanType---->", data);
+
+    yield put(studentDetailsApiResponseSuccess(StudentDetailsActionTypes.CHECK_LOAN_TYPE, data));
+    //calling get method after successfull api creation
+    // yield put(getComment(student_id));
+  } catch (error: any) {
+    yield put(studentDetailsApiResponseError(StudentDetailsActionTypes.CHECK_LOAN_TYPE, error));
+  }
+}
+
+function* saveLoanType({ payload: { student_id, loan_type }, type }: ConsultantData): SagaIterator {
+  try {
+    console.log("saveLoanType=====================================<");
+    const response = yield call(saveLoanTypeApi, {
+      student_id,
+      loan_type,
+    });
+
+
+    const data = response.data.message;
+    console.log("res data saveLoanType---->", data);
+
+    yield put(studentDetailsApiResponseSuccess(StudentDetailsActionTypes.SAVE_LOAN_TYPE, data));
+    //calling get method after successfull api creation
+    yield put(getStudentById(student_id));
+  } catch (error: any) {
+    yield put(studentDetailsApiResponseError(StudentDetailsActionTypes.SAVE_LOAN_TYPE, error));
+  }
+}
+
+
 export function* watchSavePreliminaryDetails() {
   yield takeEvery(StudentDetailsActionTypes.SAVE_PRELIMINARY_DETAILS, savePreliminaryDetails);
 }
@@ -305,8 +342,22 @@ export function* watchSaveUnSecuredDetailedScreeningData() {
   yield takeEvery(StudentDetailsActionTypes.SAVE_UN_SECURED_DETAILS, saveUnSecuredDetailedScreeningData);
 }
 
+export function* watchCheckLoanType() {
+  yield takeEvery(StudentDetailsActionTypes.CHECK_LOAN_TYPE, checkLoanType);
+}
+
+export function* watchSaveLoanType() {
+  yield takeEvery(StudentDetailsActionTypes.SAVE_LOAN_TYPE, saveLoanType);
+}
+
 function* studentDetailsSaga() {
-  yield all([fork(watchSavePreliminaryDetails), fork(watchSaveSecuredDetailedScreeningData), fork(watchSaveUnSecuredDetailedScreeningData)]);
+  yield all([
+    fork(watchSavePreliminaryDetails),
+    fork(watchSaveSecuredDetailedScreeningData),
+    fork(watchSaveUnSecuredDetailedScreeningData),
+    fork(watchCheckLoanType),
+    fork(watchSaveLoanType),
+  ]);
 }
 
 export default studentDetailsSaga;
