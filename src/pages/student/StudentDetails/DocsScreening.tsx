@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect, useCallback } from "react";
-import { Form, Button, Row, Col, Card } from "react-bootstrap";
+import { Form, Button, Row, Col, Card, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -45,9 +45,10 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
   >([]);
   const [ImageUrls, setImageUrls] = useState<any>({});
   const [selectedFile, setSelectedFile] = useState<any>([]);
-  const [disables, setDisabled] = useState<any>(true);
+  const [loading, setLoading] = useState<any>({});
 
   console.log("ImageUrls===>", ImageUrls);
+  console.log(student_id);
 
   const handleUpload = async (
     index: any,
@@ -72,6 +73,11 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
     let url;
 
     try {
+      setLoading((prevLoadingFields: any) => ({
+        ...prevLoadingFields,
+        [key]: true,
+      }));
+
       const fireBaseResponse = await axios.post("docUpload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -84,10 +90,12 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
         formData.append("url", url);
         formData.delete("file");
 
-        const uploadAllResponse = await axios.post(
-          "uploadAllDocuments",
-          formData
-        );
+        const uploadAllResponse = await axios.post("uploadAllDocuments", {
+          documentType,
+          documentName,
+          student_id,
+          url,
+        });
 
         if (uploadAllResponse.data.success) {
           showSuccessAlert("All files uploaded successfully");
@@ -101,6 +109,11 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
     } catch (error) {
       console.error("Error uploading file", error);
       showErrorAlert("Error uploading file");
+    } finally {
+      setLoading((prevLoadingFields: any) => ({
+        ...prevLoadingFields,
+        [key]: false,
+      }));
     }
   };
 
@@ -173,6 +186,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
   }, [ImageUrls]);
 
   const fetchDataFromAPI = async () => {
+    const id = StudentData?.student_id;
     try {
       if (StudentData?.loan_type) {
         const loanType = StudentData?.loan_type;
@@ -191,8 +205,6 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
 
         const apiResponse = await response.data.data.sections;
 
-        console.log(apiResponse);
-
         setFormData(apiResponse);
 
         // Process the API response and extract key-value pairs
@@ -204,11 +216,11 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
         });
         setImageUrls(extractedData);
       } else {
-        // const response = await axios.get(`getSecuredScreeningData/${student_id}`);
+        // const response = await axios.get(`getSecuredScreeningData/${id}`);
         const response = await axios.get(`getUnSecuredDocumentsDataById/1`);
 
         const apiResponse = await response.data.data.sections;
-        // console.log("apiResponse: ", apiResponse);
+        console.log("apiResponse: ", apiResponse);
 
         setFormData(apiResponse);
 
@@ -233,14 +245,14 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
   }, [StudentData?.loan_type]);
 
   const renderFormItems = () => {
-    return formData.map(({ titile, rows }, index) => (
+    return formData?.map(({ titile, rows }, index) => (
       <div key={index}>
         <h5 className={"mb-3 text-uppercase bg-light p-2 mt-3"}>
           {/* {sections.icon && <i className={}></i>} {sections.heading} */}
           {titile}
         </h5>
         <Row>
-          {rows.map((field, childIndex) => (
+          {rows?.map((field, childIndex) => (
             <Col key={field.name} xl={6} xxl={6} className="p-2">
               <Form.Group controlId={field.name}>
                 <Form.Label>
@@ -249,20 +261,20 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
 
                 <Card className="mt-1 mb-0 shadow-none border">
                   {field.value ? (
-                    <div className="p-2">
+                    <div className="px-2">
                       <Row className="align-items-center">
                         {/* {!f.preview && ( */}
-                        <Col className="col-auto">
+                        {/* <Col className="col-auto">
                           <div className="avatar-sm">
                             <span className="avatar-title bg-primary rounded">
                               {field.value?.split(".")?.pop()?.toLowerCase() ||
                                 "nil"}
                             </span>
                           </div>
-                        </Col>
+                        </Col> */}
                         {/* )} */}
 
-                        <Col className="ps-0" lg={7}>
+                        <Col className="" lg={7}>
                           {field.value ? (
                             <Link to="#" className="text-muted fw-bold">
                               {truncateText(
@@ -278,7 +290,7 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
                         <Col className="text-end">
                           {field.value && (
                             <Link
-                              to={`${process.env.REACT_APP_BACKEND_URL}${field.value}`}
+                              to={`${field.value}`}
                               target="_blank"
                               className={`btn btn-link btn-lg shadow-none ${
                                 !field.value && "text-muted"
@@ -306,21 +318,33 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
                             handleFileChange(e, index, childIndex)
                           }
                         />
-                        <button
-                          className="btn btn-secondary"
-                          type="button"
-                          onClick={() =>
-                            handleUpload(
-                              index,
-                              childIndex,
-                              field.type,
-                              field.id
-                            )
-                          }
-                          disabled={!selectedFile[`${index}-${childIndex}`]}
-                        >
-                          <i className="dripicons-upload"></i>
-                        </button>
+                        {loading[`${index}-${childIndex}`] ? (
+                          <Button variant="secondary" disabled>
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                          </Button>
+                        ) : (
+                          <button
+                            className="btn btn-secondary"
+                            type="button"
+                            onClick={() =>
+                              handleUpload(
+                                index,
+                                childIndex,
+                                field.type,
+                                field.id
+                              )
+                            }
+                            disabled={!selectedFile[`${index}-${childIndex}`]}
+                          >
+                            <i className="dripicons-upload"></i>
+                          </button>
+                        )}
                       </div>
                     </>
                   )}
