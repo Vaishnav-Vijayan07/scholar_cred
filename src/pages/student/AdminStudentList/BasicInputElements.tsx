@@ -100,7 +100,7 @@ const BasicInputElements = withSwal((props: any) => {
     last_name: yup.string().trim().required("Last name is required"),
     email: yup
       .string()
-      .email("Invalid email format"),
+      .email("Invalid email format").nullable(),
     phone: yup
       .string()
       .required("Phone number is required")
@@ -232,13 +232,13 @@ const BasicInputElements = withSwal((props: any) => {
     axios
       .post(`reset_student_password`, { email: email })
       .then((res: any) => {
-        showSuccessAlert("Password reset successfull");
+        showSuccessAlert("Password reset successful");
         setPasswordResetLoading(false);
       })
       .catch((err) => {
         console.error(err);
         setPasswordResetLoading(false);
-        showErrorAlert("Error occured");
+        showErrorAlert("Error occurred");
       });
   };
 
@@ -283,7 +283,7 @@ const BasicInputElements = withSwal((props: any) => {
   const handlePermanent = (id: any) => {
     Swal.fire({
       title: "Are you sure!",
-      text: "You want to permanenetly delete this student?",
+      text: "You want to permanently delete this student?",
       icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#55d94e",
@@ -781,7 +781,7 @@ const BasicInputElements = withSwal((props: any) => {
                       type="email"
                       name="email"
                       placeholder="Enter email"
-                      value={formData.email}
+                      value={formData.email || ""}
                       onChange={handleInputChange}
                     />
                     {validationErrors.email && (
