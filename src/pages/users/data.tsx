@@ -45,7 +45,7 @@ export interface MyInitialState {
   gst: string;
   location: string;
   pin_code: string;
-  pan_no: string ;
+  pan_no: string;
 }
 
 export const initialState = {
@@ -116,7 +116,7 @@ export interface StudentDataTypes {
   student_id: string;
   first_name: string;
   last_name: string;
-  email: string;
+  email: string | null;
   phone: string;
   // date_of_birth?: string | undefined;
   // country_of_origin?: string;
@@ -124,12 +124,11 @@ export interface StudentDataTypes {
   source: string;
 }
 
-
 export const StudentInitialState = {
   student_id: "",
   first_name: "",
   last_name: "",
-  email: "",
+  email: null,
   phone: "",
   date_of_birth: "",
   country_of_origin: "",

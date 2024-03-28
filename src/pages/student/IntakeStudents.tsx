@@ -91,7 +91,7 @@ const BasicInputElements = withSwal((props: any) => {
     last_name: yup.string().trim().required("Last name is required"),
     email: yup
       .string()
-      .email("Invalid email format"),
+      .email("Invalid email format").nullable(),
     phone: yup
       .string()
       .required("Phone number is required")
@@ -300,11 +300,11 @@ const BasicInputElements = withSwal((props: any) => {
       .post(`reset_student_password`, { email: email })
       .then((res: any) => {
         console.log("res===>", res);
-        showSuccessAlert("Password reset successfull");
+        showSuccessAlert("Password reset successful");
       })
       .catch((err) => {
         console.error(err);
-        showErrorAlert("Error occured.");
+        showErrorAlert("Error occurred.");
       });
   };
 
@@ -474,7 +474,7 @@ const BasicInputElements = withSwal((props: any) => {
                       type="email"
                       name="email"
                       placeholder="Enter email"
-                      value={formData.email}
+                      value={formData.email || ""}
                       onChange={handleInputChange}
                     />
                     {validationErrors.email && (

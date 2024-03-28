@@ -46,7 +46,7 @@ export const studentStaffApiResponseError = (actionType: string, error: string):
 export const createStudent = (
   first_name: string,
   last_name: string,
-  email: string,
+  email: string | null,
   phone: string,
   date_of_birth: string | undefined,
   // country_of_origin: string | undefined,
@@ -74,7 +74,7 @@ export const editStudent = (
   student_id: string,
   first_name: string,
   last_name: string,
-  email: string,
+  email: string | null,
   phone: string,
   // date_of_birth: string | undefined,
   // country_of_origin: string | undefined,

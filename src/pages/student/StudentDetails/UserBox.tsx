@@ -34,7 +34,7 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
               </Button>
             ) : (
               <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={true}>
-                Initiation loan processed
+                Initiation loan process
               </Button>
             )}
             <div className="text-center mt-3">
