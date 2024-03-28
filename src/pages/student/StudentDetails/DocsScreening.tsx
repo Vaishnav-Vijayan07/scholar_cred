@@ -43,12 +43,12 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
   const [formData, setFormData] = useState<
     Array<{ titile: Section; rows: FormField[] }>
   >([]);
-  const [ImageUrls, setImageUrls] = useState<any>({});
+  const [ImageUrls, setImageUrls] = useState<any>([]);
   const [selectedFile, setSelectedFile] = useState<any>([]);
   const [loading, setLoading] = useState<any>({});
-
-  console.log("ImageUrls===>", ImageUrls);
-  console.log(student_id);
+  const [loadingDownload, setLoadingDownload] = useState<any>(false);
+  const studentName = `${StudentData?.first_name} ${StudentData?.last_name}`;
+  const studentMail = `${StudentData?.email}`;
 
   const handleUpload = async (
     index: any,
@@ -128,65 +128,91 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
     setSelectedFile((prevFiles: any) => ({ ...prevFiles, [key]: file }));
   };
 
-  const onClick = useCallback(async () => {
+  // const onClick = useCallback(async () => {
+  //   try {
+  //     var zip = new JSZip();
+  //     zip.file("ReadMe.txt", "Open the documents folder to see all files.\n");
+  //     const documentsFolder = zip.folder("documents");
+  //     console.log(ImageUrls);
+
+  //     // Use Promise.all to wait for all file downloads
+  //     await Promise.all(
+  //       Object.entries(ImageUrls).map(async ([key, value]: any) => {
+  //         console.log(value);
+
+  //         if (value) {
+  //           console.log("hai");
+
+  //           try {
+  //             const response = await axios.get(`${value}`, {
+  //               responseType: "blob"
+  //             });
+
+  //             console.log("response ===>", response);
+
+  //             const extension = getFileExtension(value);
+  //             console.log("extension ==>", extension);
+
+  //             const blobData = response.data;
+
+  //             // Handle different file types
+  //             if (
+  //               ["pdf", "txt", "png", "jpeg", "jpg", "xlsx"].includes(
+  //                 extension.toLowerCase()
+  //               )
+  //             ) {
+  //               documentsFolder?.file(
+  //                 `${key.replace("_url", "")}.${extension}`,
+  //                 blobData
+  //               );
+  //             } else {
+  //               // Handle other file types if needed
+  //             }
+  //           } catch (error) {
+  //             console.error("Error fetching data:", error);
+  //             // Handle errors here
+  //           }
+  //         }
+  //       })
+  //     );
+
+  //     // Generate and save the ZIP file after all files are downloaded
+  //     zip.generateAsync({ type: "blob" }).then(function (content) {
+  //       saveAs(content, "Documents.zip");
+  //     });
+  //   } catch (error) {
+  //     console.error("Error in onClick:", error);
+  //     // Handle errors here
+  //   }
+  // }, [ImageUrls]);
+
+  const onClick = async () => {
+    setLoadingDownload(true);
     try {
-      var zip = new JSZip();
-      zip.file("ReadMe.txt", "Open the documents folder to see all files.\n");
-      const documentsFolder = zip.folder("documents");
-      console.log(ImageUrls);
-
-      // Use Promise.all to wait for all file downloads
-      await Promise.all(
-        Object.entries(ImageUrls).map(async ([key, value]: any) => {
-          if (value) {
-            try {
-              const response = await axios.get(
-                `${process.env.REACT_APP_BACKEND_URL}${value}`,
-                {
-                  responseType: "blob",
-                }
-              );
-
-              console.log("response ===>", response);
-
-              const extension = getFileExtension(value);
-              console.log("extension ==>", extension);
-
-              const blobData = response.data;
-
-              // Handle different file types
-              if (
-                ["pdf", "txt", "png", "jpeg", "jpg", "xlsx"].includes(
-                  extension.toLowerCase()
-                )
-              ) {
-                documentsFolder?.file(
-                  `${key.replace("_url", "")}.${extension}`,
-                  blobData
-                );
-              } else {
-                // Handle other file types if needed
-              }
-            } catch (error) {
-              console.error("Error fetching data:", error);
-              // Handle errors here
-            }
-          }
-        })
+      const response = await axios.post(
+        "/download-pdf",
+        { ImageUrls },
+        {
+          responseType: "blob",
+        }
       );
 
-      // Generate and save the ZIP file after all files are downloaded
-      zip.generateAsync({ type: "blob" }).then(function (content) {
-        saveAs(content, "Documents.zip");
-      });
+      console.log(response);
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${studentName}-${studentMail}.zip`);
+      document.body.appendChild(link);
+      link.click();
     } catch (error) {
-      console.error("Error in onClick:", error);
-      // Handle errors here
+      console.error("Error:", error);
+    } finally {
+      setLoadingDownload(false);
     }
-  }, [ImageUrls]);
+  };
 
   const fetchDataFromAPI = async () => {
-    const id = StudentData?.student_id;
     try {
       if (StudentData?.loan_type) {
         const loanType = StudentData?.loan_type;
@@ -364,9 +390,9 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
         variant="success"
         className="btn-xs waves-effect waves-light float-end"
         onClick={onClick}
-        disabled={selectedFile.length === 0}
+        disabled={loadingDownload}
       >
-        Download all
+        {loadingDownload ? "Downloading.." : "Download"}
       </Button>
       <Form className="pt-3">{renderFormItems()}</Form>{" "}
     </>

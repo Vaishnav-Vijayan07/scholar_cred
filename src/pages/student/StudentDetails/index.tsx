@@ -10,13 +10,23 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { checkLoanType, clearLoanTypeState, getComment, getStudentById, saveLoanType } from "../../../redux/actions";
+import {
+  checkLoanType,
+  clearLoanTypeState,
+  getComment,
+  getStudentById,
+  saveLoanType,
+} from "../../../redux/actions";
 import { RootState } from "../../../redux/store";
 import StatisticsWidget2 from "../../../components/StatisticsWidget2";
 import DetailedScreening from "./DetailedScreening";
 import DocsScreening from "./DocsScreening";
 import classNames from "classnames";
-import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
+import {
+  showErrorAlert,
+  showSuccessAlert,
+  showWarningAlert,
+} from "../../../constants/alerts";
 import Comments from "./Comments";
 import Attachments from "./Attachments";
 
@@ -34,7 +44,14 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [attachments, setAttachments] = useState([]);
 
-  const { StudentData, loading, CommentsData, user, loanTypeMessage, loanTypeData } = useSelector((state: RootState) => ({
+  const {
+    StudentData,
+    loading,
+    CommentsData,
+    user,
+    loanTypeMessage,
+    loanTypeData,
+  } = useSelector((state: RootState) => ({
     StudentData: state.Students.studentById,
     loading: state.Students.loading,
     CommentsData: state.Comments.comments.data,
@@ -153,6 +170,12 @@ const Profile = () => {
     if (id) dispatch(saveLoanType(id, value));
   };
 
+  const handleDisable = () => {
+    if (!StudentData?.loan_type) {
+      showWarningAlert("Not eligible for loan currently");
+    }
+  };
+
   useEffect(() => {
     dispatch(clearLoanTypeState());
   }, [StudentData]);
@@ -161,7 +184,13 @@ const Profile = () => {
     <>
       <PageTitle
         breadCrumbItems={[
-          { label: "Students", path: user?.role == "1" ? "/cred-admin/students" : "/users/intake-students" },
+          {
+            label: "Students",
+            path:
+              user?.role == "1"
+                ? "/cred-admin/students"
+                : "/users/intake-students",
+          },
           { label: "Details", path: "", active: true },
         ]}
         title={"Profile"}
@@ -169,7 +198,12 @@ const Profile = () => {
       <Row>
         <Col xl={4} lg={4}>
           {/* User information */}
-          <UserBox StudentData={StudentData} loading={loading} handleAppprove={handleAppprove} isLoading={isLoading} />
+          <UserBox
+            StudentData={StudentData}
+            loading={loading}
+            handleAppprove={handleAppprove}
+            isLoading={isLoading}
+          />
 
           <Col>
             <StatisticsWidget2
@@ -177,7 +211,13 @@ const Profile = () => {
               description="Application status"
               stats={StudentData?.application_status_name || "Pending"}
               icon="fe-aperture"
-              progress={StudentData?.current_stage == "0" ? 0 : StudentData?.current_stage == "1" ? 50 : 100}
+              progress={
+                StudentData?.current_stage == "0"
+                  ? 0
+                  : StudentData?.current_stage == "1"
+                  ? 50
+                  : 100
+              }
               counterOptions={{
                 prefix: "$",
               }}
@@ -190,22 +230,41 @@ const Profile = () => {
               <Card.Body>
                 <Row>
                   <Col className="col-2">
-                    <div className={classNames("avatar-sm", "rounded", "bg-" + "success")}>
-                      <i className={classNames("fe-refresh-cw", "avatar-title font-22 text-white")}></i>
+                    <div
+                      className={classNames(
+                        "avatar-sm",
+                        "rounded",
+                        "bg-" + "success"
+                      )}
+                    >
+                      <i
+                        className={classNames(
+                          "fe-refresh-cw",
+                          "avatar-title font-22 text-white"
+                        )}
+                      ></i>
                     </div>
                   </Col>
                   <Col className="col-10">
                     <div className="text-end">
                       <h4 className="text-dark my-1">
-                        <span>{StudentData?.loan_status_name || "Pending"}</span>
+                        <span>
+                          {StudentData?.loan_status_name || "Pending"}
+                        </span>
                       </h4>
-                      <p className="text-muted mb-1 text-truncate">{"Loan status"}</p>
+                      <p className="text-muted mb-1 text-truncate">
+                        {"Loan status"}
+                      </p>
                     </div>
                   </Col>
                 </Row>
                 <div className="mt-3">
                   <Dropdown className="float-end" align="end">
-                    <Dropdown.Toggle className="cursor-pointer" variant="light" disabled={!StudentData?.status}>
+                    <Dropdown.Toggle
+                      className="cursor-pointer"
+                      variant="light"
+                      disabled={!StudentData?.status}
+                    >
                       Change status
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
@@ -213,7 +272,11 @@ const Profile = () => {
                         (item: any) =>
                           // Check if the item is visible before rendering the Dropdown.Item
                           item.is_visible && (
-                            <Dropdown.Item eventKey={item.id} key={item.id} onClick={() => handleChangeStatus(item?.id)}>
+                            <Dropdown.Item
+                              eventKey={item.id}
+                              key={item.id}
+                              onClick={() => handleChangeStatus(item?.id)}
+                            >
                               {item.status_name}
                             </Dropdown.Item>
                           )
@@ -231,8 +294,19 @@ const Profile = () => {
                 <Card.Body>
                   <Row>
                     <Col className="col-2">
-                      <div className={classNames("avatar-sm", "rounded", "bg-" + "success")}>
-                        <i className={classNames("fe-repeat", "avatar-title font-22 text-white")}></i>
+                      <div
+                        className={classNames(
+                          "avatar-sm",
+                          "rounded",
+                          "bg-" + "success"
+                        )}
+                      >
+                        <i
+                          className={classNames(
+                            "fe-repeat",
+                            "avatar-title font-22 text-white"
+                          )}
+                        ></i>
                       </div>
                     </Col>
                     <Col className="col-10">
@@ -240,24 +314,45 @@ const Profile = () => {
                         <h4 className="text-dark my-1">
                           <span>{"Check loan eligibility"}</span>
                         </h4>
-                        <p className="text-muted mb-1 text-truncate">{"if eligible choose the loan type."}</p>
+                        <p className="text-muted mb-1 text-truncate">
+                          {"if eligible choose the loan type."}
+                        </p>
                       </div>
                     </Col>
                   </Row>
                   <div className="mt-3">
                     {loanTypeMessage ? (
-                      <div style={{ display: "flex", flexDirection: "column", width: "100%", alignItems: "end", justifyContent: "end" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          width: "100%",
+                          alignItems: "end",
+                          justifyContent: "end",
+                        }}
+                      >
                         <h5 className="text-dark my-1">
                           <span className="float-end">{loanTypeMessage}</span>
                         </h5>
 
-                        <Dropdown className="float-end mt-1" style={{ float: "inline-end" }}>
-                          <Dropdown.Toggle className="cursor-pointer" variant="light" disabled={!loanTypeData}>
+                        <Dropdown
+                          className="float-end mt-1"
+                          style={{ float: "inline-end" }}
+                        >
+                          <Dropdown.Toggle
+                            className="cursor-pointer"
+                            variant="light"
+                            disabled={!loanTypeData}
+                          >
                             {StudentData?.loan_type || "choose loan type"}
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
                             {loanTypeData?.map((item: any) => (
-                              <Dropdown.Item eventKey={item.value} key={item.value} onClick={() => handleSetLoanType(item.value)}>
+                              <Dropdown.Item
+                                eventKey={item.value}
+                                key={item.value}
+                                onClick={() => handleSetLoanType(item.value)}
+                              >
                                 {item.label}
                               </Dropdown.Item>
                             ))}
@@ -265,7 +360,10 @@ const Profile = () => {
                         </Dropdown>
                       </div>
                     ) : (
-                      <Button className="float-end btn-success" onClick={handleCheckEligibility}>
+                      <Button
+                        className="float-end btn-success"
+                        onClick={handleCheckEligibility}
+                      >
                         Check eligibility
                       </Button>
                     )}
@@ -281,27 +379,53 @@ const Profile = () => {
             <Tab.Container defaultActiveKey="preliminary_screening">
               <Card>
                 <Card.Body>
-                  <Nav variant="pills" as="ul" className="nav nav-pills nav-fill navtab-bg row-gap-1">
+                  <Nav
+                    variant="pills"
+                    as="ul"
+                    className="nav nav-pills nav-fill navtab-bg row-gap-1"
+                  >
                     <Nav.Item as="li" className="nav-item">
-                      <Nav.Link href="#" eventKey="preliminary_screening" className="nav-link cursor-pointer">
+                      <Nav.Link
+                        href="#"
+                        eventKey="preliminary_screening"
+                        className="nav-link cursor-pointer"
+                      >
                         Preliminary screening
                       </Nav.Link>
                     </Nav.Item>
 
                     <Nav.Item as="li" className="nav-item">
-                      <Nav.Link href="#" eventKey="detail_screening" className="nav-link cursor-pointer" disabled={StudentData?.loan_type ? false : true}>
-                        Detail Screening
-                      </Nav.Link>
+                      <div onClick={handleDisable}>
+                        <Nav.Link
+                          href="#"
+                          eventKey="detail_screening"
+                          className="nav-link cursor-pointer"
+                          disabled={StudentData?.loan_type ? false : true}
+                        >
+                          Detail Screening
+                        </Nav.Link>
+                      </div>
                     </Nav.Item>
 
                     <Nav.Item as="li" className="nav-item">
-                      <Nav.Link href="#" eventKey="document_screening" className="nav-link cursor-pointer" disabled={StudentData?.loan_type ? false : true}>
-                        Docs screening
-                      </Nav.Link>
+                      <div onClick={handleDisable}>
+                        <Nav.Link
+                          href="#"
+                          eventKey="document_screening"
+                          className="nav-link cursor-pointer"
+                          disabled={StudentData?.loan_type ? false : true}
+                        >
+                          Docs screening
+                        </Nav.Link>
+                      </div>
                     </Nav.Item>
 
                     <Nav.Item as="li" className="nav-item">
-                      <Nav.Link href="#" eventKey="history" className="nav-link cursor-pointer">
+                      <Nav.Link
+                        href="#"
+                        eventKey="history"
+                        className="nav-link cursor-pointer"
+                      >
                         History
                       </Nav.Link>
                     </Nav.Item>
@@ -322,16 +446,26 @@ const Profile = () => {
                     </Tab.Pane>
 
                     <Tab.Pane eventKey="detail_screening">
-                      <DetailedScreening student_id={id} StudentData={StudentData} />
+                      <DetailedScreening
+                        student_id={id}
+                        StudentData={StudentData}
+                      />
                     </Tab.Pane>
 
                     <Tab.Pane eventKey="document_screening">
-                      <DocsScreening StudentData={StudentData} student_id={id} />
+                      <DocsScreening
+                        StudentData={StudentData}
+                        student_id={id}
+                      />
                     </Tab.Pane>
 
                     <Tab.Pane eventKey="history">
                       <Comments CommentsData={CommentsData} studentId={id} />
-                      <Attachments attachments={attachments} studentId={id} getAttachments={getAttachments} />
+                      <Attachments
+                        attachments={attachments}
+                        studentId={id}
+                        getAttachments={getAttachments}
+                      />
                     </Tab.Pane>
                   </Tab.Content>
                 </Card.Body>
