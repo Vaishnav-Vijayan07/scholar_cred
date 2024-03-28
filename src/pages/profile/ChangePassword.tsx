@@ -45,7 +45,7 @@ const ChangePassword = () => {
     reenter_new_password: yup
       .string()
       .required(t("Please re-enter New Password"))
-      .oneOf([yup.ref("new_password"), null], t("Passwords must match")),
+      .oneOf([yup.ref("new_password"), null], t("Passwords do not match")),
   });
 
   const handleInputChange = (e: any) => {
@@ -58,8 +58,6 @@ const ChangePassword = () => {
       [name]: value,
     }));
   };
-
-  console.log("formDtaa", formData);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

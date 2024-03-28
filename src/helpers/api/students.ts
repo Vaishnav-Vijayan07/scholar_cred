@@ -85,12 +85,10 @@ function deleteStudent(id: string) {
 
 function approveStudentApi(id: string) {
   const baseUrl = "/enable_student";
-  return api.create(`${baseUrl}?id=${id}`,{});
+  return api.create(`${baseUrl}?id=${id}`, {});
 }
 
 function deleteStudentPermanent(id: string) {
-  console.log(id);
-  
   const baseUrl = "/remove_student";
   return api.delete(`${baseUrl}?id=${id}`);
 }
@@ -118,5 +116,5 @@ export {
   getStudentByConsultant,
   getDeletedStudent,
   approveStudentApi,
-  deleteStudentPermanent
+  deleteStudentPermanent,
 };
