@@ -35,6 +35,7 @@ const App = () => {
     auth: {
       token: user?.token,
     },
+    transports: ["websocket"],
   });
 
   useEffect(() => {

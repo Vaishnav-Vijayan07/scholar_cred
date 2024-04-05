@@ -300,7 +300,6 @@ function* checkLoanType({ payload: { student_id }, type }: ConsultantData): Saga
 
     const data = response.data;
     console.log("res data checkLoanType---->", data);
-
     yield put(studentDetailsApiResponseSuccess(StudentDetailsActionTypes.CHECK_LOAN_TYPE, data));
     //calling get method after successfull api creation
     // yield put(getComment(student_id));

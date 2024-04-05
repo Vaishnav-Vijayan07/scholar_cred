@@ -289,7 +289,7 @@ const Profile = () => {
           </Col>
 
           <Col className="ps-0">
-            <Col ref={loanDivRef}>
+            <Col>
               <Card>
                 <Card.Body>
                   <Row>
