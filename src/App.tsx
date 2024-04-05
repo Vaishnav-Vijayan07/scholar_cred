@@ -31,7 +31,7 @@ const App = () => {
       };
     });
 
-  const socket = io(process.env.REACT_APP_BACKEND_URL || "", {
+  const socket = io("https://crm.intersmarthosting.in/cred", {
     auth: {
       token: user?.token,
     },
