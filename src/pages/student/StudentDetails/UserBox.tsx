@@ -16,7 +16,7 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
         ) : (
           <>
             {StudentData?.imageurl ? (
-              <img src={`${process.env.REACT_APP_BACKEND_URL}/${StudentData?.imageurl}`} className="rounded-circle avatar-lg img-thumbnail" alt="avatar" />
+              <img src={`${process.env.REACT_APP_BACKEND_URL}${StudentData?.imageurl}`} className="rounded-circle avatar-lg img-thumbnail" alt="avatar" />
             ) : (
               <img src={profileImg} className="rounded-circle avatar-lg img-thumbnail" alt="avatar" />
             )}
