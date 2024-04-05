@@ -60,21 +60,7 @@ const AssigneeColumn = ({ row }: { row: any }) => {
     <>
       <div className="d-flex ">
         <div className="d-flex justify-content-center align-items-center gap-1">
-          <div
-            className="rounded-circle avatar-xs mr-2"
-            style={{
-              width: "30px",
-              height: "30px",
-              backgroundColor: "#FFA500", // You can change the background color as desired
-              color: "#fff", // You can change the text color as desired
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontWeight: "bold",
-            }}
-          >
-            {firstLetter}
-          </div>
+        <img className="me-2 rounded-circle" src={`${process.env.REACT_APP_BACKEND_URL}${row.original.avatar}`} alt="" height="32" />
           <div>{assigneeName}</div>
         </div>
       </div>
@@ -216,6 +202,7 @@ const ManageTickets = () => {
   );
 
   console.log(state);
+
   
 
   const handleGetTicket = (id: any) => {

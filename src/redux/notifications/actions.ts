@@ -2,10 +2,11 @@ import { NotificationsActionTypes } from "./constants";
 
 export interface NotificationsActionType {
   type:
-    | NotificationsActionTypes.API_RESPONSE_SUCCESS
-    | NotificationsActionTypes.API_RESPONSE_ERROR
-    | NotificationsActionTypes.GET_NOTIFICATIONS
-    | NotificationsActionTypes.STATUS_NOTIFICATIONS;
+  | NotificationsActionTypes.API_RESPONSE_SUCCESS
+  | NotificationsActionTypes.API_RESPONSE_ERROR
+  | NotificationsActionTypes.GET_NOTIFICATIONS
+  | NotificationsActionTypes.STATUS_NOTIFICATIONS
+  | NotificationsActionTypes.REFRESH_NOTIFICATIONS;
   payload: {} | string;
 }
 
@@ -36,3 +37,8 @@ export const readStatusNotification = (
   type: NotificationsActionTypes.STATUS_NOTIFICATIONS,
   payload: { notification_id },
 });
+
+export const refreshNotifications = (): NotificationsActionType => ({
+  type: NotificationsActionTypes.REFRESH_NOTIFICATIONS,
+  payload: {},
+})

@@ -3,4 +3,5 @@ export enum NotificationsActionTypes{
     API_RESPONSE_ERROR = "@@notifications/API_RESPONSE_ERROR",
     GET_NOTIFICATIONS = "@@notifications/GET_NOTIFICATIONS",
     STATUS_NOTIFICATIONS = "@@notifications/STATUS_NOTIFICATIONS",
+    REFRESH_NOTIFICATIONS = "@@notifications/REFRESH_NOTIFICATIONS",
 }

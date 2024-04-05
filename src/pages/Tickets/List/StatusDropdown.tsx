@@ -16,7 +16,7 @@ const StatusDropdown: React.FC<Props> = ({ data }) => {
     user: state.Auth.user,
   }));
 
-  const roles:string[] = ["3", "4", "5", "7", "6"];
+  const roles: string[] = ["3", "4", "5", "7", "6"];
 
   const [selectedStatus, setSelectedStatus] = useState<string>(
     data.status_name

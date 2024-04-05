@@ -56,3 +56,8 @@ export const updateTicketComments = (id: any, comment: string) => ({
   type: TicketsActionTypes.UPDATE_TICKET_COMMENT,
   payload: { id, comment },
 });
+
+export const refreshComments = () => ({
+  type: TicketsActionTypes.REFRESH_COMMENTS,
+  payload: {},
+})

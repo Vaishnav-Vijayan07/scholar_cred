@@ -33,6 +33,7 @@ import { useViewport } from "../hooks/useViewPort";
 import { getNotifications } from "../redux/notifications/actions";
 import { getUserFromCookie } from "../helpers/api/apiCore";
 import axios from "axios";
+import { onMessage } from "firebase/messaging";
 
 export interface NotificationItem {
   id: number;
@@ -167,10 +168,21 @@ const Topbar = ({
   const dispatch = useDispatch<AppDispatch>();
   const { width } = useViewport();
 
-  const refreshing = useSelector(
-    (state: any) => state.refreshReducer.refreshing
-  );
   const [user, setUser] = useState<any>([]);
+
+  const {
+    layoutType,
+    leftSideBarType,
+    notifications,
+    refreshing,
+    notificationRefresh,
+  } = useSelector((state: RootState) => ({
+    layoutType: state.Layout.layoutType,
+    leftSideBarType: state.Layout.leftSideBarType,
+    notifications: state.Notifications.notifications,
+    refreshing: state.refreshReducer.refreshing,
+    notificationRefresh: state.Notifications.notificationRefresh,
+  }));
 
   useEffect(() => {
     const { user_id } = getUserFromCookie();
@@ -185,18 +197,8 @@ const Topbar = ({
     })();
   }, [refreshing]);
 
-  console.log(user);
-
   const navbarCssClasses: string = navCssClasses || "";
   const containerCssClasses: string = !hideLogo ? "container-fluid" : "";
-
-  const { layoutType, leftSideBarType, notifications } = useSelector(
-    (state: RootState) => ({
-      layoutType: state.Layout.layoutType,
-      leftSideBarType: state.Layout.leftSideBarType,
-      notifications: state.Notifications.notifications,
-    })
-  );
 
   /**
    * Toggle the leftmenu when having mobile screen
@@ -277,7 +279,7 @@ const Topbar = ({
 
   useEffect(() => {
     dispatch(getNotifications());
-  }, []);
+  }, [notificationRefresh]);
 
   return (
     <React.Fragment>
