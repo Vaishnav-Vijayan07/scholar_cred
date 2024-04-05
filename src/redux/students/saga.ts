@@ -31,7 +31,11 @@ import {
 
 // constants
 import { StudentActionTypes } from "./constants";
-import { approveStudentApi, deleteStudentPermanent, getDeletedStudent } from "../../helpers/api/students";
+import {
+  approveStudentApi,
+  deleteStudentPermanent,
+  getDeletedStudent,
+} from "../../helpers/api/students";
 
 interface ConsultantStaffData {
   payload: {
@@ -53,24 +57,44 @@ interface ConsultantStaffData {
 const api = new APICore();
 // const user = api.getLoggedInUser();
 
-function* createStudent({ payload: { first_name, last_name, email, phone, application_status, source, consultant_id }, type }: ConsultantStaffData): SagaIterator {
+function* createStudent({
+  payload: {
+    first_name,
+    last_name,
+    email,
+    phone,
+    application_status,
+    source,
+    consultant_id,
+  },
+  type,
+}: ConsultantStaffData): SagaIterator {
   try {
     const user = yield select((state) => state.Auth.user);
-    const response = yield call(user?.role == "2" ? createStudentByCredStaffApi : createStudentApi, {
-      first_name,
-      last_name,
-      email,
-      phone,
-      // date_of_birth,
-      // country_of_origin,
-      application_status,
-      source,
-      consultant_id,
-    });
+
+    const response = yield call(
+      user?.role == "2" ? createStudentByCredStaffApi : createStudentApi,
+      {
+        first_name,
+        last_name,
+        email,
+        phone,
+        // date_of_birth,
+        // country_of_origin,
+        application_status,
+        source,
+        consultant_id,
+      }
+    );
 
     const consultant_data = response.data.message;
 
-    yield put(studentApiResponseSuccess(StudentActionTypes.CREATE_STUDENT, consultant_data));
+    yield put(
+      studentApiResponseSuccess(
+        StudentActionTypes.CREATE_STUDENT,
+        consultant_data
+      )
+    );
 
     if (user.role == "4") {
       yield put(getStudentByCreated());
@@ -85,27 +109,34 @@ function* createStudent({ payload: { first_name, last_name, email, phone, applic
       yield put(getStudent());
     }
   } catch (error: any) {
-    yield put(studentStaffApiResponseError(StudentActionTypes.CREATE_STUDENT, error));
+    yield put(
+      studentStaffApiResponseError(StudentActionTypes.CREATE_STUDENT, error)
+    );
   }
 }
 
 function* getStudents(action: any): SagaIterator {
   try {
-
     if (action.payload.status) {
-      const response = yield call(getDeletedStudent)
+      const response = yield call(getDeletedStudent);
       console.log(response);
-      
-      const data = response.data.data
-      yield put(studentApiResponseSuccess(StudentActionTypes.GET_DELETED_STUDENT, data))
+
+      const data = response.data.data;
+      yield put(
+        studentApiResponseSuccess(StudentActionTypes.GET_DELETED_STUDENT, data)
+      );
     } else {
       const response = yield call(getStudentApi);
       const data = response.data.data;
       // NOTE - You can change this according to response format from your api
-      yield put(studentApiResponseSuccess(StudentActionTypes.GET_STUDENT, data));
+      yield put(
+        studentApiResponseSuccess(StudentActionTypes.GET_STUDENT, data)
+      );
     }
   } catch (error: any) {
-    yield put(studentStaffApiResponseError(StudentActionTypes.GET_STUDENT, error));
+    yield put(
+      studentStaffApiResponseError(StudentActionTypes.GET_STUDENT, error)
+    );
     throw error;
   }
 }
@@ -116,23 +147,37 @@ function* getStudentsByStaff(): SagaIterator {
     const data = response.data.data;
 
     // NOTE - You can change this according to response format from your api
-    yield put(studentApiResponseSuccess(StudentActionTypes.GET_STUDENT_BY_STAFF, data));
+    yield put(
+      studentApiResponseSuccess(StudentActionTypes.GET_STUDENT_BY_STAFF, data)
+    );
   } catch (error: any) {
-    yield put(studentStaffApiResponseError(StudentActionTypes.GET_STUDENT_BY_STAFF, error));
+    yield put(
+      studentStaffApiResponseError(
+        StudentActionTypes.GET_STUDENT_BY_STAFF,
+        error
+      )
+    );
     throw error;
   }
 }
 
 function* getStudentsByCreated(): SagaIterator {
-  const user = yield select((state) => state.Auth.user)
+  const user = yield select((state) => state.Auth.user);
   try {
     const response = yield call(getStudentByCreatedApi);
     const data = response.data.data;
 
     // NOTE - You can change this according to response format from your api
-    yield put(studentApiResponseSuccess(StudentActionTypes.GET_STUDENT_BY_CREATED, data));
+    yield put(
+      studentApiResponseSuccess(StudentActionTypes.GET_STUDENT_BY_CREATED, data)
+    );
   } catch (error: any) {
-    yield put(studentStaffApiResponseError(StudentActionTypes.GET_STUDENT_BY_CREATED, error));
+    yield put(
+      studentStaffApiResponseError(
+        StudentActionTypes.GET_STUDENT_BY_CREATED,
+        error
+      )
+    );
     throw error;
   }
 }
@@ -143,55 +188,95 @@ function* getAssignedStudents(): SagaIterator {
     const data = response.data.data;
 
     // NOTE - You can change this according to response format from your api
-    yield put(studentApiResponseSuccess(StudentActionTypes.GET_ASSIGNED_STUDENT, data));
+    yield put(
+      studentApiResponseSuccess(StudentActionTypes.GET_ASSIGNED_STUDENT, data)
+    );
   } catch (error: any) {
-    yield put(studentStaffApiResponseError(StudentActionTypes.GET_ASSIGNED_STUDENT, error));
+    yield put(
+      studentStaffApiResponseError(
+        StudentActionTypes.GET_ASSIGNED_STUDENT,
+        error
+      )
+    );
     throw error;
   }
 }
 
-function* getStudentById({ payload: { student_id } }: ConsultantStaffData): SagaIterator {
+function* getStudentById({
+  payload: { student_id },
+}: ConsultantStaffData): SagaIterator {
   try {
     const response = yield call(getStudentByIdApi, student_id);
     const data = response.data.data;
 
     // NOTE - You can change this according to response format from your api
-    yield put(studentApiResponseSuccess(StudentActionTypes.GET_STUDENT_BY_ID, data));
+    yield put(
+      studentApiResponseSuccess(StudentActionTypes.GET_STUDENT_BY_ID, data)
+    );
   } catch (error: any) {
-    yield put(studentStaffApiResponseError(StudentActionTypes.GET_STUDENT_BY_ID, error));
+    yield put(
+      studentStaffApiResponseError(StudentActionTypes.GET_STUDENT_BY_ID, error)
+    );
     throw error;
   }
 }
 
-function* getStudentByConsultants({ payload: { consultant_id } }: ConsultantStaffData): SagaIterator {
+function* getStudentByConsultants({
+  payload: { consultant_id },
+}: ConsultantStaffData): SagaIterator {
   try {
     const response = yield call(getStudentByConsultantApi, consultant_id);
     const data = response.data.data;
 
     // NOTE - You can change this according to response format from your api
-    yield put(studentApiResponseSuccess(StudentActionTypes.GET_STUDENT_BY_CONSULTANT, data));
+    yield put(
+      studentApiResponseSuccess(
+        StudentActionTypes.GET_STUDENT_BY_CONSULTANT,
+        data
+      )
+    );
   } catch (error: any) {
-    yield put(studentStaffApiResponseError(StudentActionTypes.GET_STUDENT_BY_CONSULTANT, error));
+    yield put(
+      studentStaffApiResponseError(
+        StudentActionTypes.GET_STUDENT_BY_CONSULTANT,
+        error
+      )
+    );
     throw error;
   }
 }
 
 function* approveStudent({ payload: { student_id } }: any): SagaIterator {
   try {
-    const response = yield call(approveStudentApi, student_id)
+    const response = yield call(approveStudentApi, student_id);
 
     console.log(response);
-    
-    const message = response.data.message
-    yield put(studentApiResponseSuccess(StudentActionTypes.APPROVE_STUDENT, message))
-    yield put(getStudent(1))
+
+    const message = response.data.message;
+    yield put(
+      studentApiResponseSuccess(StudentActionTypes.APPROVE_STUDENT, message)
+    );
+    yield put(getStudent(1));
   } catch (error: any) {
-    yield put(studentStaffApiResponseError(StudentActionTypes.APPROVE_STUDENT, error));
+    yield put(
+      studentStaffApiResponseError(StudentActionTypes.APPROVE_STUDENT, error)
+    );
     throw error;
   }
 }
 
-function* updateStudent({ payload: { student_id, first_name, last_name, email, phone, application_status, source }, type }: ConsultantStaffData): SagaIterator {
+function* updateStudent({
+  payload: {
+    student_id,
+    first_name,
+    last_name,
+    email,
+    phone,
+    application_status,
+    source,
+  },
+  type,
+}: ConsultantStaffData): SagaIterator {
   try {
     const user = yield select((state) => state.Auth.user);
     const response = yield call(updateStudentApi, student_id, {
@@ -206,7 +291,12 @@ function* updateStudent({ payload: { student_id, first_name, last_name, email, p
     });
     const consultant_data = response.data.message;
 
-    yield put(studentApiResponseSuccess(StudentActionTypes.EDIT_STUDENT, consultant_data));
+    yield put(
+      studentApiResponseSuccess(
+        StudentActionTypes.EDIT_STUDENT,
+        consultant_data
+      )
+    );
 
     if (user.role == "4") {
       yield put(getStudentByCreated());
@@ -220,27 +310,36 @@ function* updateStudent({ payload: { student_id, first_name, last_name, email, p
       yield put(getStudent());
     }
   } catch (error: any) {
-    yield put(studentStaffApiResponseError(StudentActionTypes.EDIT_STUDENT, error));
+    yield put(
+      studentStaffApiResponseError(StudentActionTypes.EDIT_STUDENT, error)
+    );
   }
 }
 
-function* deleteStudent({ payload: { student_id, status } }: ConsultantStaffData): SagaIterator {
+function* deleteStudent({
+  payload: { student_id, status },
+}: ConsultantStaffData): SagaIterator {
   try {
-
     if (status) {
       console.log(student_id);
-      
-      const response = yield call(deleteStudentPermanent, student_id)
-      const data = response.data.message
-      yield put(studentApiResponseSuccess(StudentActionTypes.PERMANENT_DELETE_STUDENT, data))
-      yield put(getStudent(1))
 
+      const response = yield call(deleteStudentPermanent, student_id);
+      const data = response.data.message;
+      yield put(
+        studentApiResponseSuccess(
+          StudentActionTypes.PERMANENT_DELETE_STUDENT,
+          data
+        )
+      );
+      yield put(getStudent(1));
     } else {
       const response = yield call(deleteStudentApi, student_id);
       const data = response.data.message;
       const user = yield select((state) => state.Auth.user);
 
-      yield put(studentApiResponseSuccess(StudentActionTypes.DELETE_STUDENT, data));
+      yield put(
+        studentApiResponseSuccess(StudentActionTypes.DELETE_STUDENT, data)
+      );
 
       if (user.role == "4") {
         yield put(getStudentByCreated());
@@ -255,7 +354,9 @@ function* deleteStudent({ payload: { student_id, status } }: ConsultantStaffData
       }
     }
   } catch (error: any) {
-    yield put(studentApiResponseSuccess(StudentActionTypes.DELETE_STUDENT, error));
+    yield put(
+      studentApiResponseSuccess(StudentActionTypes.DELETE_STUDENT, error)
+    );
     throw error;
   }
 }
@@ -267,7 +368,10 @@ export function* watchGetStudentByStaff() {
   yield takeEvery(StudentActionTypes.GET_STUDENT_BY_STAFF, getStudentsByStaff);
 }
 export function* watchGetStudentByCreated() {
-  yield takeEvery(StudentActionTypes.GET_STUDENT_BY_CREATED, getStudentsByCreated);
+  yield takeEvery(
+    StudentActionTypes.GET_STUDENT_BY_CREATED,
+    getStudentsByCreated
+  );
 }
 export function* watchGetAssignedStudent() {
   yield takeEvery(StudentActionTypes.GET_ASSIGNED_STUDENT, getAssignedStudents);
@@ -277,7 +381,10 @@ export function* watchgetStudentById() {
 }
 
 export function* watchgetStudentByConsultant() {
-  yield takeEvery(StudentActionTypes.GET_STUDENT_BY_CONSULTANT, getStudentByConsultants);
+  yield takeEvery(
+    StudentActionTypes.GET_STUDENT_BY_CONSULTANT,
+    getStudentByConsultants
+  );
 }
 
 export function* watchCreateStudent() {
@@ -307,7 +414,7 @@ function* StudentSaga() {
     fork(watchGetStudentByCreated),
     fork(watchGetAssignedStudent),
     fork(watchgetStudentByConsultant),
-    fork(watchApproveStudent)
+    fork(watchApproveStudent),
   ]);
 }
 

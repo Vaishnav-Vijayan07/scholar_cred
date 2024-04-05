@@ -12,12 +12,14 @@ interface State {
   notifications: Notification[];
   initialLoading: boolean;
   error?: null | string;
+  notificationRefresh: boolean;
 }
 
 const INIT_STATE = {
   notifications: [],
   initialLoading: false,
   error: null,
+  notificationRefresh: false,
 };
 
 export interface StatusActionType {
@@ -25,6 +27,7 @@ export interface StatusActionType {
     | NotificationsActionTypes.API_RESPONSE_SUCCESS
     | NotificationsActionTypes.API_RESPONSE_ERROR
     | NotificationsActionTypes.GET_NOTIFICATIONS
+    | NotificationsActionTypes.REFRESH_NOTIFICATIONS
     | NotificationsActionTypes.STATUS_NOTIFICATIONS;
   payload: {
     actionType?: string;
@@ -84,6 +87,12 @@ const Notifications = (
       return {
         ...state,
         initialLoading: true,
+      };
+    }
+    case NotificationsActionTypes.REFRESH_NOTIFICATIONS: {
+      return {
+        ...state,
+        notificationRefresh: !state.notificationRefresh,
       };
     }
     case NotificationsActionTypes.STATUS_NOTIFICATIONS: {

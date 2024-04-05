@@ -7,6 +7,7 @@ const INIT_STATE = {
   loading: false,
   initialLoading: true,
   error: null,
+  commentsRefresh: false,
 };
 
 interface Ticket {
@@ -44,6 +45,7 @@ interface TicketActionType {
     | TicketsActionTypes.API_RESPONSE_ERROR
     | TicketsActionTypes.API_RESPONSE_SUCCESS
     | TicketsActionTypes.GET_A_TICKET
+    | TicketsActionTypes.REFRESH_COMMENTS
     | TicketsActionTypes.UPDATE_TICKET_COMMENT;
   payload: {
     actionType?: string;
@@ -128,6 +130,12 @@ const Tickets = (state = INIT_STATE, action: TicketActionType) => {
     }
     case TicketsActionTypes.UPDATE_TICKET_COMMENT: {
       return { ...state, loading: true };
+    }
+    case TicketsActionTypes.REFRESH_COMMENTS: {
+      return {
+        ...state,
+        commentsRefresh: !state.commentsRefresh,
+      };
     }
     default:
       return { ...state };

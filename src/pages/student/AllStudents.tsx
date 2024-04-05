@@ -1,7 +1,17 @@
 import * as yup from "yup";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert, Spinner, Dropdown } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Modal,
+  Alert,
+  Spinner,
+  Dropdown,
+} from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,7 +19,13 @@ import FileUploader from "../../components/FileUploader";
 
 // components
 import PageTitle from "../../components/PageTitle";
-import { StudentDataTypes, StudentInitialState, StudentValidationState, initialState, sizePerPageList } from "../users/data";
+import {
+  StudentDataTypes,
+  StudentInitialState,
+  StudentValidationState,
+  initialState,
+  sizePerPageList,
+} from "../users/data";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import {
@@ -26,7 +42,11 @@ import {
 } from "../../redux/actions";
 import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import axios from "axios";
-import { getColumns, getConsultantStaffColumns, getCredStaffColumns } from "./ColumnsConfig";
+import {
+  getColumns,
+  getConsultantStaffColumns,
+  getCredStaffColumns,
+} from "./ColumnsConfig";
 import { truncateText } from "../../constants/functons";
 import excelDownload from "../../helpers/excelDownload";
 import FilterModal from "../../components/FilterModal";
@@ -37,7 +57,19 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, user, initialLoading, credStaffData, sourceData, getStudentBasedOnRole, consultant_id, ConsultantStaff } = props;
+  const {
+    swal,
+    loading,
+    state,
+    error,
+    user,
+    initialLoading,
+    credStaffData,
+    sourceData,
+    getStudentBasedOnRole,
+    consultant_id,
+    ConsultantStaff,
+  } = props;
 
   const dispatch = useDispatch();
 
@@ -45,7 +77,8 @@ const BasicInputElements = withSwal((props: any) => {
 
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
-  const [formData, setFormData] = useState<StudentDataTypes>(StudentInitialState);
+  const [formData, setFormData] =
+    useState<StudentDataTypes>(StudentInitialState);
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   const [uploadModal, setUploadModal] = useState<boolean>(false);
@@ -54,7 +87,9 @@ const BasicInputElements = withSwal((props: any) => {
   const [visible, setVisible] = useState(false);
 
   //validation errors
-  const [validationErrors, setValidationErrors] = useState(StudentValidationState);
+  const [validationErrors, setValidationErrors] = useState(
+    StudentValidationState
+  );
 
   const validationSchema = yup.object().shape({
     first_name: yup.string().trim().required("First name is required"),
@@ -280,6 +315,9 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleAssign = (assigned_staff_id: string, student_id: string) => {
+    console.log("this");
+
+    return;
     axios
       .post("assign_consultant_staff", {
         assigned_staff_id,
@@ -304,12 +342,33 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   if (initialLoading) {
-    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+    return (
+      <Spinner
+        animation="border"
+        style={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
   }
 
-  const columns1 = getColumns(handleUpdate, toggleResponsiveModal, handleDelete, handleAssign, ConsultantStaff);
-  const consultantStaffColumns = getConsultantStaffColumns(handleResetPassword, resetPassword, handleUpdate, toggleResponsiveModal, handleDelete);
-  const credStaffColumns = getCredStaffColumns(handleUpdate, toggleResponsiveModal, handleDelete);
+  const columns1 = getColumns(
+    handleUpdate,
+    toggleResponsiveModal,
+    handleDelete,
+    handleAssign,
+    ConsultantStaff
+  );
+  const consultantStaffColumns = getConsultantStaffColumns(
+    handleResetPassword,
+    resetPassword,
+    handleUpdate,
+    toggleResponsiveModal,
+    handleDelete
+  );
+  const credStaffColumns = getCredStaffColumns(
+    handleUpdate,
+    toggleResponsiveModal,
+    handleDelete
+  );
 
   const handleDownload = () => {
     excelDownload(state, credStaffColumns);
@@ -318,7 +377,11 @@ const BasicInputElements = withSwal((props: any) => {
   return (
     <>
       <Row className="justify-content-between px-2">
-        <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
+        <Modal
+          show={responsiveModal}
+          onHide={toggleResponsiveModal}
+          dialogClassName="modal-dialog-centered"
+        >
           <Form onSubmit={onSubmit}>
             <Modal.Header closeButton>
               <h4 className="modal-title">Student Management</h4>
@@ -333,16 +396,36 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="first_name">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
-                    {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      name="first_name"
+                      placeholder="Enter First Name"
+                      value={formData.first_name}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.first_name && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.first_name}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
 
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="last_name">
                     <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Second Name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
-                    {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Second Name"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.last_name && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.last_name}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -351,15 +434,36 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="email">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email || ""} onChange={handleInputChange} />
-                    {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      placeholder="Enter email"
+                      value={formData.email || ""}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.email && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.email}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="phone">
                     <Form.Label>Phone</Form.Label>
-                    <Form.Control type="text" maxLength={10} name="phone" placeholder="Enter phone number" value={formData.phone} onChange={handleInputChange} />
-                    {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      maxLength={10}
+                      name="phone"
+                      placeholder="Enter phone number"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.phone && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.phone}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -368,7 +472,12 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="source">
                     <Form.Label>Source</Form.Label>
-                    <Form.Select name="source" value={formData.source} onChange={handleInputChange} aria-label="Default select example">
+                    <Form.Select
+                      name="source"
+                      value={formData.source}
+                      onChange={handleInputChange}
+                      aria-label="Default select example"
+                    >
                       <option disabled value="" selected>
                         Choose a source...{" "}
                       </option>
@@ -378,13 +487,23 @@ const BasicInputElements = withSwal((props: any) => {
                         </option>
                       ))}
                     </Form.Select>
-                    {validationErrors.source && <Form.Text className="text-danger">{validationErrors.source}</Form.Text>}
+                    {validationErrors.source && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.source}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
             </Modal.Body>
             <Modal.Footer>
-              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
+              <Button
+                type="submit"
+                variant="success"
+                id="button-addon2"
+                className="waves-effect waves-light mt-1 me-2"
+                disabled={loading}
+              >
                 {isUpdate ? "Update" : "Submit"}
               </Button>
 
@@ -413,25 +532,52 @@ const BasicInputElements = withSwal((props: any) => {
 
         {/* ----------- file upload modal ------ */}
 
-        <Modal show={uploadModal} onHide={toggleUploadModal} dialogClassName="modal-dialog-centered">
+        <Modal
+          show={uploadModal}
+          onHide={toggleUploadModal}
+          dialogClassName="modal-dialog-centered"
+        >
           <Modal.Header closeButton></Modal.Header>
           <Modal.Body>
-            <p className="text-muted mb-1 font-small">*Please upload the Excel file following the example format.</p>
-            <FileUploader onFileUpload={handleOnFileUpload} showPreview={true} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
+            <p className="text-muted mb-1 font-small">
+              *Please upload the Excel file following the example format.
+            </p>
+            <FileUploader
+              onFileUpload={handleOnFileUpload}
+              showPreview={true}
+              selectedFile={selectedFile}
+              setSelectedFile={setSelectedFile}
+            />
             <div className="d-flex gap-2 justify-content-end mb-2">
-              <Button className="btn-sm btn-blue waves-effect waves-light" onClick={handleDownloadClick}>
+              <Button
+                className="btn-sm btn-blue waves-effect waves-light"
+                onClick={handleDownloadClick}
+              >
                 <i className="mdi mdi-download-circle"></i> Download Sample
               </Button>
-              <Button className="btn-sm btn-success waves-effect waves-light" onClick={handleFileUpload} disabled={isLoading}>
+              <Button
+                className="btn-sm btn-success waves-effect waves-light"
+                onClick={handleFileUpload}
+                disabled={isLoading}
+              >
                 <i className="mdi mdi-upload"></i> Upload File
               </Button>
             </div>
           </Modal.Body>
         </Modal>
 
-        <FilterModal filterModal={visible} setFilterModal={onClose} data={state} setfilteredData={setFilteredItems} setIsLoading={setIsLoading} />
+        <FilterModal
+          filterModal={visible}
+          setFilterModal={onClose}
+          data={state}
+          setfilteredData={setFilteredItems}
+          setIsLoading={setIsLoading}
+        />
         {isLoading ? (
-          <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />
+          <Spinner
+            animation="border"
+            style={{ position: "absolute", top: "50%", left: "50%" }}
+          />
         ) : (
           <Col className="p-0 form__card">
             <Card className="bg-white">
@@ -439,20 +585,34 @@ const BasicInputElements = withSwal((props: any) => {
                 <>
                   <Row className="d-flex flex-column-reverse flex-md-row">
                     <div className="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
-                      <Button className="btn-sm  waves-effect waves-light " onClick={showDrawer} disabled={state.length === 0}>
+                      <Button
+                        className="btn-sm  waves-effect waves-light "
+                        onClick={showDrawer}
+                        disabled={state.length === 0}
+                      >
                         <i className="mdi mdi-filter"></i>
                         {"Filters"}
                       </Button>
 
-                      <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleUploadModal}>
+                      <Button
+                        className="btn-sm btn-blue waves-effect waves-light"
+                        onClick={toggleUploadModal}
+                      >
                         <i className="mdi mdi-upload"></i> Bulk Upload
                       </Button>
 
-                      <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleResponsiveModal}>
+                      <Button
+                        className="btn-sm btn-blue waves-effect waves-light"
+                        onClick={toggleResponsiveModal}
+                      >
                         <i className="mdi mdi-plus-circle"></i> Add Student
                       </Button>
 
-                      <Button className="btn-sm btn-warning waves-effect waves-light " onClick={handleDownload} disabled={state.length === 0}>
+                      <Button
+                        className="btn-sm btn-warning waves-effect waves-light "
+                        onClick={handleDownload}
+                        disabled={state.length === 0}
+                      >
                         <i className="mdi mdi-download"></i> {"Download data"}
                       </Button>
                     </div>
@@ -460,7 +620,13 @@ const BasicInputElements = withSwal((props: any) => {
                   {/* <h4 className="header-title mb-4">Manage Student</h4> */}
 
                   <Table
-                    columns={user.role == "2" ? credStaffColumns : user.role == "4" ? consultantStaffColumns : columns1}
+                    columns={
+                      user.role == "2"
+                        ? credStaffColumns
+                        : user.role == "4"
+                        ? consultantStaffColumns
+                        : columns1
+                    }
                     data={filteredItems}
                     pageSize={5}
                     sizePerPageList={sizePerPageList}
@@ -485,19 +651,23 @@ const Students = () => {
   const [credStaffData, setCredStaffData] = useState([]);
   const [sourceData, setSourceData] = useState([]);
 
-  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
-    state: state.Students.students,
-    loading: state?.Students.loading,
-    initialLoading: state?.Students.initialLoading,
-    error: state?.Students.error,
-  }));
+  const { state, loading, error, initialLoading } = useSelector(
+    (state: RootState) => ({
+      state: state.Students.students,
+      loading: state?.Students.loading,
+      initialLoading: state?.Students.initialLoading,
+      error: state?.Students.error,
+    })
+  );
 
-  const { user, Authloading, credStaff, ConsultantStaff } = useSelector((state: RootState) => ({
-    user: state.Auth.user,
-    credStaff: state.AdminStaff.adminStaff.data,
-    Authloading: state.Auth.loading,
-    ConsultantStaff: state.ConsultantStaff.ConsultantStaffByAdmin.data,
-  }));
+  const { user, Authloading, credStaff, ConsultantStaff } = useSelector(
+    (state: RootState) => ({
+      user: state.Auth.user,
+      credStaff: state.AdminStaff.adminStaff.data,
+      Authloading: state.Auth.loading,
+      ConsultantStaff: state.ConsultantStaff.ConsultantStaffByAdmin.data,
+    })
+  );
 
   const getSourceData = () => {
     axios
