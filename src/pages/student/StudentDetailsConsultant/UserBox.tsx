@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import profileImg from "../../../assets/images/avatar-logo.png";
 import moment from "moment";
 
 const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
+  const { search } = useLocation();
+  const { id } = useParams<{ id: string }>();
+  const searchParam = search?.split("?")[1];
+  const loanStatusRef = useRef<any>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchParam && loanStatusRef.current) {
+      setTimeout(() => {
+        loanStatusRef.current.classList.add("highlighted-userbox");
+        setTimeout(() => {
+          loanStatusRef.current.classList.remove("highlighted-userbox");
+          navigate(`/users/student-details-consultant/${id}`, {
+            replace: true,
+          });
+        }, 1000);
+      }, 500);
+    }
+  }, [id, searchParam]);
+
   console.log("StudentData=====>", StudentData);
 
   return (
@@ -91,7 +111,10 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
                 </p>
               )}
 
-              <p className="text-muted mb-2 font-13">
+              <p
+                ref={loanStatusRef}
+                className="text-muted mb-2 font-13 rounded-4"
+              >
                 <strong>Loan Status :</strong>
                 <span className="ms-2">
                   {StudentData?.loan_status_name || "Pending"}

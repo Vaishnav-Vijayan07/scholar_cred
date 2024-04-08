@@ -54,9 +54,9 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
     setNotificationContentStyles(notificationContentStyle === notificationContainerStyle ? notificationShowContainerStyle : notificationContainerStyle);
   };
 
-  const handleClearNotification = (index: number) => {
-    notifications.splice(index, 1);
-  };
+  // const handleClearNotification = () => {
+  //   notifications.splice(index, 1);
+  // };
 
   const handleRead = (id: string | number) => {
     dispatch(readStatusNotification(id));
@@ -82,6 +82,12 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
                 <h6 className="my-0 font-16 fw-semibold">{notifications?.length <= 0 ? "No notification" : "Notification"}</h6>
               </div>
               <div className="col d-flex justify-content-end">
+                      <span
+                      className="float-end noti-close-btn text-muted"
+                      // onClick={() => handleClearNotification()}
+                    >
+                      <i className="mdi mdi-close"></i>
+                    </span>
                
               </div>
             </div>
@@ -92,12 +98,6 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
                 <Link onClick={item.read_status ? undefined : ((() => handleRead(item.notification_id)) as any)} to={item.action_type ? item.action_type : ""}>
                   <div className="dropdown-item p-0 notify-item card unread-noti shadow-none mb-1 " key={i + "-noti"}>
                     <div className="card-body">
-                      {/* <span
-                      className="float-end noti-close-btn text-muted"
-                      onClick={() => handleClearNotification(i)}
-                    >
-                      <i className="mdi mdi-close"></i>
-                    </span> */}
                       <div className="d-flex align-items-center">
                         <div className="flex-shrink-0">
                           <div className="notify-icon">

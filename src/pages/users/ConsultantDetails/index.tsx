@@ -326,7 +326,7 @@ const Profile = () => {
                     }
                   }}
                 >
-                  {!isUpdate ? "close" : "Cancel"}
+                  {!isUpdate ? "Close" : "Cancel"}
                 </Button>
               </Modal.Footer>
             </Form>

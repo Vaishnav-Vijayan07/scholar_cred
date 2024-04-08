@@ -57,7 +57,7 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
                 <span className="ms-2 ">{StudentData?.email}</span>
               </p>
 
-              <p className="text-muted mb-2 font-13">
+              <p className="text-muted mb-2 font-13 ">
                 <strong>Loan Status :</strong>
                 <span className="ms-2">{StudentData?.loan_status_name || "Pending"}</span>
               </p>

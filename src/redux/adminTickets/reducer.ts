@@ -1,4 +1,4 @@
-import { showSuccessAlert } from "../../constants/alerts";
+import { showErrorAlert, showSuccessAlert } from "../../constants/alerts";
 import { AdminTicketsActionTypes } from "./constants";
 
 const INIT_STATE = {
@@ -90,7 +90,7 @@ const AdminTickets = (
           showSuccessAlert(action.payload.data);
           return {
             ...state,
-            loading:false,
+            loading: false,
           };
         }
 
@@ -124,6 +124,15 @@ const AdminTickets = (
             error: action.payload.error,
             loading: false,
             initialLoading: false,
+          };
+        }
+
+        case AdminTicketsActionTypes.UPDATE_ADMIN_TICKET_STATUS: {
+          showErrorAlert(action.payload.error);
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
           };
         }
 
