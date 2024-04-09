@@ -95,7 +95,7 @@ const NotificationDropdown = ({ notifications }: NotificationsResponse) => {
           <SimpleBar className="px-1" style={notificationContentStyle}>
             {(notifications || []).map((item, i) => {
               return (
-                <Link onClick={item.read_status ? undefined : ((() => handleRead(item.notification_id)) as any)} to={item.action_type ? item.action_type : ""}>
+                <Link onClick={item.read_status ? undefined : ((() => handleRead(item.notification_id)) as any)} to={item.action_type ? item.action_type : ""} key={item.notification_id}>
                   <div className="dropdown-item p-0 notify-item card unread-noti shadow-none mb-1 " key={i + "-noti"}>
                     <div className="card-body">
                       <div className="d-flex align-items-center">

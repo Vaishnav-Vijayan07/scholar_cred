@@ -35,7 +35,6 @@ const App = () => {
   //   auth: {
   //     token: user?.token,
   //   },
-  //   transports: ["websocket", "polling"],
   // });
 
   // useEffect(() => {

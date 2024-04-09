@@ -98,9 +98,7 @@ const BasicInputElements = withSwal((props: any) => {
   const validationSchema = yup.object().shape({
     first_name: yup.string().trim().required("First name is required"),
     last_name: yup.string().trim().required("Last name is required"),
-    email: yup
-      .string()
-      .email("Invalid email format").nullable(),
+    email: yup.string().nullable().email("Invalid email format"),
     phone: yup
       .string()
       .required("Phone number is required")
@@ -247,6 +245,8 @@ const BasicInputElements = withSwal((props: any) => {
   }, [state]);
 
   const UserColumn = ({ row }: any) => {
+    console.log(row.original);
+    
     return (
       <>
         <Dropdown className="btn-group" align="end">
@@ -371,6 +371,7 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Source",
       accessor: "source_name",
       sort: false,
+      Cell: ({ row }: any) => <div>{row.original.source_name || "Not provided"}</div>
     },
     {
       Header: "Send Password",
@@ -949,7 +950,8 @@ const BasicInputElements = withSwal((props: any) => {
                           onClick={showDrawer}
                           disabled={state.length === 0}
                         >
-                          <i className="mdi mdi-filter"></i>{"Filters"}
+                          <i className="mdi mdi-filter"></i>
+                          {"Filters"}
                         </Button>
 
                         {user.role == 1 && (

@@ -24,7 +24,7 @@ const excelDownload = (data: any, colom: any) => {
         if (header === "first_name") {
           filteredItem.name = `${item.first_name} ${item.last_name}`;
         } else {
-          const value = item[header] ? item[header] : "Empty";
+          const value = item[header] ? item[header] : "Not provided";
           filteredItem[header] = value;
         }
       } else {

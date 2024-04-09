@@ -242,7 +242,7 @@ const BasicInputElements = withSwal((props: any) => {
           )
         );
       }
-      setCroppedFile({ croppedAltImage: "", croppedImage: "" });
+      // setCroppedFile({ croppedAltImage: "", croppedImage: "" });
     } catch (validationError) {
       // Handle validation errors
       if (validationError instanceof yup.ValidationError) {

@@ -289,6 +289,7 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
       Header: "Email",
       accessor: "email",
       sort: false,
+      Cell: ({ row }: any) => <span>{row.original.email ? row.original.email : "Not provided"}</span>
     },
     {
       Header: "Intake Month",
@@ -332,6 +333,7 @@ export const getCredStaffColumns = (handleUpdate: any, toggleResponsiveModal: an
       Header: "Source",
       accessor: "source_name",
       sort: false,
+      Cell: ({ row }: any) => <span>{row.original.source_name ? row.original.source_name : "Not provided"}</span>
     },
     // {
     //   Header: "Created By",
