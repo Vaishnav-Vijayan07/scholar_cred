@@ -37,7 +37,7 @@ const Profile = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const loanDivRef = useRef<HTMLDivElement>(null);
+  const loanDivRef = useRef<any>(null);
   const [preliminaryDetails, setPreliminaryDetails] = useState({});
   const [preliminaryLoading, setPreliminaryLoading] = useState(false);
   const [loanStatus, setLoanStatus] = useState([]);
@@ -110,6 +110,15 @@ const Profile = () => {
   useEffect(() => {
     if (searchParam && loanDivRef.current) {
       loanDivRef.current.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        const immediate = loanDivRef.current.children[0];
+        if (immediate) {
+          immediate.classList.add("highlighted");
+          setTimeout(() => {
+            immediate.classList.remove("highlighted");
+          }, 1000);
+        }
+      }, 500);
       navigate(`/users/student-details/${id}`, { replace: true });
     }
   }, [id, searchParam]);

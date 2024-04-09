@@ -80,6 +80,15 @@
   border: none;
 }
 
+@keyframes highlight {
+  0% { background-color: #E4A11B; }
+  100% { background-color: white; }
+}
+
+.highlighted,.highlighted-userbox {
+  animation: highlight 1s ease-out;
+}
+
 .ant-drawer-content-wrapper {
   position: absolute;
   right: 0;

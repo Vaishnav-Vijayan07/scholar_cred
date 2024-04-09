@@ -344,30 +344,21 @@ const Topbar = ({
             <li className="dropdown d-flex flex-column">
               <ProfileDropdown
                 profilePic={
-                  user?.user_type_id === 1
-                    ? AvatarLogo ||
-                      (user?.image
-                        ? `${process.env.REACT_APP_BACKEND_URL}${
-                            user?.Avatar || user?.image
-                          }`
-                        : `${process.env.REACT_APP_BACKEND_URL}${
-                            user?.Avatar || user?.image_url
-                          }`)
-                    : user?.image
-                    ? `${process.env.REACT_APP_BACKEND_URL}${
-                        user?.Avatar || user?.image
-                      }`
+                  user?.image
+                    ? `${process.env.REACT_APP_BACKEND_URL}${user?.image}`
+                    : AvatarLogo
+                    ? AvatarLogo 
                     : `${process.env.REACT_APP_BACKEND_URL}${
-                        user?.Avatar || user?.image_url
+                        user?.image_url || user?.Avatar
                       }`
                 }
                 menuItems={ProfileMenus}
                 username={
-                  user?.role_name == "ADMIN"
+                  user?.role_name === "ADMIN"
                     ? user?.full_name
-                    : user?.full_name?.split(" ")[0]
+                    : user?.full_name?.split(" ")[0] || "Guest" // Fallback to "Guest" if full name is not available
                 }
-                userTitle={user?.type_name}
+                userTitle={user?.type_name || "Unknown"} // Fallback to "Unknown" if user title is not available
               />
             </li>
             {/* <li>

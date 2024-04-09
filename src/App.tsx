@@ -31,40 +31,40 @@ const App = () => {
       };
     });
 
-  const socket = io("https://crm.intersmarthosting.in/cred", {
-    auth: {
-      token: user?.token,
-    },
-  });
+  // const socket = io(process.env.REACT_APP_BACKEND_URL || "", {
+  //   auth: {
+  //     token: user?.token,
+  //   },
+  // });
 
-  useEffect(() => {
-    if (user?.user_id) {
-      socket.emit("userid", user.user_id);
-    }
+  // useEffect(() => {
+  //   if (user?.user_id) {
+  //     socket.emit("userid", user.user_id);
+  //   }
 
-    const handleNotified = ({ message, roles }: any) => {
-      if (user && user.role_name && roles.includes(user.role_name)) {
-        andMessage.success(message);
-      }
-      dispatch(refreshNotifications());
-    };
+  //   const handleNotified = ({ message, roles }: any) => {
+  //     if (user && user.role_name && roles.includes(user.role_name)) {
+  //       andMessage.success(message);
+  //     }
+  //     dispatch(refreshNotifications());
+  //   };
 
-    const handleCommentsAdded = ({ message, roles }: any) => {
-      if (user && user.role_name && roles.includes(user.role_name)) {
-        andMessage.success(message);
-      }
-      dispatch(refreshComments());
-      dispatch(refreshNotifications());
-    };
+  //   const handleCommentsAdded = ({ message, roles }: any) => {
+  //     if (user && user.role_name && roles.includes(user.role_name)) {
+  //       andMessage.success(message);
+  //     }
+  //     dispatch(refreshComments());
+  //     dispatch(refreshNotifications());
+  //   };
 
-    socket.on("notified", handleNotified);
-    socket.on("commentsadded", handleCommentsAdded);
+  //   socket.on("notified", handleNotified);
+  //   socket.on("commentsadded", handleCommentsAdded);
 
-    return () => {
-      socket.off("notified", handleNotified);
-      socket.off("commentsadded", handleCommentsAdded);
-    };
-  }, [user, dispatch]);
+  //   return () => {
+  //     socket.off("notified", handleNotified);
+  //     socket.off("commentsadded", handleCommentsAdded);
+  //   };
+  // }, [user, dispatch]);
 
   return (
     <>

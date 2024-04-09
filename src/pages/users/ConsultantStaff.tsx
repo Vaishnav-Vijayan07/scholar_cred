@@ -1,7 +1,16 @@
 import * as yup from "yup";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Row, Col, Card, Form, Button, Modal, Alert, Spinner } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Modal,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -9,9 +18,20 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 // components
 import PageTitle from "../../components/PageTitle";
-import { ConsultantStaffInitialState, ConsultantStaffInitialValidationState, ConsultantStaffTypes, sizePerPageList } from "./data";
+import {
+  ConsultantStaffInitialState,
+  ConsultantStaffInitialValidationState,
+  ConsultantStaffTypes,
+  sizePerPageList,
+} from "./data";
 import { useDispatch, useSelector } from "react-redux";
-import { createConsultantStaffs, editConsultantStaffs, getConsultantStaffs, deleteConsultantStaffs, resetPassword } from "../../redux/actions";
+import {
+  createConsultantStaffs,
+  editConsultantStaffs,
+  getConsultantStaffs,
+  deleteConsultantStaffs,
+  resetPassword,
+} from "../../redux/actions";
 import { RootState } from "../../redux/store";
 // import { getConsultantStaff } from "../../redux/actions";
 
@@ -20,22 +40,35 @@ const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();
 
   console.log("user", user);
+  console.log(state);
 
   //Table data
   const records = state;
   const [isUpdate, setIsUpdate] = useState(false);
   //Input data
-  const [formData, setFormData] = useState<ConsultantStaffTypes>(ConsultantStaffInitialState);
+  const [formData, setFormData] = useState<ConsultantStaffTypes>(
+    ConsultantStaffInitialState
+  );
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   //validation errors
-  const [validationErrors, setValidationErrors] = useState(ConsultantStaffInitialValidationState);
+  const [validationErrors, setValidationErrors] = useState(
+    ConsultantStaffInitialValidationState
+  );
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const validationSchema = yup.object().shape({
-    first_name: yup.string().trim().required("First name is required").nullable(),
+    first_name: yup
+      .string()
+      .trim()
+      .required("First name is required")
+      .nullable(),
     last_name: yup.string().trim().required("Last name is required"),
-    email: yup.string().required("Email is required").email("Invalid email format").nullable(),
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Invalid email format")
+      .nullable(),
     username: yup.string().required("Username is required").nullable(),
     employee_id: yup.string().required("Employee id is required").nullable(),
     phone: yup
@@ -51,6 +84,7 @@ const BasicInputElements = withSwal((props: any) => {
 
   //handling update logic
   const handleUpdate = (item: any) => {
+    console.log(item);
     setFormData((prev) => ({
       ...prev,
       id: item.id,
@@ -197,7 +231,17 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Image",
       accessor: "image",
       sort: false,
-      Cell: ({ row }: any) => <>{row.original.image && <img src={`${process.env.REACT_APP_BACKEND_URL}${row.original.image}`} alt="user image" width={100} />}</>,
+      Cell: ({ row }: any) => (
+        <>
+          {row.original.image && (
+            <img
+              src={`${process.env.REACT_APP_BACKEND_URL}${row.original.image}`}
+              alt="user image"
+              width={100}
+            />
+          )}
+        </>
+      ),
     },
     {
       Header: "Employee Id",
@@ -254,7 +298,12 @@ const BasicInputElements = withSwal((props: any) => {
           />
 
           {/* Delete Icon */}
-          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.id)} />
+          <FeatherIcons
+            icon="trash-2"
+            size="15"
+            className="cursor-pointer text-secondary"
+            onClick={() => handleDelete(row.original.id)}
+          />
         </div>
       ),
     },
@@ -285,13 +334,22 @@ const BasicInputElements = withSwal((props: any) => {
   }, [loading, error]);
 
   if (initialLoading) {
-    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+    return (
+      <Spinner
+        animation="border"
+        style={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
   }
 
   return (
     <>
       <Row className="justify-content-between px-2">
-        <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
+        <Modal
+          show={responsiveModal}
+          onHide={toggleResponsiveModal}
+          dialogClassName="modal-dialog-centered"
+        >
           <Form onSubmit={onSubmit}>
             <Modal.Header closeButton>
               <h4 className="modal-title">Staff Management</h4>
@@ -306,16 +364,36 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="first_name">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" name="first_name" placeholder="Enter First Name" value={formData.first_name} onChange={handleInputChange} />
-                    {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      name="first_name"
+                      placeholder="Enter First Name"
+                      value={formData.first_name}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.first_name && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.first_name}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
 
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="last_name">
                     <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Second Name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
-                    {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Second Name"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.last_name && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.last_name}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -324,16 +402,37 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="email">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
-                    {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      placeholder="Enter email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.email && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.email}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
 
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="phone">
                     <Form.Label>Phone</Form.Label>
-                    <Form.Control type="text" name="phone" placeholder="Enter phone number" maxLength={10} value={formData.phone} onChange={handleInputChange} />
-                    {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      name="phone"
+                      placeholder="Enter phone number"
+                      maxLength={10}
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.phone && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.phone}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -342,16 +441,36 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="employee_id">
                     <Form.Label>Employee Id</Form.Label>
-                    <Form.Control type="text" name="employee_id" placeholder="Enter Employee Id" value={formData.employee_id} onChange={handleInputChange} />
-                    {validationErrors.employee_id && <Form.Text className="text-danger">{validationErrors.employee_id}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      name="employee_id"
+                      placeholder="Enter Employee Id"
+                      value={formData.employee_id}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.employee_id && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.employee_id}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
 
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="username">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" name="username" placeholder="Enter Username" value={formData.username} onChange={handleInputChange} />
-                    {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
+                    <Form.Control
+                      type="text"
+                      name="username"
+                      placeholder="Enter Username"
+                      value={formData.username}
+                      onChange={handleInputChange}
+                    />
+                    {validationErrors.username && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.username}
+                      </Form.Text>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -360,9 +479,25 @@ const BasicInputElements = withSwal((props: any) => {
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="file">
                     <Form.Label>Image</Form.Label>
-                    <Form.Control type="file" name="file" placeholder="Enter pin code" onChange={(e: any) => setSelectedFile(e.target.files[0])} />
-                    {validationErrors.file && <Form.Text className="text-danger">{validationErrors.file}</Form.Text>}
-                    {selectedFile && <img src={URL.createObjectURL(selectedFile)} className="mt-2" alt="selected image" width={100} />}
+                    <Form.Control
+                      type="file"
+                      name="file"
+                      placeholder="Enter pin code"
+                      onChange={(e: any) => setSelectedFile(e.target.files[0])}
+                    />
+                    {validationErrors.file && (
+                      <Form.Text className="text-danger">
+                        {validationErrors.file}
+                      </Form.Text>
+                    )}
+                    {selectedFile && (
+                      <img
+                        src={URL.createObjectURL(selectedFile)}
+                        className="mt-2"
+                        alt="selected image"
+                        width={100}
+                      />
+                    )}
                   </Form.Group>
                 </Col>
               </Row>
@@ -374,7 +509,13 @@ const BasicInputElements = withSwal((props: any) => {
               </Form.Group> */}
             </Modal.Body>
             <Modal.Footer>
-              <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
+              <Button
+                type="submit"
+                variant="success"
+                id="button-addon2"
+                className="waves-effect waves-light mt-1 me-2"
+                disabled={loading}
+              >
                 {isUpdate ? "Update" : "Submit"}
               </Button>
 
@@ -404,7 +545,10 @@ const BasicInputElements = withSwal((props: any) => {
         <Col className="p-0 form__card">
           <Card className="bg-white">
             <Card.Body>
-              <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
+              <Button
+                className="btn-sm btn-blue waves-effect waves-light float-end"
+                onClick={toggleResponsiveModal}
+              >
                 <i className="mdi mdi-plus-circle"></i> Add Consultant Staff
               </Button>
               {/* <h4 className="header-title mb-4">Manage Staff</h4> */}
@@ -433,12 +577,14 @@ const Staff = () => {
     user: state.Auth.user,
   }));
 
-  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
-    state: state.ConsultantStaff.ConsultantStaff.data,
-    loading: state?.ConsultantStaff.loading,
-    error: state?.ConsultantStaff.error,
-    initialLoading: state?.ConsultantStaff.initialLoading,
-  }));
+  const { state, loading, error, initialLoading } = useSelector(
+    (state: RootState) => ({
+      state: state.ConsultantStaff.ConsultantStaff.data,
+      loading: state?.ConsultantStaff.loading,
+      error: state?.ConsultantStaff.error,
+      initialLoading: state?.ConsultantStaff.initialLoading,
+    })
+  );
 
   useEffect(() => {
     if (user) {
@@ -461,7 +607,13 @@ const Staff = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} user={user} initialLoading={initialLoading} />
+          <BasicInputElements
+            state={state}
+            loading={loading}
+            error={error}
+            user={user}
+            initialLoading={initialLoading}
+          />
         </Col>
       </Row>
     </React.Fragment>

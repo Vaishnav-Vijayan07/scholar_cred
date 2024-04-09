@@ -72,6 +72,9 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
     };
   }, []);
 
+  console.log(user);
+  
+
   return (
     <React.Fragment>
       <div className="app-menu" ref={menuNodeRef}>
