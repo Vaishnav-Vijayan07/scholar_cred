@@ -30,11 +30,11 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
             </button>{" "} */}
             {!StudentData?.status ? (
               <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={isLoading} onClick={handleAppprove}>
-                {isLoading ? "Loading…" : "Initiation loan process"}
+                {isLoading ? "Loading…" : "Initiate loan process"}
               </Button>
             ) : (
               <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={true}>
-                Initiation loan process
+                Initiate loan process
               </Button>
             )}
             <div className="text-center mt-3">

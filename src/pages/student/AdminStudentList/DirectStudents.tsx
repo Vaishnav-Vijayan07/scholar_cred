@@ -15,24 +15,25 @@ const DirectStudents = () => {
   const [credStaffData, setCredStaffData] = useState([]);
   const [sourceData, setSourceData] = useState([]);
   const [consultantData, setConsultantData] = useState([]);
+  const [studentData, setStudentData] = useState([]);
 
+  const { state, loading, error, initialLoading } = useSelector(
+    (state: RootState) => ({
+      state: state.Students.students,
+      loading: state?.Students.loading,
+      error: state?.Students.error,
+      initialLoading: state?.Students.initialLoading,
+    })
+  );
 
-  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
-    state: state.Students.students,
-    loading: state?.Students.loading,
-    error: state?.Students.error,
-    initialLoading: state?.Students.initialLoading,
-  }));
-
-  
-
-  const { user, Authloading, credStaff, consultants } = useSelector((state: RootState) => ({
-    user: state.Auth.user,
-    credStaff: state.AdminStaff.adminStaff.data,
-    consultants: state.ConsultantReducer?.consultant?.data,
-    Authloading: state.Auth.loading,
-  }));
-
+  const { user, Authloading, credStaff, consultants } = useSelector(
+    (state: RootState) => ({
+      user: state.Auth.user,
+      credStaff: state.AdminStaff.adminStaff.data,
+      consultants: state.ConsultantReducer?.consultant?.data,
+      Authloading: state.Auth.loading,
+    })
+  );
 
   const getSourceData = () => {
     axios
@@ -68,7 +69,21 @@ const DirectStudents = () => {
   }, [credStaff, consultants]);
 
   console.log(state.length);
-  
+
+  const sendRequest = async () => {
+    axios
+      .get("get_students_by_cred_admin")
+      .then((res) => {
+        setStudentData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    sendRequest();
+  }, []);
 
   return (
     <React.Fragment>
@@ -86,7 +101,8 @@ const DirectStudents = () => {
       <Row>
         <Col>
           <BasicInputElements
-            state={state.filter((item: any) => item.created_by != 0 && item.consultant_id == 0)}
+            // state={state.filter((item: any) => item.created_by != 0)}
+            state={studentData}
             loading={loading}
             error={error}
             user={user}

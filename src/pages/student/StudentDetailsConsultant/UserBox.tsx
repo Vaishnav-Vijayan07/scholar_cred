@@ -61,7 +61,7 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
                 onClick={handleAppprove}
                 className="btn-xs waves-effect mb-2 waves-light"
               >
-                {isLoading ? "Loading…" : "Initiation loan process"}
+                {isLoading ? "Loading…" : "Initiate loan process"}
               </Button>
             ) : (
               <Button
@@ -70,7 +70,7 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
                 disabled={true}
                 className="btn-xs waves-effect mb-2 waves-light"
               >
-                Initiation loan process
+                Initiate loan process
               </Button>
             )}
             <div className="text-center mt-3">
