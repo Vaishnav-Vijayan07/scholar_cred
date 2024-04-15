@@ -48,10 +48,6 @@ const RequestedBy = ({ row }: { row: any }) => {
 
 /* assignee column render */
 const AssigneeColumn = ({ row }: { row: any }) => {
-  const firstLetter = row.original.assigned_to_user_name
-    ? row.original.assigned_to_user_name.charAt(0).toUpperCase()
-    : "A";
-
   const assigneeName = row.original.assigned_to_user_name
     ? row.original.assigned_to_user_name
     : "Assignee";
