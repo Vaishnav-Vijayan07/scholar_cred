@@ -602,7 +602,7 @@ const BasicInputElements = withSwal((props: any) => {
                       </Button>
 
                       <Button
-                        className="btn-sm btn-blue waves-effect waves-light"
+                       className="btn-sm btn-success waves-effect waves-light"
                         onClick={toggleResponsiveModal}
                       >
                         <i className="mdi mdi-plus-circle"></i> Add Student

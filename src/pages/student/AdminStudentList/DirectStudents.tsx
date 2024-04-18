@@ -68,7 +68,6 @@ const DirectStudents = () => {
     }
   }, [credStaff, consultants]);
 
-  console.log(state.length);
 
   const sendRequest = async () => {
     axios
