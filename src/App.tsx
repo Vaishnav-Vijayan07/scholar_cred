@@ -18,6 +18,9 @@ import io from "socket.io-client";
 import { message as andMessage } from "antd";
 import { refreshNotifications } from "./redux/notifications/actions";
 import { refreshComments } from "./redux/tickets/actions";
+import axios from "axios";
+import { getToken } from "firebase/messaging";
+import { messaging } from "./helpers/firebase";
 
 const App = () => {
   const dispatch = useDispatch();

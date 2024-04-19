@@ -1,5 +1,12 @@
 import * as yup from "yup";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  lazy,
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   Row,
@@ -34,7 +41,8 @@ import {
   getCredAdminUsers,
 } from "../../redux/actions";
 import { RootState } from "../../redux/store";
-import { CustomCropper } from "./CustomCropper";
+// import { CustomCropper } from "./CustomCropper";
+const CustomCropper = React.lazy(() => import("./CustomCropper"));
 
 const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();
@@ -799,15 +807,17 @@ const BasicInputElements = withSwal((props: any) => {
             // centered
           >
             <Modal.Body>
-              <CustomCropper
-                imageFile={images}
-                cropConfig={cropConfig}
-                setCroppedFile={setCroppedFile}
-                setSelectedFile={setSelectedFile}
-                setShowModal={setShowModal}
-                setCropConfig={setCropConfig}
-                setBlobdata={setBlobdata}
-              />
+              <Suspense fallback={null}>
+                <CustomCropper
+                  imageFile={images}
+                  cropConfig={cropConfig}
+                  setCroppedFile={setCroppedFile}
+                  setSelectedFile={setSelectedFile}
+                  setShowModal={setShowModal}
+                  setCropConfig={setCropConfig}
+                  setBlobdata={setBlobdata}
+                />
+              </Suspense>
             </Modal.Body>
           </Modal>
 

@@ -31,6 +31,7 @@ const VerticalLayout = ({ children }: VerticalLayoutProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { width } = useViewport();
 
+
   const { layoutMode, layoutColor, layoutWidth, menuPosition, leftSideBarTheme, leftSideBarType, showSidebarUserInfo, showTwoToneIcons, topbarTheme, isOpenRightSideBar } =
     useSelector((state: RootState) => ({
       layoutMode: state.Layout.layoutMode,

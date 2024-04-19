@@ -583,8 +583,15 @@ const authProtectedRoutes = [
 ];
 const publicRoutes = [...authRoutes, ...otherPublicRoutes];
 
+
+
 const authProtectedFlattenRoutes = flattenRoutes([...authProtectedRoutes]);
 const publicProtectedFlattenRoutes = flattenRoutes([...publicRoutes]);
+
+
+console.log(authProtectedFlattenRoutes);
+
+
 export {
   publicRoutes,
   authProtectedRoutes,

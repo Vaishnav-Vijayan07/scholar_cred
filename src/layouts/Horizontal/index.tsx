@@ -31,6 +31,9 @@ const HorizontalLayout = ({ children }: HorizontalLayoutProps) => {
   const { width } = useViewport();
   //
 
+
+  
+
   const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 
   const {

@@ -60,6 +60,8 @@ const Profile = () => {
     loanTypeData: state.StudentDetailsReducer.loanType?.loan_type,
   }));
 
+  console.log(loanTypeData);
+
   // console.log("StudentData---->", StudentData);
 
   const methods = useForm();
@@ -137,6 +139,9 @@ const Profile = () => {
       });
   };
 
+  console.log(loanTypeMessage);
+  console.log(loanTypeMessage !== "Not eligible");
+
   const getStudentDataById = () => {
     dispatch(getStudentById(id ? id : ""));
   };
@@ -169,9 +174,12 @@ const Profile = () => {
     }
   };
 
+  console.log(StudentData);
+
   const handleCheckEligibility = () => {
     console.log("handleCheckEligibility...");
     dispatch(checkLoanType(id ? id : ""));
+    // dispatch(getStudentById(id ? id : ""));
   };
 
   const handleSetLoanType = (value: string) => {
@@ -180,7 +188,7 @@ const Profile = () => {
   };
 
   const handleDisable = () => {
-    if (!StudentData?.loan_type) {
+    if (!StudentData?.loan_type || StudentData?.loan_type === "Not eligible") {
       showWarningAlert("Not eligible for loan currently");
     }
   };
@@ -395,7 +403,7 @@ const Profile = () => {
                   >
                     <Nav.Item as="li" className="nav-item">
                       <Nav.Link
-                        href="#"
+                        // href="#"
                         eventKey="preliminary_screening"
                         className="nav-link cursor-pointer"
                       >
@@ -406,10 +414,12 @@ const Profile = () => {
                     <Nav.Item as="li" className="nav-item">
                       <div onClick={handleDisable}>
                         <Nav.Link
-                          href="#"
+                          // href="#"
                           eventKey="detail_screening"
                           className="nav-link cursor-pointer"
-                          disabled={StudentData?.loan_type ? false : true}
+                          disabled={
+                            !StudentData?.loan_type || StudentData.loan_type === "Not eligible"
+                          }
                         >
                           Detail Screening
                         </Nav.Link>
@@ -419,10 +429,12 @@ const Profile = () => {
                     <Nav.Item as="li" className="nav-item">
                       <div onClick={handleDisable}>
                         <Nav.Link
-                          href="#"
+                          // href="#"
                           eventKey="document_screening"
                           className="nav-link cursor-pointer"
-                          disabled={StudentData?.loan_type ? false : true}
+                          disabled={
+                            !StudentData?.loan_type || StudentData.loan_type === "Not eligible"
+                          }
                         >
                           Docs screening
                         </Nav.Link>
@@ -431,7 +443,7 @@ const Profile = () => {
 
                     <Nav.Item as="li" className="nav-item">
                       <Nav.Link
-                        href="#"
+                        // href="#"
                         eventKey="history"
                         className="nav-link cursor-pointer"
                       >
