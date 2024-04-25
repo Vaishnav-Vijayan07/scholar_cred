@@ -27,23 +27,23 @@ interface StudentData {
 
 interface studentActionType {
   type:
-  | StudentActionTypes.API_RESPONSE_SUCCESS
-  | StudentActionTypes.API_RESPONSE_ERROR
-  | StudentActionTypes.CREATE_STUDENT
-  | StudentActionTypes.EDIT_STUDENT
-  | StudentActionTypes.DELETE_STUDENT
-  | StudentActionTypes.PERMANENT_DELETE_STUDENT
-  | StudentActionTypes.GET_STUDENT
-  | StudentActionTypes.GET_DELETED_STUDENT
-  | StudentActionTypes.GET_STUDENT_BY_STAFF
-  | StudentActionTypes.GET_ASSIGNED_STUDENT
-  | StudentActionTypes.GET_STUDENT_BY_CREATED
-  | StudentActionTypes.GET_STUDENT_BY_ID
-  | StudentActionTypes.GET_STUDENT_BY_CONSULTANT;
+    | StudentActionTypes.API_RESPONSE_SUCCESS
+    | StudentActionTypes.API_RESPONSE_ERROR
+    | StudentActionTypes.CREATE_STUDENT
+    | StudentActionTypes.EDIT_STUDENT
+    | StudentActionTypes.DELETE_STUDENT
+    | StudentActionTypes.PERMANENT_DELETE_STUDENT
+    | StudentActionTypes.GET_STUDENT
+    | StudentActionTypes.GET_DELETED_STUDENT
+    | StudentActionTypes.GET_STUDENT_BY_STAFF
+    | StudentActionTypes.GET_ASSIGNED_STUDENT
+    | StudentActionTypes.GET_STUDENT_BY_CREATED
+    | StudentActionTypes.GET_STUDENT_BY_ID
+    | StudentActionTypes.GET_STUDENT_BY_CONSULTANT;
   payload: {
     actionType?: string;
     data?: StudentData | {};
-    message?: string,
+    message?: string;
     error?: string;
   };
 }
@@ -56,7 +56,10 @@ interface State {
   value?: boolean;
 }
 
-const Students = (state: State = INIT_STATE, action: studentActionType): any => {
+const Students = (
+  state: State = INIT_STATE,
+  action: studentActionType
+): any => {
   switch (action.type) {
     case StudentActionTypes.API_RESPONSE_SUCCESS:
       switch (action.payload.actionType) {
@@ -259,7 +262,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
         }
 
         case StudentActionTypes.PERMANENT_DELETE_STUDENT: {
-          showWarningAlert(action.payload.error)
+          showWarningAlert(action.payload.error);
           return {
             ...state,
             error: action.payload.error,
@@ -300,7 +303,7 @@ const Students = (state: State = INIT_STATE, action: studentActionType): any => 
       return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.DELETE_STUDENT:
-      return { ...state, loading: true };
+      return { ...state, loading: true, initialLoading: true };
 
     case StudentActionTypes.PERMANENT_DELETE_STUDENT:
       return { ...state, loading: true };

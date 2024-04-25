@@ -5,7 +5,7 @@ import Cropper from "react-easy-crop";
 const Img = 5 / 1;
 const Alt = 1 / 1;
 
-export const CustomCropper = ({
+const CustomCropper = ({
   imageFile,
   setCroppedFile,
   setShowModal,
@@ -155,3 +155,5 @@ export const CustomCropper = ({
     </>
   );
 };
+
+export default CustomCropper;

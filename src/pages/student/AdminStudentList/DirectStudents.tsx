@@ -80,9 +80,12 @@ const DirectStudents = () => {
       });
   };
 
+  console.log(studentData);
+  
+
   useEffect(() => {
     sendRequest();
-  }, []);
+  }, [state]);
 
   return (
     <React.Fragment>

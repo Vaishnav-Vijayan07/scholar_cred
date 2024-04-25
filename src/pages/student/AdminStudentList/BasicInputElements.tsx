@@ -35,9 +35,13 @@ import {
   editStudent,
   getStudent,
 } from "../../../redux/actions";
-import { showErrorAlert, showSuccessAlert } from "../../../constants/alerts";
+import {
+  showErrorAlert,
+  showSuccessAlert,
+  showWarningAlert,
+} from "../../../constants/alerts";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { truncateText } from "../../../constants/functons";
 import excelDownload from "../../../helpers/excelDownload";
@@ -63,6 +67,7 @@ const BasicInputElements = withSwal((props: any) => {
   } = props;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   //Table data
   const [filteredItems, setFilteredItems] = useState(state);
@@ -245,8 +250,6 @@ const BasicInputElements = withSwal((props: any) => {
   }, [state]);
 
   const UserColumn = ({ row }: any) => {
-    console.log(row.original);
-    
     return (
       <>
         <Dropdown className="btn-group" align="end">
@@ -260,16 +263,23 @@ const BasicInputElements = withSwal((props: any) => {
               : "Assign"}
           </Dropdown.Toggle>
           <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
-            {credStaffData?.map((item: any) => (
-              <Dropdown.Item
-                key={item.value}
-                onClick={() =>
-                  handleAssign(row.original.student_id, item.value)
-                }
-              >
-                {item.label}
-              </Dropdown.Item>
-            ))}
+            {credStaffData
+              ?.filter(
+                (staff: any) => staff.label !== row.original.assigned_cred_staff
+              )
+              .map((item: any) => (
+                <Dropdown.Item
+                  key={item.value}
+                  onClick={() =>
+                    handleAssign(
+                      row.original.student_id,
+                      item.value,
+                    )
+                  }
+                >
+                  {item.label}
+                </Dropdown.Item>
+              ))}
           </Dropdown.Menu>
         </Dropdown>
       </>
@@ -277,7 +287,15 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleApprove = (item: any) => {
-    dispatch(approveStudent(item.student_id));
+    Swal.fire({
+      title: "Enable student",
+      text: "This will move student from deleted list",
+      icon: "warning",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Ok",
+    }).then((result: any) => {
+      result.isConfirmed ? dispatch(approveStudent(item.student_id)) : "";
+    });
   };
 
   const handlePermanent = (id: any) => {
@@ -296,7 +314,12 @@ const BasicInputElements = withSwal((props: any) => {
     });
   };
 
-  const handleAssign = (student_id: number, staff_id: number) => {
+  const handleAssign = (
+    student_id: number,
+    staff_id: number,
+  ) => {
+
+
     Swal.fire({
       title: "Are you sure!",
       text: "You want to assign this staff?",
@@ -371,7 +394,9 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Source",
       accessor: "source_name",
       sort: false,
-      Cell: ({ row }: any) => <div>{row.original.source_name || "Not provided"}</div>
+      Cell: ({ row }: any) => (
+        <div>{row.original.source_name || "Not provided"}</div>
+      ),
     },
     {
       Header: "Send Password",
@@ -445,7 +470,8 @@ const BasicInputElements = withSwal((props: any) => {
                       onClick={() =>
                         handleAssignConsultant(
                           row.original.student_id,
-                          item.value
+                          item.value,
+                          row.original.status
                         )
                       }
                     >
@@ -624,8 +650,16 @@ const BasicInputElements = withSwal((props: any) => {
     setSelectedValues(values);
   };
 
-  const handleAssignConsultant = (studentId: string, consultantId: string) => {
-    console.log(studentId, consultantId);
+  const handleAssignConsultant = (
+    studentId: string,
+    consultantId: string,
+    studentStatus: boolean
+  ) => {
+    if (!studentStatus) {
+      navigate(`/users/student-details/${studentId}`);
+      showWarningAlert("Please initiate the student");
+      return;
+    }
     axios
       .post(`assign_consultant/${studentId}`, { consultant_id: consultantId })
       .then((res) => {
@@ -640,6 +674,8 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleAssignBulk = (student_ids: Array<number>, assignedTo: number) => {
+
+    
     Swal.fire({
       title: "Are you sure!",
       text: "You want to assign this staff?",
