@@ -2,18 +2,7 @@ import * as yup from "yup";
 import React, { useEffect, useState } from "react";
 import { Drawer, Button as AntBtn } from "antd";
 import { useForm } from "react-hook-form";
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Button,
-  Modal,
-  Alert,
-  Dropdown,
-  Spinner,
-  Badge,
-} from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Alert, Dropdown, Spinner, Badge } from "react-bootstrap";
 import Table from "../../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -28,18 +17,8 @@ import {
   sizePerPageList,
 } from "../../users/data";
 import { useDispatch } from "react-redux";
-import {
-  approveStudent,
-  createStudent,
-  deleteStudent,
-  editStudent,
-  getStudent,
-} from "../../../redux/actions";
-import {
-  showErrorAlert,
-  showSuccessAlert,
-  showWarningAlert,
-} from "../../../constants/alerts";
+import { approveStudent, createStudent, deleteStudent, editStudent, getStudent } from "../../../redux/actions";
+import { showErrorAlert, showSuccessAlert, showWarningAlert } from "../../../constants/alerts";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -53,18 +32,7 @@ interface FileType extends File {
 }
 
 const BasicInputElements = withSwal((props: any) => {
-  const {
-    swal,
-    loading,
-    state,
-    error,
-    user,
-    credStaffData,
-    initialLoading,
-    sourceData,
-    path,
-    consultantData,
-  } = props;
+  const { swal, loading, state, error, user, credStaffData, initialLoading, sourceData, path, consultantData } = props;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -76,8 +44,7 @@ const BasicInputElements = withSwal((props: any) => {
   const [passwordResetLoading, setPasswordResetLoading] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState("Choose Staff");
   //Input data
-  const [formData, setFormData] =
-    useState<StudentDataTypes>(StudentInitialState);
+  const [formData, setFormData] = useState<StudentDataTypes>(StudentInitialState);
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
 
@@ -93,9 +60,7 @@ const BasicInputElements = withSwal((props: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<FileType[]>([]);
   //validation errors
-  const [validationErrors, setValidationErrors] = useState(
-    StudentValidationState
-  );
+  const [validationErrors, setValidationErrors] = useState(StudentValidationState);
 
   //selected table values
   const [selectedValues, setSelectedValues] = useState([]);
@@ -253,30 +218,14 @@ const BasicInputElements = withSwal((props: any) => {
     return (
       <>
         <Dropdown className="btn-group" align="end">
-          <Dropdown.Toggle
-            variant="light"
-            className="table-action-btn btn-sm"
-            disabled={!row.original.status}
-          >
-            {row.original.assigned_cred_staff
-              ? row.original.assigned_cred_staff
-              : "Assign"}
+          <Dropdown.Toggle variant="light" className="table-action-btn btn-sm" disabled={!row.original.status}>
+            {row.original.assigned_cred_staff ? row.original.assigned_cred_staff : "Assign"}
           </Dropdown.Toggle>
           <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
             {credStaffData
-              ?.filter(
-                (staff: any) => staff.label !== row.original.assigned_cred_staff
-              )
+              ?.filter((staff: any) => staff.label !== row.original.assigned_cred_staff)
               .map((item: any) => (
-                <Dropdown.Item
-                  key={item.value}
-                  onClick={() =>
-                    handleAssign(
-                      row.original.student_id,
-                      item.value,
-                    )
-                  }
-                >
+                <Dropdown.Item key={item.value} onClick={() => handleAssign(row.original.student_id, item.value)}>
                   {item.label}
                 </Dropdown.Item>
               ))}
@@ -294,7 +243,7 @@ const BasicInputElements = withSwal((props: any) => {
       confirmButtonColor: "#3085d6",
       confirmButtonText: "Ok",
     }).then((result: any) => {
-      result.isConfirmed ? dispatch(approveStudent(item.student_id)) : "";
+      result?.isConfirmed && dispatch(approveStudent(item.student_id));
     });
   };
 
@@ -314,12 +263,7 @@ const BasicInputElements = withSwal((props: any) => {
     });
   };
 
-  const handleAssign = (
-    student_id: number,
-    staff_id: number,
-  ) => {
-
-
+  const handleAssign = (student_id: number, staff_id: number) => {
     Swal.fire({
       title: "Are you sure!",
       text: "You want to assign this staff?",
@@ -351,9 +295,7 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Name",
       accessor: "first_name",
       sort: true,
-      Cell: ({ row }: any) => (
-        <div>{row.original.first_name + " " + row.original.last_name}</div>
-      ),
+      Cell: ({ row }: any) => <div>{row.original.first_name + " " + row.original.last_name}</div>,
     },
     // {
     //   Header: "Country",
@@ -364,11 +306,7 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Intake Month",
       accessor: "",
       sort: false,
-      Cell: ({ row }: any) => (
-        <span>
-          {moment(row.original.created_at).format("LL")?.split(" ")[0]}
-        </span>
-      ),
+      Cell: ({ row }: any) => <span>{moment(row.original.created_at).format("LL")?.split(" ")[0]}</span>,
     },
     {
       Header: "Application Status",
@@ -394,9 +332,7 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Source",
       accessor: "source_name",
       sort: false,
-      Cell: ({ row }: any) => (
-        <div>{row.original.source_name || "Not provided"}</div>
-      ),
+      Cell: ({ row }: any) => <div>{row.original.source_name || "Not provided"}</div>,
     },
     {
       Header: "Send Password",
@@ -434,11 +370,7 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Created By",
       accessor: "created_user",
       sort: false,
-      Cell: ({ row }: any) => (
-        <div>
-          {row.original.created_by == 0 ? "App" : row.original.created_user}
-        </div>
-      ),
+      Cell: ({ row }: any) => <div>{row.original.created_by == 0 ? "App" : row.original.created_user}</div>,
     },
     {
       Header: "Loan Type",
@@ -457,23 +389,14 @@ const BasicInputElements = withSwal((props: any) => {
           ) : (
             <>
               <Dropdown className="btn-group" align="end">
-                <Dropdown.Toggle
-                  variant="light"
-                  className="table-action-btn btn-sm btn-blue"
-                >
+                <Dropdown.Toggle variant="light" className="table-action-btn btn-sm btn-blue">
                   <i className="mdi mdi-account-plus"></i> Assign
                 </Dropdown.Toggle>
                 <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
                   {consultantData?.map((item: any) => (
                     <Dropdown.Item
                       key={item.value}
-                      onClick={() =>
-                        handleAssignConsultant(
-                          row.original.student_id,
-                          item.value,
-                          row.original.status
-                        )
-                      }
+                      onClick={() => handleAssignConsultant(row.original.student_id, item.value, row.original.status)}
                     >
                       {item.label}
                     </Dropdown.Item>
@@ -499,22 +422,13 @@ const BasicInputElements = withSwal((props: any) => {
         <div className="d-flex justify-content-center align-items-center gap-2 p-2">
           <div className="d-flex justify-content-center align-items-center gap-2">
             {/* Delete Icon */}
-            <Link
-              to={`/users/student-details/${row.original.student_id}`}
-              state={row.original.student_id}
-            >
-              <FeatherIcons
-                icon="eye"
-                size="15"
-                className="cursor-pointer text-secondary"
-              />
+            <Link to={`/users/student-details/${row.original.student_id}`} state={row.original.student_id}>
+              <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />
             </Link>
           </div>
           {/* Edit Icon */}
           <FeatherIcons
-            icon={
-              path === "/cred-admin/deleted-students" ? "check-circle" : "edit"
-            }
+            icon={path === "/cred-admin/deleted-students" ? "check-circle" : "edit"}
             size="15"
             style={{ cursor: "pointer" }}
             className="text-success"
@@ -650,11 +564,7 @@ const BasicInputElements = withSwal((props: any) => {
     setSelectedValues(values);
   };
 
-  const handleAssignConsultant = (
-    studentId: string,
-    consultantId: string,
-    studentStatus: boolean
-  ) => {
+  const handleAssignConsultant = (studentId: string, consultantId: string, studentStatus: boolean) => {
     if (!studentStatus) {
       navigate(`/users/student-details/${studentId}`);
       showWarningAlert("Please initiate the student");
@@ -674,8 +584,6 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleAssignBulk = (student_ids: Array<number>, assignedTo: number) => {
-
-    
     Swal.fire({
       title: "Are you sure!",
       text: "You want to assign this staff?",
@@ -698,10 +606,7 @@ const BasicInputElements = withSwal((props: any) => {
     });
   };
 
-  const handleAssignUserBulk = (
-    student_ids: Array<number>,
-    assignedTo: number
-  ) => {
+  const handleAssignUserBulk = (student_ids: Array<number>, assignedTo: number) => {
     axios
       .post("assign_staff_bulk", {
         student_ids,
@@ -716,9 +621,7 @@ const BasicInputElements = withSwal((props: any) => {
 
   const handleFilter = (staff_id: any) => {
     // Filter the initial list based on the provided category
-    const filteredList = state?.filter(
-      (item: any) => item.staff_id === staff_id
-    );
+    const filteredList = state?.filter((item: any) => item.staff_id === staff_id);
 
     // Update the state with the filtered list
     setFilteredItems(filteredList);
@@ -747,21 +650,12 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   if (initialLoading) {
-    return (
-      <Spinner
-        animation="border"
-        style={{ position: "absolute", top: "50%", left: "50%" }}
-      />
-    );
+    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
   }
   return (
     <>
       <Row className="justify-content-between px-2">
-        <Modal
-          show={responsiveModal}
-          onHide={toggleResponsiveModal}
-          dialogClassName="modal-dialog-centered"
-        >
+        <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
           <Form onSubmit={onSubmit}>
             <Modal.Header closeButton>
               <h4 className="modal-title">Student Management</h4>
@@ -784,9 +678,7 @@ const BasicInputElements = withSwal((props: any) => {
                       onChange={handleInputChange}
                     />
                     {validationErrors.first_name && (
-                      <Form.Text className="text-danger">
-                        {validationErrors.first_name}
-                      </Form.Text>
+                      <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>
                     )}
                   </Form.Group>
                 </Col>
@@ -802,9 +694,7 @@ const BasicInputElements = withSwal((props: any) => {
                       onChange={handleInputChange}
                     />
                     {validationErrors.last_name && (
-                      <Form.Text className="text-danger">
-                        {validationErrors.last_name}
-                      </Form.Text>
+                      <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>
                     )}
                   </Form.Group>
                 </Col>
@@ -821,11 +711,7 @@ const BasicInputElements = withSwal((props: any) => {
                       value={formData.email || ""}
                       onChange={handleInputChange}
                     />
-                    {validationErrors.email && (
-                      <Form.Text className="text-danger">
-                        {validationErrors.email}
-                      </Form.Text>
-                    )}
+                    {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
                   </Form.Group>
                 </Col>
                 <Col md={6}>
@@ -839,11 +725,7 @@ const BasicInputElements = withSwal((props: any) => {
                       value={formData.phone}
                       onChange={handleInputChange}
                     />
-                    {validationErrors.phone && (
-                      <Form.Text className="text-danger">
-                        {validationErrors.phone}
-                      </Form.Text>
-                    )}
+                    {validationErrors.phone && <Form.Text className="text-danger">{validationErrors.phone}</Form.Text>}
                   </Form.Group>
                 </Col>
               </Row>
@@ -885,9 +767,7 @@ const BasicInputElements = withSwal((props: any) => {
                       ))}
                     </Form.Select>
                     {validationErrors.source && (
-                      <Form.Text className="text-danger">
-                        {validationErrors.source}
-                      </Form.Text>
+                      <Form.Text className="text-danger">{validationErrors.source}</Form.Text>
                     )}
                   </Form.Group>
                 </Col>
@@ -928,16 +808,10 @@ const BasicInputElements = withSwal((props: any) => {
 
         {/* ----------- file upload modal ------ */}
 
-        <Modal
-          show={uploadModal}
-          onHide={toggleUploadModal}
-          dialogClassName="modal-dialog-centered"
-        >
+        <Modal show={uploadModal} onHide={toggleUploadModal} dialogClassName="modal-dialog-centered">
           <Modal.Header closeButton></Modal.Header>
           <Modal.Body>
-            <p className="text-muted mb-1 font-small">
-              *Please upload the Excel file following the example format.
-            </p>
+            <p className="text-muted mb-1 font-small">*Please upload the Excel file following the example format.</p>
             <FileUploader
               onFileUpload={handleOnFileUpload}
               showPreview={true}
@@ -945,10 +819,7 @@ const BasicInputElements = withSwal((props: any) => {
               setSelectedFile={setSelectedFile}
             />
             <div className="d-flex gap-2 justify-content-end mb-2">
-              <Button
-                className="btn-sm btn-blue waves-effect waves-light"
-                onClick={handleDownloadClick}
-              >
+              <Button className="btn-sm btn-blue waves-effect waves-light" onClick={handleDownloadClick}>
                 <i className="mdi mdi-download-circle"></i> Download Sample
               </Button>
               <Button
@@ -969,10 +840,7 @@ const BasicInputElements = withSwal((props: any) => {
           setIsLoading={setIsLoading}
         />
         {isLoading ? (
-          <Spinner
-            animation="border"
-            style={{ position: "absolute", top: "50%", left: "50%" }}
-          />
+          <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />
         ) : (
           <Col className="p-0 form__card">
             <Card className="bg-white">
@@ -993,24 +861,17 @@ const BasicInputElements = withSwal((props: any) => {
                         {user.role == 1 && (
                           <Dropdown className="btn-group">
                             <Dropdown.Toggle
-                              disabled={
-                                selectedValues?.length > 0 ? false : true
-                              }
+                              disabled={selectedValues?.length > 0 ? false : true}
                               variant="light"
                               className="table-action-btn btn-sm btn-blue"
                             >
-                              <i className="mdi mdi-account-plus"></i> Assign
-                              Staff
+                              <i className="mdi mdi-account-plus"></i> Assign Staff
                             </Dropdown.Toggle>
-                            <Dropdown.Menu
-                              style={{ maxHeight: "150px", overflow: "auto" }}
-                            >
+                            <Dropdown.Menu style={{ maxHeight: "150px", overflow: "auto" }}>
                               {credStaffData?.map((item: any) => (
                                 <Dropdown.Item
                                   key={item.value}
-                                  onClick={() =>
-                                    handleAssignBulk(selectedValues, item.value)
-                                  }
+                                  onClick={() => handleAssignBulk(selectedValues, item.value)}
                                 >
                                   {item.label}
                                 </Dropdown.Item>
@@ -1019,23 +880,14 @@ const BasicInputElements = withSwal((props: any) => {
                           </Dropdown>
                         )}
 
-                        <Button
-                          className="btn-sm btn-blue waves-effect waves-light"
-                          onClick={toggleUploadModal}
-                        >
+                        <Button className="btn-sm btn-blue waves-effect waves-light" onClick={toggleUploadModal}>
                           <i className="mdi mdi-upload"></i> Bulk Upload
                         </Button>
 
-                        <Button
-                          className="btn-sm btn-success waves-effect waves-light"
-                          onClick={toggleResponsiveModal}
-                        >
+                        <Button className="btn-sm btn-success waves-effect waves-light" onClick={toggleResponsiveModal}>
                           <i className="mdi mdi-plus-circle"></i> Add Student
                         </Button>
-                        <Button
-                          className="btn-sm btn-warning waves-effect waves-light"
-                          onClick={handleDownload}
-                        >
+                        <Button className="btn-sm btn-warning waves-effect waves-light" onClick={handleDownload}>
                           <i className="mdi mdi-download"></i> Download data
                         </Button>
                       </div>
