@@ -11,28 +11,29 @@ import "./assets/scss/Default.scss";
 // Other
 import "./assets/scss/Landing.scss";
 import "./assets/scss/Icons.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { refreshData } from "./reducer/refreshReducer";
-import { RootState } from "./redux/store";
-import io from "socket.io-client";
-import { message as andMessage } from "antd";
-import { refreshNotifications } from "./redux/notifications/actions";
-import { refreshComments } from "./redux/tickets/actions";
-import axios from "axios";
-import { getToken } from "firebase/messaging";
-import { messaging } from "./helpers/firebase";
+// import { useDispatch, useSelector } from "react-redux";
+// import { refreshData } from "./reducer/refreshReducer";
+// import { RootState } from "./redux/store";
+// import io from "socket.io-client";
+// import { message as andMessage, notification } from "antd";
+// import { AlertFilled } from "@ant-design/icons";
+// import { refreshNotifications } from "./redux/notifications/actions";
+// import { refreshComments } from "./redux/tickets/actions";
+// import axios from "axios";
+// import { getToken } from "firebase/messaging";
+// import { messaging } from "./helpers/firebase";
 
 const App = () => {
-  const dispatch = useDispatch();
-  const { user, refreshing, notificationRefresh, commentsRefresh } =
-    useSelector((state: RootState) => {
-      return {
-        user: state.Auth.user,
-        refreshing: state.refreshReducer.refreshing,
-        notificationRefresh: state.Notifications.notificationRefresh,
-        commentsRefresh: state.Tickets.commentsRefresh,
-      };
-    });
+  // const dispatch = useDispatch();
+  // const { user, refreshing, notificationRefresh, commentsRefresh } =
+  //   useSelector((state: RootState) => {
+  //     return {
+  //       user: state.Auth.user,
+  //       refreshing: state.refreshReducer.refreshing,
+  //       notificationRefresh: state.Notifications.notificationRefresh,
+  //       commentsRefresh: state.Tickets.commentsRefresh,
+  //     };
+  //   });
 
   // const socket = io(process.env.REACT_APP_BACKEND_URL || "", {
   //   auth: {
@@ -47,7 +48,13 @@ const App = () => {
 
   //   const handleNotified = ({ message, roles }: any) => {
   //     if (user && user.role_name && roles.includes(user.role_name)) {
-  //       andMessage.success(message);
+  //       // andMessage.success(message);
+  //       notification.success({
+  //         message,
+  //         duration: 3,
+  //         placement: "topRight",
+  //         closeIcon: true,
+  //       });
   //     }
   //     dispatch(refreshNotifications());
   //   };
@@ -59,6 +66,17 @@ const App = () => {
   //     dispatch(refreshComments());
   //     dispatch(refreshNotifications());
   //   };
+
+  //   socket.on("connect_error", (err: any) => {
+  //     // the reason of the error, for example "xhr poll error"
+  //     console.log(err.message);
+
+  //     // some additional description, for example the status code of the initial HTTP response
+  //     console.log(err.description);
+
+  //     // some additional context, for example the XMLHttpRequest object
+  //     console.log(err.context);
+  //   });
 
   //   socket.on("notified", handleNotified);
   //   socket.on("commentsadded", handleCommentsAdded);
