@@ -197,8 +197,6 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
         }
       );
 
-      console.log(response);
-
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -316,7 +314,12 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
                         <Col className="text-end">
                           {field.value && (
                             <Link
-                              to={`${field.value}`}
+                              to={
+                                field?.value &&
+                                field?.value.startsWith("uploads")
+                                  ? `${process.env.REACT_APP_BACKEND_URL}${field.value}`
+                                  : `${field.value}`
+                              }
                               target="_blank"
                               className={`btn btn-link btn-lg shadow-none ${
                                 !field.value && "text-muted"
