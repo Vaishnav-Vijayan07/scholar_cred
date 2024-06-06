@@ -43,6 +43,7 @@ export interface MyInitialState {
   phone: string;
   alternative_phone: string;
   gst: string;
+  isForex: any;
   location: string;
   pin_code: string;
   pan_no: string;
@@ -57,6 +58,7 @@ export const initialState = {
   alternative_phone: "",
   gst: "",
   location: "",
+  isForex: false,
   pin_code: "",
   pan_no: "",
 };

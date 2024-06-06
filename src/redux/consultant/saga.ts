@@ -34,6 +34,7 @@ interface ConsultantData {
     second_file: File;
     alternative_phone: string;
     gst: string;
+    isForex: boolean;
     location: string;
     pin_code: string;
     pan_no: string;
@@ -57,11 +58,13 @@ function* createConsultant({
     location,
     pin_code,
     pan_no,
+    isForex,
     created_by,
   },
   type,
 }: ConsultantData): SagaIterator {
   try {
+    
     const response = yield call(createConsultantApi, {
       company_name,
       business_address,
@@ -74,6 +77,7 @@ function* createConsultant({
       location,
       pin_code,
       pan_no,
+      isForex,
       created_by,
     });
 
@@ -148,6 +152,7 @@ function* updateConsultant({
     location,
     pin_code,
     pan_no,
+    isForex,
     created_by,
   },
   type,
@@ -165,6 +170,7 @@ function* updateConsultant({
       location,
       pin_code,
       pan_no,
+      isForex,
       created_by,
     });
     const consultant_data = response.data.message;

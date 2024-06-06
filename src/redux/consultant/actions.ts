@@ -60,9 +60,9 @@ export const createConsultant = (
   location: string,
   pin_code: string,
   pan_no: string,
+  isForex: boolean,
   created_by: number
 ): ConsultantActionType => {
-
   return {
     type: ConsultantActionTypes.CREATE_CONSULTANT,
     payload: {
@@ -77,6 +77,7 @@ export const createConsultant = (
       location,
       pin_code,
       pan_no,
+      isForex,
       created_by,
     },
   };
@@ -97,6 +98,7 @@ export const editConsultant = (
   location: string,
   pin_code: string,
   pan_no: string,
+  isForex: boolean,  
   created_by: number
 ): ConsultantActionType => ({
   type: ConsultantActionTypes.EDIT_CONSULTANT,
@@ -113,6 +115,7 @@ export const editConsultant = (
     location,
     pin_code,
     pan_no,
+    isForex,
     created_by,
   },
 });

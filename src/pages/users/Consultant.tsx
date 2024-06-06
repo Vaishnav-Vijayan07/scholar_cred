@@ -17,6 +17,7 @@ import {
   Modal,
   Alert,
   Spinner,
+  Badge,
 } from "react-bootstrap";
 import Table from "../../components/Table";
 import { withSwal } from "react-sweetalert2";
@@ -135,6 +136,7 @@ const BasicInputElements = withSwal((props: any) => {
       business_address: item.business_address,
       email: item.email,
       phone: item.phone,
+      isForex: item.isforexenabled,
       alternative_phone: item.alternative_phone,
       gst: item.gst,
       location: item.location,
@@ -166,7 +168,19 @@ const BasicInputElements = withSwal((props: any) => {
 
   //handle onchange function
   const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
+
+    if (name === "isForex") {
+      console.log("here");
+      console.log(checked);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: checked,
+      }));
+      return;
+    }
+
     // Limit the length to 10 characters
     if (name == "phone" || name == "alternative_phone") {
       const numericValue = value.replace(/\D/g, "");
@@ -194,16 +208,20 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
+  console.log(formData?.isForex);
+
   //handle form submission
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      await validationSchema.validate(formData, { abortEarly: false });
+      // await validationSchema.validate(formData, { abortEarly: false });
 
       // Validation passed, handle form submission
       if (isUpdate) {
         // Handle update logic
+        console.log(formData);
+
         dispatch(
           editConsultant(
             formData.id,
@@ -218,21 +236,25 @@ const BasicInputElements = withSwal((props: any) => {
             formData.location,
             formData.pin_code,
             formData.pan_no,
+            formData?.isForex,
             1
           )
         );
       } else {
-        if (blobData.img == null || blobData.alt == null) {
-          if (!blobData.img) {
-            setFileErrors((prev) => ({ ...prev, image: "Choose an image" }));
-          }
-          if (!blobData.alt) {
-            setFileErrors((prev) => ({ ...prev, alt: "Choose an image" }));
-          }
-          return;
-        }
+        // if (blobData.img == null || blobData.alt == null) {
+        //   if (!blobData.img) {
+        //     setFileErrors((prev) => ({ ...prev, image: "Choose an image" }));
+        //   }
+        //   if (!blobData.alt) {
+        //     setFileErrors((prev) => ({ ...prev, alt: "Choose an image" }));
+        //   }
+        //   return;
+        // }
 
         // Handle add logic
+
+        console.log(formData);
+
         dispatch(
           createConsultant(
             formData.company_name,
@@ -246,6 +268,7 @@ const BasicInputElements = withSwal((props: any) => {
             formData.location,
             formData.pin_code,
             formData.pan_no,
+            formData?.isForex,
             1
           )
         );
@@ -301,7 +324,7 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "",
       Cell: ({ row }: any) => (
         <div>
-          {row.original.second_image_url && (
+          {row.original?.second_image_url && (
             <img
               src={`${process.env.REACT_APP_BACKEND_URL}${row.original.second_image_url}`}
               alt="comapny logo"
@@ -351,6 +374,20 @@ const BasicInputElements = withSwal((props: any) => {
       Header: "Pan No",
       accessor: "pan_no",
       sort: false,
+    },
+    {
+      Header: "Forex Privilage",
+      accessor: "",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <p>
+          {row.original?.isforexenabled ? (
+            <Badge bg="success">Allowed</Badge>
+          ) : (
+            <Badge bg="danger">Not allowed</Badge>
+          )}
+        </p>
+      ),
     },
     {
       Header: "Actions",
@@ -538,6 +575,22 @@ const BasicInputElements = withSwal((props: any) => {
                         )}
                       </Form.Group>
                       {/* </Col> */}
+                    </Row>
+
+                    <Row>
+                      <Col>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Allow Forex Privilege</Form.Label>
+                          <Form.Check
+                            type="switch"
+                            id="custom-switch"
+                            name="isForex"
+                            // defaultValue={formData?.isForex ? true : false}
+                            defaultChecked={formData?.isForex}
+                            onChange={handleInputChange}
+                          />
+                        </Form.Group>
+                      </Col>
                     </Row>
 
                     <Row>

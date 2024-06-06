@@ -30,6 +30,8 @@ const Consultant = React.lazy(() => import("../pages/users/Consultant"));
 const ConsultantStaff = React.lazy(
   () => import("../pages/users/ConsultantStaff")
 );
+
+const ForexData = React.lazy(() => import("../pages/Forex/ForexTable"));
 const ConsultantDetails = React.lazy(
   () => import("../pages/users/ConsultantDetails")
 );
@@ -388,6 +390,24 @@ const consultantRoutes = {
   ],
 };
 
+const ForexRoutes = {
+  path: "/forex",
+  name: "Forex data",
+  route: PrivateRoute,
+  roles: ["CONSULTANT_ADMIN"],
+  icon: "users",
+  children: [
+    {
+      path: "/forex/data",
+      name: "Staff",
+      element: (
+        <PrivateRoute roles={["CONSULTANT_ADMIN"]} component={ForexData} />
+      ),
+      route: PrivateRoute,
+    },
+  ],
+};
+
 const profileRoutes = {
   path: "/profile",
   name: "Profile",
@@ -578,19 +598,16 @@ const authProtectedRoutes = [
   ...appRoutes,
   userRoutes,
   consultantRoutes,
+  ForexRoutes,
   credadminRoutes,
   superAdminRoutes,
 ];
 const publicRoutes = [...authRoutes, ...otherPublicRoutes];
 
-
-
 const authProtectedFlattenRoutes = flattenRoutes([...authProtectedRoutes]);
 const publicProtectedFlattenRoutes = flattenRoutes([...publicRoutes]);
 
-
 console.log(authProtectedFlattenRoutes);
-
 
 export {
   publicRoutes,

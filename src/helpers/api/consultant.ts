@@ -15,8 +15,11 @@ function createConsultant(params: {
   location: string;
   pin_code: string;
   pan_no: string;
+  isForex: boolean;
   created_by: number;
 }) {
+  console.log(params.isForex);
+
   const baseUrl = "/create_consultant";
 
   return api.createWithFile(`${baseUrl}`, params);
@@ -31,12 +34,13 @@ function updateConsultant(
     email: string;
     phone: string;
     file: File;
-    second_file: File ,
+    second_file: File;
     alternative_phone: string;
     gst: string;
     location: string;
     pin_code: string;
     pan_no: string;
+    isForex: boolean;
     created_by: number;
   }
 ) {

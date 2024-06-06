@@ -196,6 +196,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
       "CRED_STAFF",
     ],
   },
+  
 
   {
     key: "tickets",
@@ -223,6 +224,32 @@ const MENU_ITEMS: MenuItemTypes[] = [
       "CONSULTANT_ADMIN",
       "CONSULTANT_STAFF",
       "CRED_STAFF",
+    ],
+  },
+  {
+    key: "forex",
+    label: "Forex",
+    isTitle: true,
+    roles: [
+      // "CRED_ADMIN",
+      // "SUPER_USER",
+      "CONSULTANT_ADMIN",
+      // "CONSULTANT_STAFF",
+      // "CRED_STAFF",
+    ],
+  },
+  {
+    key: "forex",
+    label: "Forex",
+    icon:"book",
+    isTitle: false,
+    url:"/forex/data",
+    roles: [
+      // "CRED_ADMIN",
+      // "SUPER_USER",
+      "CONSULTANT_ADMIN",
+      // "CONSULTANT_STAFF",
+      // "CRED_STAFF",
     ],
   },
 ];
