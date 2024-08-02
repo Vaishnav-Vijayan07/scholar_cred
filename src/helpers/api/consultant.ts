@@ -15,10 +15,9 @@ function createConsultant(params: {
   location: string;
   pin_code: string;
   pan_no: string;
-  isForex: boolean;
+  // isForex: boolean;
   created_by: number;
 }) {
-  console.log(params.isForex);
 
   const baseUrl = "/create_consultant";
 
@@ -40,7 +39,7 @@ function updateConsultant(
     location: string;
     pin_code: string;
     pan_no: string;
-    isForex: boolean;
+    // isForex: boolean;
     created_by: number;
   }
 ) {

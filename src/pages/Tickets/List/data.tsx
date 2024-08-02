@@ -226,7 +226,7 @@ const ticketDetails: TicketDetailsItems[] = [
 
 export const getStatusProperties = (statusName: string) => {
 
-  switch (statusName.toLowerCase()) {
+  switch (statusName.toLowerCase() || statusName) {
     case "closed":
       return { icon: "fe-trash-2", variant: "danger" };
     case "in progress":
@@ -236,7 +236,7 @@ export const getStatusProperties = (statusName: string) => {
     case "open":
       return { icon: "fe-tag", variant: "primary" };
     default:
-      return { icon: "", variant: "" };
+      return { icon: "fe-check-circle", variant: "success" };
   }
 };
 

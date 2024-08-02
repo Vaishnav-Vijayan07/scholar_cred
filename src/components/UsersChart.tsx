@@ -9,7 +9,6 @@ import { BasicPortlet } from "./Portlet";
 import ChartStatistics from "./ChartStatistics";
 
 const UsersChart = ({ studentSummary }: any) => {
-  console.log("studentSummary", studentSummary && studentSummary[0]?.total_student);
   const [chartKey, setChartKey] = useState<number>(0);
 
   const options: ApexOptions = {
@@ -46,7 +45,6 @@ const UsersChart = ({ studentSummary }: any) => {
 
   const series = [(studentSummary && parseInt(studentSummary[0]?.last_week_student)) || 0, (studentSummary && parseInt(studentSummary[0]?.last_month_student)) || 0];
 
-  console.log("series:=>", series);
   return (
     <>
       <BasicPortlet cardTitle="Total Users" titleClass="header-title">

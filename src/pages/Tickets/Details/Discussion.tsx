@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { updateTicketComments } from "../../../redux/tickets/actions";
 import avatar3 from "../../../assets/images/logo-sm.png";
 import Avatar from "./Avatar";
+import { showWarningAlert } from "../../../constants/alerts";
 
 type Comment = {
   id: number;
@@ -36,19 +37,24 @@ type Props = {
   comments: Comment[];
   ticket_id: string;
   user: User;
+  student_status: string;
 };
 
-const Discussion = ({ comments, ticket_id, user }: Props) => {
+const Discussion = ({ comments, ticket_id, user, student_status }: Props) => {
   const roles = ["CRED_ADMIN", "CRED_STAFF"];
   const [comment, setComment] = useState("");
   const navigate = useNavigate();
   const { search } = useLocation();
   const searchParam = search?.split("?")[1];
 
-
   const dispatch = useDispatch();
 
   const handleCommentSubmit = () => {
+    if (!student_status) {
+      showWarningAlert("Please initiate the student to post comments");
+      return;
+    }
+
     dispatch(updateTicketComments(ticket_id, comment));
     setComment("");
   };

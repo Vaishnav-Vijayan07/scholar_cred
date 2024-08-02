@@ -30,8 +30,6 @@ const Details = () => {
       commentsRefresh: state.Tickets.commentsRefresh,
     }));
 
-  console.log(commentsRefresh);
-
   useEffect(() => {
     dispatch(getTicketDetails(id));
     dispatch(getTicketComments(id));
@@ -71,6 +69,7 @@ const Details = () => {
             comments={comments || []}
             ticket_id={id || ""}
             user={user}
+            student_status={state[0]?.student_status}
           />
         </Col>
       </Row>

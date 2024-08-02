@@ -38,6 +38,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loanDivRef = useRef<any>(null);
+  const loanSettingRef = useRef<any>(null);
   const [preliminaryDetails, setPreliminaryDetails] = useState({});
   const [preliminaryLoading, setPreliminaryLoading] = useState(false);
   const [loanStatus, setLoanStatus] = useState([]);
@@ -61,8 +62,8 @@ const Profile = () => {
   }));
 
   console.log(loanTypeData);
-
-  // console.log("StudentData---->", StudentData);
+  console.log(loanTypeMessage);
+  console.log(StudentData);
 
   const methods = useForm();
   const {
@@ -80,19 +81,14 @@ const Profile = () => {
         setPreliminaryDetails(res?.data?.data);
       })
       .catch((err) => {
-        console.log(err);
         setPreliminaryLoading(false);
       });
   };
 
   const getLoanStatus = () => {
-    axios
-      .get("loanStatus")
-      .then((res) => {
-        // console.log("res ==>", res.data);
-        setLoanStatus(res.data);
-      })
-      .catch((err) => console.log(err));
+    axios.get("loanStatus").then((res) => {
+      setLoanStatus(res.data);
+    });
   };
 
   useEffect(() => {
@@ -129,18 +125,13 @@ const Profile = () => {
     axios
       .post(`update_status/${id}`, { loan_status_id: status_id })
       .then((res) => {
-        // console.log("res", res);
         showSuccessAlert("Status changed successfully");
         dispatch(getStudentById(id ? id : ""));
       })
       .catch((err) => {
-        console.log(err);
         showErrorAlert("Something went wrong..");
       });
   };
-
-  console.log(loanTypeMessage);
-  console.log(loanTypeMessage !== "Not eligible");
 
   const getStudentDataById = () => {
     dispatch(getStudentById(id ? id : ""));
@@ -158,7 +149,6 @@ const Profile = () => {
       .catch((err) => {
         showErrorAlert("Error occured");
         setIsLoading(false);
-        console.log(err);
       });
   };
 
@@ -168,28 +158,46 @@ const Profile = () => {
       setAttachments(response.data.data);
     } catch (error) {
       // setError(error);
-      console.log(error);
     } finally {
       // setIsLoading(false);
     }
   };
 
-  console.log(StudentData);
-
   const handleCheckEligibility = () => {
-    console.log("handleCheckEligibility...");
     dispatch(checkLoanType(id ? id : ""));
     // dispatch(getStudentById(id ? id : ""));
   };
 
   const handleSetLoanType = (value: string) => {
-    console.log("handleSetLoanType");
     if (id) dispatch(saveLoanType(id, value));
   };
 
   const handleDisable = () => {
-    if (!StudentData?.loan_type || StudentData?.loan_type === "Not eligible") {
-      showWarningAlert("Not eligible for loan currently");
+    if (StudentData?.current_stage == "0") {
+      showWarningAlert("Please complete Preliminary screening");
+      return;
+    }
+
+    if (StudentData?.loan_type == "Not eligible") {
+      showWarningAlert("Student not eligible for loan currently");
+      return;
+    }
+
+    if (!StudentData?.loan_type) {
+      showWarningAlert("Please check and set loan type ");
+
+      if (loanSettingRef) {
+        loanSettingRef.current.scrollIntoView({ behavior: "smooth" });
+        setTimeout(() => {
+          const immediate = loanSettingRef.current.children[0];
+          if (immediate) {
+            immediate.classList.add("highlighted");
+            setTimeout(() => {
+              immediate.classList.remove("highlighted");
+            }, 1000);
+          }
+        }, 500);
+      }
     }
   };
 
@@ -306,7 +314,7 @@ const Profile = () => {
           </Col>
 
           <Col className="ps-0">
-            <Col>
+            <Col ref={loanSettingRef}>
               <Card>
                 <Card.Body>
                   <Row>
@@ -332,7 +340,11 @@ const Profile = () => {
                           <span>{"Check loan eligibility"}</span>
                         </h4>
                         <p className="text-muted mb-1 text-truncate">
-                          {"if eligible choose the loan type."}
+                          {StudentData?.current_stage == "0"
+                            ? "Complete Preliminary screening"
+                            : StudentData?.loan_type == "Not eligible"
+                            ? "Not eligible"
+                            : "Eligible for loan"}
                         </p>
                       </div>
                     </Col>
@@ -380,8 +392,9 @@ const Profile = () => {
                       <Button
                         className="float-end btn-success"
                         onClick={handleCheckEligibility}
+                        disabled={StudentData?.current_stage == "0"}
                       >
-                        Check eligibility
+                        Check and set loan type
                       </Button>
                     )}
                   </div>
@@ -418,7 +431,8 @@ const Profile = () => {
                           eventKey="detail_screening"
                           className="nav-link cursor-pointer"
                           disabled={
-                            !StudentData?.loan_type || StudentData.loan_type === "Not eligible"
+                            !StudentData?.loan_type ||
+                            StudentData.loan_type === "Not eligible"
                           }
                         >
                           Detail Screening
@@ -433,7 +447,8 @@ const Profile = () => {
                           eventKey="document_screening"
                           className="nav-link cursor-pointer"
                           disabled={
-                            !StudentData?.loan_type || StudentData.loan_type === "Not eligible"
+                            !StudentData?.loan_type ||
+                            StudentData.loan_type === "Not eligible"
                           }
                         >
                           Docs screening

@@ -34,7 +34,7 @@ interface ConsultantData {
     second_file: File;
     alternative_phone: string;
     gst: string;
-    isForex: boolean;
+    // isForex: boolean;
     location: string;
     pin_code: string;
     pan_no: string;
@@ -58,7 +58,7 @@ function* createConsultant({
     location,
     pin_code,
     pan_no,
-    isForex,
+    // isForex,
     created_by,
   },
   type,
@@ -77,7 +77,7 @@ function* createConsultant({
       location,
       pin_code,
       pan_no,
-      isForex,
+      // isForex,
       created_by,
     });
 
@@ -152,7 +152,7 @@ function* updateConsultant({
     location,
     pin_code,
     pan_no,
-    isForex,
+    // isForex,
     created_by,
   },
   type,
@@ -170,12 +170,11 @@ function* updateConsultant({
       location,
       pin_code,
       pan_no,
-      isForex,
+      // isForex,
       created_by,
     });
     const consultant_data = response.data.message;
 
-    console.log(consultant_data);
 
     yield put(
       consultantApiResponseSuccess(

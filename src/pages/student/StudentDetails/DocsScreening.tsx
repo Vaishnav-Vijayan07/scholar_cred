@@ -212,22 +212,33 @@ const DetailedScreening: React.FC<SectionedDynamicFormProps> = ({
 
   const fetchDataFromAPI = async () => {
     try {
+      console.log(StudentData);
+      
       if (StudentData?.loan_type) {
         const loanType = StudentData?.loan_type;
 
         let apiEndpoint;
 
+        console.log(loanType);
+        
+        
         // Determine the API endpoint based on the loan type
         if (loanType == "SECURE") {
+          console.log(loanType);
           apiEndpoint = `getSecuredDocumentsDataById/${student_id}`;
         } else {
+          console.log(loanType)
           apiEndpoint = `getUnSecuredDocumentsDataById/${student_id}`;
         }
 
         // const response = await axios.get(`getSecuredScreeningData/${student_id}`);
         const response = await axios.get(apiEndpoint);
+        console.log(response);
+        
 
         const apiResponse = await response.data.data.sections;
+        console.log(apiResponse);
+        
 
         setFormData(apiResponse);
 

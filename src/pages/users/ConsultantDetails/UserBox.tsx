@@ -1,7 +1,6 @@
 import { Card } from "react-bootstrap";
 
 const UserBox = ({ consultantDetails }: any) => {
-  console.log(consultantDetails);
 
   return (
     <Card className="text-center">

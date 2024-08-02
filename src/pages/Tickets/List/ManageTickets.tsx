@@ -197,7 +197,6 @@ const ManageTickets = () => {
     })
   );
 
-  console.log(state);
 
   
 

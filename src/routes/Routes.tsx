@@ -49,7 +49,6 @@ const AllRoutes = (props: IRoutesProps) => {
   let Layout = getLayout();
   const api = new APICore();
 
-  console.log(publicProtectedFlattenRoutes);
   
 
   return (

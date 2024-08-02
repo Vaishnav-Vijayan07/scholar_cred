@@ -121,7 +121,6 @@ const BasicInputElements = withSwal((props: any) => {
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
 
-    console.log("e.target", e.target);
 
     setFormData((prevData: any) => ({
       ...prevData,
@@ -129,7 +128,6 @@ const BasicInputElements = withSwal((props: any) => {
     }));
   };
 
-  console.log("formdata========>", formData);
 
   //handle form submission
   const onSubmit = async (e: React.FormEvent) => {
@@ -230,7 +228,6 @@ const BasicInputElements = withSwal((props: any) => {
   useEffect(() => {
     // Check for errors and clear the form
     if (!loading && !error) {
-      console.log("here");
 
       //   setValidationErrors();
       handleCancelUpdate();

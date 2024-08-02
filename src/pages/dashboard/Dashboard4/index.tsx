@@ -84,7 +84,6 @@ const Dashboard4 = () => {
       .catch((err) => console.log(err));
   };
 
-  console.log("dashboardData", dashboardData);
 
   return (
     <>

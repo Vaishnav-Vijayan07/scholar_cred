@@ -89,9 +89,7 @@ const BasicInputElements = withSwal((props: any) => {
   const validationSchema = yup.object().shape({
     first_name: yup.string().trim().required("First name is required"),
     last_name: yup.string().trim().required("Last name is required"),
-    email: yup
-      .string()
-      .email("Invalid email format").nullable(),
+    email: yup.string().email("Invalid email format").nullable(),
     phone: yup
       .string()
       .required("Phone number is required")
@@ -290,7 +288,6 @@ const BasicInputElements = withSwal((props: any) => {
       setSelectedFile([]);
       toggleUploadModal();
     } catch (err) {
-      console.error(err);
       setIsLoading(false);
     }
   };
@@ -299,12 +296,10 @@ const BasicInputElements = withSwal((props: any) => {
     axios
       .post(`reset_student_password`, { email: email })
       .then((res: any) => {
-        console.log("res===>", res);
         showSuccessAlert("Password reset successful");
       })
       .catch((err) => {
-        console.error(err);
-        showErrorAlert("Error occurred.");
+        showErrorAlert(err);
       });
   };
 
@@ -319,7 +314,6 @@ const BasicInputElements = withSwal((props: any) => {
         getStudentBasedOnRole();
       })
       .catch((err) => {
-        console.log(err);
         showErrorAlert("Something went wrong!");
       });
   };
@@ -358,8 +352,6 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleAssignBulk = (student_ids: Array<number>, assignedTo: number) => {
-    console.log("student_ids", student_ids);
-
     Swal.fire({
       title: "Are you sure!",
       text: "You want to assign this staff?",
@@ -385,11 +377,9 @@ const BasicInputElements = withSwal((props: any) => {
         assigned_staff_id,
       })
       .then((res) => {
-        console.log("res==>", res.data);
         showSuccessAlert(res.data.message);
         getStudentBasedOnRole();
-      })
-      .catch((err) => console.error(err));
+      });
   };
 
   const handleDownload = () => {
@@ -747,12 +737,9 @@ const IntakeStudents = () => {
   );
 
   const getSourceData = () => {
-    axios
-      .get("sourceOptions")
-      .then((res) => {
-        setSourceData(res.data);
-      })
-      .catch((err) => console.log(err));
+    axios.get("sourceOptions").then((res) => {
+      setSourceData(res.data);
+    });
   };
 
   useEffect(() => {
@@ -764,20 +751,16 @@ const IntakeStudents = () => {
 
   const getStudentBasedOnRole = () => {
     if (user?.role == "4") {
-      console.log("consultant staff...");
       // based on created
       dispatch(getStudentByCreated());
     } else if (user?.role == "2") {
-      console.log("Cred staff...");
       // based on assigned to
       dispatch(getStudentByStaff());
     } else if (user?.role == "7") {
-      console.log("Consultant admin...");
       // based on assigned to
       dispatch(getStudentByConsultant(user?.consultant_id));
     }
     //  else {
-    //   console.log("Other...");
     //   dispatch(getStudent());
     // }
   };

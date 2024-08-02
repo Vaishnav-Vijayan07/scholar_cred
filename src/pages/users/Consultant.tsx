@@ -136,7 +136,7 @@ const BasicInputElements = withSwal((props: any) => {
       business_address: item.business_address,
       email: item.email,
       phone: item.phone,
-      isForex: item.isforexenabled,
+      // isForex: item.isforexenabled,
       alternative_phone: item.alternative_phone,
       gst: item.gst,
       location: item.location,
@@ -171,8 +171,6 @@ const BasicInputElements = withSwal((props: any) => {
     const { name, value, checked } = e.target;
 
     if (name === "isForex") {
-      console.log("here");
-      console.log(checked);
 
       setFormData((prevData) => ({
         ...prevData,
@@ -208,19 +206,17 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
-  console.log(formData?.isForex);
 
   //handle form submission
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      // await validationSchema.validate(formData, { abortEarly: false });
+      await validationSchema.validate(formData, { abortEarly: false });
 
       // Validation passed, handle form submission
       if (isUpdate) {
         // Handle update logic
-        console.log(formData);
 
         dispatch(
           editConsultant(
@@ -236,7 +232,7 @@ const BasicInputElements = withSwal((props: any) => {
             formData.location,
             formData.pin_code,
             formData.pan_no,
-            formData?.isForex,
+            // formData?.isForex,
             1
           )
         );
@@ -253,7 +249,6 @@ const BasicInputElements = withSwal((props: any) => {
 
         // Handle add logic
 
-        console.log(formData);
 
         dispatch(
           createConsultant(
@@ -268,12 +263,12 @@ const BasicInputElements = withSwal((props: any) => {
             formData.location,
             formData.pin_code,
             formData.pan_no,
-            formData?.isForex,
+            // formData?.isForex,
             1
           )
         );
       }
-      // setCroppedFile({ croppedAltImage: "", croppedImage: "" });
+      setCroppedFile({ croppedAltImage: "", croppedImage: "" });
     } catch (validationError) {
       // Handle validation errors
       if (validationError instanceof yup.ValidationError) {
@@ -375,20 +370,20 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "pan_no",
       sort: false,
     },
-    {
-      Header: "Forex Privilage",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <p>
-          {row.original?.isforexenabled ? (
-            <Badge bg="success">Allowed</Badge>
-          ) : (
-            <Badge bg="danger">Not allowed</Badge>
-          )}
-        </p>
-      ),
-    },
+    // {
+    //   Header: "Forex Privilage",
+    //   accessor: "",
+    //   sort: false,
+    //   Cell: ({ row }: any) => (
+    //     <p>
+    //       {row.original?.isforexenabled ? (
+    //         <Badge bg="success">Allowed</Badge>
+    //       ) : (
+    //         <Badge bg="danger">Not allowed</Badge>
+    //       )}
+    //     </p>
+    //   ),
+    // },
     {
       Header: "Actions",
       accessor: "",
@@ -577,7 +572,7 @@ const BasicInputElements = withSwal((props: any) => {
                       {/* </Col> */}
                     </Row>
 
-                    <Row>
+                    {/* <Row>
                       <Col>
                         <Form.Group className="mb-3">
                           <Form.Label>Allow Forex Privilege</Form.Label>
@@ -591,7 +586,7 @@ const BasicInputElements = withSwal((props: any) => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
+                    </Row> */}
 
                     <Row>
                       <Col md={6}>

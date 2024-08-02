@@ -146,7 +146,6 @@ const FileUploader = (props: FileUploaderProps) => {
   // const [selectedFile, setSelectedFile] = useState<FileType[]>([]);
 
   const { selectedFile, setSelectedFile } = props;
-  console.log("selectedFile--->", selectedFile);
 
   /**
    * Handled the accepted files and shows the preview

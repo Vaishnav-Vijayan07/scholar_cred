@@ -1,9 +1,9 @@
 import React, { useDebugValue, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getConsultants } from "../../redux/actions";
-import { RootState } from "../../redux/store";
-import PageTitle from "../../components/PageTitle";
+import { getConsultants } from "../../../redux/actions";
+import { RootState } from "../../../redux/store";
+import PageTitle from "../../../components/PageTitle";
 
 import {
   Row,
@@ -16,10 +16,11 @@ import {
   Spinner,
   Badge,
 } from "react-bootstrap";
-import Table from "../../components/Table";
+import Table from "../../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import axios from "axios";
-import { showSuccessAlert } from "../../constants/alerts";
+import { showSuccessAlert } from "../../../constants/alerts";
+import { getForexData } from "../../../redux/Forex/actions";
 
 const sizePerPageList = [
   {
@@ -76,6 +77,7 @@ const BasicInputElements = withSwal((props: any) => {
         user,
       });
       toggle();
+      dispatch(getForexData());
       showSuccessAlert(data.message);
     } catch (error: any) {
       console.log(error);
@@ -85,133 +87,78 @@ const BasicInputElements = withSwal((props: any) => {
 
   //Input data
 
-  //   const columns = [
-  //     {
-  //       Header: "Sl No",
-  //       accessor: "",
-  //       Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
-  //       sort: false,
-  //     },
-  //     {
-  //       Header: "Image",
-  //       accessor: "",
-  //       Cell: ({ row }: any) => (
-  //         <div>
-  //           {row.original.image_url && (
-  //             <img
-  //               src={`${process.env.REACT_APP_BACKEND_URL}${row.original.image_url}`}
-  //               alt="comapny logo"
-  //               width="50"
-  //             />
-  //           )}
-  //         </div>
-  //       ),
-  //     },
-  //     {
-  //       Header: "Alt Image",
-  //       accessor: "",
-  //       Cell: ({ row }: any) => (
-  //         <div>
-  //           {row.original?.second_image_url && (
-  //             <img
-  //               src={`${process.env.REACT_APP_BACKEND_URL}${row.original.second_image_url}`}
-  //               alt="comapny logo"
-  //               width="50"
-  //             />
-  //           )}
-  //         </div>
-  //       ),
-  //     },
-  //     {
-  //       Header: "Company Name",
-  //       accessor: "company_name",
-  //       sort: true,
-  //     },
-  //     {
-  //       Header: "Business Address",
-  //       accessor: "business_address",
-  //       sort: false,
-  //     },
-  //     {
-  //       Header: "Phone",
-  //       accessor: "phone",
-  //       sort: false,
-  //       Cell: ({ row }: any) => (
-  //         <ul className="list-unstyled">
-  //           <li>{row.original.phone}</li>
-  //           <li>{row.original.alternative_phone}</li>
-  //         </ul>
-  //       ),
-  //     },
-  //     {
-  //       Header: "GST",
-  //       accessor: "gst",
-  //       sort: false,
-  //     },
-  //     {
-  //       Header: "Location",
-  //       accessor: "location",
-  //       sort: false,
-  //     },
-  //     {
-  //       Header: "Pin Code",
-  //       accessor: "pin_code",
-  //       sort: false,
-  //     },
-  //     {
-  //       Header: "Pan No",
-  //       accessor: "pan_no",
-  //       sort: false,
-  //     },
-  //     {
-  //       Header: "Forex Privilage",
-  //       accessor: "",
-  //       sort: false,
-  //       Cell: ({ row }: any) => (
-  //         <p>
-  //           {row.original?.isforexenabled ? (
-  //             <Badge bg="success">Allowed</Badge>
-  //           ) : (
-  //             <Badge bg="danger">Not allowed</Badge>
-  //           )}
-  //         </p>
-  //       ),
-  //     },
-  //     // {
-  //     //   Header: "Actions",
-  //     //   accessor: "",
-  //     //   sort: false,
-  //     //   Cell: ({ row }: any) => (
-  //     //     <div className="d-flex justify-content-center align-items-center gap-2">
-  //     //       {/* Edit Icon */}
-  //     //       <Link to={`/users/consultant/${row.original.id}`}>
-  //     //         <FeatherIcons
-  //     //           icon="eye"
-  //     //           size="15"
-  //     //           className="cursor-pointer text-secondary"
-  //     //         />
-  //     //       </Link>
-  //     //       <FeatherIcons
-  //     //         icon="edit"
-  //     //         size="15"
-  //     //         className="cursor-pointer text-secondary"
-  //     //         onClick={() => {
-  //     //           handleUpdate(row.original);
-  //     //           openModalWithClass("modal-right");
-  //     //         }}
-  //     //       />
+  const columns = [
+    {
+      Header: "Sl No",
+      accessor: "",
+      Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
+      sort: false,
+    },
+    {
+      Header: "Paid to",
+      accessor: "paid_to",
+    },
+    {
+      Header: "Amount",
+      accessor: "amount",
+    },
+    {
+      Header: "Amount INR",
+      accessor: "amount_inr",
+    },
+    {
+      Header: "Student",
+      accessor: "student_name",
+      Cell: ({ row }: any) => (
+        <>
+          <span>{`${row.original.first_name} ${row.original.last_name}`}</span>
+        </>
+      ),
+    },
+    {
+      Header: "Email",
+      accessor: "email",
+    },
+    {
+      Header: "Status",
+      accessor: "status",
+    },
 
-  //     //       {/* Delete Icon */}
-  //     //       <FeatherIcons
-  //     //         icon="trash-2"
-  //     //         size="15"
-  //     //         className="cursor-pointer text-secondary"
-  //     //         onClick={() => handleDelete(row.original.id)}
-  //     //       />
-  //     //     </div>
-  //     //   ),
-  //     // },
-  //   ];
+    // {
+    //   Header: "Actions",
+    //   accessor: "",
+    //   sort: false,
+    //   Cell: ({ row }: any) => (
+    //     <div className="d-flex justify-content-center align-items-center gap-2">
+    //       {/* Edit Icon */}
+    //       <Link to={`/users/consultant/${row.original.id}`}>
+    //         <FeatherIcons
+    //           icon="eye"
+    //           size="15"
+    //           className="cursor-pointer text-secondary"
+    //         />
+    //       </Link>
+    //       <FeatherIcons
+    //         icon="edit"
+    //         size="15"
+    //         className="cursor-pointer text-secondary"
+    //         onClick={() => {
+    //           handleUpdate(row.original);
+    //           openModalWithClass("modal-right");
+    //         }}
+    //       />
+
+    //       {/* Delete Icon */}
+    //       <FeatherIcons
+    //         icon="trash-2"
+    //         size="15"
+    //         className="cursor-pointer text-secondary"
+    //         onClick={() => handleDelete(row.original.id)}
+    //       />
+    //     </div>
+    //   ),
+    // },
+  ];
 
   if (initialLoading) {
     return (
@@ -226,7 +173,7 @@ const BasicInputElements = withSwal((props: any) => {
     <>
       <>
         <Row className="justify-content-between px-2">
-          <Modal show={modal} onHide={toggle} centered>
+          {/* <Modal show={modal} onHide={toggle} centered>
             <Modal.Body>
               <Form>
                 <Row>
@@ -243,6 +190,11 @@ const BasicInputElements = withSwal((props: any) => {
                       <Form.Text className="text-danger">{errMsg}</Form.Text>
                     )}
                   </Form.Group>
+
+                  <Form.Text className="text-danger">
+                    Current commision :{" "}
+                    {currentCommision ? currentCommision : 0}
+                  </Form.Text>
                 </Row>
 
                 <div className="text-end">
@@ -269,21 +221,21 @@ const BasicInputElements = withSwal((props: any) => {
                 </div>
               </Form>
             </Modal.Body>
-          </Modal>
+          </Modal> */}
           <Col className="p-0 form__card">
             <Card className="bg-white">
               <Card.Body>
                 <div className="d-flex float-end gap-2">
-                  <Button
+                  {/* <Button
                     className="btn-sm btn-blue waves-effect waves-light"
                     onClick={() => toggle()}
                   >
                     <i className="mdi mdi-plus-circle"></i> Set Commision
-                  </Button>
+                  </Button> */}
                 </div>
                 {/* <h4 className="header-title mb-4">Manage Consultant</h4> */}
                 <Table
-                  columns={[]}
+                  columns={columns}
                   data={state ? state : []}
                   pageSize={5}
                   sizePerPageList={sizePerPageList}
@@ -302,23 +254,32 @@ const BasicInputElements = withSwal((props: any) => {
   );
 });
 
-const ForexData = () => {
+const TransactionsConsultant = () => {
   const dispatch = useDispatch();
 
   const { state, loading, error, success, initialLoading, user } = useSelector(
     (state: RootState) => ({
-      state: state?.ConsultantReducer.consultant.data,
-      loading: state?.ConsultantReducer.loading,
-      error: state?.ConsultantReducer.error,
-      success: state?.ConsultantReducer.success,
-      initialLoading: state?.ConsultantReducer.initialLoading,
+      state: state?.Forex.forexData,
+      loading: state?.Forex.loading,
+      error: state?.Forex.error,
+      success: state?.Forex.success,
+      initialLoading: state?.Forex.initialLoading,
       user: state?.Auth?.user,
     })
   );
 
   useEffect(() => {
-    dispatch(getConsultants());
+    dispatch(getForexData());
   }, []);
+
+  if (initialLoading) {
+    return (
+      <Spinner
+        animation="border"
+        style={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
+  }
 
   return (
     <React.Fragment>
@@ -331,7 +292,7 @@ const ForexData = () => {
             active: true,
           },
         ]}
-        title={"Forex Data"}
+        title={"Transactions"}
       />
       <Row>
         <Col>
@@ -349,4 +310,4 @@ const ForexData = () => {
   );
 };
 
-export default ForexData;
+export default TransactionsConsultant;

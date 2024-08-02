@@ -119,7 +119,6 @@ function* getStudents(action: any): SagaIterator {
   try {
     if (action.payload.status) {
       const response = yield call(getDeletedStudent);
-      console.log(response);
 
       const data = response.data.data;
       yield put(
@@ -250,8 +249,6 @@ function* approveStudent({ payload: { student_id } }: any): SagaIterator {
   try {
     const response = yield call(approveStudentApi, student_id);
 
-    console.log(response);
-
     const message = response.data.message;
     yield put(
       studentApiResponseSuccess(StudentActionTypes.APPROVE_STUDENT, message)
@@ -321,8 +318,6 @@ function* deleteStudent({
 }: ConsultantStaffData): SagaIterator {
   try {
     if (status) {
-      console.log(student_id);
-
       const response = yield call(deleteStudentPermanent, student_id);
       const data = response.data.message;
       yield put(

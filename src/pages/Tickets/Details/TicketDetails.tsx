@@ -63,7 +63,7 @@ const TicketDetails = ({ state, ticket_id }: any) => {
               <div className="d-flex align-items-start">
                 <div className="circle">
                   <p className="circle-inner object-fit-contain">
-                    {state[0]?.student_first_name[0].toUpperCase()}
+                    {state[0]?.student_first_name[0]?.toUpperCase()}
                   </p>
                 </div>
                 <div className="w-100">
@@ -73,16 +73,28 @@ const TicketDetails = ({ state, ticket_id }: any) => {
             </Col>
             <Col md={6}>
               <label className="mt-2 mb-1">Assigned To :</label>
-              <div className="d-flex align-items-start ">
-                <div className="circle">
-                  <p className="circle-inner object-fit-contain">
-                    {state[0]?.assigned_to_user_name[0].toUpperCase()}
-                  </p>
+
+              {state[0]?.student_status ? (
+                <div className="d-flex align-items-start ">
+                  <div className="circle">
+                    <p className="circle-inner object-fit-contain">
+                      {state[0]?.student_status
+                        ? state[0]?.assigned_to_user_name[0]?.toUpperCase()
+                        : ""}
+                    </p>
+                  </div>
+                  <div className="w-100">
+                    <p>
+                      {" "}
+                      {state[0]?.assigned_to_user_name
+                        ? state[0]?.assigned_to_user_name
+                        : ""}{" "}
+                    </p>
+                  </div>
                 </div>
-                <div className="w-100">
-                  <p> {state[0]?.assigned_to_user_name} </p>
-                </div>
-              </div>
+              ) : (
+                <p>No assigned staff yet.</p>
+              )}
             </Col>
           </Row>
 

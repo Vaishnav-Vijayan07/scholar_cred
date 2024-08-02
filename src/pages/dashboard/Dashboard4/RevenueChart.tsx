@@ -7,7 +7,6 @@ import { ApexOptions } from "apexcharts";
 import ChartStatistics from "../../../components/ChartStatistics";
 
 const RevenueChart = ({ studentSummary }: any) => {
-  console.log("studentSummary---->", studentSummary[0]);
 
   const apexOpts: ApexOptions = {
     chart: {

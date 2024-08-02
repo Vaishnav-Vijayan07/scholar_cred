@@ -326,7 +326,6 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
 
-  console.log(formData);
   
 
   if (initialLoading) {

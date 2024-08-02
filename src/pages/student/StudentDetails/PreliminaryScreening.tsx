@@ -4,7 +4,12 @@ import { Control, FieldErrors } from "react-hook-form";
 import { FormInput } from "../../../components";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { savePreliminaryDetails } from "../../../redux/actions";
+import {
+  checkLoanType,
+  getStudentById,
+  savePreliminaryDetails,
+} from "../../../redux/actions";
+import Swal from "sweetalert2";
 
 interface AboutProps {
   projectDetails: {
@@ -51,7 +56,15 @@ const InitialValidationState = {
   remark: "",
 };
 
-const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, preliminaryLoading, studentId, getStudentDataById }: FormInputProps) => {
+const PreliminaryScreening = ({
+  register,
+  errors,
+  control,
+  preliminaryDetails,
+  preliminaryLoading,
+  studentId,
+  getStudentDataById,
+}: FormInputProps) => {
   const [applicationStatus, setApplicationStatus] = useState("");
   const [programType, setProgramType] = useState("");
   const [primaryApplicant, setPrimaryApplicant] = useState("");
@@ -59,16 +72,27 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
   const [salaryRange, setSalaryRange] = useState("");
   const [collatralItem, setCollatralItem] = useState("");
   const [formData, setFormData] = useState<FormDataTypes>(StaffInitialState);
-  const [validationErrors, setValidationErrors] = useState(InitialValidationState);
+  const [validationErrors, setValidationErrors] = useState(
+    InitialValidationState
+  );
 
   const dispatch = useDispatch();
 
   const validationSchema = yup.object().shape({
     name: yup.string().trim().required("Name is required"),
-    email: yup.string().email("Invalid email format").required("Email is required"),
+    email: yup
+      .string()
+      .email("Invalid email format")
+      .required("Email is required"),
     whatsapp_number: yup.string().required("WhatsApp number is required"),
-    destination_country: yup.string().trim().required("Destination country is required"),
-    university_details: yup.string().trim().required("University details are required"),
+    destination_country: yup
+      .string()
+      .trim()
+      .required("Destination country is required"),
+    university_details: yup
+      .string()
+      .trim()
+      .required("University details are required"),
   });
 
   useEffect(() => {
@@ -109,7 +133,7 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
     e.preventDefault();
 
     try {
-      await validationSchema.validate(formData, { abortEarly: false });
+      // await validationSchema.validate(formData, { abortEarly: false });
       dispatch(
         savePreliminaryDetails(
           studentId,
@@ -128,7 +152,18 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
         )
       );
       getStudentDataById();
-      setValidationErrors(InitialValidationState)
+      dispatch(checkLoanType(studentId ? studentId : ""));
+      dispatch(getStudentById(studentId ? studentId : ""));
+      setValidationErrors(InitialValidationState);
+
+      Swal.fire({
+        title: "Success!",
+        text: "Preliminary details saved successfully.Now check and set the loan type",
+        icon: "success",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#3085d6",
+        position: "center",
+      });
     } catch (validationError) {
       if (validationError instanceof yup.ValidationError) {
         const errors: any = {};
@@ -163,7 +198,11 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 control={control}
                 defaultValue={preliminaryDetails?.name}
               />
-              {validationErrors.name && <Form.Text className="text-danger">{validationErrors.name}</Form.Text>}
+              {validationErrors.name && (
+                <Form.Text className="text-danger">
+                  {validationErrors.name}
+                </Form.Text>
+              )}
             </Form.Group>
           </Col>
 
@@ -181,7 +220,11 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 errors={errors}
                 control={control}
               />
-              {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+              {validationErrors.email && (
+                <Form.Text className="text-danger">
+                  {validationErrors.email}
+                </Form.Text>
+              )}
             </Form.Group>
           </Col>
 
@@ -199,7 +242,11 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 errors={errors}
                 control={control}
               />
-            {validationErrors.whatsapp_number && <Form.Text className="text-danger">{validationErrors.whatsapp_number}</Form.Text>}
+              {validationErrors.whatsapp_number && (
+                <Form.Text className="text-danger">
+                  {validationErrors.whatsapp_number}
+                </Form.Text>
+              )}
             </Form.Group>
           </Col>
 
@@ -217,7 +264,11 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 errors={errors}
                 control={control}
               />
-              {validationErrors.destination_country && <Form.Text className="text-danger">{validationErrors.destination_country}</Form.Text>}
+              {validationErrors.destination_country && (
+                <Form.Text className="text-danger">
+                  {validationErrors.destination_country}
+                </Form.Text>
+              )}
             </Form.Group>
           </Col>
 
@@ -225,7 +276,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             <Form.Group className="mb-3" controlId="application_status">
               <Form.Label>
                 Application Status{" "}
-                <span className="badge bg-success float-right" style={{ fontSize: "9px" }}>
+                <span
+                  className="badge bg-success float-right"
+                  style={{ fontSize: "9px" }}
+                >
                   Low
                 </span>
               </Form.Label>
@@ -241,7 +295,9 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 </option>
                 <option value="Not Yet Decided">Not Yet Decided</option>
                 <option value="Started Applying">Started Applying</option>
-                <option value="Received Offer Letter">Recieved Offer Letter</option>
+                <option value="Received Offer Letter">
+                  Recieved Offer Letter
+                </option>
               </Form.Select>
             </Form.Group>
           </Col>
@@ -249,11 +305,20 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
           <Col xl={6} xxl={4}>
             <Form.Group className="mb-3" controlId="program_type">
               Program Type{" "}
-              <span className="badge bg-warning float-right" style={{ fontSize: "9px" }}>
+              <span
+                className="badge bg-warning float-right"
+                style={{ fontSize: "9px" }}
+              >
                 Medium
               </span>
               <Form.Label></Form.Label>
-              <Form.Select name="program_type" className="mb-3" aria-label="Default select example" value={programType} onChange={(e: any) => setProgramType(e.target.value)}>
+              <Form.Select
+                name="program_type"
+                className="mb-3"
+                aria-label="Default select example"
+                value={programType}
+                onChange={(e: any) => setProgramType(e.target.value)}
+              >
                 <option value="" disabled>
                   Open this select menu
                 </option>
@@ -261,7 +326,9 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 <option value="UG">UG</option>
                 <option value="PG Diploma">PG Diploma</option>
                 <option value="UG Diploma">UG Diploma</option>
-                <option value="Certificate Programs">Certificate Programs</option>
+                <option value="Certificate Programs">
+                  Certificate Programs
+                </option>
               </Form.Select>
             </Form.Group>
           </Col>
@@ -271,7 +338,10 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             <Form.Group className="mb-3" controlId="university_details">
               <Form.Label>
                 University Details{" "}
-                <span className="badge bg-warning float-right" style={{ fontSize: "9px" }}>
+                <span
+                  className="badge bg-warning float-right"
+                  style={{ fontSize: "9px" }}
+                >
                   Medium
                 </span>
               </Form.Label>
@@ -288,7 +358,11 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
                 errors={errors}
                 control={control}
               />
-              {validationErrors.university_details && <Form.Text className="text-danger">{validationErrors.university_details}</Form.Text>}
+              {validationErrors.university_details && (
+                <Form.Text className="text-danger">
+                  {validationErrors.university_details}
+                </Form.Text>
+              )}
             </Form.Group>
           </Col>
         </Row>
@@ -302,20 +376,34 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             <Form.Group className="mb-3" controlId="primary_applicant">
               <Form.Label>
                 Primary Co-Applicant Details{" "}
-                <span className="badge bg-danger float-right" style={{ fontSize: "9px" }}>
+                <span
+                  className="badge bg-danger float-right"
+                  style={{ fontSize: "9px" }}
+                >
                   High
                 </span>
               </Form.Label>
-              <Form.Select className="mb-3" aria-label="Default select example" value={primaryApplicant} onChange={(e: any) => setPrimaryApplicant(e.target.value)}>
+              <Form.Select
+                className="mb-3"
+                aria-label="Default select example"
+                value={primaryApplicant}
+                onChange={(e: any) => setPrimaryApplicant(e.target.value)}
+              >
                 <option value="" disabled>
                   Open this select menu
                 </option>
                 <option value="Father">Father</option>
                 <option value="Mother">Mother</option>
-                <option value="Siblings (brother/sister)">Siblings (brother/sister)</option>
+                <option value="Siblings (brother/sister)">
+                  Siblings (brother/sister)
+                </option>
                 <option value="Husband/Wife">Husband/Wife</option>
-                <option value="In-laws (Father/Mother/Brother/Sister in law)">In-laws (Father/Mother/Brother/Sister in law)</option>
-                <option value="No earning co-applicant">No earning co-applicant</option>
+                <option value="In-laws (Father/Mother/Brother/Sister in law)">
+                  In-laws (Father/Mother/Brother/Sister in law)
+                </option>
+                <option value="No earning co-applicant">
+                  No earning co-applicant
+                </option>
               </Form.Select>
             </Form.Group>
           </Col>
@@ -324,18 +412,28 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             <Form.Group className="mb-3" controlId="type_of_profession">
               <Form.Label>
                 Type Of Profession{" "}
-                <span className="badge bg-danger float-right" style={{ fontSize: "9px" }}>
+                <span
+                  className="badge bg-danger float-right"
+                  style={{ fontSize: "9px" }}
+                >
                   High
                 </span>
               </Form.Label>
-              <Form.Select className="mb-3" aria-label="Default select example" value={typeOfProfossion} onChange={(e: any) => setTypeOfProfossion(e.target.value)}>
+              <Form.Select
+                className="mb-3"
+                aria-label="Default select example"
+                value={typeOfProfossion}
+                onChange={(e: any) => setTypeOfProfossion(e.target.value)}
+              >
                 <option value="" disabled>
                   Open this select menu
                 </option>
                 <option value="Salaried">Salaried</option>
                 <option value="Self Employed">Self Employed</option>
                 <option value="Business">Business</option>
-                <option value="Retired with Pension">Retired with Pension</option>
+                <option value="Retired with Pension">
+                  Retired with Pension
+                </option>
                 <option value="Agriculture">Agriculture</option>
                 <option value="Not Salaried">Not Salaried</option>
               </Form.Select>
@@ -346,11 +444,19 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             <Form.Group className="mb-3" controlId="salary_range">
               <Form.Label>
                 Salary Range{" "}
-                <span className="badge bg-danger float-right" style={{ fontSize: "9px" }}>
+                <span
+                  className="badge bg-danger float-right"
+                  style={{ fontSize: "9px" }}
+                >
                   High
                 </span>
               </Form.Label>
-              <Form.Select className="mb-3" aria-label="Default select example" value={salaryRange} onChange={(e: any) => setSalaryRange(e.target.value)}>
+              <Form.Select
+                className="mb-3"
+                aria-label="Default select example"
+                value={salaryRange}
+                onChange={(e: any) => setSalaryRange(e.target.value)}
+              >
                 <option value="" disabled>
                   Open this select menu
                 </option>
@@ -371,26 +477,42 @@ const PreliminaryScreening = ({ register, errors, control, preliminaryDetails, p
             <Form.Group className="mb-3" controlId="salary_range">
               <Form.Label>
                 Collateral Availability{" "}
-                <span className="badge bg-danger float-right" style={{ fontSize: "9px" }}>
+                <span
+                  className="badge bg-danger float-right"
+                  style={{ fontSize: "9px" }}
+                >
                   High
                 </span>
               </Form.Label>
-              <Form.Select aria-label="Default select example" value={collatralItem} onChange={(e: any) => setCollatralItem(e.target.value)}>
+              <Form.Select
+                aria-label="Default select example"
+                value={collatralItem}
+                onChange={(e: any) => setCollatralItem(e.target.value)}
+              >
                 <option value="" disabled>
                   Open this select menu
                 </option>
                 <option value="House with Land">House with Land</option>
-                <option value="House with housing loan">House with housing Loan</option>
+                <option value="House with housing loan">
+                  House with housing Loan
+                </option>
                 <option value="FD">FD</option>
                 <option value="Gold">Gold</option>
                 <option value="Land without House">Land without House</option>
                 <option value="Government Bonds">Government Bonds</option>
-                <option value="No collateral security available">No collateral security available</option>
+                <option value="No collateral security available">
+                  No collateral security available
+                </option>
               </Form.Select>
             </Form.Group>
           </Col>
 
-          <Button variant="primary" className="mt-4" type="submit" onClick={handleSubmit}>
+          <Button
+            variant="primary"
+            className="mt-4"
+            type="submit"
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </Row>

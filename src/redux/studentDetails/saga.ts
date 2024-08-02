@@ -25,7 +25,7 @@ import { getStudentById } from "../actions";
 
 interface ConsultantData {
   payload: {
-    student_id: string ;
+    student_id: string;
     name: string;
     email: string;
     whatsapp_number: string;
@@ -305,7 +305,6 @@ function* saveUnSecuredDetailedScreeningData({
     });
 
     const data = response.data.message;
-    console.log("res data---->", data);
 
     yield put(
       studentDetailsApiResponseSuccess(
@@ -335,7 +334,6 @@ function* checkLoanType({
     });
 
     const data = response.data;
-    console.log("res data checkLoanType---->", data);
     yield put(
       studentDetailsApiResponseSuccess(
         StudentDetailsActionTypes.CHECK_LOAN_TYPE,
@@ -375,14 +373,12 @@ function* saveLoanType({
   type,
 }: ConsultantData): SagaIterator {
   try {
-    console.log("saveLoanType=====================================<");
     const response = yield call(saveLoanTypeApi, {
       student_id,
       loan_type,
     });
 
     const data = response.data.message;
-    console.log("res data saveLoanType---->", data);
 
     yield put(
       studentDetailsApiResponseSuccess(

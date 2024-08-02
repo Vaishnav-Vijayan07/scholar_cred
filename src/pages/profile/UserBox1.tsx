@@ -1,6 +1,4 @@
-
-import { Card, Spinner } from "react-bootstrap";
-
+import { Button, Card, Spinner } from "react-bootstrap";
 
 import profileImg from "../../assets/images/avatar-logo.png";
 

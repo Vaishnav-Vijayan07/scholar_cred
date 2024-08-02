@@ -6,16 +6,18 @@ import PageTitle from "../../components/PageTitle";
 import UserBox from "./UserBox1";
 import ChangePassword from "./ChangePassword";
 import Settings from "./Settings1";
-import {useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { getUserFromCookie } from "../../helpers/api/apiCore";
+import Commision from "./Commision";
 
 const Profile = () => {
   const refreshing = useSelector(
     (state: any) => state.refreshReducer.refreshing
   );
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const roles = ["CRED_ADMIN", "CONSULTANT_ADMIN"];
 
   useEffect(() => {
     setLoading(true);
@@ -31,7 +33,6 @@ const Profile = () => {
       setLoading(false);
     })();
   }, [refreshing]);
-
 
   return (
     <>
@@ -79,6 +80,15 @@ const Profile = () => {
                       Settings
                     </Nav.Link>
                   </Nav.Item>
+                  {/* <Nav.Item as="li" className="nav-item">
+                    <Nav.Link
+                      href="#"
+                      eventKey="commision"
+                      className="nav-link cursor-pointer"
+                    >
+                      Set Commision
+                    </Nav.Link>
+                  </Nav.Item> */}
                 </Nav>
 
                 <Tab.Content>
@@ -91,6 +101,13 @@ const Profile = () => {
                   <Tab.Pane eventKey="settings">
                     <Settings />
                   </Tab.Pane>
+                  {/* {roles.includes(user?.type_name) ? (
+                    <Tab.Pane eventKey="commision">
+                      <Commision user={user} />
+                    </Tab.Pane>
+                  ) : (
+                    ""
+                  )} */}
                 </Tab.Content>
               </Card.Body>
             </Card>

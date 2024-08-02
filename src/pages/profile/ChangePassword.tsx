@@ -51,7 +51,6 @@ const ChangePassword = () => {
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
 
-    console.log("e.target", e.target);
 
     setFormData((prevData: any) => ({
       ...prevData,

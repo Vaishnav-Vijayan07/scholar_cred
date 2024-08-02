@@ -45,7 +45,6 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
     user: state.Auth.user,
   }));
 
-  console.log(user);
   
 
   const { layoutType } = useSelector((state: RootState) => ({
@@ -72,7 +71,6 @@ const LeftSidebar = ({ isCondensed, hideLogo }: LeftSidebarProps) => {
     };
   }, []);
 
-  console.log(user);
   
 
   return (

@@ -112,7 +112,6 @@ function* updateConsultantStaff({
 
 function* deleteConsultantStaff({ payload: { id, consultant_id } }: ConsultantStaffData): SagaIterator {
   try {
-    console.log("consultant_id and Id", consultant_id, id);
 
     const response = yield call(deleteConsultantStaffApi, id);
     const data = response.data.message;

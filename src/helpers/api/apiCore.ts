@@ -150,7 +150,6 @@ class APICore {
       formData.append(k, data[k]);
     }
 
-    console.log("formData=====>", formData);
 
     const config = {
       headers: {

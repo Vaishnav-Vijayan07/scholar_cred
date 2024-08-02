@@ -50,6 +50,7 @@ import {
 import { truncateText } from "../../constants/functons";
 import excelDownload from "../../helpers/excelDownload";
 import FilterModal from "../../components/FilterModal";
+import Swal from "sweetalert2";
 
 interface FileType extends File {
   preview?: string;
@@ -302,10 +303,19 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleResetPassword = (email: string) => {
+    console.log("THIS");
+    
+    if (!email) {
+      Swal.fire({
+        title: "Email is missing",
+        text: "Please provide a valid email address.",
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+      });
+    }
     axios
       .post(`reset_student_password`, { email: email })
       .then((res: any) => {
-        console.log("res===>", res);
         showSuccessAlert("Password reset successful");
       })
       .catch((err) => {
@@ -315,8 +325,6 @@ const BasicInputElements = withSwal((props: any) => {
   };
 
   const handleAssign = (assigned_staff_id: string, student_id: string) => {
-    console.log("this");
-
     return;
     axios
       .post("assign_consultant_staff", {
@@ -602,7 +610,7 @@ const BasicInputElements = withSwal((props: any) => {
                       </Button>
 
                       <Button
-                       className="btn-sm btn-success waves-effect waves-light"
+                        className="btn-sm btn-success waves-effect waves-light"
                         onClick={toggleResponsiveModal}
                       >
                         <i className="mdi mdi-plus-circle"></i> Add Student
@@ -687,15 +695,12 @@ const Students = () => {
 
   const getStudentBasedOnRole = () => {
     if (user?.role == "4") {
-      console.log("Consultant Admin, consultant staff...");
       // based on created
       dispatch(getStudentByCreated());
     } else if (user?.role == "2") {
-      console.log("Cred staff...");
       // based on assigned to
       dispatch(getStudentByStaff());
     } else if (user?.role == "7") {
-      console.log("Cred staff...");
       // based on assigned to
       dispatch(getStudentByConsultant(user?.consultant_id));
     }

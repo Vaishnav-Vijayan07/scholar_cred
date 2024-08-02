@@ -121,7 +121,6 @@ const BasicInputElements = withSwal((props: any) => {
   //handle onchange function
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    console.log(name, value);
 
     setFormData((prevData: any) => ({
       ...prevData,
@@ -139,7 +138,6 @@ const BasicInputElements = withSwal((props: any) => {
       if (isUpdate) {
         dispatch(updateLoanStatus(formData.id, formData.status_name.trim(), formData.status_description.trim(), formData.is_visible, formData.status_type));
       } else {
-        console.log(formData);
 
         dispatch(addLoanStatus(formData.status_name.trim(), formData.status_description.trim(), formData.is_visible, formData.status_type));
       }
@@ -241,8 +239,6 @@ const BasicInputElements = withSwal((props: any) => {
     }
   }, [loading, error]);
 
-  console.log("loading=====>", loading);
-  console.log("error=====>", error);
 
   if (initialLoading) {
     return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;

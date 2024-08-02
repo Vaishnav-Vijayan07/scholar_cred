@@ -74,7 +74,7 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
 
               <p className="text-muted mb-2 font-13">
                 <strong>Loan Type :</strong>
-                <span className="ms-2">{StudentData?.loan_type || "Not eligible for a loan"}</span>
+                <span className="ms-2">{StudentData?.loan_type ? StudentData?.loan_type : "Check and set loan type"}</span>
               </p>
             </div>
           </>

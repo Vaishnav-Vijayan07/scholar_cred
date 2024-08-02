@@ -39,8 +39,6 @@ const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, user, initialLoading } = props;
   const dispatch = useDispatch();
 
-  console.log("user", user);
-  console.log(state);
 
   //Table data
   const records = state;
@@ -84,7 +82,6 @@ const BasicInputElements = withSwal((props: any) => {
 
   //handling update logic
   const handleUpdate = (item: any) => {
-    console.log(item);
     setFormData((prev) => ({
       ...prev,
       id: item.id,
