@@ -91,6 +91,10 @@ const StudentDetailsConsultant = React.lazy(
   () => import("../pages/student/StudentDetailsConsultant")
 );
 
+const EbixStaff = React.lazy(
+  () => import("../pages/Forex/Super-admin/AddEbixStaff")
+);
+
 export interface RoutesProps {
   path: RouteProps["path"];
   name?: string;
@@ -197,6 +201,12 @@ const userRoutes = {
   roles: ["CRED_ADMIN", "SUPER_USER", "CRED_STAFF", "CONSULTANT_STAFF"],
   icon: "users",
   children: [
+    {
+      path: "/admin/ebix/staff_management",
+      name: "Consultant",
+      element: <PrivateRoute roles={["SUPER_USER"]} component={EbixStaff} />,
+      route: PrivateRoute,
+    },
     {
       path: "/users/consultant",
       name: "Consultant",
@@ -401,53 +411,53 @@ const consultantRoutes = {
   ],
 };
 
-// const ForexRoutes = {
-//   path: "/forex",
-//   name: "Forex data",
-//   route: PrivateRoute,
-//   roles: ["CONSULTANT_ADMIN"],
-//   icon: "users",
-//   children: [
-//     {
-//       path: "/forex/consultants/transactions",
-//       name: "Staff",
-//       element: (
-//         <PrivateRoute
-//           roles={["CONSULTANT_ADMIN"]}
-//           component={TransactionsConsultant}
-//         />
-//       ),
-//       route: PrivateRoute,
-//     },
-//     {
-//       path: "/forex/consultants/commissions",
-//       name: "Staff",
-//       element: (
-//         <PrivateRoute
-//           roles={["CONSULTANT_ADMIN"]}
-//           component={CommissionsConsultant}
-//         />
-//       ),
-//       route: PrivateRoute,
-//     },
-//     {
-//       path: "/forex/transactions",
-//       name: "Staff",
-//       element: (
-//         <PrivateRoute roles={["CRED_ADMIN"]} component={TransactionsAdmin} />
-//       ),
-//       route: PrivateRoute,
-//     },
-//     {
-//       path: "/forex/commissions",
-//       name: "Staff",
-//       element: (
-//         <PrivateRoute roles={["CRED_ADMIN"]} component={CommissionsAdmin} />
-//       ),
-//       route: PrivateRoute,
-//     },
-//   ],
-// };
+const ForexRoutes = {
+  path: "/forex",
+  name: "Forex data",
+  route: PrivateRoute,
+  roles: ["CONSULTANT_ADMIN"],
+  icon: "users",
+  children: [
+    {
+      path: "/forex/consultants/transactions",
+      name: "Staff",
+      element: (
+        <PrivateRoute
+          roles={["CONSULTANT_ADMIN"]}
+          component={TransactionsConsultant}
+        />
+      ),
+      route: PrivateRoute,
+    },
+    {
+      path: "/forex/consultants/commissions",
+      name: "Staff",
+      element: (
+        <PrivateRoute
+          roles={["CONSULTANT_ADMIN"]}
+          component={CommissionsConsultant}
+        />
+      ),
+      route: PrivateRoute,
+    },
+    {
+      path: "/forex/transactions",
+      name: "Staff",
+      element: (
+        <PrivateRoute roles={["CRED_ADMIN"]} component={TransactionsAdmin} />
+      ),
+      route: PrivateRoute,
+    },
+    {
+      path: "/forex/commissions",
+      name: "Staff",
+      element: (
+        <PrivateRoute roles={["CRED_ADMIN"]} component={CommissionsAdmin} />
+      ),
+      route: PrivateRoute,
+    },
+  ],
+};
 
 const profileRoutes = {
   path: "/profile",
@@ -639,7 +649,7 @@ const authProtectedRoutes = [
   ...appRoutes,
   userRoutes,
   consultantRoutes,
-  // ForexRoutes,
+  ForexRoutes,
   credadminRoutes,
   superAdminRoutes,
 ];
@@ -647,7 +657,6 @@ const publicRoutes = [...authRoutes, ...otherPublicRoutes];
 
 const authProtectedFlattenRoutes = flattenRoutes([...authProtectedRoutes]);
 const publicProtectedFlattenRoutes = flattenRoutes([...publicRoutes]);
-
 
 export {
   publicRoutes,

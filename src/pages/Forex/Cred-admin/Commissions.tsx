@@ -178,7 +178,7 @@ const BasicInputElements = withSwal((props: any) => {
                     className="btn-sm btn-blue waves-effect waves-light"
                     onClick={() => toggle()}
                   >
-                    <i className="mdi mdi-plus-circle"></i> Set Commision
+                    <i className="mdi mdi-plus-circle"></i> Set Makeup Amount
                   </Button> */}
                 </div>
                 {/* <h4 className="header-title mb-4">Manage Consultant</h4> */}
@@ -215,7 +215,6 @@ const AdminCommisons = () => {
       user: state?.Auth?.user,
     })
   );
-
 
   useEffect(() => {
     dispatch(getCommisions());

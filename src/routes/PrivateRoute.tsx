@@ -32,9 +32,12 @@ const PrivateRoute = ({ component: Component, roles, ...rest }: PrivateRouteProp
   const loggedInUser = api.getLoggedInUser();
 
   if (roles && !roles?.includes(loggedInUser?.role_name)) {
+    console.log("HERE");
+    
     // No matching role found, so redirect to the unauthorized page
     return <Navigate to={{ pathname: "/unauthorized" }} />;
   }
+  console.log("HERE");
   // authorised so return component
   return <Component />;
 };

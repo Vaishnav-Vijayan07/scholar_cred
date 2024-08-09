@@ -184,6 +184,23 @@ const MENU_ITEMS: MenuItemTypes[] = [
     roles: ["SUPER_USER"],
   },
 
+
+  {
+    key: "ebixstaff_management",
+    label: "Ebix Staff Management",
+    isTitle: true,
+    roles: ["SUPER_USER"],
+  },
+
+  {
+    key: "ebixstaff_management",
+    label: "Ebix Staff",
+    isTitle: false,
+    icon: "users",
+    url: "/admin/ebix/staff_management",
+    roles: ["SUPER_USER"],
+  },
+
   {
     key: "apps",
     label: "Apps",
@@ -196,7 +213,6 @@ const MENU_ITEMS: MenuItemTypes[] = [
       "CRED_STAFF",
     ],
   },
-  
 
   {
     key: "tickets",
@@ -226,52 +242,52 @@ const MENU_ITEMS: MenuItemTypes[] = [
       "CRED_STAFF",
     ],
   },
-  // {
-  //   key: "forex",
-  //   label: "Forex",
-  //   isTitle: true,
-  //   roles: [
-  //     "CRED_ADMIN",
-  //     // "SUPER_USER",
-  //     "CONSULTANT_ADMIN",
-  //     // "CONSULTANT_STAFF",
-  //     // "CRED_STAFF",
-  //   ],
-  // },
-  // {
-  //   key: "forex",
-  //   label: "Transactions",
-  //   icon:"book",
-  //   isTitle: false,
-  //   url:"/forex/transactions",
-  //   roles: [
-  //     "CRED_ADMIN",
-  //     // "SUPER_USER",
-  //     // "CONSULTANT_ADMIN",
-  //     // "CONSULTANT_STAFF",
-  //     // "CRED_STAFF",
-  //   ],
-  // },
-  // {
-  //   key: "forex",
-  //   label: "Commissions",
-  //   icon:"book",
-  //   isTitle: false,
-  //   url:"/forex/commissions",
-  //   roles: [
-  //     "CRED_ADMIN",
-  //     // "SUPER_USER",
-  //     // "CONSULTANT_ADMIN",
-  //     // "CONSULTANT_STAFF",
-  //     // "CRED_STAFF",
-  //   ],
-  // },
+  {
+    key: "forex",
+    label: "Forex",
+    isTitle: true,
+    roles: [
+      "CRED_ADMIN",
+      // "SUPER_USER",
+      "CONSULTANT_ADMIN",
+      // "CONSULTANT_STAFF",
+      // "CRED_STAFF",
+    ],
+  },
   {
     key: "forex",
     label: "Transactions",
-    icon:"book",
+    icon: "book",
     isTitle: false,
-    url:"/forex/consultants/transactions",
+    url: "/forex/transactions",
+    roles: [
+      "CRED_ADMIN",
+      // "SUPER_USER",
+      // "CONSULTANT_ADMIN",
+      // "CONSULTANT_STAFF",
+      // "CRED_STAFF",
+    ],
+  },
+  {
+    key: "forex",
+    label: "Commissions",
+    icon: "book",
+    isTitle: false,
+    url: "/forex/commissions",
+    roles: [
+      "CRED_ADMIN",
+      // "SUPER_USER",
+      // "CONSULTANT_ADMIN",
+      // "CONSULTANT_STAFF",
+      // "CRED_STAFF",
+    ],
+  },
+  {
+    key: "forex",
+    label: "Transactions",
+    icon: "book",
+    isTitle: false,
+    url: "/forex/consultants/transactions",
     roles: [
       // "CRED_ADMIN",
       // "SUPER_USER",
@@ -295,6 +311,8 @@ const MENU_ITEMS: MenuItemTypes[] = [
   //   ],
   // },
 ];
+
+
 
 const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
   {

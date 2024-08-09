@@ -53,13 +53,13 @@ const PersonalInfo = ({ currentCommision }: any) => {
   return (
     <>
       <h5 className="mb-4 text-uppercase">
-        <i className="mdi mdi-account-circle me-1"></i> Commision
+        <i className="mdi mdi-account-circle me-1"></i> Makeup Amount
       </h5>
       <Form>
         <Row>
           <Col>
             <Form.Group className="mb-3" controlId="old_password">
-              <Form.Label>Commision amount</Form.Label>
+              <Form.Label>Makeup amount</Form.Label>
               <Form.Control
                 type="number"
                 placeholder="Enter your amount eg: 590.23"
@@ -73,9 +73,9 @@ const PersonalInfo = ({ currentCommision }: any) => {
             </Form.Group>
             <Form.Text className="text-danger">
               {user?.role_name === "CRED_ADMIN" ? (
-                <>Current commision :{currentCommision?.amount}</>
+                <>Current Amount :{currentCommision?.amount}</>
               ) : (
-                <>Current commision :{currentCommision?.commisionamount}</>
+                <>Current Amount :{currentCommision?.commisionamount}</>
               )}
             </Form.Text>
           </Col>

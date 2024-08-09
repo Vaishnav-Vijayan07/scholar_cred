@@ -19,6 +19,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const roles = ["CRED_ADMIN", "CONSULTANT_ADMIN"];
 
+  console.log(user);
+
   useEffect(() => {
     setLoading(true);
     const { user_id } = getUserFromCookie();
@@ -80,15 +82,15 @@ const Profile = () => {
                       Settings
                     </Nav.Link>
                   </Nav.Item>
-                  {/* <Nav.Item as="li" className="nav-item">
+                  <Nav.Item as="li" className="nav-item">
                     <Nav.Link
                       href="#"
                       eventKey="commision"
                       className="nav-link cursor-pointer"
                     >
-                      Set Commision
+                      Set Makeup Amount
                     </Nav.Link>
-                  </Nav.Item> */}
+                  </Nav.Item>
                 </Nav>
 
                 <Tab.Content>
@@ -101,13 +103,13 @@ const Profile = () => {
                   <Tab.Pane eventKey="settings">
                     <Settings />
                   </Tab.Pane>
-                  {/* {roles.includes(user?.type_name) ? (
+                  {roles.includes(user?.type_name) ? (
                     <Tab.Pane eventKey="commision">
                       <Commision user={user} />
                     </Tab.Pane>
                   ) : (
                     ""
-                  )} */}
+                  )}
                 </Tab.Content>
               </Card.Body>
             </Card>
