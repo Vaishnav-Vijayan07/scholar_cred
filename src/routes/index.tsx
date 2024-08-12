@@ -95,6 +95,10 @@ const EbixStaff = React.lazy(
   () => import("../pages/Forex/Super-admin/AddEbixStaff")
 );
 
+const EbixStafftudentsList = React.lazy(
+  () => import("../pages/Forex/Ebix_staff/StudentsList")
+);
+
 export interface RoutesProps {
   path: RouteProps["path"];
   name?: string;
@@ -124,6 +128,7 @@ const dashboardRoutes: RoutesProps = {
         "CRED_STAFF",
         "CONSULTANT",
         "CONSULTANT_STAFF",
+        "EBIX_STAFF",
       ],
       route: PrivateRoute,
     },
@@ -139,6 +144,7 @@ const dashboardRoutes: RoutesProps = {
             "CRED_STAFF",
             "CONSULTANT",
             "CONSULTANT_STAFF",
+            "EBIX_STAFF",
           ]}
           component={Dashboard4}
         />
@@ -459,6 +465,32 @@ const ForexRoutes = {
   ],
 };
 
+const EbixStaffRoutes = {
+  path: "/ebix_staff",
+  name: "Ebix Data",
+  route: PrivateRoute,
+  roles: ["EBIX_STAFF"],
+  icon: "users",
+  children: [
+    {
+      path: "/ebix_staff/students_list",
+      name: "Staff",
+      element: (
+        <PrivateRoute roles={["EBIX_STAFF"]} component={EbixStafftudentsList} />
+      ),
+      route: PrivateRoute,
+    },
+    {
+      path: "/ebix_staff/swift_copies",
+      name: "Staff",
+      element: (
+        <PrivateRoute roles={["EBIX_STAFF"]} component={EbixStafftudentsList} />
+      ),
+      route: PrivateRoute,
+    },
+  ],
+};
+
 const profileRoutes = {
   path: "/profile",
   name: "Profile",
@@ -650,6 +682,7 @@ const authProtectedRoutes = [
   userRoutes,
   consultantRoutes,
   ForexRoutes,
+  EbixStaffRoutes,
   credadminRoutes,
   superAdminRoutes,
 ];

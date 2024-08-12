@@ -184,7 +184,6 @@ const MENU_ITEMS: MenuItemTypes[] = [
     roles: ["SUPER_USER"],
   },
 
-
   {
     key: "ebixstaff_management",
     label: "Ebix Staff Management",
@@ -283,36 +282,28 @@ const MENU_ITEMS: MenuItemTypes[] = [
     ],
   },
   {
-    key: "forex",
-    label: "Transactions",
-    icon: "book",
-    isTitle: false,
-    url: "/forex/consultants/transactions",
-    roles: [
-      // "CRED_ADMIN",
-      // "SUPER_USER",
-      "CONSULTANT_ADMIN",
-      // "CONSULTANT_STAFF",
-      // "CRED_STAFF",
-    ],
+    key: "ebix_staff",
+    label: "Documents",
+    isTitle: true,
+    roles: ["EBIX_STAFF"],
   },
-  // {
-  //   key: "forex",
-  //   label: "Commissions",
-  //   icon:"book",
-  //   isTitle: false,
-  //   url:"/forex/consultants/commissions",
-  //   roles: [
-  //     // "CRED_ADMIN",
-  //     // "SUPER_USER",
-  //     "CONSULTANT_ADMIN",
-  //     // "CONSULTANT_STAFF",
-  //     // "CRED_STAFF",
-  //   ],
-  // },
+  {
+    key: "ebix_staff",
+    label: "Order Items",
+    icon: "download",
+    isTitle: false,
+    url: "/ebix_staff/students_list",
+    roles: ["EBIX_STAFF"],
+  },
+  {
+    key: "ebix_staff",
+    label: "Swift Copy",
+    icon: "file-text",
+    isTitle: false,
+    url: "/ebix_staff/swift_copies",
+    roles: ["EBIX_STAFF"],
+  },
 ];
-
-
 
 const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
   {

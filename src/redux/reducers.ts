@@ -18,6 +18,7 @@ import Notifications from "./notifications/reducer";
 import StudentDetailsReducer from "./studentDetails/reducer";
 import refreshReducer from "../reducer/refreshReducer";
 import Forex from "./Forex/reducers";
+import EbixStaffReducer from "./Ebix_staff/reducers";
 
 export default combineReducers({
   Auth,
@@ -38,4 +39,5 @@ export default combineReducers({
   StudentDetailsReducer,
   refreshReducer,
   Forex,
+  EbixStaffReducer
 });

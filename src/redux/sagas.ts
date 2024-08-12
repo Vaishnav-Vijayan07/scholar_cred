@@ -17,6 +17,7 @@ import TicketsSaga from "./tickets/saga";
 import notificationSaga from "./notifications/saga";
 import studentDetailsSaga from "./studentDetails/saga";
 import forexSaga from "./Forex/saga";
+import ebixStaffSaga from "./Ebix_staff/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -36,6 +37,7 @@ export default function* rootSaga() {
     TicketsSaga(),
     notificationSaga(),
     studentDetailsSaga(),
-    forexSaga()
+    forexSaga(),
+    ebixStaffSaga(),
   ]);
 }

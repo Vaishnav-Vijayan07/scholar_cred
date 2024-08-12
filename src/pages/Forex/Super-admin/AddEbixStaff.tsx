@@ -1,6 +1,15 @@
 import * as yup from "yup";
 import React, { useEffect, useState } from "react";
-import { Row, Col, Card, Form, Button, Modal, Alert, Spinner } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Modal,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
 import Table from "../../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
@@ -8,11 +17,19 @@ import FeatherIcons from "feather-icons-react";
 // components
 import PageTitle from "../../../components/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
-// import { createadminStaff, deleteAdminStaff, editAdminStaff, getAdminStaff } from "../../redux/adminStaffs/actions";
-import { createAdminUsers, deleteAdminUsers, editAdminUsers, getCredAdminUsers, resetPassword } from "../../../redux/admin_users/actions";
+
 import { RootState } from "../../../redux/store";
-import { AdminUsersType, AdminInitialState, AdminValidationState, sizePerPageList } from "./data";
-import { Link } from "react-router-dom";
+import {
+  AdminUsersType,
+  AdminInitialState,
+  AdminValidationState,
+  sizePerPageList,
+} from "./data";
+import {
+  createEbixUsers,
+  deleteEbixUsers,
+  getEbixUsers,
+} from "../../../redux/Ebix_staff/actions";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, initialLoading } = props;
@@ -26,22 +43,22 @@ const BasicInputElements = withSwal((props: any) => {
   // Modal states
   const [responsiveModal, setResponsiveModal] = useState<boolean>(false);
   //validation errors
-  const [validationErrors, setValidationErrors] = useState(AdminValidationState);
+  const [validationErrors, setValidationErrors] =
+    useState(AdminValidationState);
 
   const validationSchema = yup.object().shape({
     username: yup.string().trim().required("Username is required"),
-    email: yup.string().required("Email is required").email("Invalid email format"),
-    first_name: yup.string().trim().required("First name is required"),
-    last_name: yup.string().trim().required("Last name is required"),
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Invalid email format"),
   });
 
   //handling update logic
   const handleUpdate = (item: any) => {
-    setFormData((prev:any) => ({
+    setFormData((prev: any) => ({
       ...prev,
       id: item.id,
-      first_name: item.full_name.split(" ")[0],
-      last_name: item.full_name.split(" ")[1],
       email: item.email,
       phone: item.phone,
       username: item.username,
@@ -66,7 +83,7 @@ const BasicInputElements = withSwal((props: any) => {
       })
       .then((result: any) => {
         if (result.isConfirmed) {
-          dispatch(deleteAdminUsers(id));
+          dispatch(deleteEbixUsers(id));
         }
       });
   };
@@ -74,7 +91,7 @@ const BasicInputElements = withSwal((props: any) => {
   //handle onchange function
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData((prevData:any) => ({
+    setFormData((prevData: any) => ({
       ...prevData,
       [name]: value,
     }));
@@ -88,9 +105,24 @@ const BasicInputElements = withSwal((props: any) => {
       await validationSchema.validate(formData, { abortEarly: false });
       // Validation passed, handle form submission
       if (isUpdate) {
-        dispatch(editAdminUsers(formData.id, formData.username, formData.email, formData.first_name + " " + formData.last_name, formData.user_type_id, formData.created_by));
+        // dispatch(
+        //   editAdminUsers(
+        //     formData.id,
+        //     formData.username,
+        //     formData.email,
+        //     formData.user_type_id,
+        //     formData.created_by
+        //   )
+        // );
       } else {
-        dispatch(createAdminUsers(formData.username, formData.email, formData.first_name + " " + formData.last_name, formData.user_type_id, formData.created_by));
+        dispatch(
+          createEbixUsers(
+            formData.username,
+            formData.email,
+            formData.user_type_id,
+            formData.created_by
+          )
+        );
       }
     } catch (validationError) {
       // Handle validation errors
@@ -114,52 +146,47 @@ const BasicInputElements = withSwal((props: any) => {
       sort: false,
     },
     {
-      Header: "Name",
-      accessor: "full_name",
-      sort: true,
+      Header: "Username",
+      accessor: "username",
+      sort: false,
     },
     {
       Header: "Email",
       accessor: "email",
       sort: false,
     },
-    {
-      Header: "Username",
-      accessor: "username",
-      sort: false,
-    },
-    {
-      Header: "Password",
-      accessor: "",
-      sort: false,
-      Cell: ({ row }: any) => (
-        <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
-          <Button
-            variant="link"
-            onClick={() => {
-              swal
-                .fire({
-                  title: "Are you sure you want to change the password?",
-                  text: "This action cannot be undone.",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Yes, Send it!",
-                })
-                .then((result: any) => {
-                  if (result.isConfirmed) {
-                    dispatch(resetPassword(row.original.email));
-                  }
-                });
-            }}
-          >
-            {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
-            Send Mail
-          </Button>
-        </div>
-      ),
-    },
+    // {
+    //   Header: "Password",
+    //   accessor: "",
+    //   sort: false,
+    //   Cell: ({ row }: any) => (
+    //     <div className="d-flex gap-1 justify-content-center align-items-center cursor-pointer">
+    //       <Button
+    //         variant="link"
+    //         onClick={() => {
+    //           swal
+    //             .fire({
+    //               title: "Are you sure you want to change the password?",
+    //               text: "This action cannot be undone.",
+    //               icon: "warning",
+    //               showCancelButton: true,
+    //               confirmButtonColor: "#3085d6",
+    //               cancelButtonColor: "#d33",
+    //               confirmButtonText: "Yes, Send it!",
+    //             })
+    //             .then((result: any) => {
+    //               if (result.isConfirmed) {
+    //                 // dispatch(resetPassword(row.original.email));
+    //               }
+    //             });
+    //         }}
+    //       >
+    //         {/* <FeatherIcons icon="mail" size="14" className="cursor-pointer text-secondary me-1" /> */}
+    //         Send Mail
+    //       </Button>
+    //     </div>
+    //   ),
+    // },
     {
       Header: "Actions",
       accessor: "",
@@ -167,7 +194,7 @@ const BasicInputElements = withSwal((props: any) => {
       Cell: ({ row }: any) => (
         <div className="d-flex justify-content-center align-items-center gap-2">
           {/* Edit Icon */}
-          <FeatherIcons
+          {/* <FeatherIcons
             icon="edit"
             size="15"
             className="cursor-pointer text-secondary"
@@ -175,10 +202,15 @@ const BasicInputElements = withSwal((props: any) => {
               handleUpdate(row.original);
               toggleResponsiveModal();
             }}
-          />
+          /> */}
 
           {/* Delete Icon */}
-          <FeatherIcons icon="trash-2" size="15" className="cursor-pointer text-secondary" onClick={() => handleDelete(row.original.id)} />
+          <FeatherIcons
+            icon="trash-2"
+            size="15"
+            className="cursor-pointer text-secondary"
+            onClick={() => handleDelete(row.original.id)}
+          />
         </div>
       ),
     },
@@ -208,17 +240,26 @@ const BasicInputElements = withSwal((props: any) => {
   }, [loading, error]);
 
   if (initialLoading) {
-    return <Spinner animation="border" style={{ position: "absolute", top: "50%", left: "50%" }} />;
+    return (
+      <Spinner
+        animation="border"
+        style={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
   }
 
   return (
     <>
       <>
         <Row className="justify-content-between px-2">
-          <Modal show={responsiveModal} onHide={toggleResponsiveModal} dialogClassName="modal-dialog-centered">
+          <Modal
+            show={responsiveModal}
+            onHide={toggleResponsiveModal}
+            dialogClassName="modal-dialog-centered"
+          >
             <Form onSubmit={onSubmit}>
               <Modal.Header closeButton>
-                <h4 className="modal-title">Add Cred Admin Users</h4>
+                <h4 className="modal-title">Add Ebix Users</h4>
               </Modal.Header>
               <Modal.Body className="px-3">
                 {error && Object.keys(error).length !== 0 && (
@@ -228,39 +269,49 @@ const BasicInputElements = withSwal((props: any) => {
                 )}
                 <Row>
                   <Col md={6}>
-                    <Form.Group className="mb-3" controlId="first_name">
-                      <Form.Label>First Name</Form.Label>
-                      <Form.Control type="text" name="first_name" placeholder="Enter  Name" value={formData.first_name} onChange={handleInputChange} />
-                      {validationErrors.first_name && <Form.Text className="text-danger">{validationErrors.first_name}</Form.Text>}
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-3" controlId="last_name">
-                      <Form.Label>Last Name</Form.Label>
-                      <Form.Control type="text" name="last_name" placeholder="Enter  Name" value={formData.last_name} onChange={handleInputChange} />
-                      {validationErrors.last_name && <Form.Text className="text-danger">{validationErrors.last_name}</Form.Text>}
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
                     <Form.Group className="mb-3" controlId="email">
                       <Form.Label>Email</Form.Label>
-                      <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleInputChange} />
-                      {validationErrors.email && <Form.Text className="text-danger">{validationErrors.email}</Form.Text>}
+                      <Form.Control
+                        type="email"
+                        name="email"
+                        placeholder="Enter email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                      />
+                      {validationErrors.email && (
+                        <Form.Text className="text-danger">
+                          {validationErrors.email}
+                        </Form.Text>
+                      )}
                     </Form.Group>
                   </Col>
                   <Col md={6}>
                     <Form.Group className="mb-3" controlId="username">
                       <Form.Label>User Name</Form.Label>
-                      <Form.Control type="text" name="username" placeholder="Enter username" value={formData.username} onChange={handleInputChange} />
-                      {validationErrors.username && <Form.Text className="text-danger">{validationErrors.username}</Form.Text>}
+                      <Form.Control
+                        type="text"
+                        name="username"
+                        placeholder="Enter username"
+                        value={formData.username}
+                        onChange={handleInputChange}
+                      />
+                      {validationErrors.username && (
+                        <Form.Text className="text-danger">
+                          {validationErrors.username}
+                        </Form.Text>
+                      )}
                     </Form.Group>
                   </Col>
                 </Row>{" "}
               </Modal.Body>
               <Modal.Footer>
-                <Button type="submit" variant="success" id="button-addon2" className="waves-effect waves-light mt-1 me-2" disabled={loading}>
+                <Button
+                  type="submit"
+                  variant="success"
+                  id="button-addon2"
+                  className="waves-effect waves-light mt-1 me-2"
+                  disabled={loading}
+                >
                   {isUpdate ? "Update" : "Submit"}
                 </Button>
 
@@ -290,7 +341,10 @@ const BasicInputElements = withSwal((props: any) => {
           <Col className="p-0 form__card">
             <Card className="bg-white">
               <Card.Body>
-                <Button className="btn-sm btn-blue waves-effect waves-light float-end" onClick={toggleResponsiveModal}>
+                <Button
+                  className="btn-sm btn-blue waves-effect waves-light float-end"
+                  onClick={toggleResponsiveModal}
+                >
                   <i className="mdi mdi-plus-circle"></i> Add user
                 </Button>
                 {/* <h4 className="header-title mb-4">Manage Cred Admin</h4> */}
@@ -317,22 +371,27 @@ const BasicInputElements = withSwal((props: any) => {
 const EbixStaff = () => {
   const dispatch = useDispatch();
 
-  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
-    state: state.CredAdminStates.credAdmin,
-    loading: state?.CredAdminStates.loading,
-    error: state?.CredAdminStates?.error,
-    initialLoading: state?.CredAdminStates?.initialLoading,
-  }));
+  const { state, loading, error, initialLoading } = useSelector(
+    (state: RootState) => ({
+      state: state.EbixStaffReducer.ebixStaff,
+      loading: state?.EbixStaffReducer.loading,
+      error: state?.EbixStaffReducer?.error,
+      initialLoading: state?.EbixStaffReducer?.initialLoading,
+    })
+  );
 
   useEffect(() => {
-    dispatch(getCredAdminUsers());
+    dispatch(getEbixUsers());
   }, []);
 
   return (
     <React.Fragment>
       <PageTitle
         breadCrumbItems={[
-          { label: "Ebix Staff Management", path: "/admin/ebix/staff_management" },
+          {
+            label: "Ebix Staff Management",
+            path: "/admin/ebix/staff_management",
+          },
           {
             label: "Ebix Staff Users",
             path: "",
@@ -343,7 +402,12 @@ const EbixStaff = () => {
       />
       <Row>
         <Col>
-          <BasicInputElements state={state} loading={loading} error={error} initialLoading={initialLoading} />
+          <BasicInputElements
+            state={state}
+            loading={loading}
+            error={error}
+            initialLoading={initialLoading}
+          />
         </Col>
       </Row>
     </React.Fragment>
