@@ -71,8 +71,9 @@ const Dashboard4 = () => {
   const { user } = useSelector((state: RootState) => ({
     user: state.Auth.user,
   }));
+
   useEffect(() => {
-    getDashboardValues();
+    if (user?.role !== 8) getDashboardValues();
   }, []);
 
   const getDashboardValues = () => {
@@ -83,7 +84,6 @@ const Dashboard4 = () => {
       })
       .catch((err) => console.log(err));
   };
-
 
   return (
     <>
@@ -102,7 +102,9 @@ const Dashboard4 = () => {
           {user.role == "7" && (
             // <Row>
             <Col xl={4} md={12}>
-              <StudentCounts studentCount={dashboardData?.studentsCount || []} />
+              <StudentCounts
+                studentCount={dashboardData?.studentsCount || []}
+              />
             </Col>
           )}
 
@@ -119,7 +121,9 @@ const Dashboard4 = () => {
 
           {user.role == "7" && (
             <Col xl={8} md={12}>
-              <StaffWiseStudentList staffList={dashboardData?.studentCountByStaff} />
+              <StaffWiseStudentList
+                staffList={dashboardData?.studentCountByStaff}
+              />
             </Col>
           )}
           {/* </Row> */}

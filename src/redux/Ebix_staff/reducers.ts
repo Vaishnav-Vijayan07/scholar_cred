@@ -5,8 +5,9 @@ import { EbixStaffActionTypes } from "./constants";
 const INIT_STATE = {
   ebixStaff: [],
   ebixDocs: [],
+  payDetails: [],
   loading: false,
-  initialLoading: false,
+  initialLoading: true,
   error: null,
 };
 
@@ -25,6 +26,8 @@ interface AuthActionType {
     | EbixStaffActionTypes.CREATE_EBIX_STAFF
     | EbixStaffActionTypes.GET_EBIX_STAFF
     | EbixStaffActionTypes.GET_DOCS
+    | EbixStaffActionTypes.UPLOAD_SWIFT
+    | EbixStaffActionTypes.GET_DETAILS
     | EbixStaffActionTypes.DELETE_EBIX_STAFF;
   payload: {
     actionType?: string;
@@ -72,6 +75,22 @@ const EbixStaffReducer = (
           };
         }
 
+        case EbixStaffActionTypes.GET_DETAILS: {
+          return {
+            ...state,
+            loading: false,
+            initialLoading: false,
+            payDetails: action.payload.data,
+          };
+        }
+
+        case EbixStaffActionTypes.UPLOAD_SWIFT: {
+          return {
+            ...state,
+            loading: false,
+          };
+        }
+
         case EbixStaffActionTypes.DELETE_EBIX_STAFF: {
           showSuccessAlert(action.payload.data);
           return {
@@ -103,7 +122,26 @@ const EbixStaffReducer = (
             initialLoading: false,
           };
         }
+
         case EbixStaffActionTypes.GET_DOCS: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            initialLoading: false,
+          };
+        }
+
+        case EbixStaffActionTypes.GET_DETAILS: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            initialLoading: false,
+          };
+        }
+
+        case EbixStaffActionTypes.UPLOAD_SWIFT: {
           return {
             ...state,
             error: action.payload.error,
@@ -129,6 +167,10 @@ const EbixStaffReducer = (
       return { ...state, loading: true, initialLoading: true };
     case EbixStaffActionTypes.GET_DOCS:
       return { ...state, loading: true, initialLoading: true };
+    case EbixStaffActionTypes.GET_DETAILS:
+      return { ...state, loading: true, initialLoading: true };
+    case EbixStaffActionTypes.UPLOAD_SWIFT:
+      return { ...state, loading: true };
     case EbixStaffActionTypes.DELETE_EBIX_STAFF:
       return { ...state, loading: true };
     default:

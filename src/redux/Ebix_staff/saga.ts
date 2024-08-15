@@ -6,6 +6,7 @@ import {
   ebixStaffResponseSuccess,
   ebixStaffResponseError,
   getEbixUsers,
+  getPayDetails,
 } from "./actions";
 
 // constants
@@ -15,6 +16,8 @@ import {
   deleteEbixUsersApi,
   getCredEbixUsersApi,
   getEbixDocsApi,
+  getEbixPayApi,
+  uploadSwiftCopyApi,
 } from "../../helpers/api/ebix_staff";
 
 interface EbixUserData {
@@ -24,6 +27,9 @@ interface EbixUserData {
     email: string;
     user_type_id: number;
     created_by: number;
+    forex_id: string;
+    student_id: string;
+    file: File;
   };
   type: string;
 }
@@ -73,6 +79,7 @@ function* getEbixStaff(): SagaIterator {
     );
   }
 }
+
 function* getEbixStaffDocs(): SagaIterator {
   try {
     const response = yield call(getEbixDocsApi);
@@ -83,6 +90,27 @@ function* getEbixStaffDocs(): SagaIterator {
     );
   } catch (error: any) {
     yield put(ebixStaffResponseError(EbixStaffActionTypes.GET_DOCS, error));
+  }
+}
+
+function* uploadSwiftCopy({
+  payload: { file, forex_id, student_id },
+}: EbixUserData): SagaIterator {
+  try {
+    const response = yield call(uploadSwiftCopyApi, {
+      file,
+      forex_id,
+      student_id,
+    });
+    const swiftUrl = response.data.data;
+
+    yield put(
+      ebixStaffResponseSuccess(EbixStaffActionTypes.UPLOAD_SWIFT, swiftUrl)
+    );
+
+    yield put(getPayDetails(forex_id));
+  } catch (error: any) {
+    yield put(ebixStaffResponseError(EbixStaffActionTypes.UPLOAD_SWIFT, error));
   }
 }
 
@@ -106,8 +134,27 @@ function* deleteEbixStaff({ payload: { id } }: EbixUserData): SagaIterator {
   }
 }
 
+function* getEbixPayDetails({
+  payload: { forex_id },
+}: EbixUserData): SagaIterator {
+  try {
+    const response = yield call(getEbixPayApi, forex_id);
+    const payDetails = response.data.data;
+
+    yield put(
+      ebixStaffResponseSuccess(EbixStaffActionTypes.GET_DETAILS, payDetails)
+    );
+  } catch (error: any) {
+    yield put(ebixStaffResponseError(EbixStaffActionTypes.GET_DETAILS, error));
+  }
+}
+
 export function* watchCreateEbixUser() {
   yield takeEvery(EbixStaffActionTypes.CREATE_EBIX_STAFF, createEbixStaff);
+}
+
+export function* watchUploadSwiftCopy() {
+  yield takeEvery(EbixStaffActionTypes.UPLOAD_SWIFT, uploadSwiftCopy);
 }
 
 export function* watchGetEbixUser() {
@@ -116,6 +163,10 @@ export function* watchGetEbixUser() {
 
 export function* watchGetEbixUserDocs() {
   yield takeEvery(EbixStaffActionTypes.GET_DOCS, getEbixStaffDocs);
+}
+
+export function* watchGetEbixUserPay() {
+  yield takeEvery(EbixStaffActionTypes.GET_DETAILS, getEbixPayDetails);
 }
 
 export function* watchDeleteEbixUser() {
@@ -128,6 +179,8 @@ function* ebixStaffSaga() {
     fork(watchDeleteEbixUser),
     fork(watchGetEbixUser),
     fork(watchGetEbixUserDocs),
+    fork(watchGetEbixUserPay),
+    fork(watchUploadSwiftCopy),
   ]);
 }
 

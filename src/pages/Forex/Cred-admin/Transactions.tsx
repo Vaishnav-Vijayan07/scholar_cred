@@ -46,7 +46,6 @@ const BasicInputElements = withSwal((props: any) => {
   const dispatch = useDispatch();
   const { swal, loading, state, error, success, initialLoading, user } = props;
   const [modal, setModal] = useState(false);
-  const [view, setView] = useState(false);
 
   const [formData, setFormData] = useState({
     status: "",
@@ -121,7 +120,6 @@ const BasicInputElements = withSwal((props: any) => {
               size="15"
               className="cursor-pointer text-secondary"
               onClick={() => {
-                setView(true);
                 handleData(row.original);
                 toggle();
               }}
@@ -151,7 +149,7 @@ const BasicInputElements = withSwal((props: any) => {
           </Modal.Header>
           <Modal.Body>
             <Row>
-            <Row className="mt-1 mb-1">
+              <Row className="mt-1 mb-1">
                 <h4>Status</h4>
               </Row>
               <Col md={4}>

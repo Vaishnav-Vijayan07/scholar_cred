@@ -21,11 +21,11 @@ import { refreshComments } from "./redux/tickets/actions";
 const App = () => {
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state: RootState) => {
-    return {
-      user: state.Auth.user,
-    };
-  });
+  // const { user } = useSelector((state: RootState) => {
+  //   return {
+  //     user: state.Auth.user,
+  //   };
+  // });
 
   // console.log(socket);
 

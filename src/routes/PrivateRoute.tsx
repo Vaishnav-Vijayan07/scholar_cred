@@ -37,7 +37,6 @@ const PrivateRoute = ({ component: Component, roles, ...rest }: PrivateRouteProp
     // No matching role found, so redirect to the unauthorized page
     return <Navigate to={{ pathname: "/unauthorized" }} />;
   }
-  console.log("HERE");
   // authorised so return component
   return <Component />;
 };

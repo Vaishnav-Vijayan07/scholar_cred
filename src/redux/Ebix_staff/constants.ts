@@ -4,5 +4,7 @@ export enum EbixStaffActionTypes {
   CREATE_EBIX_STAFF = "@@ebix_staff/CREATE_EBIX_STAFF",
   GET_EBIX_STAFF = "@@ebix_staff/GET_EBIX_STAFF",
   GET_DOCS = "@@ebix_staff/GET_DOCS",
+  UPLOAD_SWIFT = "@@ebix_staff/UPLOAD_SWIFT",
+  GET_DETAILS = "@@ebix_staff/GET_DETAILS",
   DELETE_EBIX_STAFF = "@@ebix_staff/DELETE_EBIX_STAFF",
 }

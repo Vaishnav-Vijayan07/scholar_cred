@@ -7,15 +7,7 @@ const DocsColumn = ({ row }: any) => {
   ];
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "10px",
-      }}
-    >
+    <div>
       {documents.map((doc, index) => (
         <a href={doc.url} target="_blank" rel="noopener noreferrer">
           <div

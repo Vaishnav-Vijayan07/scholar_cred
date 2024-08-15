@@ -178,7 +178,7 @@ const BasicInputElements = withSwal((props: any) => {
                     className="btn-sm btn-blue waves-effect waves-light"
                     onClick={() => toggle()}
                   >
-                    <i className="mdi mdi-plus-circle"></i> Set Makeup Amount
+                    <i className="mdi mdi-plus-circle"></i> Set Markup Amount
                   </Button> */}
                 </div>
                 {/* <h4 className="header-title mb-4">Manage Consultant</h4> */}

@@ -1,20 +1,9 @@
 import * as yup from "yup";
 import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Button,
-  Modal,
-  Alert,
-  Spinner,
-} from "react-bootstrap";
+import { Row, Col, Card, Spinner } from "react-bootstrap";
 import Table from "../../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
 
 // components
 import PageTitle from "../../../components/PageTitle";
@@ -24,50 +13,55 @@ import { RootState } from "../../../redux/store";
 import { sizePerPageList } from "../Super-admin/data";
 import { getDocs } from "../../../redux/Ebix_staff/actions";
 import DocsColumn from "./DocsColumn";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, initialLoading } = props;
   const dispatch = useDispatch();
 
+  const [downloading, setDownloading] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+
   //Table data
   const records = state;
 
-  const handleDownloadZip = async (name: string, documents: any) => {
-    const zip = new JSZip();
-    console.log(documents);
+  const handleDownload = async (
+    full_name: string,
+    documents: any,
+    rowIndex: any
+  ) => {
+    setDownloading((prevState) => ({ ...prevState, [rowIndex]: true }));
+    const ImageUrls = {
+      passport_url: documents.passport_url,
+      pan_card_url: documents.pan_card_url,
+      offer_letter_url: documents.offer_letter_url,
+      form_a2_url: documents.form_a2_url,
+    };
 
-    for (const doc of documents) {
-      const urls = {
-        passport_url: doc.passport_url,
-        pan_card_url: doc.pan_card_url,
-        offer_letter_url: doc.offer_letter_url,
-        form_a2_url: doc.form_a2_url,
-      };
-
-      console.log(urls);
-
-      return;
-
-      for (const [key, url] of Object.entries(urls)) {
-        try {
-          const response = await fetch(url);
-          const blob = await response.blob();
-          const filename = `${doc.full_name}_${key}.pdf`; // Customize filename as needed
-          zip.file(filename, blob);
-        } catch (error) {
-          console.error(`Failed to download ${url}:`, error);
+    try {
+      const response = await axios.post(
+        "/download-pdf",
+        { ImageUrls },
+        {
+          responseType: "blob",
         }
-      }
-    }
+      );
 
-    zip
-      .generateAsync({ type: "blob" })
-      .then((content) => {
-        saveAs(content, "documents.zip");
-      })
-      .catch((error) => {
-        console.error("Error generating zip:", error);
-      });
+      // Create a link element
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${full_name}.zip`); // Set the file name
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error downloading files:", error);
+    } finally {
+      setDownloading((prevState) => ({ ...prevState, [rowIndex]: false }));
+    }
   };
 
   //handling update logic
@@ -100,54 +94,60 @@ const BasicInputElements = withSwal((props: any) => {
       sort: true,
     },
     {
-      Header: "Forex Amount",
-      accessor: "amount",
-      sort: true,
-    },
-    {
-      Header: "Buy Rate",
-      accessor: "exchange_rate",
-      sort: true,
-    },
-    {
       Header: "Docs",
       accessor: "",
       sort: true,
-      Cell: ({ row }: any) => <DocsColumn row={row} />,
+      Cell: ({ row }: any) => {
+        const rowIndex = row.index;
+        return (
+          <>
+            <div className="d-flex justify-content-center">
+              <div>
+                <DocsColumn row={row} />,
+              </div>
+              {downloading[rowIndex] ? (
+                <Spinner animation="border" />
+              ) : (
+                <div className="d-flex justify-content-center flex-column align-items-center">
+                  <FeatherIcons
+                    icon="download"
+                    className="cursor-pointer text-primary"
+                    onClick={() => {
+                      const { full_name } = row.original;
+                      handleDownload(full_name, row.original, rowIndex);
+                    }}
+                  />
+                  <p>Download All</p>
+                </div>
+              )}
+            </div>
+          </>
+        );
+      },
     },
 
     {
       Header: "Action",
       accessor: "",
       sort: true,
-      Cell: ({ row }: any) => (
-        <>
-          <div className="d-flex flex-column gap-1 text-center align-items-center">
-            <FeatherIcons
-              icon="download"
-              className="cursor-pointer text-primary"
-              onClick={() => {
-                const {
-                  full_name,
-                  passport_url,
-                  pan_card_url,
-                  offer_letter_url,
-                  form_a2_url,
-                } = row.original;
-
-                handleDownloadZip(full_name, [
-                  passport_url,
-                  pan_card_url,
-                  offer_letter_url,
-                  form_a2_url,
-                ]);
-                // toggleResponsiveModal();
-              }}
-            />
-            <p>Download All</p>
-          </div>
-        </>
-      ),
+      Cell: ({ row }: any) => {
+        return (
+          <>
+            <div className="d-flex justify-content-center">
+              <Link
+                to={`/ebix_staff/students/${row.original.forex_data_id}`}
+                state={row.original.forex_data_id}
+              >
+                <FeatherIcons
+                  icon="eye"
+                  size="15"
+                  className="cursor-pointer text-secondary"
+                />
+              </Link>
+            </div>
+          </>
+        );
+      },
     },
   ];
 
@@ -200,25 +200,35 @@ const StudentsList = () => {
     })
   );
 
+  console.log(initialLoading);
+
   useEffect(() => {
     dispatch(getDocs());
   }, []);
 
+  if (initialLoading) {
+    return (
+      <Spinner
+        animation="border"
+        style={{ position: "absolute", top: "50%", left: "50%" }}
+      />
+    );
+  }
   return (
     <React.Fragment>
       <PageTitle
         breadCrumbItems={[
           {
-            label: "Cred Admin Management",
-            path: "/cred_admin/cred_user_management",
+            label: "Order Docs Management",
+            path: "/ebix_staff/students_list",
           },
           {
-            label: "Cred Admin Users",
-            path: "/cred_admin/cred_user_management",
+            label: "Order Items",
+            path: "",
             active: true,
           },
         ]}
-        title={"Cred Admin Management"}
+        title={"Order Docs Management"}
       />
       <Row>
         <Col>

@@ -24,8 +24,20 @@ function getEbixDocsApi() {
   return api.get("/forex/ebix_staff/docs", {});
 }
 
+function getEbixPayApi(forex_id: string) {
+  return api.get(`/forex/ebix_staff/${forex_id}`, {});
+}
+
 function deleteEbixUsersApi(id: number) {
   return api.delete(`${baseUrl}?id=${id}`);
+}
+
+function uploadSwiftCopyApi(params: {
+  file: File;
+  forex_id: string;
+  student_id: string;
+}) {
+  return api.createWithFile("/forex/ebix_staff/docs", params);
 }
 
 export {
@@ -33,4 +45,6 @@ export {
   getCredEbixUsersApi,
   deleteEbixUsersApi,
   getEbixDocsApi,
+  getEbixPayApi,
+  uploadSwiftCopyApi,
 };
