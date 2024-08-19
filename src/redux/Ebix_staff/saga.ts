@@ -17,6 +17,7 @@ import {
   getCredEbixUsersApi,
   getEbixDocsApi,
   getEbixPayApi,
+  getSwiftCopiesApi,
   uploadSwiftCopyApi,
 } from "../../helpers/api/ebix_staff";
 
@@ -93,6 +94,19 @@ function* getEbixStaffDocs(): SagaIterator {
   }
 }
 
+function* getSwift(): SagaIterator {
+  try {
+    const response = yield call(getSwiftCopiesApi);
+    const SwiftCopies = response.data.data;
+
+    yield put(
+      ebixStaffResponseSuccess(EbixStaffActionTypes.GET_SWIFT, SwiftCopies)
+    );
+  } catch (error: any) {
+    yield put(ebixStaffResponseError(EbixStaffActionTypes.GET_SWIFT, error));
+  }
+}
+
 function* uploadSwiftCopy({
   payload: { file, forex_id, student_id },
 }: EbixUserData): SagaIterator {
@@ -165,6 +179,10 @@ export function* watchGetEbixUserDocs() {
   yield takeEvery(EbixStaffActionTypes.GET_DOCS, getEbixStaffDocs);
 }
 
+export function* watchGetEbixSwiftCopies() {
+  yield takeEvery(EbixStaffActionTypes.GET_SWIFT, getSwift);
+}
+
 export function* watchGetEbixUserPay() {
   yield takeEvery(EbixStaffActionTypes.GET_DETAILS, getEbixPayDetails);
 }
@@ -181,6 +199,7 @@ function* ebixStaffSaga() {
     fork(watchGetEbixUserDocs),
     fork(watchGetEbixUserPay),
     fork(watchUploadSwiftCopy),
+    fork(watchGetEbixSwiftCopies),
   ]);
 }
 

@@ -6,6 +6,7 @@ const INIT_STATE = {
   ebixStaff: [],
   ebixDocs: [],
   payDetails: [],
+  swiftCopies: [],
   loading: false,
   initialLoading: true,
   error: null,
@@ -27,6 +28,7 @@ interface AuthActionType {
     | EbixStaffActionTypes.GET_EBIX_STAFF
     | EbixStaffActionTypes.GET_DOCS
     | EbixStaffActionTypes.UPLOAD_SWIFT
+    | EbixStaffActionTypes.GET_SWIFT
     | EbixStaffActionTypes.GET_DETAILS
     | EbixStaffActionTypes.DELETE_EBIX_STAFF;
   payload: {
@@ -84,6 +86,15 @@ const EbixStaffReducer = (
           };
         }
 
+        case EbixStaffActionTypes.GET_SWIFT: {
+          return {
+            ...state,
+            loading: false,
+            initialLoading: false,
+            swiftCopies: action.payload.data,
+          };
+        }
+
         case EbixStaffActionTypes.UPLOAD_SWIFT: {
           return {
             ...state,
@@ -132,6 +143,15 @@ const EbixStaffReducer = (
           };
         }
 
+        case EbixStaffActionTypes.GET_SWIFT: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+            initialLoading: false,
+          };
+        }
+
         case EbixStaffActionTypes.GET_DETAILS: {
           return {
             ...state,
@@ -168,6 +188,8 @@ const EbixStaffReducer = (
     case EbixStaffActionTypes.GET_DOCS:
       return { ...state, loading: true, initialLoading: true };
     case EbixStaffActionTypes.GET_DETAILS:
+      return { ...state, loading: true, initialLoading: true };
+    case EbixStaffActionTypes.GET_SWIFT:
       return { ...state, loading: true, initialLoading: true };
     case EbixStaffActionTypes.UPLOAD_SWIFT:
       return { ...state, loading: true };

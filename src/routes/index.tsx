@@ -103,6 +103,10 @@ const EbixStafftudent = React.lazy(
   () => import("../pages/Forex/Ebix_staff/StudentDetails")
 );
 
+const EbixSwiftCopyList = React.lazy(
+  () => import("../pages/Forex/Ebix_staff/SwiftCopyList")
+);
+
 export interface RoutesProps {
   path: RouteProps["path"];
   name?: string;
@@ -496,7 +500,7 @@ const EbixStaffRoutes = {
       path: "/ebix_staff/swift_copies",
       name: "Staff",
       element: (
-        <PrivateRoute roles={["EBIX_STAFF"]} component={EbixStafftudentsList} />
+        <PrivateRoute roles={["EBIX_STAFF"]} component={EbixSwiftCopyList} />
       ),
       route: PrivateRoute,
     },

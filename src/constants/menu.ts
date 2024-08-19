@@ -282,6 +282,34 @@ const MENU_ITEMS: MenuItemTypes[] = [
     ],
   },
   {
+    key: "forex",
+    label: "Transactions",
+    icon: "book",
+    isTitle: false,
+    url: "/forex/consultants/transactions",
+    roles: [
+      // "CRED_ADMIN",
+      // "SUPER_USER",
+      "CONSULTANT_ADMIN",
+      // "CONSULTANT_STAFF",
+      // "CRED_STAFF",
+    ],
+  },
+  {
+    key: "forex",
+    label: "Commissions",
+    icon: "book",
+    isTitle: false,
+    url: "/forex/consultants/commissions",
+    roles: [
+      // "CRED_ADMIN",
+      // "SUPER_USER",
+      "CONSULTANT_ADMIN",
+      // "CONSULTANT_STAFF",
+      // "CRED_STAFF",
+    ],
+  },
+  {
     key: "ebix_staff",
     label: "Documents",
     isTitle: true,
@@ -297,7 +325,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
   },
   {
     key: "ebix_staff",
-    label: "Swift Copy",
+    label: "Swift Copies",
     icon: "file-text",
     isTitle: false,
     url: "/ebix_staff/swift_copies",

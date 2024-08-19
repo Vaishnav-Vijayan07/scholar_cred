@@ -25,7 +25,6 @@ const PersonalInfo = ({ currentCommision }: any) => {
   const handleInputChange = (e: any) => {
     setErrorMsg("");
     const { value } = e.target;
-
     setCommision(value);
   };
 
@@ -34,7 +33,7 @@ const PersonalInfo = ({ currentCommision }: any) => {
       setErrorMsg("Please enter commision");
       return;
     }
-    if (parseInt(commision) < 0) {
+    if (parseInt(commision) < 0 || parseInt(commision) > 5.0) {
       setErrorMsg("Entered commision is not valid");
       return;
     }
@@ -59,10 +58,10 @@ const PersonalInfo = ({ currentCommision }: any) => {
         <Row>
           <Col>
             <Form.Group className="mb-3" controlId="old_password">
-              <Form.Label>Markup amount</Form.Label>
+              <Form.Label>Markup amount (Max limit is 5.00)</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Enter your amount eg: 590.23"
+                placeholder="Enter your amount eg: 2.00"
                 name="commision"
                 value={commision}
                 onChange={handleInputChange}

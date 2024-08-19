@@ -76,56 +76,29 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "email",
     },
     {
-      Header: "Commission",
-      accessor: "commision",
-    },
-    {
-      Header: "Total amount",
-      accessor: "amount_inr",
-    },
-    {
       Header: "Paid to",
       accessor: "paid_to",
     },
     {
-      Header: "Payment status",
-      accessor: "status",
+      Header: "Commission",
+      accessor: "commision",
     },
-
-    // {
-    //   Header: "Actions",
-    //   accessor: "",
-    //   sort: false,
-    //   Cell: ({ row }: any) => (
-    //     <div className="d-flex justify-content-center align-items-center gap-2">
-    //       {/* Edit Icon */}
-    //       <Link to={`/users/consultant/${row.original.id}`}>
-    //         <FeatherIcons
-    //           icon="eye"
-    //           size="15"
-    //           className="cursor-pointer text-secondary"
-    //         />
-    //       </Link>
-    //       <FeatherIcons
-    //         icon="edit"
-    //         size="15"
-    //         className="cursor-pointer text-secondary"
-    //         onClick={() => {
-    //           handleUpdate(row.original);
-    //           openModalWithClass("modal-right");
-    //         }}
-    //       />
-
-    //       {/* Delete Icon */}
-    //       <FeatherIcons
-    //         icon="trash-2"
-    //         size="15"
-    //         className="cursor-pointer text-secondary"
-    //         onClick={() => handleDelete(row.original.id)}
-    //       />
-    //     </div>
-    //   ),
-    // },
+    {
+      Header: "Forex Amount",
+      accessor: "declaration_amount",
+    },
+    {
+      Header: "Buy Rate",
+      accessor: "exchange_rate",
+    },
+    {
+      Header: "Sub Total",
+      accessor: "sub_total",
+    },
+    {
+      Header: "Amount Paid",
+      accessor: "amount_payable",
+    },
   ];
 
   if (initialLoading) {
@@ -140,49 +113,10 @@ const BasicInputElements = withSwal((props: any) => {
   return (
     <>
       <>
-        <CommisionsData commisionDetails={state} />
         <Row className="justify-content-between px-2">
-          {/* <Modal show={modal} onHide={toggle} centered>
-            <Modal.Body>
-              <Form>
-               
-                <div className="text-end">
-                  <Button
-                    variant="danger"
-                    id="button-addon2"
-                    // disabled={loading}
-                    className="mt-1 waves-effect waves-light me-2"
-                    onClick={() => toggle()}
-                  >
-                    Close
-                  </Button>
-
-                  <Button
-                    type="button"
-                    variant="success"
-                    id="button-addon2"
-                    className="waves-effect waves-light mt-1"
-                    disabled={errMsg !== ""}
-                    onClick={handleSave}
-                  >
-                    Save
-                  </Button>
-                </div>
-              </Form>
-            </Modal.Body>
-          </Modal> */}
           <Col className="p-0 form__card">
             <Card className="bg-white">
               <Card.Body>
-                <div className="d-flex float-end gap-2">
-                  {/* <Button
-                    className="btn-sm btn-blue waves-effect waves-light"
-                    onClick={() => toggle()}
-                  >
-                    <i className="mdi mdi-plus-circle"></i> Set Markup Amount
-                  </Button> */}
-                </div>
-                {/* <h4 className="header-title mb-4">Manage Consultant</h4> */}
                 <Table
                   columns={columns}
                   data={state ? state : []}

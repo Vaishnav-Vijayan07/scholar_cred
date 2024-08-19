@@ -14,14 +14,16 @@ function createEbixUsersApi(params: {
   return api.create(`${baseUrl}`, params);
 }
 
-// account
-
 function getCredEbixUsersApi() {
   return api.get(`${baseUrl}`, {});
 }
 
 function getEbixDocsApi() {
   return api.get("/forex/ebix_staff/docs", {});
+}
+
+function getSwiftCopiesApi() {
+  return api.get("/forex/ebix_staff/docs/swift_copies", {});
 }
 
 function getEbixPayApi(forex_id: string) {
@@ -47,4 +49,5 @@ export {
   getEbixDocsApi,
   getEbixPayApi,
   uploadSwiftCopyApi,
+  getSwiftCopiesApi,
 };

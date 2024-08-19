@@ -10,6 +10,7 @@ const UploadBox = ({ error, state, loading }: any) => {
   const dispatch = useDispatch();
 
   const { forex_id, student_id } = state;
+  const shortUrl = state?.swift_url?.split("/").slice(0, 3).join("/") + "...";
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -57,7 +58,14 @@ const UploadBox = ({ error, state, loading }: any) => {
               </div>
             </div>
             {state?.swift_url ? (
-              <Link to={state?.swift_url}>{state?.swift_url}</Link>
+              <>
+                <p className="text-muted mb-2 font-13">
+                  <strong>Swift copy URL :</strong>
+                  <Link to={state?.swift_url}>
+                    <span className="ms-2">{shortUrl}</span>
+                  </Link>
+                </p>
+              </>
             ) : (
               <div className="">
                 <input

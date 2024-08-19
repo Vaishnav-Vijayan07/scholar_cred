@@ -9,6 +9,7 @@ export interface AdminActionType {
     | EbixStaffActionTypes.GET_EBIX_STAFF
     | EbixStaffActionTypes.GET_DOCS
     | EbixStaffActionTypes.UPLOAD_SWIFT
+    | EbixStaffActionTypes.GET_SWIFT
     | EbixStaffActionTypes.GET_DETAILS
     | EbixStaffActionTypes.DELETE_EBIX_STAFF;
   payload: {} | string;
@@ -60,6 +61,11 @@ export const getEbixUsers = (): AdminActionType => ({
 
 export const getDocs = (): AdminActionType => ({
   type: EbixStaffActionTypes.GET_DOCS,
+  payload: {},
+});
+
+export const getSwiftDocs = (): AdminActionType => ({
+  type: EbixStaffActionTypes.GET_SWIFT,
   payload: {},
 });
 
