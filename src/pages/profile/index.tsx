@@ -80,17 +80,32 @@ const Profile = () => {
                       Settings
                     </Nav.Link>
                   </Nav.Item>
-                  {roles.includes(user?.type_name) && (
-                    <Nav.Item as="li" className="nav-item">
-                      <Nav.Link
-                        href="#"
-                        eventKey="commision"
-                        className="nav-link cursor-pointer"
-                      >
-                        Set Markup Amount
-                      </Nav.Link>
-                    </Nav.Item>
-                  )}
+                  {roles.includes(user?.type_name) &&
+                    (user?.type_name == "CONSULTANT_ADMIN" ? (
+                      user?.isforexenabled ? (
+                        <Nav.Item as="li" className="nav-item">
+                          <Nav.Link
+                            href="#"
+                            eventKey="commision"
+                            className="nav-link cursor-pointer"
+                          >
+                            Set Markup Amount
+                          </Nav.Link>
+                        </Nav.Item>
+                      ) : (
+                        ""
+                      )
+                    ) : (
+                      <Nav.Item as="li" className="nav-item">
+                        <Nav.Link
+                          href="#"
+                          eventKey="commision"
+                          className="nav-link cursor-pointer"
+                        >
+                          Set Markup Amount
+                        </Nav.Link>
+                      </Nav.Item>
+                    ))}
                 </Nav>
 
                 <Tab.Content>

@@ -34,12 +34,19 @@ const ConsultantStaff = React.lazy(
 const TransactionsConsultant = React.lazy(
   () => import("../pages/Forex/Consultant/Transactions")
 );
+
+const CommisionSummary = React.lazy(
+  () => import("../pages/Forex/Cred-admin/Summary")
+);
+
 const CommissionsConsultant = React.lazy(
   () => import("../pages/Forex/Consultant/Commissions")
 );
+
 const TransactionsAdmin = React.lazy(
   () => import("../pages/Forex/Cred-admin/Transactions")
 );
+
 const CommissionsAdmin = React.lazy(
   () => import("../pages/Forex/Cred-admin/Commissions")
 );
@@ -437,7 +444,7 @@ const ForexRoutes = {
       name: "Staff",
       element: (
         <PrivateRoute
-          roles={["CONSULTANT_ADMIN"]}
+          roles={["CONSULTANT_ADMIN", "CONSULTANT_STAFF"]}
           component={TransactionsConsultant}
         />
       ),
@@ -458,7 +465,10 @@ const ForexRoutes = {
       path: "/forex/transactions",
       name: "Staff",
       element: (
-        <PrivateRoute roles={["CRED_ADMIN"]} component={TransactionsAdmin} />
+        <PrivateRoute
+          roles={["CRED_ADMIN", "CRED_STAFF"]}
+          component={TransactionsAdmin}
+        />
       ),
       route: PrivateRoute,
     },
@@ -467,6 +477,14 @@ const ForexRoutes = {
       name: "Staff",
       element: (
         <PrivateRoute roles={["CRED_ADMIN"]} component={CommissionsAdmin} />
+      ),
+      route: PrivateRoute,
+    },
+    {
+      path: "/forex/settlements",
+      name: "Staff",
+      element: (
+        <PrivateRoute roles={["CRED_ADMIN"]} component={CommisionSummary} />
       ),
       route: PrivateRoute,
     },

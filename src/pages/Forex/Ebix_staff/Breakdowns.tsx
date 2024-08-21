@@ -1,8 +1,6 @@
 import { Col, Form, Row } from "react-bootstrap";
 
 const Breakdowns = ({ state }: any) => {
-  console.log(state);
-
   return (
     <>
       <>
@@ -104,6 +102,54 @@ const Breakdowns = ({ state }: any) => {
               />
             </Form.Group>
           </Col>
+          <Col md={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Purpose</Form.Label>
+              <Form.Control
+                type="text"
+                value={state?.purpose_name || ""}
+                readOnly
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #ced4da",
+                  borderRadius: "0",
+                  backgroundColor: "#f8f9fa",
+                }}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Source</Form.Label>
+              <Form.Control
+                type="text"
+                value={state?.source_name || ""}
+                readOnly
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #ced4da",
+                  borderRadius: "0",
+                  backgroundColor: "#f8f9fa",
+                }}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Remitter</Form.Label>
+              <Form.Control
+                type="text"
+                value={state?.remitter_name || ""}
+                readOnly
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #ced4da",
+                  borderRadius: "0",
+                  backgroundColor: "#f8f9fa",
+                }}
+              />
+            </Form.Group>
+          </Col>
         </Row>
 
         <h5 className="mb-3 text-uppercase bg-light p-2 mt-3">Charges</h5>
@@ -189,12 +235,30 @@ const Breakdowns = ({ state }: any) => {
               />
             </Form.Group>
           </Col>
+              {state?.consultant_id && (
+                <Col md={4}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Consultant Commision</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={state?.consultant_charge || ""}
+                      readOnly
+                      style={{
+                        border: "none",
+                        borderBottom: "1px solid #ced4da",
+                        borderRadius: "0",
+                        backgroundColor: "#f8f9fa",
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+              )}
           <Col md={4}>
             <Form.Group className="mb-3">
-              <Form.Label>Consultant Commision</Form.Label>
+              <Form.Label>Commision Added Buy Rate</Form.Label>
               <Form.Control
                 type="text"
-                value={state?.consultant_charge || ""}
+                value={state?.commission_added_rate || ""}
                 readOnly
                 style={{
                   border: "none",
@@ -264,6 +328,57 @@ const Breakdowns = ({ state }: any) => {
               <Form.Control
                 type="text"
                 value={state?.amount_payable || ""}
+                readOnly
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #ced4da",
+                  borderRadius: "0",
+                  backgroundColor: "#f8f9fa",
+                }}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Admin Commision Amount</Form.Label>
+              <Form.Control
+                type="text"
+                value={state?.admin_commision || ""}
+                readOnly
+                style={{
+                  border: "none",
+                  borderBottom: "1px solid #ced4da",
+                  borderRadius: "0",
+                  backgroundColor: "#f8f9fa",
+                }}
+              />
+            </Form.Group>
+          </Col>
+          {state?.consultant_id && (
+            <Col md={4}>
+              <Form.Group className="mb-3">
+                <Form.Label>Consultant Commision Amount</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={state?.consultant_commision || ""}
+                  readOnly
+                  style={{
+                    border: "none",
+                    borderBottom: "1px solid #ced4da",
+                    borderRadius: "0",
+                    backgroundColor: "#f8f9fa",
+                  }}
+                />
+              </Form.Group>
+            </Col>
+          )}
+
+          <Col md={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Total Commision</Form.Label>
+              <Form.Control
+                type="text"
+                value={state?.total_commision || ""}
                 readOnly
                 style={{
                   border: "none",

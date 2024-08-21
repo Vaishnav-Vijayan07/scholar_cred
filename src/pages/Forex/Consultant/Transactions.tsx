@@ -1,4 +1,10 @@
-import React, { useCallback, useDebugValue, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useDebugValue,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getConsultants } from "../../../redux/actions";
@@ -49,6 +55,8 @@ const BasicInputElements = withSwal((props: any) => {
   const { swal, loading, state, error, success, initialLoading, user } = props;
   const [modal, setModal] = useState(false);
   const [view, setView] = useState(false);
+
+  console.log(user);
 
   const [formData, setFormData] = useState({
     status: "",
@@ -126,6 +134,48 @@ const BasicInputElements = withSwal((props: any) => {
             />
           </div>
         ),
+      },
+    ],
+    [handleData, toggle]
+  );
+  const Staffcolumns = useMemo(
+    () => [
+      {
+        Header: "Sl No",
+        accessor: "",
+        Cell: ({ row }: any) => <>{row.index + 1}</>,
+        sort: false,
+      },
+      {
+        Header: "Student",
+        accessor: "student_name",
+        Cell: ({ row }: any) => (
+          <>{`${row.original.first_name} ${row.original.last_name}`}</>
+        ),
+      },
+      {
+        Header: "Email",
+        accessor: "email",
+      },
+      {
+        Header: "Payment To",
+        accessor: "paid_to",
+      },
+      {
+        Header: "Buy Rate",
+        accessor: "exchange_rate",
+      },
+      {
+        Header: "Forex Amout",
+        accessor: "declaration_amount",
+      },
+      {
+        Header: "Sub Total",
+        accessor: "sub_total",
+      },
+      {
+        Header: "Amount Payable",
+        accessor: "amount_payable",
       },
     ],
     [handleData, toggle]
@@ -440,22 +490,6 @@ const BasicInputElements = withSwal((props: any) => {
                   />
                 </Form.Group>
               </Col>
-              <Col md={4}>
-                <Form.Group className="mb-3" controlId="reference_id">
-                  <Form.Label>API Rate</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={formData?.api_rate || ""}
-                    readOnly
-                    style={{
-                      border: "none",
-                      borderBottom: "1px solid #ced4da",
-                      borderRadius: "0",
-                      backgroundColor: "#f8f9fa",
-                    }}
-                  />
-                </Form.Group>
-              </Col>
             </Row>
             <Row>
               <Col md={4}>
@@ -510,7 +544,7 @@ const BasicInputElements = withSwal((props: any) => {
                 {/* Additional buttons or actions */}
               </div>
               <Table
-                columns={columns}
+                columns={user?.role == 4 ? Staffcolumns : columns}
                 data={state || []}
                 pageSize={5}
                 sizePerPageList={sizePerPageList}

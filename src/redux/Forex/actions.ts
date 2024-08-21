@@ -15,6 +15,11 @@ export const getForexData = () => ({
   payload: {},
 });
 
+export const getSettlements = (year: number, month: number) => ({
+  type: ForexTypes.GET_SETTLEMENTS,
+  payload: { month,year },
+});
+
 export const getCommisions = () => ({
   type: ForexTypes.GET_COMMISIONS,
   payload: {},

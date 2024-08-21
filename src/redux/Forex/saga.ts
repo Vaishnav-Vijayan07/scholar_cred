@@ -5,10 +5,8 @@ import { ForexTypes } from "./constants";
 import {
   getForexCommisionsApi,
   getForexDataApi,
+  getSettlementsApi,
 } from "../../helpers/api/forex";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
-import { getUserFromCookie } from "../../helpers/api/apiCore";
 
 function* getForexData(): SagaIterator {
   try {
@@ -20,17 +18,9 @@ function* getForexData(): SagaIterator {
     yield put(forexApiError(ForexTypes.GET_FOREX_DATA, error));
   }
 }
+
 function* getForexCommisions(): SagaIterator {
   try {
-    // let response;
-    // const user = getUserFromCookie();
-
-    // // if (user.role_name == "CRED_ADMIN") {
-    // //   response = yield call(getForexDataCredAdminApi);
-    // // } else {
-    // //   response = yield call(getForexDataApi);
-    // // }
-
     const response = yield call(getForexCommisionsApi);
     const data = response.data.data;
     yield put(forexApiSuccess(ForexTypes.GET_COMMISIONS, data));
@@ -39,15 +29,34 @@ function* getForexCommisions(): SagaIterator {
   }
 }
 
+function* getSettlementsData({ payload: { year,month } }: any): SagaIterator {
+  try {
+    const response = yield call(getSettlementsApi, year,month);
+    const data = response.data.data;
+    yield put(forexApiSuccess(ForexTypes.GET_SETTLEMENTS, data));
+  } catch (error: any) {
+    yield put(forexApiError(ForexTypes.GET_SETTLEMENTS, error));
+  }
+}
+
 export function* watchGetForexData() {
   yield takeEvery(ForexTypes.GET_FOREX_DATA, getForexData);
 }
+
 export function* watchGetForexCommisions() {
   yield takeEvery(ForexTypes.GET_COMMISIONS, getForexCommisions);
 }
 
+export function* watchGetSettlementsData() {
+  yield takeEvery(ForexTypes.GET_SETTLEMENTS, getSettlementsData);
+}
+
 function* forexSaga() {
-  yield all([fork(watchGetForexData), fork(watchGetForexCommisions)]);
+  yield all([
+    fork(watchGetForexData),
+    fork(watchGetForexCommisions),
+    fork(watchGetSettlementsData),
+  ]);
 }
 
 export default forexSaga;

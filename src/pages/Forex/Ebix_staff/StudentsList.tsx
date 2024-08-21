@@ -8,7 +8,6 @@ import FeatherIcons from "feather-icons-react";
 // components
 import PageTitle from "../../../components/PageTitle";
 import { useDispatch, useSelector } from "react-redux";
-// import { createadminStaff, deleteAdminStaff, editAdminStaff, getAdminStaff } from "../../redux/adminStaffs/actions";
 import { RootState } from "../../../redux/store";
 import { sizePerPageList } from "../Super-admin/data";
 import { getDocs } from "../../../redux/Ebix_staff/actions";
@@ -200,7 +199,6 @@ const StudentsList = () => {
     })
   );
 
-  console.log(initialLoading);
 
   useEffect(() => {
     dispatch(getDocs());
@@ -223,7 +221,7 @@ const StudentsList = () => {
             path: "/ebix_staff/students_list",
           },
           {
-            label: "Order Items",
+            label: "Items to upload",
             path: "",
             active: true,
           },

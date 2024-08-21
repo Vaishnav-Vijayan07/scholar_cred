@@ -15,7 +15,7 @@ function createConsultant(params: {
   location: string;
   pin_code: string;
   pan_no: string;
-  // isForex: boolean;
+  isForex: boolean;
   created_by: number;
 }) {
 
@@ -39,7 +39,7 @@ function updateConsultant(
     location: string;
     pin_code: string;
     pan_no: string;
-    // isForex: boolean;
+    isForex: boolean;
     created_by: number;
   }
 ) {

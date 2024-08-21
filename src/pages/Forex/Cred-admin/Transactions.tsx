@@ -1,25 +1,11 @@
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getConsultants } from "../../../redux/actions";
 import { RootState } from "../../../redux/store";
 import PageTitle from "../../../components/PageTitle";
 
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Button,
-  Modal,
-  Alert,
-  Spinner,
-  Badge,
-} from "react-bootstrap";
+import { Row, Col, Card, Form, Button, Modal, Spinner } from "react-bootstrap";
 import Table from "../../../components/Table";
 import { withSwal } from "react-sweetalert2";
-import axios from "axios";
-import { showSuccessAlert } from "../../../constants/alerts";
 import FeatherIcons from "feather-icons-react";
 import { getForexData } from "../../../redux/Forex/actions";
 
@@ -43,7 +29,6 @@ const sizePerPageList = [
 ];
 
 const BasicInputElements = withSwal((props: any) => {
-  const dispatch = useDispatch();
   const { swal, loading, state, error, success, initialLoading, user } = props;
   const [modal, setModal] = useState(false);
 
@@ -54,11 +39,13 @@ const BasicInputElements = withSwal((props: any) => {
     ebixorderno: "",
     reference_id: "",
     transaction_id: "",
+    purpose_name: "",
+    source_name: "",
+    remitter_name: "",
     id: "",
     forex_id: "",
     service_charge: "",
     gst_charge: "",
-    payment_gateway_charge: "",
     nostro_charge: "",
     amount_payable: "",
     tcs_charge: "",
@@ -252,15 +239,12 @@ const BasicInputElements = withSwal((props: any) => {
               </Col>
             </Row>
             <Row>
-              <Row className="mt-3 mb-1">
-                <h4>Charges</h4>
-              </Row>
               <Col md={4}>
-                <Form.Group className="mb-3" controlId="transaction_id">
-                  <Form.Label>Transaction Id</Form.Label>
+                <Form.Group className="mb-3" controlId="purpose">
+                  <Form.Label>Purpose</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.transaction_id || ""}
+                    value={formData?.purpose_name || ""}
                     readOnly
                     style={{
                       border: "none",
@@ -272,11 +256,11 @@ const BasicInputElements = withSwal((props: any) => {
                 </Form.Group>
               </Col>
               <Col md={4}>
-                <Form.Group className="mb-3" controlId="reference_id">
-                  <Form.Label>Reference Id</Form.Label>
+                <Form.Group className="mb-3" controlId="source">
+                  <Form.Label>Source</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.reference_id || ""}
+                    value={formData?.source_name || ""}
                     readOnly
                     style={{
                       border: "none",
@@ -288,11 +272,11 @@ const BasicInputElements = withSwal((props: any) => {
                 </Form.Group>
               </Col>
               <Col md={4}>
-                <Form.Group className="mb-3" controlId="reference_id">
-                  <Form.Label>Ebix OrderNo.</Form.Label>
+                <Form.Group className="mb-3" controlId="remitter">
+                  <Form.Label>Remitter</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.ebixorderno || ""}
+                    value={formData?.remitter_name || ""}
                     readOnly
                     style={{
                       border: "none",
@@ -305,6 +289,9 @@ const BasicInputElements = withSwal((props: any) => {
               </Col>
             </Row>
             <Row>
+              <Row className="mt-3 mb-1">
+                <h4>Charges</h4>
+              </Row>
               <Col md={4}>
                 <Form.Group className="mb-3" controlId="transaction_id">
                   <Form.Label>Tcs Charge</Form.Label>
@@ -343,6 +330,40 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Control
                     type="text"
                     value={formData?.nostro_charge || ""}
+                    readOnly
+                    style={{
+                      border: "none",
+                      borderBottom: "1px solid #ced4da",
+                      borderRadius: "0",
+                      backgroundColor: "#f8f9fa",
+                    }}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+            <Col md={4}>
+                <Form.Group className="mb-3" controlId="reference_id">
+                  <Form.Label>Consultant Makeup Amount</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={formData?.consultant_charge || ""}
+                    readOnly
+                    style={{
+                      border: "none",
+                      borderBottom: "1px solid #ced4da",
+                      borderRadius: "0",
+                      backgroundColor: "#f8f9fa",
+                    }}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group className="mb-3" controlId="reference_id">
+                  <Form.Label>Admin Makeup Amount</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={formData?.admin_charge || ""}
                     readOnly
                     style={{
                       border: "none",
@@ -440,56 +461,9 @@ const BasicInputElements = withSwal((props: any) => {
                   />
                 </Form.Group>
               </Col>
-              <Col md={4}>
-                <Form.Group className="mb-3" controlId="reference_id">
-                  <Form.Label>API Rate</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={formData?.api_rate || ""}
-                    readOnly
-                    style={{
-                      border: "none",
-                      borderBottom: "1px solid #ced4da",
-                      borderRadius: "0",
-                      backgroundColor: "#f8f9fa",
-                    }}
-                  />
-                </Form.Group>
-              </Col>
             </Row>
             <Row>
-              <Col md={4}>
-                <Form.Group className="mb-3" controlId="reference_id">
-                  <Form.Label>Consultant Makeup Amount</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={formData?.consultant_charge || ""}
-                    readOnly
-                    style={{
-                      border: "none",
-                      borderBottom: "1px solid #ced4da",
-                      borderRadius: "0",
-                      backgroundColor: "#f8f9fa",
-                    }}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={4}>
-                <Form.Group className="mb-3" controlId="reference_id">
-                  <Form.Label>Admin Makeup Amount</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={formData?.admin_charge || ""}
-                    readOnly
-                    style={{
-                      border: "none",
-                      borderBottom: "1px solid #ced4da",
-                      borderRadius: "0",
-                      backgroundColor: "#f8f9fa",
-                    }}
-                  />
-                </Form.Group>
-              </Col>
+              
             </Row>
             <div className="text-end">
               <Button

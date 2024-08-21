@@ -16,19 +16,23 @@ const PendingStudents = () => {
   const [sourceData, setSourceData] = useState([]);
   const [consultantData, setConsultantData] = useState([]);
 
-  const { state, loading, error, initialLoading } = useSelector((state: RootState) => ({
-    state: state.Students.students,
-    loading: state?.Students.loading,
-    error: state?.Students.error,
-    initialLoading: state?.Students.initialLoading,
-  }));
+  const { state, loading, error, initialLoading } = useSelector(
+    (state: RootState) => ({
+      state: state.Students.students,
+      loading: state?.Students.loading,
+      error: state?.Students.error,
+      initialLoading: state?.Students.initialLoading,
+    })
+  );
 
-  const { user, Authloading, credStaff, consultants } = useSelector((state: RootState) => ({
-    user: state.Auth.user,
-    credStaff: state.AdminStaff.adminStaff.data,
-    consultants: state.ConsultantReducer?.consultant?.data,
-    Authloading: state.Auth.loading,
-  }));
+  const { user, Authloading, credStaff, consultants } = useSelector(
+    (state: RootState) => ({
+      user: state.Auth.user,
+      credStaff: state.AdminStaff.adminStaff.data,
+      consultants: state.ConsultantReducer?.consultant?.data,
+      Authloading: state.Auth.loading,
+    })
+  );
 
   const getSourceData = () => {
     axios
@@ -63,12 +67,6 @@ const PendingStudents = () => {
       setConsultantData(ConsultantsArray);
     }
   }, [credStaff, consultants]);
-
-  console.log(state);
-  
-  console.log(state.filter((item: any) => item.status == true).length);
-  
-
 
   return (
     <React.Fragment>

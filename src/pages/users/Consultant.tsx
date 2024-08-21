@@ -136,7 +136,7 @@ const BasicInputElements = withSwal((props: any) => {
       business_address: item.business_address,
       email: item.email,
       phone: item.phone,
-      // isForex: item.isforexenabled,
+      isForex: item.isforexenabled,
       alternative_phone: item.alternative_phone,
       gst: item.gst,
       location: item.location,
@@ -232,7 +232,7 @@ const BasicInputElements = withSwal((props: any) => {
             formData.location,
             formData.pin_code,
             formData.pan_no,
-            // formData?.isForex,
+            formData?.isForex,
             1
           )
         );
@@ -263,7 +263,7 @@ const BasicInputElements = withSwal((props: any) => {
             formData.location,
             formData.pin_code,
             formData.pan_no,
-            // formData?.isForex,
+            formData?.isForex,
             1
           )
         );
@@ -370,20 +370,20 @@ const BasicInputElements = withSwal((props: any) => {
       accessor: "pan_no",
       sort: false,
     },
-    // {
-    //   Header: "Forex Privilage",
-    //   accessor: "",
-    //   sort: false,
-    //   Cell: ({ row }: any) => (
-    //     <p>
-    //       {row.original?.isforexenabled ? (
-    //         <Badge bg="success">Allowed</Badge>
-    //       ) : (
-    //         <Badge bg="danger">Not allowed</Badge>
-    //       )}
-    //     </p>
-    //   ),
-    // },
+    {
+      Header: "Forex Privilage",
+      accessor: "",
+      sort: false,
+      Cell: ({ row }: any) => (
+        <p>
+          {row.original?.isforexenabled ? (
+            <Badge bg="success">Allowed</Badge>
+          ) : (
+            <Badge bg="danger">Not allowed</Badge>
+          )}
+        </p>
+      ),
+    },
     {
       Header: "Actions",
       accessor: "",
@@ -572,7 +572,7 @@ const BasicInputElements = withSwal((props: any) => {
                       {/* </Col> */}
                     </Row>
 
-                    {/* <Row>
+                    <Row>
                       <Col>
                         <Form.Group className="mb-3">
                           <Form.Label>Allow Forex Privilege</Form.Label>
@@ -586,7 +586,7 @@ const BasicInputElements = withSwal((props: any) => {
                           />
                         </Form.Group>
                       </Col>
-                    </Row> */}
+                    </Row>
 
                     <Row>
                       <Col md={6}>

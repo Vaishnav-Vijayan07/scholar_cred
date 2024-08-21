@@ -225,7 +225,6 @@ const ticketDetails: TicketDetailsItems[] = [
 ];
 
 export const getStatusProperties = (statusName: string) => {
-
   switch (statusName.toLowerCase() || statusName) {
     case "closed":
       return { icon: "fe-trash-2", variant: "danger" };
@@ -240,10 +239,24 @@ export const getStatusProperties = (statusName: string) => {
   }
 };
 
-const roles =[]
+export const getItemProperties = (statusName: string) => {
+  switch (statusName.toLowerCase()) {
+    case "total":
+      return { icon: "fe-list", variant: "info" }; // 'info' for overall totals
+    case "success":
+      return { icon: "fe-check-circle", variant: "success" }; // 'success' for completed transactions
+    case "failed":
+      return { icon: "fe-x-circle", variant: "danger" }; // 'danger' for failed transactions
+    case "pending":
+      return { icon: "fe-clock", variant: "warning" }; // 'warning' for transactions awaiting completion
+    default:
+      return { icon: "fe-dollar-sign", variant: "success" }; // 'secondary' for any other status
+  }
+};
 
-export const getStatusNames = (statusCode:number)=>{
+const roles = [];
 
+export const getStatusNames = (statusCode: number) => {
   switch (statusCode) {
     case 1:
       return "Open";
@@ -256,7 +269,6 @@ export const getStatusNames = (statusCode:number)=>{
     default:
       return "";
   }
-  
-}
+};
 
 export { ticketDetails };
