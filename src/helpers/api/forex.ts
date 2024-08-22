@@ -17,4 +17,20 @@ function getSettlementsApi(year: number, month: number) {
   return api.get(`${baseUrl}`, {});
 }
 
-export { getForexDataApi, getForexCommisionsApi, getSettlementsApi };
+function getReportsApi(year: number, month: number, consultants: any) {
+  const baseUrl = `/forex/report_data`;
+  return api.create(`${baseUrl}`, { year, month, consultants });
+}
+
+function getConsultantsApi() {
+  const baseUrl = `/forex/report_data`;
+  return api.get(`${baseUrl}`, {});
+}
+
+export {
+  getForexDataApi,
+  getForexCommisionsApi,
+  getSettlementsApi,
+  getReportsApi,
+  getConsultantsApi,
+};

@@ -50,9 +50,15 @@ const TransactionsAdmin = React.lazy(
 const CommissionsAdmin = React.lazy(
   () => import("../pages/Forex/Cred-admin/Commissions")
 );
+
+const ReportSection = React.lazy(
+  () => import("../pages/Forex/Cred-admin/ReportSection")
+);
+
 const ConsultantDetails = React.lazy(
   () => import("../pages/users/ConsultantDetails")
 );
+
 const Staff = React.lazy(() => import("../pages/users/Staff"));
 const AdminUsers = React.lazy(() => import("../pages/super_admin/AdminUsers"));
 const ForbiddenPage = React.lazy(() => import("../pages/errors/ForbiddenPage"));
@@ -485,6 +491,14 @@ const ForexRoutes = {
       name: "Staff",
       element: (
         <PrivateRoute roles={["CRED_ADMIN"]} component={CommisionSummary} />
+      ),
+      route: PrivateRoute,
+    },
+    {
+      path: "/forex/commisions_report",
+      name: "Staff",
+      element: (
+        <PrivateRoute roles={["CRED_ADMIN"]} component={ReportSection} />
       ),
       route: PrivateRoute,
     },

@@ -27,8 +27,6 @@ const App = () => {
     };
   });
 
-  console.log(socket);
-
   useEffect(() => {
     if (user !== null) {
       console.log("here");
