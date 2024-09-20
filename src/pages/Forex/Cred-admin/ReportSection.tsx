@@ -16,6 +16,7 @@ import {
 import { months, years } from "./data";
 import commisionReportExcelDownload from "../../../helpers/api/excelDwonloadCommisionReport";
 import { showWarningAlert } from "../../../constants/alerts";
+import { formatCurrency, getInrType } from "../../../helpers/currencyConverter";
 
 const sizePerPageList = [
   {
@@ -51,6 +52,7 @@ const BasicInputElements = withSwal((props: any) => {
     company_mail: "",
     company_phone: "",
     company_markup_amount: "",
+    currency: "",
     status: "",
     custorderno: "",
     ebixorderno: "",
@@ -400,7 +402,12 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Label>Forex Amount</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.declaration_amount || ""}
+                    value={
+                      formatCurrency(
+                        formData?.declaration_amount,
+                        formData?.currency
+                      ) || ""
+                    }
                     readOnly
                     style={{
                       border: "none",
@@ -450,7 +457,7 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Label>Sub Total</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.sub_total || ""}
+                    value={getInrType(formData?.sub_total) || ""}
                     readOnly
                     style={{
                       border: "none",
@@ -466,7 +473,7 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Label>Amount Payable</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.amount_payable || ""}
+                    value={getInrType(formData?.amount_payable) || ""}
                     readOnly
                     style={{
                       border: "none",
@@ -503,7 +510,7 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Label>Commision Amount</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.consultant_commision || ""}
+                    value={getInrType(formData?.consultant_commision) || ""}
                     readOnly
                     style={{
                       border: "none",

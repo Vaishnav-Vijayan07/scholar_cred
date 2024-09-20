@@ -1,5 +1,6 @@
 import { Card, Col, Row } from "react-bootstrap";
 import Table from "../../../components/Table";
+import { getInrType } from "../../../helpers/currencyConverter";
 
 const sizePerPageList = [
   {
@@ -35,8 +36,11 @@ const ConsultantCommsions = ({ state }: any) => {
     },
     {
       Header: "Total Commision",
-      accessor: "total_consultant_commission",
+      accessor: "",
       sort: false,
+      Cell: ({ row }: any) => (
+        <>{getInrType(row?.original?.total_consultant_commission)}</>
+      ), // Use row.index to get the row number
     },
   ];
 

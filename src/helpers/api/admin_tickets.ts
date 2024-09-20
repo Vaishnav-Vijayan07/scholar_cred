@@ -3,8 +3,7 @@ const api = new APICore();
 
 function getAdminTickets(status: any) {
   const baseUrl = "/tickets_all";
-  const qeuryParams = { status: status };
-  return api.get(`${baseUrl}`, { params: qeuryParams });
+  return api.get(`${baseUrl}`, { status});
 }
 
 function getTicketStatus() {

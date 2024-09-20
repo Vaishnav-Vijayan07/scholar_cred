@@ -30,6 +30,7 @@ interface AuthActionType {
     | EbixStaffActionTypes.UPLOAD_SWIFT
     | EbixStaffActionTypes.GET_SWIFT
     | EbixStaffActionTypes.GET_DETAILS
+    | EbixStaffActionTypes.UPDATE_BOOKING_STATUS
     | EbixStaffActionTypes.DELETE_EBIX_STAFF;
   payload: {
     actionType?: string;
@@ -66,6 +67,7 @@ const EbixStaffReducer = (
             loading: false,
             initialLoading: false,
             ebixStaff: action.payload.data,
+            error: null,
           };
         }
         case EbixStaffActionTypes.GET_DOCS: {
@@ -74,6 +76,7 @@ const EbixStaffReducer = (
             loading: false,
             initialLoading: false,
             ebixDocs: action.payload.data,
+            error: null,
           };
         }
 
@@ -83,6 +86,7 @@ const EbixStaffReducer = (
             loading: false,
             initialLoading: false,
             payDetails: action.payload.data,
+            error: null,
           };
         }
 
@@ -92,6 +96,7 @@ const EbixStaffReducer = (
             loading: false,
             initialLoading: false,
             swiftCopies: action.payload.data,
+            error: null,
           };
         }
 
@@ -99,6 +104,16 @@ const EbixStaffReducer = (
           return {
             ...state,
             loading: false,
+            error: null,
+          };
+        }
+
+        case EbixStaffActionTypes.UPDATE_BOOKING_STATUS: {
+          showSuccessAlert(action.payload.data);
+          return {
+            ...state,
+            loading: false,
+            error: null,
           };
         }
 
@@ -170,6 +185,14 @@ const EbixStaffReducer = (
           };
         }
 
+        case EbixStaffActionTypes.UPDATE_BOOKING_STATUS: {
+          return {
+            ...state,
+            error: action.payload.error,
+            loading: false,
+          };
+        }
+
         case EbixStaffActionTypes.DELETE_EBIX_STAFF: {
           return {
             ...state,
@@ -192,6 +215,8 @@ const EbixStaffReducer = (
     case EbixStaffActionTypes.GET_SWIFT:
       return { ...state, loading: true, initialLoading: true };
     case EbixStaffActionTypes.UPLOAD_SWIFT:
+      return { ...state, loading: true };
+    case EbixStaffActionTypes.UPDATE_BOOKING_STATUS:
       return { ...state, loading: true };
     case EbixStaffActionTypes.DELETE_EBIX_STAFF:
       return { ...state, loading: true };

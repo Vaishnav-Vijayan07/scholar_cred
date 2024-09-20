@@ -42,6 +42,14 @@ function uploadSwiftCopyApi(params: {
   return api.createWithFile("/forex/ebix_staff/docs", params);
 }
 
+function updateBookingStatusApi(params: {
+  status: string;
+  forex_id: string;
+  student_id: string;
+}) {
+  return api.update("/forex/ebix_staff/update-booking-status", params);
+}
+
 export {
   createEbixUsersApi,
   getCredEbixUsersApi,
@@ -50,4 +58,5 @@ export {
   getEbixPayApi,
   uploadSwiftCopyApi,
   getSwiftCopiesApi,
+  updateBookingStatusApi,
 };

@@ -8,4 +8,5 @@ export enum EbixStaffActionTypes {
   GET_SWIFT = "@@ebix_staff/GET_SWIFT",
   GET_DETAILS = "@@ebix_staff/GET_DETAILS",
   DELETE_EBIX_STAFF = "@@ebix_staff/DELETE_EBIX_STAFF",
+  UPDATE_BOOKING_STATUS = "@@ebix_staff/UPDATE_BOOKING_STATUS",
 }

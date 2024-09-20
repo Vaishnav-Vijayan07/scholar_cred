@@ -75,6 +75,7 @@ const Summary = () => {
               variant={getItemProperties(state?.label).variant}
               stats={state?.data}
               desc={state?.label}
+              type={"counts"}
             />
           </Col>
         ))}
@@ -87,6 +88,7 @@ const Summary = () => {
               variant={getItemProperties(state?.label).variant}
               stats={state?.data}
               desc={state?.label}
+              type={"price"}
             />
           </Col>
         ))}

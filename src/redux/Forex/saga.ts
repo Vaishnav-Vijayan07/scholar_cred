@@ -8,9 +8,9 @@ import {
   getSettlementsApi,
 } from "../../helpers/api/forex";
 
-function* getForexData(): SagaIterator {
+function* getForexData({ payload: { from, to, status } }: any): SagaIterator {
   try {
-    let response = yield call(getForexDataApi);
+    let response = yield call(getForexDataApi,{from,to,status});
 
     const data = response.data.data;
     yield put(forexApiSuccess(ForexTypes.GET_FOREX_DATA, data));
@@ -29,9 +29,9 @@ function* getForexCommisions(): SagaIterator {
   }
 }
 
-function* getSettlementsData({ payload: { year,month } }: any): SagaIterator {
+function* getSettlementsData({ payload: { year, month } }: any): SagaIterator {
   try {
-    const response = yield call(getSettlementsApi, year,month);
+    const response = yield call(getSettlementsApi, year, month);
     const data = response.data.data;
     yield put(forexApiSuccess(ForexTypes.GET_SETTLEMENTS, data));
   } catch (error: any) {

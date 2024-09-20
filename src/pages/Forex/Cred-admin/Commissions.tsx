@@ -7,6 +7,7 @@ import { Row, Col, Card, Spinner, Badge } from "react-bootstrap";
 import Table from "../../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import { getCommisions } from "../../../redux/Forex/actions";
+import { getInrType } from "../../../helpers/currencyConverter";
 
 const sizePerPageList = [
   {
@@ -30,15 +31,13 @@ const sizePerPageList = [
 // import { CustomCropper } from "./CustomCropper";
 
 const BasicInputElements = withSwal((props: any) => {
-  const dispatch = useDispatch();
-  const { swal, loading, state, error, success, initialLoading, user } = props;
-  const [modal, setModal] = useState<boolean>(false);
+  const { state, initialLoading } = props;
 
   const columns = [
     {
       Header: "Sl No",
       accessor: "",
-      Cell: ({ row }: any) => <>{row.index + 1}</>, // Use row.index to get the row number
+      Cell: ({ row }: any) => <>{row.index + 1}</>,
       sort: false,
     },
     {
@@ -65,10 +64,14 @@ const BasicInputElements = withSwal((props: any) => {
     {
       Header: "Commission",
       accessor: "commision",
+      Cell: ({ row }: any) => <>{getInrType(row?.original?.commision)}</>,
     },
     {
       Header: "Consultant Commision",
-      accessor: "consultant_commision",
+      accessor: "",
+      Cell: ({ row }: any) => (
+        <>{getInrType(row?.original?.consultant_commision)}</>
+      ),
     },
     {
       Header: "Forex Amount",
@@ -80,11 +83,13 @@ const BasicInputElements = withSwal((props: any) => {
     },
     {
       Header: "Sub Total",
-      accessor: "sub_total",
+      accessor: "",
+      Cell: ({ row }: any) => <>{getInrType(row?.original?.sub_total)}</>,
     },
     {
       Header: "Amount Paid",
-      accessor: "amount_payable",
+      accessor: "",
+      Cell: ({ row }: any) => <>{getInrType(row?.original?.amount_payable)}</>,
     },
   ];
 

@@ -18,6 +18,7 @@ import {
   getEbixDocsApi,
   getEbixPayApi,
   getSwiftCopiesApi,
+  updateBookingStatusApi,
   uploadSwiftCopyApi,
 } from "../../helpers/api/ebix_staff";
 
@@ -31,6 +32,7 @@ interface EbixUserData {
     forex_id: string;
     student_id: string;
     file: File;
+    status: string;
   };
   type: string;
 }
@@ -128,6 +130,32 @@ function* uploadSwiftCopy({
   }
 }
 
+function* updateBookingStatus({
+  payload: { status, forex_id, student_id },
+}: EbixUserData): SagaIterator {
+  try {
+    const response = yield call(updateBookingStatusApi, {
+      status,
+      forex_id,
+      student_id,
+    });
+    const payDetails = response.data.data;
+
+    yield put(
+      ebixStaffResponseSuccess(
+        EbixStaffActionTypes.UPDATE_BOOKING_STATUS,
+        payDetails
+      )
+    );
+
+    yield put(getPayDetails(forex_id));
+  } catch (error: any) {
+    yield put(
+      ebixStaffResponseError(EbixStaffActionTypes.UPDATE_BOOKING_STATUS, error)
+    );
+  }
+}
+
 function* deleteEbixStaff({ payload: { id } }: EbixUserData): SagaIterator {
   try {
     const response = yield call(deleteEbixUsersApi, id);
@@ -191,6 +219,13 @@ export function* watchDeleteEbixUser() {
   yield takeEvery(EbixStaffActionTypes.DELETE_EBIX_STAFF, deleteEbixStaff);
 }
 
+export function* watchUpdateBookingStatus() {
+  yield takeEvery(
+    EbixStaffActionTypes.UPDATE_BOOKING_STATUS,
+    updateBookingStatus
+  );
+}
+
 function* ebixStaffSaga() {
   yield all([
     fork(watchCreateEbixUser),
@@ -200,6 +235,7 @@ function* ebixStaffSaga() {
     fork(watchGetEbixUserPay),
     fork(watchUploadSwiftCopy),
     fork(watchGetEbixSwiftCopies),
+    fork(watchUpdateBookingStatus),
   ]);
 }
 

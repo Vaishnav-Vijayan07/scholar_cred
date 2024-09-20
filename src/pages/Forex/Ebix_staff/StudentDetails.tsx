@@ -36,6 +36,9 @@ const StudentDetails = () => {
     );
   }
 
+  console.log(state);
+  
+
   return (
     <>
       <PageTitle
@@ -52,7 +55,14 @@ const StudentDetails = () => {
       <Row>
         <Col xl={4} lg={4}>
           <UploadBox
-            state={state || {}}
+            student_id={state?.student_id}
+            forex_id={state?.forex_id}
+            swift_url={state?.swift_url}
+            first_name={state?.first_name}
+            last_name={state?.last_name}
+            paid_to={state?.paid_to}
+            email={state?.email}
+            status = {state?.orderstatus}
             error={error || ""}
             loading={loading}
           />

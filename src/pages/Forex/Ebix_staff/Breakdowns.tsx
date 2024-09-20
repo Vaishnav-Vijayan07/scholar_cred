@@ -1,4 +1,5 @@
 import { Col, Form, Row } from "react-bootstrap";
+import { formatCurrency, getInrType } from "../../../helpers/currencyConverter";
 
 const Breakdowns = ({ state }: any) => {
   return (
@@ -235,24 +236,24 @@ const Breakdowns = ({ state }: any) => {
               />
             </Form.Group>
           </Col>
-              {state?.consultant_id && (
-                <Col md={4}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Consultant Commision</Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={state?.consultant_charge || ""}
-                      readOnly
-                      style={{
-                        border: "none",
-                        borderBottom: "1px solid #ced4da",
-                        borderRadius: "0",
-                        backgroundColor: "#f8f9fa",
-                      }}
-                    />
-                  </Form.Group>
-                </Col>
-              )}
+          {state?.consultant_id && (
+            <Col md={4}>
+              <Form.Group className="mb-3">
+                <Form.Label>Consultant Commision</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={state?.consultant_charge || ""}
+                  readOnly
+                  style={{
+                    border: "none",
+                    borderBottom: "1px solid #ced4da",
+                    borderRadius: "0",
+                    backgroundColor: "#f8f9fa",
+                  }}
+                />
+              </Form.Group>
+            </Col>
+          )}
           <Col md={4}>
             <Form.Group className="mb-3">
               <Form.Label>Commision Added Buy Rate</Form.Label>
@@ -279,7 +280,10 @@ const Breakdowns = ({ state }: any) => {
               <Form.Label>Forex Amount</Form.Label>
               <Form.Control
                 type="text"
-                value={state?.declaration_amount || ""}
+                value={
+                  formatCurrency(state?.declaration_amount, state?.currency) ||
+                  ""
+                }
                 readOnly
                 style={{
                   border: "none",
@@ -311,7 +315,7 @@ const Breakdowns = ({ state }: any) => {
               <Form.Label>Sub Total</Form.Label>
               <Form.Control
                 type="text"
-                value={state?.sub_total || ""}
+                value={getInrType(state?.sub_total) || ""}
                 readOnly
                 style={{
                   border: "none",
@@ -327,7 +331,7 @@ const Breakdowns = ({ state }: any) => {
               <Form.Label>Total Amount (charges included)</Form.Label>
               <Form.Control
                 type="text"
-                value={state?.amount_payable || ""}
+                value={getInrType(state?.amount_payable) || ""}
                 readOnly
                 style={{
                   border: "none",
@@ -343,7 +347,7 @@ const Breakdowns = ({ state }: any) => {
               <Form.Label>Admin Commision Amount</Form.Label>
               <Form.Control
                 type="text"
-                value={state?.admin_commision || ""}
+                value={getInrType(state?.admin_commision) || ""}
                 readOnly
                 style={{
                   border: "none",
@@ -360,7 +364,7 @@ const Breakdowns = ({ state }: any) => {
                 <Form.Label>Consultant Commision Amount</Form.Label>
                 <Form.Control
                   type="text"
-                  value={state?.consultant_commision || ""}
+                  value={getInrType(state?.consultant_commision) || ""}
                   readOnly
                   style={{
                     border: "none",
@@ -378,7 +382,7 @@ const Breakdowns = ({ state }: any) => {
               <Form.Label>Total Commision</Form.Label>
               <Form.Control
                 type="text"
-                value={state?.total_commision || ""}
+                value={getInrType(state?.total_commision) || ""}
                 readOnly
                 style={{
                   border: "none",

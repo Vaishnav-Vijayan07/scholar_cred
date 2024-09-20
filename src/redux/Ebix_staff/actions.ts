@@ -11,6 +11,7 @@ export interface AdminActionType {
     | EbixStaffActionTypes.UPLOAD_SWIFT
     | EbixStaffActionTypes.GET_SWIFT
     | EbixStaffActionTypes.GET_DETAILS
+    | EbixStaffActionTypes.UPDATE_BOOKING_STATUS
     | EbixStaffActionTypes.DELETE_EBIX_STAFF;
   payload: {} | string;
 }
@@ -86,4 +87,13 @@ export const getPayDetails = (forex_id: string): AdminActionType => ({
 export const deleteEbixUsers = (id: string): AdminActionType => ({
   type: EbixStaffActionTypes.DELETE_EBIX_STAFF,
   payload: { id },
+});
+
+export const updateBookingStatus = (
+  status: string,
+  forex_id: string,
+  student_id: string
+): AdminActionType => ({
+  type: EbixStaffActionTypes.UPDATE_BOOKING_STATUS,
+  payload: { status, forex_id, student_id },
 });

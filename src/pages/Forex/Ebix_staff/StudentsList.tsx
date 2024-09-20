@@ -63,6 +63,7 @@ const BasicInputElements = withSwal((props: any) => {
     }
   };
 
+
   //handling update logic
 
   const columns = [
@@ -90,6 +91,11 @@ const BasicInputElements = withSwal((props: any) => {
     {
       Header: "University",
       accessor: "university_name",
+      sort: true,
+    },
+    {
+      Header: "Order Status",
+      accessor: "payment_orderstatus",
       sort: true,
     },
     {
@@ -198,7 +204,6 @@ const StudentsList = () => {
       initialLoading: state?.EbixStaffReducer?.initialLoading,
     })
   );
-
 
   useEffect(() => {
     dispatch(getDocs());

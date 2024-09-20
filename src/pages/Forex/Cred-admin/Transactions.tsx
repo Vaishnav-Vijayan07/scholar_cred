@@ -3,11 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import PageTitle from "../../../components/PageTitle";
 
-import { Row, Col, Card, Form, Button, Modal, Spinner } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Modal,
+  Spinner,
+  Badge,
+} from "react-bootstrap";
 import Table from "../../../components/Table";
 import { withSwal } from "react-sweetalert2";
 import FeatherIcons from "feather-icons-react";
 import { getForexData } from "../../../redux/Forex/actions";
+import { formatCurrency, getInrType } from "../../../helpers/currencyConverter";
+import HyperDatepicker from "../../../components/Datepicker";
 
 const sizePerPageList = [
   {
@@ -29,12 +40,13 @@ const sizePerPageList = [
 ];
 
 const BasicInputElements = withSwal((props: any) => {
-  const { swal, loading, state, error, success, initialLoading, user } = props;
+  const { state, initialLoading } = props;
   const [modal, setModal] = useState(false);
 
   const [formData, setFormData] = useState({
     status: "",
     orderstatus: "",
+    currency: "",
     custorderno: "",
     ebixorderno: "",
     reference_id: "",
@@ -96,6 +108,50 @@ const BasicInputElements = withSwal((props: any) => {
         Header: "Payment To",
         accessor: "paid_to",
       },
+      {
+        Header: "Ebix Order Status",
+        accessor: "orderstatus",
+      },
+      {
+        Header: "Payment Status",
+        accessor: "status",
+        Cell: ({ row }: any) => {
+          return (
+            <Badge
+              bg={(() => {
+                switch (row.original.status) {
+                  case "success":
+                    return "success";
+                  case "failed":
+                    return "danger";
+                  case "pending":
+                    return "warning"; // Choose a suitable color for "Pending"
+                  default:
+                    return "secondary"; // Fallback color if status is unknown
+                }
+              })()}
+            >
+              {(() => {
+                switch (row.original.status) {
+                  case "success":
+                    return "Success";
+                  case "failed":
+                    return "Failed";
+                  case "pending":
+                    return "Pending";
+                  default:
+                    return "Unknown"; // Fallback text if status is unknown
+                }
+              })()}
+            </Badge>
+          );
+        },
+      },
+      {
+        Header: "Date",
+        accessor: "payment_created_at",
+      },
+
       {
         Header: "View More",
         accessor: "",
@@ -342,38 +398,42 @@ const BasicInputElements = withSwal((props: any) => {
               </Col>
             </Row>
             <Row>
-            <Col md={4}>
-                <Form.Group className="mb-3" controlId="reference_id">
-                  <Form.Label>Consultant Makeup Amount</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={formData?.consultant_charge || ""}
-                    readOnly
-                    style={{
-                      border: "none",
-                      borderBottom: "1px solid #ced4da",
-                      borderRadius: "0",
-                      backgroundColor: "#f8f9fa",
-                    }}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={4}>
-                <Form.Group className="mb-3" controlId="reference_id">
-                  <Form.Label>Admin Makeup Amount</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={formData?.admin_charge || ""}
-                    readOnly
-                    style={{
-                      border: "none",
-                      borderBottom: "1px solid #ced4da",
-                      borderRadius: "0",
-                      backgroundColor: "#f8f9fa",
-                    }}
-                  />
-                </Form.Group>
-              </Col>
+              {formData?.consultant_charge && (
+                <Col md={4}>
+                  <Form.Group className="mb-3" controlId="reference_id">
+                    <Form.Label>Consultant Makeup Amount</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={formData?.consultant_charge || ""}
+                      readOnly
+                      style={{
+                        border: "none",
+                        borderBottom: "1px solid #ced4da",
+                        borderRadius: "0",
+                        backgroundColor: "#f8f9fa",
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+              )}
+              {formData?.admin_charge && (
+                <Col md={4}>
+                  <Form.Group className="mb-3" controlId="reference_id">
+                    <Form.Label>Admin Makeup Amount</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={formData?.admin_charge || ""}
+                      readOnly
+                      style={{
+                        border: "none",
+                        borderBottom: "1px solid #ced4da",
+                        borderRadius: "0",
+                        backgroundColor: "#f8f9fa",
+                      }}
+                    />
+                  </Form.Group>
+                </Col>
+              )}
             </Row>
             <Row>
               <Row className="mt-3 mb-1">
@@ -384,7 +444,9 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Label>Forex Amount</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.amount || ""}
+                    value={
+                      formatCurrency(formData?.amount, formData?.currency) || ""
+                    }
                     readOnly
                     style={{
                       border: "none",
@@ -400,7 +462,7 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Label>Total Amount</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.sub_total || ""}
+                    value={getInrType(formData?.sub_total) || ""}
                     readOnly
                     style={{
                       border: "none",
@@ -416,7 +478,7 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Label>Amount Paid</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.amount_payable || ""}
+                    value={getInrType(formData?.amount_payable) || ""}
                     readOnly
                     style={{
                       border: "none",
@@ -430,24 +492,8 @@ const BasicInputElements = withSwal((props: any) => {
             </Row>
             <Row>
               <Col md={4}>
-                <Form.Group className="mb-3" controlId="transaction_id">
-                  <Form.Label>Buy Rate</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={formData?.exchange_rate || ""}
-                    readOnly
-                    style={{
-                      border: "none",
-                      borderBottom: "1px solid #ced4da",
-                      borderRadius: "0",
-                      backgroundColor: "#f8f9fa",
-                    }}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={4}>
                 <Form.Group className="mb-3" controlId="reference_id">
-                  <Form.Label>Commision Added Buy Rate</Form.Label>
+                  <Form.Label>Buy Rate</Form.Label>
                   <Form.Control
                     type="text"
                     value={formData?.commission_added_rate || ""}
@@ -462,9 +508,7 @@ const BasicInputElements = withSwal((props: any) => {
                 </Form.Group>
               </Col>
             </Row>
-            <Row>
-              
-            </Row>
+            <Row></Row>
             <div className="text-end">
               <Button
                 variant="danger"
@@ -505,6 +549,35 @@ const BasicInputElements = withSwal((props: any) => {
 const TransactionsAdmin = () => {
   const dispatch = useDispatch();
 
+  const [status, setStatus] = useState("all");
+
+  const [dates, setDates] = useState<any>({
+    from: new Date(),
+    to: new Date(),
+  });
+
+  const [formattedDates, setFormattedDates] = useState<any>({
+    from: null,
+    to: new Date().toISOString().split("T")[0],
+  });
+
+  const handleDateChange = (date: any, type: string) => {
+    setDates((prev: any) => ({
+      ...prev,
+      [type]: date,
+    }));
+
+    setFormattedDates((prev: any) => ({
+      ...prev,
+      [type]: date.toISOString().split("T")[0],
+    }));
+  };
+
+  const handleStatusChange = (e: any) => {
+    const { value } = e.target;
+    setStatus(value);
+  };
+
   const { state, loading, error, success, initialLoading, user } = useSelector(
     (state: RootState) => ({
       state: state?.Forex.forexData,
@@ -517,8 +590,18 @@ const TransactionsAdmin = () => {
   );
 
   useEffect(() => {
-    dispatch(getForexData());
+    dispatch(getForexData(null, new Date().toISOString().split("T")[0], "all"));
   }, []);
+
+  const applyFilters = () => {
+    dispatch(getForexData(formattedDates?.from, formattedDates.to, status));
+  };
+
+  const handleReset = () => {
+    setStatus("all");
+    setDates({ from: new Date(), to: new Date() });
+    dispatch(getForexData(null, new Date().toISOString().split("T")[0], "all"));
+  };
 
   if (initialLoading) {
     return (
@@ -542,6 +625,74 @@ const TransactionsAdmin = () => {
         ]}
         title={"Forex Data"}
       />
+
+      <Row className="mb-3">
+        <Col sm={9} className="d-flex gap-2">
+          <Col sm={3}>
+            <Form.Group controlId="fromDate">
+              <Form.Label>From</Form.Label>
+              <HyperDatepicker
+                hideAddon={true}
+                dateFormat="yyyy-MM-dd"
+                value={dates.from}
+                onChange={(date) => handleDateChange(date, "from")}
+              />
+            </Form.Group>
+          </Col>
+          <Col sm={3}>
+            <Form.Group controlId="toDate">
+              <Form.Label>To</Form.Label>
+              <HyperDatepicker
+                hideAddon={true}
+                dateFormat="yyyy-MM-dd"
+                maxDate={new Date()}
+                value={dates.to}
+                onChange={(date) => handleDateChange(date, "to")}
+              />
+            </Form.Group>
+          </Col>
+          <Col sm={3}>
+            <Form.Group controlId="paymentStatus">
+              <Form.Label>Payment Status</Form.Label>
+              <Form.Control
+                as="select"
+                value={status} // Assume `status` is part of your component state
+                onChange={handleStatusChange}
+              >
+                <option value="all">All</option>
+                <option value="pending">Pending</option>
+                <option value="Success">Success</option>
+                <option value="Failed">Failed</option>
+              </Form.Control>
+            </Form.Group>
+          </Col>
+        </Col>
+        <Col sm={3} className="d-flex justify-content-end align-items-center">
+          <Col sm={3} className="d-flex align-items-end">
+            <div>
+              <button
+                type="button"
+                className="btn btn-outline-dark"
+                onClick={applyFilters}
+              >
+                Apply
+              </button>
+            </div>
+          </Col>
+          <Col sm={3} className="d-flex align-items-end">
+            <div>
+              <button
+                type="button"
+                className="btn btn-outline-danger"
+                onClick={handleReset}
+              >
+                Reset
+              </button>
+            </div>
+          </Col>
+        </Col>
+      </Row>
+
       <Row>
         <Col>
           <BasicInputElements

@@ -2,9 +2,11 @@ import { APICore } from "./apiCore";
 
 const api = new APICore();
 
-function getForexDataApi() {
+function getForexDataApi(params: { from: any; to: any; status: any }) {
+  console.log(params);
+  
   const baseUrl = "/forex/transactions";
-  return api.get(`${baseUrl}`, {});
+  return api.get(`${baseUrl}`, params);
 }
 
 function getForexCommisionsApi() {

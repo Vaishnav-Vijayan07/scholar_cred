@@ -254,7 +254,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     ],
   },
   {
-    key: "forex",
+    key: "transactions",
     label: "Transactions",
     icon: "book",
     isTitle: false,
@@ -262,7 +262,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     roles: ["CRED_ADMIN", "CRED_STAFF"],
   },
   {
-    key: "forex",
+    key: "commissions",
     label: "Commissions",
     icon: "book",
     isTitle: false,
@@ -270,7 +270,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     roles: ["CRED_ADMIN"],
   },
   {
-    key: "forex",
+    key: "commissions-summary",
     label: "Commissions-Summary",
     icon: "book",
     isTitle: false,
@@ -278,9 +278,9 @@ const MENU_ITEMS: MenuItemTypes[] = [
     roles: ["CRED_ADMIN"],
   },
   {
-    key: "forex",
+    key: "report",
     label: "Report",
-    icon: "book",
+    icon: "align-justify",
     isTitle: false,
     url: "/forex/commisions_report",
     roles: ["CRED_ADMIN"],

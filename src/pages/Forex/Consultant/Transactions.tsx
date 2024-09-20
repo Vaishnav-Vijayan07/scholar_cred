@@ -28,6 +28,8 @@ import { withSwal } from "react-sweetalert2";
 import axios from "axios";
 import { showSuccessAlert } from "../../../constants/alerts";
 import { getForexData } from "../../../redux/Forex/actions";
+import { getInrType } from "../../../helpers/currencyConverter";
+import HyperDatepicker from "../../../components/Datepicker";
 
 const sizePerPageList = [
   {
@@ -117,6 +119,50 @@ const BasicInputElements = withSwal((props: any) => {
         accessor: "paid_to",
       },
       {
+        Header: "Ebix Order Status",
+        accessor: "orderstatus",
+      },
+      {
+        Header: "Payment Status",
+        accessor: "status",
+        Cell: ({ row }: any) => {
+          return (
+            <Badge
+              bg={(() => {
+                switch (row.original.status) {
+                  case "Success":
+                    return "success";
+                  case "Failed":
+                    return "danger";
+                  case "pending":
+                    return "warning"; // Choose a suitable color for "Pending"
+                  default:
+                    return "secondary"; // Fallback color if status is unknown
+                }
+              })()}
+            >
+              {(() => {
+                switch (row.original.status) {
+                  case "Success":
+                    return "Success";
+                  case "Failed":
+                    return "Failed";
+                  case "pending":
+                    return "Pending";
+                  default:
+                    return "Unknown"; // Fallback text if status is unknown
+                }
+              })()}
+            </Badge>
+          );
+        },
+      },
+      {
+        Header: "Date",
+        accessor: "payment_created_at",
+      },
+
+      {
         Header: "View More",
         accessor: "",
         sort: false,
@@ -162,6 +208,54 @@ const BasicInputElements = withSwal((props: any) => {
         accessor: "paid_to",
       },
       {
+        Header: "Transaction Status",
+        accessor: "forex_status",
+      },
+      {
+        Header: "Ebix Order Status",
+        accessor: "orderstatus",
+      },
+      {
+        Header: "Payment Status",
+        accessor: "status",
+        Cell: ({ row }: any) => {
+          return (
+            <Badge
+              bg={(() => {
+                switch (row.original.status) {
+                  case "Success":
+                    return "success";
+                  case "Failed":
+                    return "danger";
+                  case "pending":
+                    return "warning"; // Choose a suitable color for "Pending"
+                  default:
+                    return "secondary"; // Fallback color if status is unknown
+                }
+              })()}
+            >
+              {(() => {
+                switch (row.original.status) {
+                  case "Success":
+                    return "Success";
+                  case "Failed":
+                    return "Failed";
+                  case "pending":
+                    return "Pending";
+                  default:
+                    return "Unknown"; // Fallback text if status is unknown
+                }
+              })()}
+            </Badge>
+          );
+        },
+      },
+      {
+        Header: "Date",
+        accessor: "payment_created_at",
+      },
+
+      {
         Header: "Buy Rate",
         accessor: "exchange_rate",
       },
@@ -171,11 +265,15 @@ const BasicInputElements = withSwal((props: any) => {
       },
       {
         Header: "Sub Total",
-        accessor: "sub_total",
+        accessor: "",
+        Cell: ({ row }: any) => <>{getInrType(row?.original?.sub_total)}</>,
       },
       {
         Header: "Amount Payable",
         accessor: "amount_payable",
+        Cell: ({ row }: any) => (
+          <>{getInrType(row?.original?.amount_payable)}</>
+        ),
       },
     ],
     [handleData, toggle]
@@ -429,7 +527,7 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Label>Total Amount</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.sub_total || ""}
+                    value={getInrType(formData?.sub_total) || ""}
                     readOnly
                     style={{
                       border: "none",
@@ -445,7 +543,7 @@ const BasicInputElements = withSwal((props: any) => {
                   <Form.Label>Amount Paid</Form.Label>
                   <Form.Control
                     type="text"
-                    value={formData?.amount_payable || ""}
+                    value={getInrType(formData?.amount_payable) || ""}
                     readOnly
                     style={{
                       border: "none",
@@ -565,6 +663,18 @@ const BasicInputElements = withSwal((props: any) => {
 const TransactionsConsultant = () => {
   const dispatch = useDispatch();
 
+  const [status, setStatus] = useState("all");
+
+  const [dates, setDates] = useState<any>({
+    from: new Date(),
+    to: new Date(),
+  });
+
+  const [formattedDates, setFormattedDates] = useState<any>({
+    from: null,
+    to: new Date().toISOString().split("T")[0],
+  });
+
   const { state, loading, error, success, initialLoading, user } = useSelector(
     (state: RootState) => ({
       state: state?.Forex.forexData,
@@ -576,8 +686,34 @@ const TransactionsConsultant = () => {
     })
   );
 
+  const handleDateChange = (date: any, type: string) => {
+    setDates((prev: any) => ({
+      ...prev,
+      [type]: date,
+    }));
+    setFormattedDates((prev: any) => ({
+      ...prev,
+      [type]: date.toISOString().split("T")[0],
+    }));
+  };
+
+  const handleStatusChange = (e: any) => {
+    const { value } = e.target;
+    setStatus(value);
+  };
+
+  const applyFilters = () => {
+    dispatch(getForexData(formattedDates?.from, formattedDates.to, status));
+  };
+
+  const handleReset = () => {
+    setDates({ from: new Date(), to: new Date() });
+    setStatus("all");
+    dispatch(getForexData(null, new Date().toISOString().split("T")[0], "all"));
+  };
+
   useEffect(() => {
-    dispatch(getForexData());
+    dispatch(getForexData(formattedDates?.from, formattedDates.to, status));
   }, []);
 
   if (initialLoading) {
@@ -602,6 +738,74 @@ const TransactionsConsultant = () => {
         ]}
         title={"Transactions"}
       />
+
+      <Row className="mb-3">
+        <Col sm={9} className="d-flex gap-2">
+          <Col sm={3}>
+            <Form.Group controlId="fromDate">
+              <Form.Label>From</Form.Label>
+              <HyperDatepicker
+                hideAddon={true}
+                dateFormat="yyyy-MM-dd"
+                value={dates.from}
+                onChange={(date) => handleDateChange(date, "from")}
+              />
+            </Form.Group>
+          </Col>
+          <Col sm={3}>
+            <Form.Group controlId="toDate">
+              <Form.Label>To</Form.Label>
+              <HyperDatepicker
+                hideAddon={true}
+                dateFormat="yyyy-MM-dd"
+                maxDate={new Date()}
+                value={dates.to}
+                onChange={(date) => handleDateChange(date, "to")}
+              />
+            </Form.Group>
+          </Col>
+          <Col sm={3}>
+            <Form.Group controlId="paymentStatus">
+              <Form.Label>Payment Status</Form.Label>
+              <Form.Control
+                as="select"
+                value={status} // Assume `status` is part of your component state
+                onChange={handleStatusChange}
+              >
+                <option value="all">All</option>
+                <option value="pending">Pending</option>
+                <option value="Success">Success</option>
+                <option value="Failed">Failed</option>
+              </Form.Control>
+            </Form.Group>
+          </Col>
+        </Col>
+        <Col sm={3} className="d-flex justify-content-end align-items-center">
+          <Col sm={3} className="d-flex align-items-end">
+            <div>
+              <button
+                type="button"
+                className="btn btn-outline-dark"
+                onClick={applyFilters}
+              >
+                Apply
+              </button>
+            </div>
+          </Col>
+          <Col sm={3} className="d-flex align-items-end">
+            <div>
+              <button
+                type="button"
+                className="btn btn-outline-danger"
+                onClick={handleReset}
+              >
+                Reset
+              </button>
+            </div>
+          </Col>
+        </Col>
+      </Row>
+
       <Row>
         <Col>
           <BasicInputElements

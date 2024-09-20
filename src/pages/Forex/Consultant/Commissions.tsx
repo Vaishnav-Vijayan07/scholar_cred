@@ -22,6 +22,7 @@ import axios from "axios";
 import { showSuccessAlert } from "../../../constants/alerts";
 import { getCommisions, getForexData } from "../../../redux/Forex/actions";
 import CommisionsData from "./CommisionsData";
+import { getInrType } from "../../../helpers/currencyConverter";
 
 const sizePerPageList = [
   {
@@ -45,8 +46,7 @@ const sizePerPageList = [
 // import { CustomCropper } from "./CustomCropper";
 
 const BasicInputElements = withSwal((props: any) => {
-  const dispatch = useDispatch();
-  const { swal, loading, state, error, success, initialLoading, user } = props;
+  const { state, initialLoading } = props;
   const [modal, setModal] = useState<boolean>(false);
 
   const toggle = () => {
@@ -93,11 +93,13 @@ const BasicInputElements = withSwal((props: any) => {
     },
     {
       Header: "Sub Total",
-      accessor: "sub_total",
+      accessor: "",
+      Cell: ({ row }: any) => <>{getInrType(row?.original?.sub_total)}</>,
     },
     {
       Header: "Amount Paid",
-      accessor: "amount_payable",
+      accessor: "",
+      Cell: ({ row }: any) => <>{getInrType(row?.original?.amount_payable)}</>,
     },
   ];
 

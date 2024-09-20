@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Card, Dropdown, Spinner } from "react-bootstrap";
 import classNames from "classnames";
 import FeatherIcons from "feather-icons-react";
+import profileImg from "../../../assets/images/avatar-logo.png";
+
 
 // components
 import Table from "../../../components/Table";
@@ -52,11 +54,20 @@ const AssigneeColumn = ({ row }: { row: any }) => {
     ? row.original.assigned_to_user_name
     : "Assignee";
 
+  const assigneeImg = row?.original?.avatar
+    ? `${process.env.REACT_APP_BACKEND_URL}${row.original.avatar}`
+    : profileImg;
+
   return (
     <>
       <div className="d-flex ">
         <div className="d-flex justify-content-center align-items-center gap-1">
-        <img className="me-2 rounded-circle" src={`${process.env.REACT_APP_BACKEND_URL}${row.original.avatar}`} alt="" height="32" />
+          <img
+            className="me-2 rounded-circle"
+            src={assigneeImg}
+            alt=""
+            height="32"
+          />
           <div>{assigneeName}</div>
         </div>
       </div>
@@ -197,9 +208,6 @@ const ManageTickets = () => {
     })
   );
 
-
-  
-
   const handleGetTicket = (id: any) => {
     navigate(`/apps/Tickets-details/${id}`);
   };
@@ -276,7 +284,7 @@ const ManageTickets = () => {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          <h4 className="header-title mb-4">Manage Tickets</h4>
+          <h4 className="header-title mb-4">Manage Ticket</h4>
           <Table
             columns={columns}
             data={filteredItems || []}
