@@ -130,9 +130,9 @@ const BasicInputElements = withSwal((props: any) => {
             <Badge
               bg={(() => {
                 switch (row.original.status) {
-                  case "Success":
+                  case "success":
                     return "success";
-                  case "Failed":
+                  case "failed":
                     return "danger";
                   case "pending":
                     return "warning"; // Choose a suitable color for "Pending"
@@ -143,9 +143,9 @@ const BasicInputElements = withSwal((props: any) => {
             >
               {(() => {
                 switch (row.original.status) {
-                  case "Success":
+                  case "success":
                     return "Success";
-                  case "Failed":
+                  case "failed":
                     return "Failed";
                   case "pending":
                     return "Pending";
@@ -774,8 +774,8 @@ const TransactionsConsultant = () => {
               >
                 <option value="all">All</option>
                 <option value="pending">Pending</option>
-                <option value="Success">Success</option>
-                <option value="Failed">Failed</option>
+                <option value="success">Success</option>
+                <option value="failed">Failed</option>
               </Form.Control>
             </Form.Group>
           </Col>
