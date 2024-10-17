@@ -318,7 +318,7 @@ const userRoutes = {
       path: "/cred-admin/students",
       name: "Students",
       element: (
-        <PrivateRoute roles={["CRED_ADMIN"]} component={StudentAdminView} />
+        <PrivateRoute roles={["CRED_ADMIN","CRED_STAFF"]} component={StudentAdminView} />
       ),
       route: PrivateRoute,
     },

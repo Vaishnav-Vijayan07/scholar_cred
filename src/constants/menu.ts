@@ -84,7 +84,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "user-check",
     url: "/cred-admin/students",
-    roles: ["CRED_ADMIN"],
+    roles: ["CRED_ADMIN","CRED_STAFF"],
   },
   {
     key: "students-pending",
@@ -407,7 +407,7 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "user-check",
         url: "/cred-admin/students",
-        roles: ["CRED_ADMIN"],
+        roles: ["CRED_ADMIN","CRED_STAFF"],
       },
       {
         key: "direct-students",
@@ -572,7 +572,7 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "user-check",
         url: "/cred-admin/students",
-        roles: ["CRED_ADMIN"],
+        roles: ["CRED_ADMIN","CRED_STAFF"],
       },
       {
         key: "direct-students",
