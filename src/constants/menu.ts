@@ -24,6 +24,24 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "airplay",
     url: "/dashboard",
   },
+  { key: "consultant_master", label: "Consultant Master", isTitle: true, roles: ["CRED_STAFF"] },
+
+  {
+    key: "students-pending",
+    label: "Pending initiation",
+    isTitle: false,
+    icon: "users",
+    url: "/users/students",
+    roles: ["CRED_STAFF"],
+  },
+  {
+    key: "students",
+    label: "Students Intake",
+    isTitle: false,
+    icon: "user-check",
+    url: "/cred-admin/students",
+    roles: ["CRED_STAFF"],
+  },
 
   {
     key: "user_management",
@@ -61,13 +79,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "student_management",
     label: "Students",
     isTitle: true,
-    roles: [
-      "CRED_ADMIN",
-      "SUPER_USER",
-      "CONSULTANT_ADMIN",
-      "CONSULTANT_STAFF",
-      "CRED_STAFF",
-    ],
+    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
   },
 
   {
@@ -84,7 +96,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "user-check",
     url: "/cred-admin/students",
-    roles: ["CRED_ADMIN","CRED_STAFF"],
+    roles: ["CRED_ADMIN"],
   },
   {
     key: "students-pending",
@@ -92,7 +104,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "users",
     url: "/users/students",
-    roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+    roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"],
   },
 
   {
@@ -204,13 +216,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     key: "apps",
     label: "Apps",
     isTitle: true,
-    roles: [
-      "CRED_ADMIN",
-      "SUPER_USER",
-      "CONSULTANT_ADMIN",
-      "CONSULTANT_STAFF",
-      "CRED_STAFF",
-    ],
+    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
   },
 
   {
@@ -219,13 +225,7 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "book",
     url: "/apps/tickets",
-    roles: [
-      "CRED_ADMIN",
-      "SUPER_USER",
-      "CONSULTANT_ADMIN",
-      "CONSULTANT_STAFF",
-      "CRED_STAFF",
-    ],
+    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
   },
   {
     key: "ticketsclosed",
@@ -233,25 +233,21 @@ const MENU_ITEMS: MenuItemTypes[] = [
     isTitle: false,
     icon: "book",
     url: "/apps/closed-tickets",
-    roles: [
-      "CRED_ADMIN",
-      "SUPER_USER",
-      "CONSULTANT_ADMIN",
-      "CONSULTANT_STAFF",
-      "CRED_STAFF",
-    ],
+    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
   },
   {
     key: "forex",
     label: "Forex",
     isTitle: true,
-    roles: [
-      "CRED_ADMIN",
-      "SUPER_USER",
-      "CONSULTANT_ADMIN",
-      "CONSULTANT_STAFF",
-      "CRED_STAFF",
-    ],
+    roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
+  },
+  {
+    key: "initiations",
+    label: "Forex Initiations",
+    icon: "users",
+    isTitle: false,
+    url: "/forex/initiations",
+    roles: ["CRED_ADMIN", "CRED_STAFF", "CONSULTANT_ADMIN", "CONSULTANT_STAFF"],
   },
   {
     key: "transactions",
@@ -382,24 +378,14 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "user-check",
         url: "/users/intake-students",
-        roles: [
-          "SUPER_USER",
-          "CONSULTANT_ADMIN",
-          "CONSULTANT_STAFF",
-          "CRED_STAFF",
-        ],
+        roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
       {
         key: "students",
         label: "Students (Pending)",
         isTitle: false,
         url: "/users/students",
-        roles: [
-          "SUPER_USER",
-          "CONSULTANT_ADMIN",
-          "CONSULTANT_STAFF",
-          "CRED_STAFF",
-        ],
+        roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
       {
         key: "students",
@@ -407,7 +393,7 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "user-check",
         url: "/cred-admin/students",
-        roles: ["CRED_ADMIN","CRED_STAFF"],
+        roles: ["CRED_ADMIN"],
       },
       {
         key: "direct-students",
@@ -478,13 +464,7 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         // icon: "book",
         url: "/apps/tickets",
-        roles: [
-          "CRED_ADMIN",
-          "SUPER_USER",
-          "CONSULTANT_ADMIN",
-          "CONSULTANT_STAFF",
-          "CRED_STAFF",
-        ],
+        roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
     ],
   },
@@ -547,24 +527,14 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "user-check",
         url: "/users/intake-students",
-        roles: [
-          "SUPER_USER",
-          "CONSULTANT_ADMIN",
-          "CONSULTANT_STAFF",
-          "CRED_STAFF",
-        ],
+        roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
       {
         key: "students",
         label: "Students (Pending)",
         isTitle: false,
         url: "/users/students",
-        roles: [
-          "SUPER_USER",
-          "CONSULTANT_ADMIN",
-          "CONSULTANT_STAFF",
-          "CRED_STAFF",
-        ],
+        roles: ["SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
       {
         key: "students",
@@ -572,7 +542,7 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         icon: "user-check",
         url: "/cred-admin/students",
-        roles: ["CRED_ADMIN","CRED_STAFF"],
+        roles: ["CRED_ADMIN", "CRED_STAFF"],
       },
       {
         key: "direct-students",
@@ -612,13 +582,7 @@ const TWO_COl_MENU_ITEMS: MenuItemTypes[] = [
         isTitle: false,
         // icon: "book",
         url: "/apps/tickets",
-        roles: [
-          "CRED_ADMIN",
-          "SUPER_USER",
-          "CONSULTANT_ADMIN",
-          "CONSULTANT_STAFF",
-          "CRED_STAFF",
-        ],
+        roles: ["CRED_ADMIN", "SUPER_USER", "CONSULTANT_ADMIN", "CONSULTANT_STAFF", "CRED_STAFF"],
       },
     ],
   },

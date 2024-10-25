@@ -34,11 +34,12 @@ const Profile = () => {
   const [attachments, setAttachments] = useState([]);
   const [internalStatus, setInternalStatus] = useState([]);
 
-  const { StudentData, loading, CommentsData, CommentsLoading } = useSelector((state: RootState) => ({
+  const { StudentData, loading, CommentsData, CommentsLoading, loading: forexInitLoading } = useSelector((state: RootState) => ({
     StudentData: state.Students.studentById,
     CommentsData: state.Comments.comments.data,
     CommentsLoading: state.Comments.loading,
     loading: state.Students.loading,
+    forexInitLoading : state.ForexInit.loading
   }));
 
   const getPrilimineryDetailsApi = () => {

@@ -19,6 +19,7 @@ import studentDetailsSaga from "./studentDetails/saga";
 import forexSaga from "./Forex/saga";
 import ebixStaffSaga from "./Ebix_staff/saga";
 import forexReportSaga from "./Forex/Report/saga";
+import forexInitSaga from "./Forex/Initiations/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -41,5 +42,6 @@ export default function* rootSaga() {
     forexSaga(),
     forexReportSaga(),
     ebixStaffSaga(),
+    forexInitSaga(),
   ]);
 }

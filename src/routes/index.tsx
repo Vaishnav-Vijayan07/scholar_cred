@@ -35,6 +35,10 @@ const TransactionsConsultant = React.lazy(
   () => import("../pages/Forex/Consultant/Transactions")
 );
 
+const ForexInitiations = React.lazy(
+  () => import("../pages/Forex/ForexInitiations")
+);
+
 const CommisionSummary = React.lazy(
   () => import("../pages/Forex/Cred-admin/Summary")
 );
@@ -452,6 +456,17 @@ const ForexRoutes = {
         <PrivateRoute
           roles={["CONSULTANT_ADMIN", "CONSULTANT_STAFF"]}
           component={TransactionsConsultant}
+        />
+      ),
+      route: PrivateRoute,
+    },
+    {
+      path: "/forex/initiations",
+      name: "Staff",
+      element: (
+        <PrivateRoute
+          roles={["CONSULTANT_ADMIN", "CONSULTANT_STAFF","CRED_ADMIN", "CRED_STAFF", "SUPER_USER"]}
+          component={ForexInitiations}
         />
       ),
       route: PrivateRoute,

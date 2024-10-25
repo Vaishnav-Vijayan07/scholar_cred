@@ -1,12 +1,23 @@
 import React from "react";
 import { Button, Card, Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import profileImg from "../../../assets/images/avatar-logo.png";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { addInitData } from "../../../redux/Forex/Initiations/actions";
+import { RootState } from "../../../redux/store";
 
 const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
   console.log("StudentData=====>", StudentData);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const forexInitLoading = useSelector((state: RootState) => state.ForexInit.loading);
+
+  const handleInitiateForex = (student_id: string | number) => {
+    dispatch(addInitData(student_id, navigate));
+  };
 
   return (
     <Card className="text-center">
@@ -16,32 +27,46 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
         ) : (
           <>
             {StudentData?.imageurl ? (
-              <img src={`${process.env.REACT_APP_BACKEND_URL}${StudentData?.imageurl}`} className="rounded-circle avatar-lg img-thumbnail" alt="avatar" />
+              <img
+                src={`${process.env.REACT_APP_BACKEND_URL}${StudentData?.imageurl}`}
+                className="rounded-circle avatar-lg img-thumbnail"
+                alt="avatar"
+              />
             ) : (
               <img src={profileImg} className="rounded-circle avatar-lg img-thumbnail" alt="avatar" />
             )}
             <h4 className="">{StudentData?.first_name + " " + StudentData?.last_name}</h4>
-            {/* <p className="text-muted">@webdesigner</p> */}
-            {/* <button type="button" className="btn btn-success btn-xs waves-effect mb-2 waves-light">
-              Call
-            </button>{" "}
-            <button type="button" className="btn btn-danger btn-xs waves-effect mb-2 waves-light">
-              Message
-            </button>{" "} */}
-            {!StudentData?.status ? (
-              <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={isLoading} onClick={handleAppprove}>
-                {isLoading ? "Loading…" : "Initiate loan process"}
-              </Button>
-            ) : (
-              <Button variant="success" className="btn-xs waves-effect mb-2 waves-light" size="sm" disabled={true}>
-                Initiate loan process
-              </Button>
-            )}
+
+            <div className="d-flex justify-content-center">
+              <div className="d-flex gap-2">
+                <div>
+                  <Button
+                    variant="success"
+                    size="sm"
+                    disabled={isLoading || StudentData?.status}
+                    onClick={handleAppprove}
+                    className="btn-xs waves-effect mb-2 waves-light"
+                  >
+                    {isLoading ? "Loading…" : "Initiate loan process"}
+                  </Button>
+                </div>
+
+                <div>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="btn-xs waves-effect mb-2 waves-light"
+                    onClick={() => handleInitiateForex(StudentData?.student_id)}
+                    disabled={StudentData?.forex_initiation_id}
+                  >
+                    {forexInitLoading ? "Loading…" : "Initate Forex"}
+                  </Button>
+                </div>
+              </div>
+            </div>
             <div className="text-center mt-3">
               <h4 className="font-13 text-uppercase mb-3">About</h4>
-              {/* <p className="text-muted font-13 mb-3">
-            Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.
-          </p> */}
+
               <p className="text-muted mb-2 font-13">
                 <strong>Full Name : {StudentData?.first_name + " " + StudentData?.last_name}</strong>
                 <span className="ms-2"></span>
