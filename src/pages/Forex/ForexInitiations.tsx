@@ -75,7 +75,7 @@ const BasicInputElements = withSwal((props: any) => {
         sort: false,
         Cell: ({ row }: any) => (
           <div className="d-flex justify-content-center align-items-center gap-2">
-            <Button onClick={() => handleAssign(row.original.student_id, "Initiated")}>Initiate</Button>
+            <Button onClick={() => handleAssign(row.original.student_id, "Initiated")}>Mark as Accepted</Button>
 
             <Link to={`${route_url}${row.original.student_id}`}>
               <FeatherIcons icon="eye" size="15" className="cursor-pointer text-secondary" />

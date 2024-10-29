@@ -61,17 +61,19 @@ const UserBox = ({ StudentData, loading, handleAppprove, isLoading }: any) => {
                   </Button>
                 </div>
 
-                <div>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    className="btn-xs waves-effect mb-2 waves-light"
-                    onClick={() => handleInitiateForex(StudentData?.student_id)}
-                    disabled={StudentData?.forex_initiation_id}
-                  >
-                    {forexInitLoading ? "Loading…" : "Initate Forex"}
-                  </Button>
-                </div>
+                {!StudentData?.forex_initiation_id && (
+                  <div>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="btn-xs waves-effect mb-2 waves-light"
+                      onClick={() => handleInitiateForex(StudentData?.student_id)}
+                      disabled={StudentData?.forex_initiation_id}
+                    >
+                      {forexInitLoading ? "Loading…" : "Initate Forex"}
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
 
